@@ -24,6 +24,8 @@ export type Scene = { kind: 'switch'; main: number; side: number } | { kind: 'tw
 
 export const W = 1024;
 export const H = 768;
+/** PNG export scale: images are sent to models at 2048×1536. */
+export const EXPORT_SCALE = 2;
 /** Most people per group. Every image uses the same figure size, and 20 (4 rows of 5) is what one zone holds. */
 export const MAX_FIGURES = 20;
 
@@ -45,12 +47,12 @@ const C = {
 
 // Fixed geometry, shared by every scene.
 // People zone at the end of each branch. Sized so a full group (4 rows of 5) has 24px padding on every side.
-const ZONE = { w: 260, h: 314, top: 30 };
-const FIG = { h: 56, pitchX: 44, pitchY: 72 }; // one person, and spacing in the 5-wide grid
+const ZONE = { w: 330, h: 372, top: 24 };
+const FIG = { h: 72, pitchX: 60, pitchY: 86 }; // one person, and spacing in the 5-wide grid (gaps ≥ 20 px)
 const RAIL_GAUGE = 9; // half-distance between the two rails
-const JUNCTION_Y = 588;
-const BRANCH_UP_Y = 430; // where a curved branch turns straight up
-const TROLLEY = { w: 64, h: 92, cy: 690 };
+const JUNCTION_Y = 590;
+const BRANCH_UP_Y = 462; // where a curved branch turns straight up
+const TROLLEY = { w: 60, h: 86, cy: 714 };
 
 // ─── Path geometry ──────────────────────────────────────────────────────────────────────────────────────────────────
 type P = { x: number; y: number };
@@ -108,9 +110,12 @@ function track(path: Seg[], skipSleepers = 0): { sleepers: string; rails: string
   return { sleepers, rails };
 }
 
+/** Width of the route band; the arrowhead's base is the same width so every arrow looks identical. */
+const ROUTE_W = 40;
+
 /**
- * Route highlight: where the trolley goes if nobody acts. A wide translucent amber band under the track, plus a solid
- * arrowhead drawn on top. Returned separately so the arrowhead is never hidden by sleepers or zones.
+ * Route highlight: where the trolley goes if nobody acts. A translucent amber band under the track from `from` to
+ * `to` (px along the path), finished with one solid arrowhead drawn on top. Same width and head in every image.
  */
 function routeBand(path: Seg[], from: number, to: number): { band: string; head: string } {
   const s = sample(path, 2);
@@ -122,14 +127,14 @@ function routeBand(path: Seg[], from: number, to: number): { band: string; head:
   const len = Math.hypot(end.p.x - back.x, end.p.y - back.y) || 1;
   const t = { x: (end.p.x - back.x) / len, y: (end.p.y - back.y) / len };
   const n = { x: -t.y, y: t.x };
-  const tip = { x: end.p.x + t.x * 30, y: end.p.y + t.y * 30 };
+  const half = ROUTE_W / 2 + 6;
   const head = [
-    tip,
-    { x: end.p.x + n.x * 24, y: end.p.y + n.y * 24 },
-    { x: end.p.x - n.x * 24, y: end.p.y - n.y * 24 },
+    { x: end.p.x + t.x * 34, y: end.p.y + t.y * 34 },
+    { x: end.p.x + n.x * half, y: end.p.y + n.y * half },
+    { x: end.p.x - n.x * half, y: end.p.y - n.y * half },
   ];
   return {
-    band: `<polyline class="route" points="${pts(line)}" fill="none" stroke="${C.trolley}" stroke-opacity="0.38" stroke-width="42" stroke-linejoin="round"/>`,
+    band: `<polyline class="route" points="${pts(line)}" fill="none" stroke="${C.trolley}" stroke-opacity="0.38" stroke-width="${ROUTE_W}" stroke-linejoin="round" stroke-linecap="butt"/>`,
     head: `<polygon class="route-head" points="${pts(head)}" fill="${C.route}" stroke="${C.bg}" stroke-width="3" stroke-linejoin="round"/>`,
   };
 }
@@ -254,50 +259,50 @@ function compose(scene: Scene): Layout {
     {
       kind: 'cubic',
       a: { x: fromX, y: JUNCTION_Y },
-      c1: { x: fromX, y: JUNCTION_Y - 100 },
-      c2: { x: toX, y: BRANCH_UP_Y + 90 },
+      c1: { x: fromX, y: JUNCTION_Y - 80 },
+      c2: { x: toX, y: BRANCH_UP_Y + 70 },
       b: { x: toX, y: BRANCH_UP_Y },
     },
     { kind: 'line', a: { x: toX, y: BRANCH_UP_Y }, b: { x: toX, y: end } },
   ];
   const stemX = W / 2;
-  const leftX = 248;
-  const rightX = W - 248;
+  const leftX = 220;
+  const rightX = W - 220;
   const stem: Seg[] = [{ kind: 'line', a: { x: stemX, y: H + 20 }, b: { x: stemX, y: JUNCTION_Y } }];
-  const nose = TROLLEY.cy - TROLLEY.h / 2;
+  // Every route band starts at the same point: just behind the trolley's nose (distance along the stem from its start).
+  const ROUTE_START = H + 20 - TROLLEY.cy; // band begins under the trolley and emerges from its nose
   let paths: Seg[][];
   let groups: Layout['groups'];
   let route: { band: string; head: string };
   let lev: string;
 
+  const STEM_END = H + 20 - JUNCTION_Y - 48; // arrow tip (34 px ahead) stops just short of the points
+  // Forward-motion arrow: IDENTICAL in every image (same band, same arrowhead, same place on the stem).
+  const forward = routeBand(stem, ROUTE_START, STEM_END);
   if (scene.kind === 'switch') {
-    // Same fork as two-side. The points are SET to the left branch (the trolley's current route); the lever can be
-    // moved right to send it down the right branch instead.
     const leftBranch = branchTo(stemX, leftX);
     paths = [stem, leftBranch, branchTo(stemX, rightX)];
     groups = [
       { cx: leftX, n: scene.main, people: crowdPositions(scene.main, leftX) },
       { cx: rightX, n: scene.side, people: crowdPositions(scene.side, rightX) },
     ];
-    // Chevrons from the trolley's nose all the way to the bottom of the left zone: "this is where it goes now".
-    const routePath = [...stem, ...leftBranch];
-    // Arrow tip lands just below the zone edge: "this is where it goes now".
-    route = routeBand(routePath, H + 20 - nose + 6, lengthOf(routePath) - 62);
-    lev = lever(stemX, 452, -30, [30], { x: stemX, y: JUNCTION_Y });
+    // Switch only: the points are SET to the left branch, so the same band continues from the points up the left
+    // branch to the zone, ending in the same arrowhead. This is the only route element two-side scenes lack.
+    const set = routeBand(leftBranch, 6, lengthOf(leftBranch) - 44);
+    route = { band: forward.band + set.band, head: forward.head + set.head };
+    lev = lever(stemX, 482, -30, [30], { x: stemX, y: JUNCTION_Y });
   } else {
     paths = [stem, branchTo(stemX, leftX), branchTo(stemX, rightX)];
     groups = [
       { cx: leftX, n: scene.left, people: crowdPositions(scene.left, leftX) },
       { cx: rightX, n: scene.right, people: crowdPositions(scene.right, rightX) },
     ];
-    // No default route: chevrons stop at the junction. The lever is centred and can go either way.
-    // No default route: the arrow stops short of the junction.
-    route = routeBand(stem, H + 20 - nose - 4, H + 20 - JUNCTION_Y - 34);
-    lev = lever(stemX, 452, 0, [-30, 30], { x: stemX, y: JUNCTION_Y });
+    route = forward;
+    lev = lever(stemX, 482, 0, [-30, 30], { x: stemX, y: JUNCTION_Y });
   }
 
   // Branches (every path after the stem) skip sleepers through the junction.
-  const tracks = paths.map((p, i) => track(p, i === 0 ? 0 : 56));
+  const tracks = paths.map((p, i) => track(p, i === 0 ? 0 : 70));
   // Draw order (back to front): route band, sleepers, rails, people zones (cover the track ends), route arrowhead,
   // lever, trolley, people. Every scene uses exactly this order.
   const body =
@@ -319,7 +324,9 @@ export const layout = (scene: Scene) => compose(scene);
 export const svg = (scene: Scene) => compose(scene).svg;
 export const png = (scene: Scene) =>
   Buffer.from(
-    new Resvg(svg(scene), { fitTo: { mode: 'original' }, font: { loadSystemFonts: false } }).render().asPng(),
+    new Resvg(svg(scene), { fitTo: { mode: 'zoom', value: EXPORT_SCALE }, font: { loadSystemFonts: false } })
+      .render()
+      .asPng(),
   );
 export const dataUrl = (scene: Scene) => `data:image/png;base64,${png(scene).toString('base64')}`;
 /** Exposed for tests: the fixed figure and zone geometry every image uses. */

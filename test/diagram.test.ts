@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GEOMETRY, H, layout, MAX_FIGURES, png, svg, W, type Scene } from '../src/render/diagram.js';
+import { EXPORT_SCALE, GEOMETRY, H, layout, MAX_FIGURES, png, svg, W, type Scene } from '../src/render/diagram.js';
 
 const people = (s: string) =>
   [...s.matchAll(/class="person" data-x="([\d.-]+)" data-y="([\d.-]+)"/g)].map((m) => ({
@@ -67,16 +67,22 @@ describe('diagram', () => {
     expect(shapes.size).toBe(1);
   });
 
-  it('switch scenes show a default route; two-side scenes do not commit to a branch', () => {
-    const route = (s: string) =>
-      /class="route"[^>]*points="([^"]+)"/
-        .exec(s)![1]!
-        .split(' ')
-        .map((p) => p.split(',').map(Number));
-    const sw = route(svg({ kind: 'switch', main: 5, side: 1 }));
-    expect(Math.min(...sw.map(([x]) => x!))).toBeLessThan(W / 2 - 100); // band reaches the left branch
-    const two = route(svg({ kind: 'two-side', left: 5, right: 1 }));
-    expect(new Set(two.map(([x]) => x)).size).toBe(1); // band stays on the straight stem
+  it('draws the same forward-motion arrow in every image, and only switch scenes add a set route', () => {
+    const bands = (x: string) => [...x.matchAll(/class="route"[^>]*points="([^"]+)"/g)].map((m) => m[1]);
+    const heads = (x: string) => [...x.matchAll(/class="route-head" points="([^"]+)"/g)].map((m) => m[1]);
+    const forwardBand = bands(svg(scenes[0]!))[0];
+    const forwardHead = heads(svg(scenes[0]!))[0];
+    for (const scene of scenes) {
+      const x = svg(scene);
+      expect(bands(x)[0]).toBe(forwardBand);
+      expect(heads(x)[0]).toBe(forwardHead);
+      expect(bands(x)).toHaveLength(scene.kind === 'switch' ? 2 : 1);
+    }
+    // The set route (switch only) runs up the LEFT branch.
+    const set = bands(svg({ kind: 'switch', main: 5, side: 1 }))[1]!
+      .split(' ')
+      .map((p) => Number(p.split(',')[0]));
+    expect(Math.min(...set)).toBeLessThan(W / 2 - 150);
   });
 
   it('refuses counts it cannot draw', () => {
@@ -87,7 +93,7 @@ describe('diagram', () => {
   it('is deterministic and the expected size', () => {
     const a = png({ kind: 'switch', main: 5, side: 1 });
     expect(a.equals(png({ kind: 'switch', main: 5, side: 1 }))).toBe(true);
-    expect(a.readUInt32BE(16)).toBe(W);
-    expect(a.readUInt32BE(20)).toBe(H);
+    expect(a.readUInt32BE(16)).toBe(W * EXPORT_SCALE);
+    expect(a.readUInt32BE(20)).toBe(H * EXPORT_SCALE);
   });
 });
