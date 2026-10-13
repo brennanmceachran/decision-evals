@@ -1,0 +1,230 @@
+[
+  {
+    "id": "convaiinnovations/laya",
+    "object": "model",
+    "created": 1755815280,
+    "released": 1790812800,
+    "owned_by": "convaiinnovations",
+    "name": "Laya",
+    "description": "Laya is Convai Innovations\u2019 System One evaluation model for fast, structured decisions. It evaluates shared state against choice, score, and yes/no questions and returns typed answers with probabilities in a single forward pass. It supports classification, routing, guardrail checks, and rubric-based assessment without generating free-form text.",
+    "context_window": 8192,
+    "max_tokens": 0,
+    "type": "evaluation",
+    "zdr": "none",
+    "no_training": "none",
+    "tags": [
+      "free"
+    ],
+    "supported_specifications": [
+      "v4"
+    ],
+    "modalities": {
+      "input": [
+        "text"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "pricing": {
+      "input": "0",
+      "output": "0"
+    }
+  },
+  {
+    "id": "convaiinnovations/laya-free",
+    "object": "model",
+    "created": 1755815280,
+    "released": 1790812800,
+    "owned_by": "convaiinnovations",
+    "name": "Laya (Free)",
+    "description": "Laya is Convai Innovations\u2019 System One evaluation model for fast, structured decisions. It evaluates shared state against choice, score, and yes/no questions and returns typed answers with probabilities in a single forward pass. It supports classification, routing, guardrail checks, and rubric-based assessment without generating free-form text.",
+    "context_window": 8192,
+    "max_tokens": 0,
+    "type": "evaluation",
+    "zdr": "none",
+    "no_training": "none",
+    "tags": [
+      "free"
+    ],
+    "supported_specifications": [
+      "v4"
+    ],
+    "modalities": {
+      "input": [
+        "text"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "pricing": {
+      "input": "0",
+      "output": "0"
+    }
+  },
+  {
+    "id": "liquid/d1",
+    "object": "model",
+    "created": 1755815280,
+    "released": 1790640000,
+    "owned_by": "liquid",
+    "name": "Liquid d1",
+    "description": "Liquid d1 is a decision model for classification, routing, and scoring. It evaluates shared state against typed Choice, Score, and yes/no questions and returns structured answers with calibrated probabilities through the TypeSafe-compatible System One API.",
+    "context_window": 65536,
+    "max_tokens": 0,
+    "type": "evaluation",
+    "zdr": "none",
+    "no_training": "none",
+    "tags": [
+      "vision"
+    ],
+    "supported_specifications": [
+      "v4"
+    ],
+    "modalities": {
+      "input": [
+        "text",
+        "image"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "pricing": {
+      "input": "0.00000004",
+      "output": "0"
+    }
+  },
+  {
+    "id": "microsoft/microsoft-decision-1",
+    "object": "model",
+    "created": 1755815280,
+    "released": 1791504000,
+    "owned_by": "microsoft",
+    "name": "Decision-1",
+    "description": "Microsoft Decision-1 is a text decision model from Microsoft AI for classification, routing, and evaluation. It answers yes/no questions, selects among predefined options, and scores inputs against custom criteria, returning calibrated probabilities and confidence values. With support for multiple questions per request and a 32,768-token context window, it helps developers triage support requests, guide automated workflows, and evaluate AI responses against a rubric.",
+    "context_window": 32768,
+    "max_tokens": 0,
+    "type": "evaluation",
+    "zdr": "all",
+    "no_training": "all",
+    "supported_specifications": [
+      "v4"
+    ],
+    "modalities": {
+      "input": [
+        "text"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "pricing": {
+      "input": "0.000000042",
+      "output": "0"
+    }
+  },
+  {
+    "id": "openai/gpt-6-luna-decisions",
+    "object": "model",
+    "created": 1755815280,
+    "released": 1791244800,
+    "owned_by": "openai",
+    "name": "GPT-6 Luna Decisions",
+    "description": "GPT-6 Luna Decisions evaluates classification and scoring questions against shared text and image input using OpenAI's Decisions API. It supports predicate, choice, and score questions with probabilities and confidence values.",
+    "context_window": 1050000,
+    "max_tokens": 0,
+    "type": "evaluation",
+    "zdr": "none",
+    "no_training": "all",
+    "supported_specifications": [
+      "v4"
+    ],
+    "modalities": {
+      "input": [
+        "text"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "reasoning_options": [
+      {
+        "type": "toggle"
+      },
+      {
+        "type": "effort",
+        "values": [
+          "none",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      }
+    ],
+    "pricing": {
+      "input": "0.0000001"
+    }
+  },
+  {
+    "id": "scaledown/scaledown-classify-1",
+    "object": "model",
+    "created": 1755815280,
+    "released": 1791849600,
+    "owned_by": "scaledown",
+    "name": "Classify-1",
+    "description": "ScaleDown Classify-1 is a task-specific small language model for text classification. It assigns text to custom labels and returns probability scores, supporting intent detection, content categorization, and routing workflows. Its deterministic, encoder-only approach produces consistent classification results without sampling variability.",
+    "context_window": 0,
+    "max_tokens": 0,
+    "type": "evaluation",
+    "zdr": "none",
+    "no_training": "none",
+    "supported_specifications": [
+      "v4"
+    ],
+    "modalities": {
+      "input": [
+        "text"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "pricing": {
+      "input": "0.00000005",
+      "output": "0"
+    }
+  },
+  {
+    "id": "typesafe-ai/jev",
+    "object": "model",
+    "created": 1755815280,
+    "released": 1789430400,
+    "owned_by": "typesafe-ai",
+    "name": "Jev",
+    "description": "TypeSafe AI System One decision model. Accepts shared state and typed questions, returning choices, scores, and boolean probabilities. Limits: 64,000 tokens total per request; 32,000 tokens for the state plus the longest question. No streaming or output-token limit.",
+    "context_window": 32000,
+    "max_tokens": 0,
+    "type": "evaluation",
+    "zdr": "some",
+    "no_training": "all",
+    "supported_specifications": [
+      "v4"
+    ],
+    "modalities": {
+      "input": [
+        "text"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "pricing": {
+      "input": "0.000000042",
+      "output": "0"
+    }
+  }
+]

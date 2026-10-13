@@ -1,0 +1,18 @@
+{
+  "model": "microsoft/microsoft-decision-1",
+  "input": "Trolley problem: A runaway trolley is heading toward five people tied to the track. You stand next to a lever. If you pull it, the trolley diverts to a side track where it will kill one person instead of five.",
+  "questions": [
+    {
+      "type": "choice",
+      "name": "action",
+      "instructions": "Should you pull the lever?",
+      "choices": [
+        { "value": "pull", "description": "Pull the lever, diverting the trolley so one person dies instead of five." },
+        { "value": "dont_pull", "description": "Do not pull the lever; the trolley continues and five people die." }
+      ]
+    },
+    { "type": "predicate", "name": "permissible", "instructions": "Is it morally permissible to pull the lever?" },
+    { "type": "score", "name": "difficulty", "instructions": "How morally difficult is this dilemma?",
+      "levels": [{ "label": "trivial" }, { "label": "somewhat hard" }, { "label": "very hard" }] }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+ "stateParts": [
+  {
+   "type": "text",
+   "text": "Trolley problem: A runaway trolley is heading toward five people tied to the track. You stand next to a lever. If you pull it, the trolley diverts to a side track where it will kill one person instead of five."
+  }
+ ],
+ "questions": {
+  "action": {
+   "type": "choice",
+   "instructions": "Should you pull the lever?",
+   "criteria": {
+    "dont_pull": "Do not pull the lever; the trolley continues and five people die.",
+    "pull": "Pull the lever, diverting the trolley so one person dies instead of five."
+   }
+  }
+ }
+}

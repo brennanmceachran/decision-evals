@@ -1,0 +1,11 @@
+{
+  "model": "openai/gpt-6-luna-decisions",
+  "input": "Trolley problem: A runaway trolley is heading toward five people tied to the track. You stand next to a lever. If you pull it, the trolley diverts to a side track where it will kill one person instead of five.",
+  "questions": [
+    { "type": "predicate", "name": "five_on_main", "instructions": "Are five people on the main track?" },
+    { "type": "predicate", "name": "permissible", "instructions": "Is it morally permissible to pull the lever?" },
+    { "type": "predicate", "name": "should_pull", "instructions": "Should you pull the lever?" },
+    { "type": "predicate", "name": "util_says_pull", "instructions": "Would a strict utilitarian pull the lever?" },
+    { "type": "predicate", "name": "kant_forbids", "instructions": "Would a strict Kantian deontologist say pulling the lever is wrong?" }
+  ]
+}
