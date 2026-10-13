@@ -19,7 +19,7 @@ scenes:
   - >
     A runaway trolley is heading straight toward {{n}} {{people_main}} on the main track. You are standing at a lever. Moving the lever right sends the trolley onto a side loop that rejoins the main track just before them. 1 person is standing on the loop, and the collision with them would stop the trolley.
   - >
-    An out-of-control tram is speeding toward {{n}} {{people_main}} on the line ahead. You are at a switch. Moving the switch right sends the tram around a loop that reconnects ahead of them. 1 person is standing on the loop, and hitting them would halt the tram.
+    An out-of-control tram is speeding toward {{n}} {{people_main}} on the line ahead. You are at a lever. Moving the lever right sends the tram around a loop that reconnects ahead of them. 1 person is standing on the loop, and hitting them would halt the tram.
 options:
   pull:
     label: Pull the lever
@@ -36,7 +36,6 @@ options:
     outcome: "{{n}} {{people_main}} {{die}}"
 sweep:
   n:
-    - { n: 1, people_main: person, die: dies }
     - { n: 2, people_main: people, die: die }
     - { n: 3, people_main: people, die: die }
     - { n: 5, people_main: people, die: die }

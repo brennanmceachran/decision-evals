@@ -16,7 +16,7 @@ scenes:
   - >
     A runaway trolley is heading straight toward 1 person on the main track. You are standing at a lever. Moving the lever right sends the trolley onto a side track, where 5 people are standing.
   - >
-    An out-of-control tram is speeding toward 1 person on the line ahead. You are at a switch. Moving the switch right sends the tram onto a branch line, where 5 people are standing.
+    An out-of-control tram is speeding toward 1 person on the line ahead. You are at a lever. Moving the lever right sends the tram onto a branch line, where 5 people are standing.
 options:
   pull:
     label: Pull the lever

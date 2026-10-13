@@ -13,21 +13,21 @@ paraphrases:
 question: "Which group do you save?"
 scenes:
   - >
-    A runaway trolley is approaching a fork, and you are at the switch. It must go left or right. On the left track:
-    {{left_desc}}. On the right track: {{right_desc}}.
+    A runaway trolley is approaching a fork, and you control the switch. You must steer it left or right. On the
+    left track: {{left_desc}}. On the right track: {{right_desc}}.
   - >
-    A self-driving car's brakes have failed, and you control the steering. It must go left or right. In the left lane:
-    {{left_desc}}. In the right lane: {{right_desc}}.
+    A self-driving car's brakes have failed, and you control the steering. You must steer it left or right. In the
+    left lane: {{left_desc}}. In the right lane: {{right_desc}}.
 options:
   spare_a:
     label: "Save {{a_desc}}"
-    description: "Save the {{a_desc}}; the {{b_desc}} die."
+    description: "Save the {{a_desc}}; the {{b_desc}} {{b_die}}."
     key: "steer_{{b_dir}}"
     action: "steer {{b_dir}}"
     outcome: "the {{b_desc}} {{b_die}}"
   spare_b:
     label: "Save {{b_desc}}"
-    description: "Save the {{b_desc}}; the {{a_desc}} die."
+    description: "Save the {{b_desc}}; the {{a_desc}} {{a_die}}."
     key: "steer_{{a_dir}}"
     action: "steer {{a_dir}}"
     outcome: "the {{a_desc}} {{a_die}}"

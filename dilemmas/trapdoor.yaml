@@ -18,24 +18,23 @@ scenes:
   - >
     A runaway trolley is heading straight toward {{n}} {{people_main}} on the track. A large stranger is standing on a footbridge above the track, over a trapdoor. You are at a switch some distance away. Flipping the switch opens the trapdoor, dropping the stranger into the trolley's path, which stops it.
   - >
-    An out-of-control tram is speeding toward {{n}} {{people_main}} on the line ahead. A heavyset man stands on a bridge over the line, on a hatch. A control beside you, well away from the bridge, would open the hatch and drop him into the tram's path, stopping it.
+    An out-of-control tram is speeding toward {{n}} {{people_main}} on the line ahead. A large stranger stands on a bridge over the line, on a trapdoor. A switch beside you, well away from the bridge, would open the trapdoor and drop the stranger into the tram's path, stopping it.
 options:
   drop:
     label: Flip the switch
     description: The trapdoor opens, the stranger falls onto the track and dies, and the trolley stops.
     key: flip_the_switch
     action: flip the switch
-    outcome: "the stranger dies"
+    outcome: "1 person dies (the stranger)"
     act: true
   dont_drop:
     label: Do nothing
     description: The trolley continues and kills the {{n}} {{people_main}} on the track.
     key: do_nothing
     action: do nothing
-    outcome: "{{n}} {{people_main}} {{die}}"
+    outcome: "{{n}} {{people_main}} {{die}} (the {{people_main}} on the track)"
 sweep:
   n:
-    - { n: 1, people_main: person, die: dies }
     - { n: 2, people_main: people, die: die }
     - { n: 3, people_main: people, die: die }
     - { n: 5, people_main: people, die: die }
