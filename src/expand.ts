@@ -8,8 +8,9 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { parse } from 'yaml';
-import { DilemmaSchema, type Dilemma } from './schema.js';
+import { DilemmaSchema, type Dilemma, type Frame } from './schema.js';
 import { present, type LabelStyle, type Presentation } from './permute.js';
+import { derivedVars, generatorPoints } from './generators.js';
 
 export interface Variant {
   /** Structural id (dilemma × point × paraphrase × order × label). Stable across wording edits, for joins. */
@@ -17,7 +18,13 @@ export interface Variant {
   /** Hash of everything the model actually sees. Part of the cache key, so editing a dilemma re-runs it. */
   contentHash: string;
   dilemmaId: string;
-  /** Template vars used for this sweep point, e.g. { n: 5 } or { group_a: 'Nigerian', ... }. */
+  module: Dilemma['module'];
+  /**
+   * narrative: story text + options that narrate outcomes.
+   * game: scene + "If you: - <action>, <outcome>" list, imperative action keys (e.g. move_lever_right).
+   */
+  frame: Frame;
+  /** Sweep point, e.g. { n: 5 } or { a: 'baby', b: 'man', k: 1, m: 2, side: 'a_left' }. */
   point: Record<string, string | number>;
   /** Stable key for the sweep point alone, for grouping order/label/paraphrase siblings. */
   pointKey: string;
@@ -31,8 +38,10 @@ export interface Variant {
   question: string;
   /** displayKey → rendered option description, in display order. */
   criteria: Record<string, string>;
-  /** canonical id → whether it is the "act" option. */
+  /** Canonical ids of the "act" (intervene) options. */
   actIds: string[];
+  /** Canonical ids whose summed probability is the row's headline score (P(act) unless the dilemma sets `focal`). */
+  focalIds: string[];
   expected?: string;
 }
 
@@ -60,9 +69,7 @@ export function render(template: string, vars: Record<string, string | number>):
 export function sweepPoints(sweep: Dilemma['sweep']): Record<string, string | number>[] {
   let points: Record<string, string | number>[] = [{}];
   for (const [axis, values] of Object.entries(sweep)) {
-    points = points.flatMap((p) =>
-      values.map((v) => (typeof v === 'object' ? { ...p, ...v } : { ...p, [axis]: v })),
-    );
+    points = points.flatMap((p) => values.map((v) => (typeof v === 'object' ? { ...p, ...v } : { ...p, [axis]: v })));
   }
   return points;
 }
@@ -77,51 +84,94 @@ export function stableKey(obj: Record<string, unknown>): string {
 const hash = (s: string) => createHash('sha256').update(s).digest('hex').slice(0, 12);
 
 export interface ExpandOptions {
+  frames?: Frame[];
   orders?: ('forward' | 'reverse')[];
   labelStyles?: LabelStyle[];
   maxParaphrases?: number;
 }
 
 export function expand(d: Dilemma, opts: ExpandOptions = {}): Variant[] {
-  const orders = opts.orders ?? ['forward', 'reverse'];
-  const labelStyles = opts.labelStyles ?? ['descriptive', 'neutral'];
-  const paraphrases = d.paraphrases.slice(0, opts.maxParaphrases ?? d.paraphrases.length);
+  const orders = opts.orders ?? d.axes.orders ?? ['forward', 'reverse'];
+  const labelStyles = opts.labelStyles ?? d.axes.labelStyles ?? ['descriptive', 'neutral'];
+  const maxParaphrases = opts.maxParaphrases ?? d.axes.maxParaphrases;
   const ids = Object.keys(d.options);
+  const hasGame =
+    !!d.scenes && ids.every((id) => d.options[id]!.key && d.options[id]!.action && d.options[id]!.outcome);
+  if (d.scenes && !hasGame) throw new Error(`${d.id}: has scenes but some options lack key/action/outcome`);
+  const frames = (opts.frames ?? d.axes.frames ?? (hasGame ? ['narrative', 'game'] : ['narrative'])).filter(
+    (f) => f === 'narrative' || hasGame,
+  );
+  if (d.focal && !ids.includes(d.focal)) throw new Error(`${d.id}: focal "${d.focal}" is not an option`);
+  if (d.expected && !ids.includes(d.expected)) throw new Error(`${d.id}: expected "${d.expected}" is not an option`);
   const out: Variant[] = [];
 
-  for (const point of sweepPoints(d.sweep)) {
+  const generated = generatorPoints(d);
+  const points = generated
+    ? generated.flatMap((g) => sweepPoints(d.sweep).map((p) => ({ ...g, ...p })))
+    : sweepPoints(d.sweep);
+
+  for (const point of points) {
     const pointKey = stableKey(point);
-    paraphrases.forEach((text, paraphrase) => {
-      for (const order of orders) {
-        for (const labelStyle of labelStyles) {
-          const presentation = present(ids, order, labelStyle);
-          const criteria: Record<string, string> = {};
-          for (const id of presentation.order) {
-            const o = d.options[id]!;
-            const desc = render(o.description, point);
-            criteria[presentation.canonicalToKey[id]!] = labelStyle === 'descriptive' ? `${render(o.label, point)}: ${desc}` : desc;
+    const vars = { ...point, ...derivedVars(d, point) };
+    for (const frame of frames) {
+      const texts = (frame === 'game' ? d.scenes! : d.paraphrases).slice(0, maxParaphrases);
+      // Game frame: the action keys carry the meaning, so neutral A/B keys would contradict the "If you:" list.
+      const styles: LabelStyle[] = frame === 'game' ? ['descriptive'] : labelStyles;
+      const actionKeys =
+        frame === 'game' ? Object.fromEntries(ids.map((id) => [id, render(d.options[id]!.key!, vars)])) : undefined;
+      texts.forEach((text, paraphrase) => {
+        for (const order of orders) {
+          for (const labelStyle of styles) {
+            const presentation = present(ids, order, labelStyle, actionKeys);
+            const criteria: Record<string, string> = {};
+            let state: string;
+            let question: string;
+            if (frame === 'game') {
+              const lines: string[] = [];
+              for (const id of presentation.order) {
+                const o = d.options[id]!;
+                const action = render(o.action!, vars);
+                criteria[presentation.canonicalToKey[id]!] = `${action[0]!.toUpperCase()}${action.slice(1)}.`;
+                lines.push(`- ${action}, ${render(o.outcome!, vars)}`);
+              }
+              state = `${render(text, vars).trim()}\n\nIf you:\n${lines.join('\n')}`;
+              question = render(d.game_question, vars);
+            } else {
+              for (const id of presentation.order) {
+                const o = d.options[id]!;
+                const desc = render(o.description, vars);
+                criteria[presentation.canonicalToKey[id]!] =
+                  labelStyle === 'descriptive' ? `${render(o.label, vars)}: ${desc}` : desc;
+              }
+              state = render(text, vars).trim();
+              question = render(d.question, vars);
+            }
+            out.push({
+              // Narrative ids are unchanged from before frames existed, so earlier results still join.
+              variantId: hash(
+                `${d.id}|${pointKey}|${paraphrase}|${order}|${labelStyle}${frame === 'game' ? '|game' : ''}`,
+              ),
+              contentHash: hash(JSON.stringify([state, question, criteria])),
+              dilemmaId: d.id,
+              module: d.module,
+              frame,
+              point,
+              pointKey,
+              paraphrase,
+              order,
+              labelStyle,
+              presentation,
+              state,
+              question,
+              criteria,
+              actIds: ids.filter((id) => d.options[id]!.act),
+              focalIds: d.focal ? [d.focal] : ids.filter((id) => d.options[id]!.act),
+              expected: d.expected,
+            });
           }
-          const state = render(text, point).trim();
-          const question = render(d.question, point);
-          out.push({
-            variantId: hash(`${d.id}|${pointKey}|${paraphrase}|${order}|${labelStyle}`),
-            contentHash: hash(JSON.stringify([state, question, criteria])),
-            dilemmaId: d.id,
-            point,
-            pointKey,
-            paraphrase,
-            order,
-            labelStyle,
-            presentation,
-            state,
-            question,
-            criteria,
-            actIds: ids.filter((id) => d.options[id]!.act),
-            expected: d.expected,
-          });
         }
-      }
-    });
+      });
+    }
   }
   return out;
 }

@@ -8,6 +8,7 @@ import {
   generateText,
   Output,
   type Experimental_DecisionModel as DecisionModel,
+  Experimental_DecisionRefusalError as DecisionRefusalError,
 } from 'ai';
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { choiceToCanonical, toCanonical } from './permute.js';
@@ -19,10 +20,12 @@ const openrouter = createOpenRouter();
 (globalThis as { AI_SDK_LOG_WARNINGS?: boolean }).AI_SDK_LOG_WARNINGS = false;
 
 export interface Outcome {
-  /** Canonical option id → probability. */
+  /** Canonical option id → probability. Empty when refused. */
   dist: Record<string, number>;
-  /** Canonical id with the highest probability. */
-  choice: string;
+  /** Canonical id with the highest probability, or undefined when refused. */
+  choice?: string;
+  /** The model declined to answer (decision-model refusal answer type). A result, not an error. */
+  refused?: boolean;
   /** Raw answer(s) exactly as returned, in display keys. */
   raw: unknown;
   cost: number;
@@ -39,13 +42,19 @@ function decisionModel(s: Subject): DecisionModel {
 const argmax = (d: Record<string, number>) => Object.entries(d).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
 
 export async function callDecision(s: Subject, v: Variant, signal?: AbortSignal): Promise<Outcome> {
-  const r = await decide({
-    model: decisionModel(s),
-    state: v.state,
-    questions: { act: { type: 'choice', instructions: v.question, criteria: v.criteria } },
-    maxRetries: 2,
-    abortSignal: signal,
-  });
+  let r;
+  try {
+    r = await decide({
+      model: decisionModel(s),
+      state: v.state,
+      questions: { act: { type: 'choice', instructions: v.question, criteria: v.criteria } },
+      maxRetries: 2,
+      abortSignal: signal,
+    });
+  } catch (e) {
+    if (DecisionRefusalError.isInstance(e)) return { dist: {}, refused: true, raw: { refusal: e.message }, cost: 0 };
+    throw e;
+  }
   const a = r.answers.act;
   if (a.type !== 'choice') throw new Error(`expected choice answer, got ${a.type}`);
   // Some providers omit the distribution. Fall back to one-hot so the row is still usable, and flag it in raw.
@@ -53,6 +62,10 @@ export async function callDecision(s: Subject, v: Variant, signal?: AbortSignal)
   const dist = toCanonical(v.presentation, display);
   return { dist, choice: argmax(dist), raw: { ...a, oneHotFallback: !a.probabilities }, cost: costOf(r.providerMetadata) };
 }
+
+// reasoning: 'none' is not honoured by every provider (Gemini 3.5 Flash-Lite still thought ~380 tokens/call),
+// so we also pass each provider's native "thinking off" switch, and reject any sample that reasoned anyway.
+const NO_THINKING = { google: { thinkingConfig: { thinkingBudget: 0 } } };
 
 const SYSTEM =
   'You are faced with a situation that requires an immediate decision. ' +
@@ -69,12 +82,15 @@ export async function callChat(s: Subject, v: Variant, signal?: AbortSignal): Pr
         temperature: 1,
         system: SYSTEM,
         prompt,
+        providerOptions: NO_THINKING,
         output: Output.choice({ options: keys }),
         maxRetries: 2,
         abortSignal: signal,
       }),
     ),
   );
+  const reasoned = samples.find((r) => (r.usage.outputTokenDetails?.reasoningTokens ?? 0) > 0);
+  if (reasoned) throw new Error(`${s.id} used ${reasoned.usage.outputTokenDetails?.reasoningTokens} reasoning tokens despite reasoning: 'none'`);
   const counts: Record<string, number> = Object.fromEntries(keys.map((k) => [k, 0]));
   for (const r of samples) counts[r.output] = (counts[r.output] ?? 0) + 1;
   const display = Object.fromEntries(keys.map((k) => [k, counts[k]! / samples.length]));

@@ -16,6 +16,7 @@ export default function generateTests() {
       vars: { variant: JSON.stringify(v) },
       metadata: {
         dilemma: v.dilemmaId,
+        module: v.module,
         variantId: v.variantId,
         pointKey: v.pointKey,
         paraphrase: String(v.paraphrase),
@@ -23,8 +24,8 @@ export default function generateTests() {
         labelStyle: v.labelStyle,
       },
       assert: [
-        // P(act) as a named score, so Promptfoo's viewer and derivedMetrics can aggregate it.
-        { type: 'javascript' as const, value: 'file://src/promptfoo/assert-p-act.ts', metric: 'p_act' },
+        // P(focal option) as a named score, so Promptfoo's viewer and derivedMetrics can aggregate it.
+        { type: 'javascript' as const, value: 'file://src/promptfoo/assert-focal.ts', metric: 'p_focal' },
       ],
     })),
   );

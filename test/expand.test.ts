@@ -6,7 +6,7 @@ import type { Dilemma } from '../src/schema.js';
 const base: Dilemma = {
   id: 't',
   title: 't',
-  class: 'sacrificial',
+  module: 'anchor',
   dimensions: [],
   paraphrases: ['{{n}} people ahead.', 'Ahead: {{n}} people.'],
   question: 'Act?',
@@ -15,6 +15,8 @@ const base: Dilemma = {
     dont_pull: { label: 'Wait', description: '{{n}} die', act: false },
   },
   sweep: { n: [1, 5] },
+  axes: {},
+  game_question: 'Choose your action.',
 };
 
 describe('render', () => {

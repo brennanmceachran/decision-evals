@@ -7,6 +7,7 @@
  */
 import { readFileSync } from 'node:fs';
 import type { Outcome } from './call.js';
+import { describeWorth, fitExchange } from './exchange.js';
 import type { Variant } from './expand.js';
 
 export interface Row {
@@ -23,10 +24,26 @@ export function loadRows(path: string): Row[] {
     if (r.response?.error || !r.response?.output) continue;
     const variant: Variant = JSON.parse(r.vars.variant);
     const outcome: Outcome = r.response.output;
-    const pAct = variant.actIds.reduce((s, id) => s + (outcome.dist[id] ?? 0), 0);
+    if (outcome.refused) continue; // counted separately by refusalRates()
+    const pAct = variant.focalIds.reduce((s, id) => s + (outcome.dist[id] ?? 0), 0);
     rows.push({ subject: r.provider.label, variant, outcome, pAct });
   }
   return rows;
+}
+
+/** Refusals per (subject, dilemma), as a share of answered + refused rows. */
+export function refusalRates(path: string): Map<string, { refused: number; total: number }> {
+  const data = JSON.parse(readFileSync(path, 'utf8'));
+  const out = new Map<string, { refused: number; total: number }>();
+  for (const r of data.results.results) {
+    if (r.response?.error || !r.response?.output) continue;
+    const key = `${r.provider.label}|${JSON.parse(r.vars.variant).dilemmaId}`;
+    const cur = out.get(key) ?? { refused: 0, total: 0 };
+    cur.total++;
+    if (r.response.output.refused) cur.refused++;
+    out.set(key, cur);
+  }
+  return out;
 }
 
 const mean = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length;
@@ -50,6 +67,27 @@ export function axisGap(rows: Row[], axis: 'order' | 'labelStyle'): number {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const rows = loadRows(process.argv.slice(2).find((a) => !a.startsWith('--')) ?? 'results/latest.json');
+  if (process.argv.includes('--exchange')) {
+    // One line per (subject, pair): fitted exchange rate, P(spare A) at 1:1, count sensitivity β.
+    const ex = rows.filter((r) => r.variant.module === 'exchange' || r.variant.module === 'parity');
+    for (const [dilemma, drs] of groupBy(ex, (r) => r.variant.dilemmaId)) {
+      const pairs = [...new Set(drs.map((r) => `${r.variant.point.a}|${r.variant.point.b}`))];
+      console.log(`\n== ${dilemma}   cells: P(spare A) at 1:1 / fitted worth of 1 A in B (β)`);
+      console.log(`${'subject'.padEnd(38)} ${pairs.map((p) => p.replace('|', '/').slice(0, 22).padStart(23)).join('')}`);
+      for (const [subject, srs] of groupBy(drs, (r) => r.subject)) {
+        const cells = pairs.map((pair) => {
+          const obs = srs
+            .filter((r) => `${r.variant.point.a}|${r.variant.point.b}` === pair)
+            .map((r) => ({ k: Number(r.variant.point.k), m: Number(r.variant.point.m), p: r.pAct }));
+          const f = fitExchange(obs);
+          const w = Number.isFinite(f.worth) ? (f.worth >= 100 ? '>100' : f.worth < 0.01 ? '<.01' : f.worth.toFixed(2)) : '  - ';
+          return `${f.pEven.toFixed(2)} ${w.padStart(5)} (${f.beta.toFixed(1)})`.padStart(23);
+        });
+        console.log(`${subject.padEnd(38)} ${cells.join('')}`);
+      }
+    }
+    process.exit(0);
+  }
   if (process.argv.includes('--table')) {
     // Compact table: one row per subject, one column per sweep point.
     const points = [...new Set(rows.map((r) => r.variant.pointKey))];

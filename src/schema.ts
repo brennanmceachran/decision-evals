@@ -3,43 +3,94 @@ import { z } from 'zod';
 /**
  * A dilemma file (dilemmas/*.yaml). Contributors only ever write these.
  *
- * `text` is a template: `{{n}}`, `{{side}}`, `{{group_a}}`, `{{group_b}}` etc. are filled from `sweep` values.
- * Options are keyed by canonical id. Results are always stored against these ids, whatever order or label
- * the model actually saw.
+ * Text fields are templates: `{{var}}` placeholders are filled from `sweep` values (and, for generated
+ * dilemmas, from the generator's derived vars). Options are keyed by canonical id. Results are always
+ * stored against these ids, whatever order or label the model actually saw.
  */
 export const OptionSchema = z.object({
-  /** Short descriptive label, e.g. "Pull the lever". */
+  /** Narrative frame: short descriptive label, e.g. "Pull the lever". */
   label: z.string(),
-  /** One-line consequence shown to the model, e.g. "The trolley diverts and {{side}} dies." */
+  /** Narrative frame: one-line consequence shown to the model, e.g. "The trolley diverts and the one person dies." */
   description: z.string(),
+  /**
+   * Game frame: imperative action key the model sees, snake_case, e.g. "move_lever_right". May use {{vars}}.
+   * Decision models see option keys, so keys should name the action (TypeSafe docs, primitives/choice).
+   */
+  key: z.string().optional(),
+  /** Game frame: the action as an imperative phrase, lowercase, e.g. "move the lever right". */
+  action: z.string().optional(),
+  /** Game frame: what happens, e.g. "1 person dies". Listed in the scene as "If you: - <action>, <outcome>". */
+  outcome: z.string().optional(),
   /** Whether choosing this option is the "act" (intervene) vs "allow" (do nothing). Used for P(act). */
   act: z.boolean().default(false),
+});
+
+const SweepValue = z.union([z.string(), z.number(), z.record(z.string(), z.union([z.string(), z.number()]))]);
+
+/**
+ * Exchange-rate generator: group A vs group B at several count ratios, with A placed on each side.
+ * Produces vars a, b, k (count of A), m (count of B), side, and rendered descriptions
+ * (a_desc, b_desc, a_dir, b_dir, left_desc, right_desc).
+ */
+export const ExchangeGeneratorSchema = z.object({
+  kind: z.literal('exchange'),
+  /** [A, B] noun phrases, singular, e.g. ["elderly woman", "woman"]. */
+  pairs: z.array(z.tuple([z.string(), z.string()])).min(1),
+  /** [k, m] = [count of A, count of B]. */
+  ratios: z.array(z.tuple([z.number().int().positive(), z.number().int().positive()])).min(1),
+});
+
+export const FrameSchema = z.enum(['narrative', 'game']);
+export type Frame = z.infer<typeof FrameSchema>;
+
+export const AxesSchema = z.object({
+  /** Default: every frame the dilemma has fields for. */
+  frames: z.array(FrameSchema).optional(),
+  orders: z.array(z.enum(['forward', 'reverse'])).optional(),
+  labelStyles: z.array(z.enum(['descriptive', 'neutral'])).optional(),
+  maxParaphrases: z.number().int().positive().optional(),
 });
 
 export const DilemmaSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   title: z.string(),
-  /** Taxonomy class, e.g. sacrificial, self-sacrifice, control, demographic. */
-  class: z.string(),
+  /** Pilot module: exchange | parity | anchor | control | cni */
+  module: z.enum(['exchange', 'parity', 'anchor', 'control', 'cni']),
   /** Which ethical dimensions this item isolates (doing-allowing, personal-force, numbers, partiality, ...). */
   dimensions: z.array(z.string()).default([]),
-  /** Scenario text. 2+ paraphrases; each must be structurally identical. */
+  /** Where the design comes from (paper, dataset). */
+  source: z.string().optional(),
+  /** Narrative frame: scenario text. 2+ paraphrases where possible; each must be structurally identical. */
   paraphrases: z.array(z.string()).min(1),
   question: z.string(),
-  options: z.record(z.string().regex(/^[a-z_]+$/), OptionSchema).refine((o) => Object.keys(o).length >= 2, 'need at least 2 options'),
   /**
-   * Template variables. Each key maps to a list of values; variants are the cartesian product.
-   * Values may be scalars or objects (objects are spread into template vars).
+   * Game frame: the scene only (who is where), without consequences. The consequences are appended as an
+   * "If you:" list built from each option's action + outcome. Same paraphrase rules as `paraphrases`.
    */
-  sweep: z.record(z.string(), z.array(z.union([z.string(), z.number(), z.record(z.string(), z.union([z.string(), z.number()]))]))).default({}),
-  /** Optional: expected canonical option for controls (used for "passes controls" score). */
+  scenes: z.array(z.string()).min(1).optional(),
+  /** Game frame: imperative instruction. */
+  game_question: z.string().default('Choose your action.'),
+  options: z.record(z.string().regex(/^[a-z_]+$/), OptionSchema).refine((o) => Object.keys(o).length >= 2, 'need at least 2 options'),
+  /** Template variables. Each key maps to a list of values; variants are the cartesian product. Object values are spread. */
+  sweep: z.record(z.string(), z.array(SweepValue)).default({}),
+  generate: ExchangeGeneratorSchema.optional(),
+  /** Override which presentation axes to expand (default: both orders, both label styles, all paraphrases). */
+  axes: AxesSchema.default({}),
+  /**
+   * Canonical option whose probability is the row's headline score. Defaults to the `act: true` option(s).
+   * Exchange/parity dilemmas set this to `spare_a`.
+   */
+  focal: z.string().optional(),
+  /** Expected canonical option for controls (used for "passes controls"). */
   expected: z.string().optional(),
-  /** Optional published human baseline: P(act) range and source. */
+  /** Published human baseline: P(act) range, at which sweep point, and source. */
   human: z
-    .object({ p_act: z.tuple([z.number(), z.number()]), source: z.string() })
+    .object({
+      p_act: z.tuple([z.number(), z.number()]),
+      at: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
+      source: z.string(),
+    })
     .optional(),
-  /** If set, also generate an image-only variant using this renderer. */
-  image: z.object({ renderer: z.string() }).optional(),
   notes: z.string().optional(),
 });
 

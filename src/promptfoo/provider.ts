@@ -13,7 +13,8 @@ import { call, type Outcome } from '../call.js';
 import type { Variant } from '../expand.js';
 import { CHAT_SAMPLES, SUBJECTS, type Subject } from '../subjects.js';
 
-const CACHE_VERSION = 1;
+// Bump to invalidate every cached answer (e.g. after changing how a subject is called).
+const CACHE_VERSION = 2;
 
 export default class DecisionEvalProvider implements ApiProvider {
   private readonly subject: Subject;

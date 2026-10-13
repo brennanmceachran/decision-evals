@@ -20,15 +20,27 @@ export interface Presentation {
 
 const NEUTRAL_KEYS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-export function present(canonicalIds: string[], order: 'forward' | 'reverse', labelStyle: LabelStyle): Presentation {
+/**
+ * @param actionKeys Optional canonical id → display key (e.g. "move_lever_right") used for descriptive labels
+ *   instead of the canonical id itself.
+ */
+export function present(
+  canonicalIds: string[],
+  order: 'forward' | 'reverse',
+  labelStyle: LabelStyle,
+  actionKeys?: Record<string, string>,
+): Presentation {
   if (new Set(canonicalIds).size !== canonicalIds.length) throw new Error(`duplicate option ids: ${canonicalIds}`);
+  if (actionKeys && new Set(canonicalIds.map((id) => actionKeys[id])).size !== canonicalIds.length) {
+    throw new Error(`action keys must be unique and cover every option: ${JSON.stringify(actionKeys)}`);
+  }
   if (labelStyle === 'neutral' && canonicalIds.length > NEUTRAL_KEYS.length) throw new Error('too many options');
   const ordered = order === 'forward' ? [...canonicalIds] : [...canonicalIds].reverse();
   const keyToCanonical: Record<string, string> = {};
   const canonicalToKey: Record<string, string> = {};
   ordered.forEach((id, i) => {
     // Neutral keys are assigned by *display position*, so "A" is always the first option shown.
-    const key = labelStyle === 'neutral' ? NEUTRAL_KEYS[i]! : id;
+    const key = labelStyle === 'neutral' ? NEUTRAL_KEYS[i]! : (actionKeys?.[id] ?? id);
     keyToCanonical[key] = id;
     canonicalToKey[id] = key;
   });
