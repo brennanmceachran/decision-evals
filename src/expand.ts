@@ -15,8 +15,10 @@ import { derivedVars, generatorPoints } from './generators.js';
 export interface Variant {
   /** Structural id (dilemma × point × paraphrase × order × label). Stable across wording edits, for joins. */
   variantId: string;
-  /** Hash of everything the model actually sees. Part of the cache key, so editing a dilemma re-runs it. */
+  /** Hash of everything the main call sees. Part of the cache key, so editing a dilemma re-runs it. */
   contentHash: string;
+  /** Hash of the probe call's inputs (scene + probes), or undefined when there are no probes. */
+  probeHash?: string;
   dilemmaId: string;
   module: Dilemma['module'];
   /**
@@ -43,7 +45,13 @@ export interface Variant {
   /** Canonical ids whose summed probability is the row's headline score (P(act) unless the dilemma sets `focal`). */
   focalIds: string[];
   expected?: string;
+  /** Rendered same-call probes (game frame only). Keyed by probe id. */
+  probes: RenderedProbe[];
 }
+
+export type RenderedProbe =
+  | { kind: 'comprehension'; id: string; question: string; options: Record<string, string>; answer: string }
+  | { kind: 'judgment'; id: string; question: string; about: string };
 
 export function loadDilemmas(dir = 'dilemmas'): Dilemma[] {
   return readdirSync(dir)
@@ -101,6 +109,9 @@ export function expand(d: Dilemma, opts: ExpandOptions = {}): Variant[] {
   const frames = (opts.frames ?? d.axes.frames ?? (hasGame ? ['narrative', 'game'] : ['narrative'])).filter(
     (f) => f === 'narrative' || hasGame,
   );
+  for (const p of d.probes)
+    if (p.kind === 'judgment' && !ids.includes(p.about))
+      throw new Error(`${d.id}: probe ${p.id} is about unknown option "${p.about}"`);
   if (d.focal && !ids.includes(d.focal)) throw new Error(`${d.id}: focal "${d.focal}" is not an option`);
   if (d.expected && !ids.includes(d.expected)) throw new Error(`${d.id}: expected "${d.expected}" is not an option`);
   const out: Variant[] = [];
@@ -146,12 +157,35 @@ export function expand(d: Dilemma, opts: ExpandOptions = {}): Variant[] {
               state = render(text, vars).trim();
               question = render(d.question, vars);
             }
+            const probes: RenderedProbe[] =
+              frame === 'game'
+                ? d.probes.map((p) => {
+                    if (p.kind === 'judgment') {
+                      const action = render(d.options[p.about]!.action!, vars);
+                      return {
+                        kind: 'judgment',
+                        id: p.id,
+                        about: p.about,
+                        question: render(p.question, { ...vars, action }),
+                      };
+                    }
+                    const options = Object.fromEntries(
+                      Object.entries(p.options).map(([k, t]) => [render(k, vars), render(t, vars)]),
+                    );
+                    const answer = render(p.answer, vars);
+                    if (!(answer in options))
+                      throw new Error(`${d.id}: probe ${p.id} answer "${answer}" not in ${Object.keys(options)}`);
+                    return { kind: 'comprehension', id: p.id, question: render(p.question, vars), options, answer };
+                  })
+                : [];
             out.push({
               // Narrative ids are unchanged from before frames existed, so earlier results still join.
               variantId: hash(
                 `${d.id}|${pointKey}|${paraphrase}|${order}|${labelStyle}${frame === 'game' ? '|game' : ''}`,
               ),
+              // Main-answer cache key: only what the main call sees. Probes are cached under their own hash.
               contentHash: hash(JSON.stringify([state, question, criteria])),
+              probeHash: probes.length ? hash(JSON.stringify([state, probes])) : undefined,
               dilemmaId: d.id,
               module: d.module,
               frame,
@@ -167,6 +201,7 @@ export function expand(d: Dilemma, opts: ExpandOptions = {}): Variant[] {
               actIds: ids.filter((id) => d.options[id]!.act),
               focalIds: d.focal ? [d.focal] : ids.filter((id) => d.options[id]!.act),
               expected: d.expected,
+              probes,
             });
           }
         }

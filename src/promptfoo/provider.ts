@@ -4,12 +4,19 @@
  *     label: typesafe-ai/jev
  *     config: { subject: typesafe-ai/jev }
  *
- * Caching uses Promptfoo's own cache, keyed on stable fields only (subject, contentHash, sample count).
+ * Caching uses Promptfoo's own cache, keyed on stable fields only (subject, contentHash, sample count). Probes are a
+ * separate call with a separate cache entry, so adding or editing a probe never re-runs or changes the main answer.
  * Never key it on context.vars: Promptfoo injects a per-run __evalId, so every lookup would miss.
  */
 import { cache } from 'promptfoo';
-import type { ApiProvider, CallApiContextParams, CallApiOptionsParams, ProviderOptions, ProviderResponse } from 'promptfoo';
-import { call, type Outcome } from '../call.js';
+import type {
+  ApiProvider,
+  CallApiContextParams,
+  CallApiOptionsParams,
+  ProviderOptions,
+  ProviderResponse,
+} from 'promptfoo';
+import { call, callProbes, type Outcome } from '../call.js';
 import type { Variant } from '../expand.js';
 import { CHAT_SAMPLES, SUBJECTS, type Subject } from '../subjects.js';
 
@@ -32,23 +39,48 @@ export default class DecisionEvalProvider implements ApiProvider {
     return `decision-evals:${this.subject.id}`;
   }
 
-  async callApi(_prompt: string, context?: CallApiContextParams, options?: CallApiOptionsParams): Promise<ProviderResponse> {
+  async callApi(
+    _prompt: string,
+    context?: CallApiContextParams,
+    options?: CallApiOptionsParams,
+  ): Promise<ProviderResponse> {
     const raw = context?.vars.variant;
     if (typeof raw !== 'string') return { error: 'test is missing vars.variant' };
     const v: Variant = JSON.parse(raw);
 
-    const key = `de:v${CACHE_VERSION}:${this.subject.id}:${v.contentHash}:${this.subject.kind === 'chat' ? CHAT_SAMPLES : 1}`;
     const c = cache.isCacheEnabled() && !context?.bustCache ? cache.getCache() : undefined;
-    const hit = (await c?.get(key)) as Outcome | undefined;
-    if (hit) return { output: hit, cached: true, cost: 0, metadata: { subject: this.subject.id } };
+    const samples = this.subject.kind === 'chat' ? CHAT_SAMPLES : 1;
+    const mainKey = `de:v${CACHE_VERSION}:${this.subject.id}:${v.contentHash}:${samples}`;
+    const probeKey =
+      v.probeHash && this.subject.kind === 'decision'
+        ? `de:v${CACHE_VERSION}:probes:${this.subject.id}:${v.probeHash}`
+        : undefined;
 
     const t0 = performance.now();
     try {
-      const outcome = await call(this.subject, v, options?.abortSignal);
-      await c?.set(key, outcome);
+      let cost = 0;
+      let cached = true;
+      let outcome = (await c?.get(mainKey)) as Outcome | undefined;
+      if (!outcome) {
+        outcome = await call(this.subject, v, options?.abortSignal);
+        await c?.set(mainKey, outcome);
+        cost += outcome.cost;
+        cached = false;
+      }
+      if (probeKey) {
+        let probed = (await c?.get(probeKey)) as Awaited<ReturnType<typeof callProbes>> | undefined;
+        if (!probed) {
+          probed = await callProbes(this.subject, v, options?.abortSignal);
+          await c?.set(probeKey, probed);
+          cost += probed.cost;
+          cached = false;
+        }
+        outcome = { ...outcome, probes: probed.probes };
+      }
       return {
         output: outcome,
-        cost: outcome.cost,
+        cost,
+        cached,
         latencyMs: Math.round(performance.now() - t0),
         metadata: { subject: this.subject.id },
       };

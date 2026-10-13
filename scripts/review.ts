@@ -44,7 +44,7 @@ function check(v: Variant) {
  * Every "If you:" line must be `- <action>, <count> <noun> die(s)[ (detail)]`, and paired group descriptions
  * must share capitalization pattern and word count.
  */
-const OUTCOME = /^- [a-z][a-z' ]*, (?:the )?\d+ [A-Za-z ]+? (?:dies|die)(?: \([a-z ]+\))?$/;
+const OUTCOME = /^- [a-z][a-z' ]*, (?:the )?\d+ [A-Za-z -]+? (?:dies|die)(?: \([a-z ]+\))?$/;
 function symmetry(v: Variant, where: string, lines: string[]) {
   for (const l of lines) if (!OUTCOME.test(l)) problems.push(`${where}: outcome line breaks the shared shape: "${l}"`);
   // Either every outcome has a "(detail)" or none does.

@@ -43,6 +43,35 @@ export const ExchangeGeneratorSchema = z.object({
 export const FrameSchema = z.enum(['narrative', 'game']);
 export type Frame = z.infer<typeof FrameSchema>;
 
+/**
+ * Extra questions asked about the same scene in a SEPARATE decision-model call from the main choice (a pilot showed
+ * same-call probes can shift some models' main answer). Game frame only. Chat models skip probes.
+ *
+ * - comprehension: "did the model read the scene?" A choice whose correct answer is known from the sweep point.
+ *   `answer` is a template rendered per variant, and must equal one of the rendered `options`.
+ * - judgment: "is it acceptable?" A yes/no asked about one action, separating what the model does from what it endorses.
+ */
+export const ProbeSchema = z.discriminatedUnion('kind', [
+  z.object({
+    kind: z.literal('comprehension'),
+    id: z.string().regex(/^[a-z_]+$/),
+    question: z.string(),
+    /** Option keys → descriptions (templates). */
+    options: z.record(z.string(), z.string()),
+    /** Template rendering to the correct option key. */
+    answer: z.string(),
+  }),
+  z.object({
+    kind: z.literal('judgment'),
+    id: z.string().regex(/^[a-z_]+$/),
+    /** Yes/no question template, e.g. "Is it morally acceptable to {{action}}?" */
+    question: z.string(),
+    /** Canonical option whose action is being judged. */
+    about: z.string(),
+  }),
+]);
+export type Probe = z.infer<typeof ProbeSchema>;
+
 export const AxesSchema = z.object({
   /** Default: every frame the dilemma has fields for. */
   frames: z.array(FrameSchema).optional(),
@@ -68,9 +97,13 @@ export const DilemmaSchema = z.object({
    * "If you:" list built from each option's action + outcome. Same paraphrase rules as `paraphrases`.
    */
   scenes: z.array(z.string()).min(1).optional(),
-  /** Game frame: imperative instruction. */
+  /** Game frame: the question asked. */
   game_question: z.string().default('What do you do?'),
-  options: z.record(z.string().regex(/^[a-z_]+$/), OptionSchema).refine((o) => Object.keys(o).length >= 2, 'need at least 2 options'),
+  /** Game frame: extra same-call questions (comprehension checks, moral judgment). */
+  probes: z.array(ProbeSchema).default([]),
+  options: z
+    .record(z.string().regex(/^[a-z_]+$/), OptionSchema)
+    .refine((o) => Object.keys(o).length >= 2, 'need at least 2 options'),
   /** Template variables. Each key maps to a list of values; variants are the cartesian product. Object values are spread. */
   sweep: z.record(z.string(), z.array(SweepValue)).default({}),
   generate: ExchangeGeneratorSchema.optional(),

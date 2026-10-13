@@ -13,7 +13,9 @@
     "test": "vitest run",
     "eval": "PROMPTFOO_CONFIG_DIR=.promptfoo PROMPTFOO_DISABLE_TELEMETRY=1 promptfoo eval --env-file .env -j ${CONCURRENCY:-24} --no-progress-bar --no-table",
     "view": "PROMPTFOO_CONFIG_DIR=.promptfoo promptfoo view",
-    "analyze": "tsx src/analyze.ts"
+    "analyze": "tsx src/analyze.ts",
+    "manifest": "tsx scripts/manifest.ts",
+    "review": "tsx scripts/review.ts"
   },
   "dependencies": {
     "@ai-sdk/gateway": "^4.0.112",

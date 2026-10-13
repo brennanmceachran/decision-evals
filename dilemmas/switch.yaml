@@ -20,6 +20,23 @@ scenes:
   - >
     An out-of-control tram is speeding toward {{n}} {{people_main}} on the line ahead. You are at a lever. Moving the
     lever right sends the tram onto a branch line, where 1 person is standing.
+probes:
+  - kind: comprehension
+    id: check_count
+    question: How many people die if you do nothing?
+    options:
+      "1": "1"
+      "2": "2"
+      "3": "3"
+      "5": "5"
+      "10": "10"
+      "100": "100"
+      "1000": "1000"
+    answer: "{{n}}"
+  - kind: judgment
+    id: acceptable
+    question: Is it morally acceptable to {{action}}?
+    about: pull
 options:
   pull:
     label: Pull the lever

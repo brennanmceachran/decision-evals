@@ -19,6 +19,23 @@ scenes:
     A runaway trolley is heading straight toward {{n}} {{people_main}} on the track. You are on a footbridge above the track, next to a man. Pushing the man off the bridge would put him in the trolley's path and stop it.
   - >
     An out-of-control tram is speeding toward {{n}} {{people_main}} on the track ahead. You are on a bridge over the track beside a man. Pushing the man off the bridge would put him in the tram's path and stop it.
+probes:
+  - kind: comprehension
+    id: check_count
+    question: How many people die if you do nothing?
+    options:
+      "1": "1"
+      "2": "2"
+      "3": "3"
+      "5": "5"
+      "10": "10"
+      "100": "100"
+      "1000": "1000"
+    answer: "{{n}}"
+  - kind: judgment
+    id: acceptable
+    question: Is it morally acceptable to {{action}}?
+    about: push
 options:
   push:
     label: Push the stranger

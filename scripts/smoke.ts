@@ -2,7 +2,7 @@
 // Confirms keys, model ids, response shapes and the prompt format, without Promptfoo or the cache.
 // Usage: pnpm smoke [--only <substring>] [--dilemma switch] [--frame game|narrative] [--n 5]
 import { mkdirSync, writeFileSync } from 'node:fs';
-import { call } from '../src/call.js';
+import { callWithProbes } from '../src/call.js';
 import { expand, loadDilemmas } from '../src/expand.js';
 import { SUBJECTS } from '../src/subjects.js';
 
@@ -22,14 +22,17 @@ const variant = expand(dilemma).find(
 if (!variant) throw new Error(`no ${frame} variant for ${dilemmaId} at n=${n}`);
 
 console.log(`--- state ---\n${variant.state}\n--- instructions ---\n${variant.question}\n--- criteria ---`);
-console.log(variant.criteria, '\n');
+console.log(variant.criteria);
+if (variant.probes.length)
+  console.log('--- same-call probes ---\n' + variant.probes.map((p) => `${p.id}: ${p.question}`).join('\n'));
+console.log();
 
 const subjects = SUBJECTS.filter((s) => !only || s.id.includes(only));
 const rows = await Promise.all(
   subjects.map(async (s) => {
     const t0 = performance.now();
     try {
-      const o = await call(s, variant);
+      const o = await callWithProbes(s, variant);
       return { subject: s.id, kind: s.kind, ok: true, ms: Math.round(performance.now() - t0), ...o };
     } catch (e) {
       const body = (e as { responseBody?: string }).responseBody;
@@ -47,7 +50,17 @@ for (const r of rows) {
     : 'refused' in r && r.refused
       ? 'REFUSED'
       : `${('choice' in r ? (r.choice ?? '') : '').padEnd(10)} P(${focal.join('+')})=${p.toFixed(2)}`;
-  console.log(`${r.ok ? 'OK  ' : 'FAIL'} ${r.subject.padEnd(40)} ${String(r.ms).padStart(6)}ms  ${what}`);
+  const probes =
+    'probes' in r && r.probes
+      ? Object.entries(r.probes)
+          .map(([id, a]) =>
+            'refused' in a
+              ? `${id}=REFUSED`
+              : `${id}=${a.p.toFixed(2)}${a.correct === undefined ? '' : a.correct ? '✓' : '✗'}`,
+          )
+          .join(' ')
+      : '';
+  console.log(`${r.ok ? 'OK  ' : 'FAIL'} ${r.subject.padEnd(40)} ${String(r.ms).padStart(6)}ms  ${what}  ${probes}`);
 }
 mkdirSync('results', { recursive: true });
 writeFileSync('results/smoke.json', JSON.stringify({ variant, rows }, null, 2));

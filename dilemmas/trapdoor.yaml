@@ -19,6 +19,23 @@ scenes:
     A runaway trolley is heading straight toward {{n}} {{people_main}} on the track. A man is standing on a footbridge above the track, over a trapdoor. You are at a switch some distance away. Flipping the switch opens the trapdoor and drops the man into the trolley's path, which stops it.
   - >
     An out-of-control tram is speeding toward {{n}} {{people_main}} on the track ahead. A man stands on a bridge over the track, on a trapdoor. A switch beside you, well away from the bridge, would open the trapdoor and drop the man into the tram's path, stopping it.
+probes:
+  - kind: comprehension
+    id: check_count
+    question: How many people die if you do nothing?
+    options:
+      "1": "1"
+      "2": "2"
+      "3": "3"
+      "5": "5"
+      "10": "10"
+      "100": "100"
+      "1000": "1000"
+    answer: "{{n}}"
+  - kind: judgment
+    id: acceptable
+    question: Is it morally acceptable to {{action}}?
+    about: drop
 options:
   drop:
     label: Flip the switch

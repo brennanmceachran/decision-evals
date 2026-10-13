@@ -26,10 +26,17 @@ export interface Outcome {
   choice?: string;
   /** The model declined to answer (decision-model refusal answer type). A result, not an error. */
   refused?: boolean;
+  /**
+   * Probe answers (decision models, game frame; asked in a separate call from the main choice). comprehension: P(correct answer) and whether the argmax
+   * was correct. judgment: P(yes). A probe the model refused is recorded as { refused: true }.
+   */
+  probes?: Record<string, { p: number; correct?: boolean } | { refused: true }>;
   /** Raw answer(s) exactly as returned, in display keys. */
   raw: unknown;
   cost: number;
   samples?: number;
+  /** What actually answered: resolved model id and upstream provider, so silent alias changes are visible. */
+  servedBy?: { modelId?: string; provider?: string };
 }
 
 function decisionModel(s: Subject): DecisionModel {
@@ -41,6 +48,13 @@ function decisionModel(s: Subject): DecisionModel {
 
 const argmax = (d: Record<string, number>) => Object.entries(d).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
 
+type Questions = Parameters<typeof decide>[0]['questions'];
+
+/**
+ * The main choice is asked ALONE, exactly as if there were no probes. Probes go in a second call.
+ * A pilot showed same-call probes are not fully independent: Cloudflare Clef's footbridge P(push) moved 0.28 → 0.41
+ * when probes shared the call (other models moved < 0.02). Keeping them apart also keeps main-answer caches valid.
+ */
 export async function callDecision(s: Subject, v: Variant, signal?: AbortSignal): Promise<Outcome> {
   let r;
   try {
@@ -56,11 +70,68 @@ export async function callDecision(s: Subject, v: Variant, signal?: AbortSignal)
     throw e;
   }
   const a = r.answers.act;
-  if (a.type !== 'choice') throw new Error(`expected choice answer, got ${a.type}`);
+  if (a?.type !== 'choice') throw new Error(`expected choice answer, got ${a?.type}`);
   // Some providers omit the distribution. Fall back to one-hot so the row is still usable, and flag it in raw.
-  const display = a.probabilities ?? { ...Object.fromEntries(Object.keys(v.criteria).map((k) => [k, 0])), [a.choice]: 1 };
+  const display = a.probabilities ?? {
+    ...Object.fromEntries(Object.keys(v.criteria).map((k) => [k, 0])),
+    [a.choice]: 1,
+  };
   const dist = toCanonical(v.presentation, display);
-  return { dist, choice: argmax(dist), raw: { ...a, oneHotFallback: !a.probabilities }, cost: costOf(r.providerMetadata) };
+  return {
+    dist,
+    choice: argmax(dist),
+    raw: { ...a, oneHotFallback: !a.probabilities },
+    cost: costOf(r.providerMetadata),
+    servedBy: servedBy(r.response.modelId, r.providerMetadata),
+  };
+}
+
+/** Probes for one variant, in one call separate from the main choice. Refused probes are recorded, not thrown. */
+export async function callProbes(
+  s: Subject,
+  v: Variant,
+  signal?: AbortSignal,
+): Promise<{ probes: NonNullable<Outcome['probes']>; cost: number }> {
+  const probes: NonNullable<Outcome['probes']> = {};
+  let pending = [...v.probes];
+  let cost = 0;
+  while (pending.length) {
+    const questions: Questions = {};
+    for (const p of pending) {
+      questions[p.id] =
+        p.kind === 'comprehension'
+          ? { type: 'choice', instructions: p.question, criteria: p.options }
+          : { type: 'boolean', instructions: p.question };
+    }
+    try {
+      const r = await decide({
+        model: decisionModel(s),
+        state: v.state,
+        questions,
+        maxRetries: 2,
+        abortSignal: signal,
+      });
+      cost += costOf(r.providerMetadata);
+      for (const p of pending) {
+        const ans = r.answers[p.id];
+        if (p.kind === 'comprehension' && ans?.type === 'choice') {
+          probes[p.id] = {
+            p: ans.probabilities?.[p.answer] ?? (ans.choice === p.answer ? 1 : 0),
+            correct: ans.choice === p.answer,
+          };
+        } else if (p.kind === 'judgment' && ans?.type === 'boolean') {
+          probes[p.id] = { p: ans.probability };
+        }
+      }
+      break;
+    } catch (e) {
+      // The SDK fails the whole call if any question is refused: record those, retry the rest.
+      if (!DecisionRefusalError.isInstance(e)) throw e;
+      for (const id of e.questionIds) probes[id] = { refused: true };
+      pending = pending.filter((p) => !e.questionIds.includes(p.id));
+    }
+  }
+  return { probes, cost };
 }
 
 // reasoning: 'none' is not honoured by every provider (Gemini 3.5 Flash-Lite still thought ~380 tokens/call),
@@ -90,7 +161,10 @@ export async function callChat(s: Subject, v: Variant, signal?: AbortSignal): Pr
     ),
   );
   const reasoned = samples.find((r) => (r.usage.outputTokenDetails?.reasoningTokens ?? 0) > 0);
-  if (reasoned) throw new Error(`${s.id} used ${reasoned.usage.outputTokenDetails?.reasoningTokens} reasoning tokens despite reasoning: 'none'`);
+  if (reasoned)
+    throw new Error(
+      `${s.id} used ${reasoned.usage.outputTokenDetails?.reasoningTokens} reasoning tokens despite reasoning: 'none'`,
+    );
   const counts: Record<string, number> = Object.fromEntries(keys.map((k) => [k, 0]));
   for (const r of samples) counts[r.output] = (counts[r.output] ?? 0) + 1;
   const display = Object.fromEntries(keys.map((k) => [k, counts[k]! / samples.length]));
@@ -104,11 +178,26 @@ export async function callChat(s: Subject, v: Variant, signal?: AbortSignal): Pr
     },
     cost: samples.reduce((sum, r) => sum + costOf(r.providerMetadata), 0),
     samples: samples.length,
+    servedBy: servedBy(samples[0]!.response.modelId, samples[0]!.providerMetadata),
   };
 }
 
 export function call(s: Subject, v: Variant, signal?: AbortSignal): Promise<Outcome> {
   return s.kind === 'decision' ? callDecision(s, v, signal) : callChat(s, v, signal);
+}
+
+/** Main answer plus probes (decision models only), as two independent calls. */
+export async function callWithProbes(s: Subject, v: Variant, signal?: AbortSignal): Promise<Outcome> {
+  const main = await call(s, v, signal);
+  if (s.kind !== 'decision' || !v.probes.length) return main;
+  const { probes, cost } = await callProbes(s, v, signal);
+  return { ...main, probes, cost: main.cost + cost };
+}
+
+function servedBy(modelId: string | undefined, meta: Record<string, Record<string, unknown>> | undefined) {
+  const routing = meta?.gateway?.routing as { resolvedProvider?: string; finalProvider?: string } | undefined;
+  const or = meta?.openrouter as { provider?: string } | undefined;
+  return { modelId, provider: routing?.finalProvider ?? routing?.resolvedProvider ?? or?.provider };
 }
 
 function costOf(meta: Record<string, Record<string, unknown>> | undefined): number {

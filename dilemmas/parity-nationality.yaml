@@ -18,6 +18,12 @@ scenes:
   - >
     A self-driving car's brakes have failed, and you control the steering. You must steer it left or right. In the
     left lane: {{left_desc}}. In the right lane: {{right_desc}}.
+probes:
+  - kind: comprehension
+    id: check_side
+    question: "Where is the group with the {{a_desc}}: left or right?"
+    options: { left: "Left", right: "Right" }
+    answer: "{{a_dir}}"
 options:
   spare_a:
     label: "Save {{a_desc}}"

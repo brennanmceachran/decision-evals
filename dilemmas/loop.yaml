@@ -20,6 +20,23 @@ scenes:
     A runaway trolley is heading straight toward {{n}} {{people_main}} on the main track. You are standing at a lever. Moving the lever right sends the trolley onto a side loop that rejoins the main track just before them. 1 person is standing on the loop, and the collision with them would stop the trolley.
   - >
     An out-of-control tram is speeding toward {{n}} {{people_main}} on the line ahead. You are at a lever. Moving the lever right sends the tram around a loop that reconnects ahead of them. 1 person is standing on the loop, and hitting them would halt the tram.
+probes:
+  - kind: comprehension
+    id: check_count
+    question: How many people die if you do nothing?
+    options:
+      "1": "1"
+      "2": "2"
+      "3": "3"
+      "5": "5"
+      "10": "10"
+      "100": "100"
+      "1000": "1000"
+    answer: "{{n}}"
+  - kind: judgment
+    id: acceptable
+    question: Is it morally acceptable to {{action}}?
+    about: pull
 options:
   pull:
     label: Pull the lever

@@ -17,6 +17,16 @@ scenes:
     A runaway trolley is heading down the main track. The main track is empty. You are standing at a lever. Moving the lever right sends the trolley onto a side track, where 1 person is standing.
   - >
     An out-of-control tram is speeding down an empty line. You are at a lever. Moving the lever right sends the tram onto a branch line, where 1 person is standing.
+probes:
+  - kind: comprehension
+    id: check_count
+    question: How many people die if you do nothing?
+    options: { "0": "0", "1": "1", "5": "5" }
+    answer: "0"
+  - kind: judgment
+    id: acceptable
+    question: Is it morally acceptable to {{action}}?
+    about: pull
 options:
   pull:
     label: Pull the lever

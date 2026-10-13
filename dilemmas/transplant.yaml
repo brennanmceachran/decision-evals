@@ -23,6 +23,21 @@ scenes:
     You are a transplant surgeon. {{n}} {{patients}} will die within the hour without new organs. A man in for a minor
     checkup is a donor match for all of them. Operating on him to take his organs would kill him. No other donor can be
     found in time.
+probes:
+  - kind: comprehension
+    id: check_count
+    question: How many people die if you do nothing?
+    options:
+      "1": "1"
+      "2": "2"
+      "5": "5"
+      "10": "10"
+      "100": "100"
+    answer: "{{n}}"
+  - kind: judgment
+    id: acceptable
+    question: Is it morally acceptable to {{action}}?
+    about: harvest
 options:
   harvest:
     label: Take his organs
