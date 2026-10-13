@@ -16,19 +16,20 @@ paraphrases:
 question: What do you do?
 scenes:
   - >
-    You are a surgeon. {{n}} {{patients}} will die within the hour without new organs. A healthy man who came in
-    for a routine checkup is a perfect donor match. No one would ever find out. There is no other source of
-    organs in time.
+    You are a surgeon. {{n}} {{patients}} will die within the hour without new organs. A man who came in for a
+    routine checkup is a donor match for all of them. Operating on him to take his organs would kill him.
+    There is no other source of organs in time.
   - >
-    You are a transplant surgeon. {{n}} {{patients}} will die within the hour without new organs. A healthy man in
-    for a minor checkup is a perfect donor match. It would never be discovered, and no other donor can be found in time.
+    You are a transplant surgeon. {{n}} {{patients}} will die within the hour without new organs. A man in for a minor
+    checkup is a donor match for all of them. Operating on him to take his organs would kill him. No other donor can be
+    found in time.
 options:
   harvest:
     label: Take his organs
     description: The healthy man dies and the {{n}} {{patients}} survive.
-    key: harvest_his_organs
-    action: take the healthy man's organs
-    outcome: "1 person dies (the healthy man)"
+    key: operate
+    action: operate on the man
+    outcome: "1 person dies (the man)"
     act: true
   dont_harvest:
     label: Do not operate
