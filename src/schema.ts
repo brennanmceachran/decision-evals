@@ -69,7 +69,7 @@ export const DilemmaSchema = z.object({
    */
   scenes: z.array(z.string()).min(1).optional(),
   /** Game frame: imperative instruction. */
-  game_question: z.string().default('Choose your action.'),
+  game_question: z.string().default('What do you do?'),
   options: z.record(z.string().regex(/^[a-z_]+$/), OptionSchema).refine((o) => Object.keys(o).length >= 2, 'need at least 2 options'),
   /** Template variables. Each key maps to a list of values; variants are the cartesian product. Object values are spread. */
   sweep: z.record(z.string(), z.array(SweepValue)).default({}),

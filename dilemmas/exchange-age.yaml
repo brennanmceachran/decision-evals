@@ -18,7 +18,6 @@ scenes:
   - >
     A self-driving car's brakes have failed, and you control the steering. It must go left or right. In the left lane:
     {{left_desc}}. In the right lane: {{right_desc}}.
-game_question: Choose your action.
 options:
   spare_a:
     label: "Save {{a_desc}}"

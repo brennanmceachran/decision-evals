@@ -16,7 +16,7 @@ const base: Dilemma = {
   },
   sweep: { n: [1, 5] },
   axes: {},
-  game_question: 'Choose your action.',
+  game_question: 'What do you do?',
 };
 
 describe('render', () => {
