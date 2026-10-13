@@ -1,0 +1,247 @@
+{
+  "createdAt": "2026-10-13T19:14:39.411Z",
+  "git": {
+    "commit": "13a391dd853901cdea2287969f43f6bd9cc57cf9",
+    "dirty": false
+  },
+  "packages": {
+    "ai": "7.0.139",
+    "@ai-sdk/gateway": "4.0.112",
+    "@openrouter/ai-sdk-provider": "3.1.0",
+    "promptfoo": "0.124.1"
+  },
+  "chatSamples": 5,
+  "subjects": [
+    {
+      "id": "typesafe-ai/jev",
+      "kind": "decision",
+      "route": "gateway"
+    },
+    {
+      "id": "microsoft/microsoft-decision-1",
+      "kind": "decision",
+      "route": "gateway",
+      "base": "Qwen3.5-9B"
+    },
+    {
+      "id": "openai/gpt-6-luna-decisions",
+      "kind": "decision",
+      "route": "gateway",
+      "base": "openai/gpt-6-luna"
+    },
+    {
+      "id": "liquid/d1",
+      "kind": "decision",
+      "route": "gateway"
+    },
+    {
+      "id": "convaiinnovations/laya",
+      "kind": "decision",
+      "route": "gateway"
+    },
+    {
+      "id": "scaledown/scaledown-classify-1",
+      "kind": "decision",
+      "route": "gateway"
+    },
+    {
+      "id": "perplexity/pplx-decider-v1.1-27b",
+      "kind": "decision",
+      "route": "openrouter"
+    },
+    {
+      "id": "cloudflare/clef",
+      "kind": "decision",
+      "route": "openrouter",
+      "base": "Qwen3.8-27B"
+    },
+    {
+      "id": "cloudflare/clef-flash",
+      "kind": "decision",
+      "route": "openrouter",
+      "base": "Qwen3.5-9B"
+    },
+    {
+      "id": "cloudflare/clef-omni",
+      "kind": "decision",
+      "route": "openrouter",
+      "base": "Qwen3-Omni-30B-A3B"
+    },
+    {
+      "id": "togethercomputer/tev1-4b-experimental",
+      "kind": "decision",
+      "route": "openrouter",
+      "base": "Qwen3.5-4B"
+    },
+    {
+      "id": "jaredpalmer/kev-4b",
+      "kind": "decision",
+      "route": "openrouter",
+      "base": "Qwen3.5-4B-Base"
+    },
+    {
+      "id": "nace-ai/drex-v1.5",
+      "kind": "decision",
+      "route": "openrouter"
+    },
+    {
+      "id": "nace-ai/drex-v2.0",
+      "kind": "decision",
+      "route": "openrouter"
+    },
+    {
+      "id": "upstage/solar-decide",
+      "kind": "decision",
+      "route": "openrouter"
+    },
+    {
+      "id": "upstage/solar-decide-flash",
+      "kind": "decision",
+      "route": "openrouter"
+    },
+    {
+      "id": "inception/mercury-decide",
+      "kind": "decision",
+      "route": "openrouter"
+    },
+    {
+      "id": "anthropic/claude-haiku-5.5",
+      "kind": "chat",
+      "route": "gateway"
+    },
+    {
+      "id": "openai/gpt-6-luna",
+      "kind": "chat",
+      "route": "gateway"
+    },
+    {
+      "id": "google/gemini-3.5-flash-lite",
+      "kind": "chat",
+      "route": "gateway"
+    }
+  ],
+  "datasetSha256": "b4e1f7ab06048ed863f0368cde928f7980d5ee0c4f19efddfb45fd2ad8afe43a",
+  "dilemmas": [
+    {
+      "id": "control-kill-five-save-one",
+      "module": "control",
+      "fileSha256": "c84c19e0c9b98406fb2ca0b3b72b6bc89b87d3db3adaf80ff11e582dcdca608a",
+      "variants": 12,
+      "byFrame": {
+        "narrative": 8,
+        "game": 4
+      },
+      "promptsSha256": "cb0f40521dcd3d7ce7626a63fac9fac102e7b1a95314db254811795fd08b4264"
+    },
+    {
+      "id": "control-kill-for-nothing",
+      "module": "control",
+      "fileSha256": "ef673e81808be81b21122da275cf72014aef5ef4f34d6288b65db921a897ed87",
+      "variants": 12,
+      "byFrame": {
+        "narrative": 8,
+        "game": 4
+      },
+      "promptsSha256": "f6dab69a5282af2b81cfc827bc7bf3504ada076ece31bf948bd8c20f06c50ed6"
+    },
+    {
+      "id": "exchange-age",
+      "module": "exchange",
+      "fileSha256": "2630f1952f5a5f07705d23d2038cd69538c623c567e559d06f1b56c3d221e34a",
+      "variants": 1152,
+      "byFrame": {
+        "narrative": 576,
+        "game": 576
+      },
+      "promptsSha256": "0b65e80786e605d7ec1bfd6b5e83310a768333d35a8550d929b1e9670e25551d"
+    },
+    {
+      "id": "footbridge",
+      "module": "anchor",
+      "fileSha256": "e42e46dc9c9d21ff3dd5a1c3b7d41daec3600b4eaa66673ec9f2da455827c520",
+      "variants": 72,
+      "byFrame": {
+        "narrative": 48,
+        "game": 24
+      },
+      "promptsSha256": "49a1227a00a978dcaff079adeb95310e4920599b7a872ae77b8d6ed08f23f7e0"
+    },
+    {
+      "id": "loop",
+      "module": "anchor",
+      "fileSha256": "a30d38e96b7727eb3548b1bc82e9c29b7688d4c5b28a441acdf7d5ec81d58bb5",
+      "variants": 72,
+      "byFrame": {
+        "narrative": 48,
+        "game": 24
+      },
+      "promptsSha256": "5746050db9e91881a67c07e417a1f52e22f4f7b1f015506c0a5fca261dcd21d9"
+    },
+    {
+      "id": "parity-nationality",
+      "module": "parity",
+      "fileSha256": "631b147ddc94623a28e7a4c1c8ac84c2c3e9e9c60416bec5417b1b6a7c6cfa77",
+      "variants": 1200,
+      "byFrame": {
+        "narrative": 600,
+        "game": 600
+      },
+      "promptsSha256": "18933d9c7c74438c96ec93e22856d12984b318854d6b362aa6b54c840cf914d4"
+    },
+    {
+      "id": "parity-placebo",
+      "module": "parity",
+      "fileSha256": "08f38e57d823ceaa39e799f8bbd4dab8bedb952529c802cfdbcaeb40397e0f7b",
+      "variants": 160,
+      "byFrame": {
+        "narrative": 80,
+        "game": 80
+      },
+      "promptsSha256": "b9cf5ca426976e3e252fa322feeb39a9a072bc55cb3cadf90505d7f39157beb3"
+    },
+    {
+      "id": "parity-race",
+      "module": "parity",
+      "fileSha256": "48fb6ff173017ffdcbb96b5ae9fd3210f99242ecfaf4f8ac305c5dfc700a4dad",
+      "variants": 800,
+      "byFrame": {
+        "narrative": 400,
+        "game": 400
+      },
+      "promptsSha256": "09322f343af0b710bb3c55328e66f64eb31e7a88b097b1599ef1f53fc2f58e33"
+    },
+    {
+      "id": "switch",
+      "module": "anchor",
+      "fileSha256": "859266f85de0e99f232fa9ca66121c6208179cb08c4cd9cf3a99edffd7c27e1d",
+      "variants": 84,
+      "byFrame": {
+        "narrative": 56,
+        "game": 28
+      },
+      "promptsSha256": "43f7989236425f616f1f3d11189c010676ff25b95cf5cf0fb25b1f1be098490e"
+    },
+    {
+      "id": "transplant",
+      "module": "anchor",
+      "fileSha256": "d6511736cc3719430f2f458a954833404b520ac9700be7fdf2961b8be69bd35a",
+      "variants": 60,
+      "byFrame": {
+        "narrative": 40,
+        "game": 20
+      },
+      "promptsSha256": "2753e128c5b8bb99a1b7d9f57399ef60e545aabe77e99ed26391e8f449dbdf08"
+    },
+    {
+      "id": "trapdoor",
+      "module": "anchor",
+      "fileSha256": "9934afbc11f6f19a0fc1d48001f4f788a0987ea879299cdafd7ac0fe8b370cfb",
+      "variants": 72,
+      "byFrame": {
+        "narrative": 48,
+        "game": 24
+      },
+      "promptsSha256": "d878ccc8cfa9d0559a5b7406626d3092145c800ad75d17ca0b857065d8eabebd"
+    }
+  ]
+}
