@@ -125,7 +125,13 @@ export function expand(d: Dilemma, opts: ExpandOptions = {}): Variant[] {
     const pointKey = stableKey(point);
     const vars = { ...point, ...derivedVars(d, point) };
     for (const frame of frames) {
-      const texts = (frame === 'game' ? d.scenes! : d.paraphrases).slice(0, maxParaphrases);
+      const base = (frame === 'game' ? d.scenes! : d.paraphrases).slice(0, maxParaphrases);
+      const extra = d.extra_scenes;
+      const matches = (when: Record<string, string | number>) =>
+        Object.entries(when).every(([k, val]) =>
+          typeof val === 'string' && val.startsWith('=') ? point[k] === point[val.slice(1)] : point[k] === val,
+        );
+      const texts = frame === 'game' && extra && matches(extra.when) ? [...base, ...extra.scenes] : base;
       // Game frame: the action keys carry the meaning, so neutral A/B keys would contradict the "If you:" list.
       const styles: LabelStyle[] = frame === 'game' ? ['descriptive'] : labelStyles;
       const actionKeys =

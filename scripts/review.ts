@@ -24,7 +24,7 @@ function check(v: Variant) {
     for (const side of ['left', 'right']) {
       const key = `steer_${side}`;
       if (!(key in v.criteria)) continue;
-      const group = v.state.match(new RegExp(`${side} (?:track|lane): ([^.]+)\\.`))?.[1];
+      const group = v.state.match(new RegExp(`${side} (?:track|lane|tunnel|side): ([^.]+)\\.`))?.[1];
       const line = lines[keys.indexOf(key)];
       if (!group || !line?.includes(`the ${group} di`)) problems.push(`${where}: ${key} kills "${line}" but scene puts "${group}" on the ${side}`);
       // Exact check: steering into a side kills that side's group, so the canonical option must be "spare the other group".

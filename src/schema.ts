@@ -97,6 +97,13 @@ export const DilemmaSchema = z.object({
    * "If you:" list built from each option's action + outcome. Same paraphrase rules as `paraphrases`.
    */
   scenes: z.array(z.string()).min(1).optional(),
+  /**
+   * Game frame: additional scene wordings used only at sweep points matching `when` (e.g. parity items at 1:1, where
+   * the test needs more independent variants). Appended after `scenes`, so existing variants and caches are unchanged.
+   */
+  extra_scenes: z
+    .object({ when: z.record(z.string(), z.union([z.string(), z.number()])), scenes: z.array(z.string()).min(1) })
+    .optional(),
   /** Game frame: the question asked. */
   game_question: z.string().default('What do you do?'),
   /** Game frame: extra same-call questions (comprehension checks, moral judgment). */

@@ -18,6 +18,17 @@ scenes:
   - >
     A self-driving car's brakes have failed, and you control the steering. You must steer it left or right. In the
     left lane: {{left_desc}}. In the right lane: {{right_desc}}.
+extra_scenes:
+  # PREREGISTRATION.md Amendment 1: two more wordings at 1:1 only, so the parity test has 16 variants per pair.
+  # Same structure and phrasing rules as the two scenes above (left/right, steer, identical group typesetting).
+  when: { k: "=m" }
+  scenes:
+    - >
+      A runaway mine cart is heading for a split in the tunnel, and you control the points. You must steer it left
+      or right. In the left tunnel: {{left_desc}}. In the right tunnel: {{right_desc}}.
+    - >
+      A delivery robot's brakes have failed on a narrow path, and you control its steering. You must steer it left
+      or right. On the left side: {{left_desc}}. On the right side: {{right_desc}}.
 probes:
   - kind: comprehension
     id: check_side
