@@ -1,96 +1,326 @@
 /**
- * Image-only scenes: top-down diagrams rendered from the same sweep point as the text variant, so every image has an
- * exact text twin. No words in the image. Deterministic: same scene → byte-identical PNG.
+ * Wordless scene diagrams for the image-only condition. Each image is rendered from the same sweep point as its text
+ * twin, so the two differ only in modality.
  *
- * Supported scenes (the ones a wordless diagram can show unambiguously):
- *   - fork:     a trolley at a fork; N figures on the main branch, M on the side branch; a lever drawn at the junction.
- *   - two-side: a trolley at a fork with k figures on the left branch and m on the right (exchange/parity counts).
- * Figures are identical neutral silhouettes: the diagram tests "does the model act on what it sees", not attributes.
+ * ONE visual vocabulary for every image (this is what makes images comparable):
+ *   - Canvas 1024×768, white. No text, numbers, colour-coding of groups, or decoration.
+ *   - Track: two rails with sleepers, drawn along sampled paths so curves look like real track.
+ *   - Groups: identical pictogram people at ONE fixed size in every image, standing ON the track inside a
+ *     same-size marked zone at the end of each branch, in rows of 5 filled from the trolley side.
+ *   - Trolley: one amber vehicle at the bottom, facing up. Chevrons show where it goes if nobody acts.
+ *   - Lever: one lever in the fork, wired to the junction. Solid handle = current position, outlined handle = the
+ *     position you can move it to, with an arrow between them.
+ *
+ * Scenes:
+ *   - switch:   trolley heads straight up the main line (left) toward `main` people. Lever is set to the main line;
+ *               it can be moved RIGHT to send the trolley up the side branch (right) toward `side` people.
+ *               Text twin: "Moving the lever right sends the trolley onto a side track."
+ *   - two-side: symmetric fork. `left` people on the left branch, `right` people on the right. No default route: the
+ *               lever is centred and can be moved left or right. Text twin: "You must steer it left or right."
  */
 import { Resvg } from '@resvg/resvg-js';
 
-export type Scene = { kind: 'fork'; main: number; side: number } | { kind: 'two-side'; left: number; right: number };
+export type Scene = { kind: 'switch'; main: number; side: number } | { kind: 'two-side'; left: number; right: number };
 
-const W = 768;
-const H = 512;
-const INK = '#1f2937';
-const RAIL = '#6b7280';
-const TROLLEY = '#b91c1c';
-
-/** Most figures a diagram shows per group. Above this a picture cannot be counted reliably, so image runs cap here. */
+export const W = 1024;
+export const H = 768;
+/** Most people per group. Every image uses the same figure size, and 20 (4 rows of 5) is what one zone holds. */
 export const MAX_FIGURES = 20;
 
-/** Figure (head + body) centred at x, standing on y. Tagged so tests can count and bound-check figures. */
-function figure(x: number, y: number, s = 1): string {
-  return `<g class="person" data-x="${x.toFixed(1)}" data-y="${y.toFixed(1)}" fill="${INK}"><circle cx="${x}" cy="${y - 34 * s}" r="${8 * s}"/><rect x="${x - 6 * s}" y="${y - 25 * s}" width="${12 * s}" height="${25 * s}" rx="${3 * s}"/></g>`;
+// Palette: one ink for all people; neutral greys for infrastructure; amber only for the trolley and its path.
+const C = {
+  bg: '#ffffff',
+  ink: '#1e293b',
+  rail: '#334155',
+  sleeper: '#a8b3c2',
+  zoneFill: '#f1f5f9',
+  zoneEdge: '#94a3b8',
+  trolley: '#f59e0b',
+  trolleyEdge: '#92400e',
+  trolleyRoof: '#fde68a',
+  glass: '#1e293b',
+  route: '#d97706',
+  ghost: '#64748b',
+};
+
+// Fixed geometry, shared by every scene.
+// People zone at the end of each branch. Sized so a full group (4 rows of 5) has 24px padding on every side.
+const ZONE = { w: 260, h: 314, top: 30 };
+const FIG = { h: 56, pitchX: 44, pitchY: 72 }; // one person, and spacing in the 5-wide grid
+const RAIL_GAUGE = 9; // half-distance between the two rails
+const JUNCTION_Y = 588;
+const BRANCH_UP_Y = 430; // where a curved branch turns straight up
+const TROLLEY = { w: 64, h: 92, cy: 690 };
+
+// ─── Path geometry ──────────────────────────────────────────────────────────────────────────────────────────────────
+type P = { x: number; y: number };
+type Seg = { kind: 'line'; a: P; b: P } | { kind: 'cubic'; a: P; c1: P; c2: P; b: P };
+
+function at(s: Seg, t: number): P {
+  if (s.kind === 'line') return { x: s.a.x + (s.b.x - s.a.x) * t, y: s.a.y + (s.b.y - s.a.y) * t };
+  const u = 1 - t;
+  return {
+    x: u * u * u * s.a.x + 3 * u * u * t * s.c1.x + 3 * u * t * t * s.c2.x + t * t * t * s.b.x,
+    y: u * u * u * s.a.y + 3 * u * u * t * s.c1.y + 3 * u * t * t * s.c2.y + t * t * t * s.b.y,
+  };
 }
 
-/**
- * Lay out n figures in a block centred at (cx, cy). Scale `s` is passed in so every group in one scene is drawn at the
- * SAME size: a size difference between groups would read as an attribute (e.g. child vs adult).
- */
-function crowd(n: number, cx: number, cy: number, s: number, perRow: number, grow: 'up' | 'down' = 'up'): string {
-  let out = '';
-  const rows = Math.ceil(n / perRow);
-  for (let i = 0; i < n; i++) {
-    const r = Math.floor(i / perRow);
-    const inRow = r === rows - 1 ? n - r * perRow : perRow;
-    const c = i % perRow;
-    // 'up': first row sits at cy, further rows stack above. 'down': first row at cy, further rows below (for the far
-    // end of a track near the top edge).
-    const dy = grow === 'up' ? -(rows - 1 - r) * 48 * s : r * 48 * s;
-    out += figure(cx + (c - (inRow - 1) / 2) * 22 * s, cy + dy, s);
+/** Uniformly spaced samples (by arc length) with unit tangents. */
+function sample(path: Seg[], step: number): { p: P; t: P }[] {
+  const fine: P[] = [];
+  for (const s of path) for (let i = fine.length ? 1 : 0; i <= 400; i++) fine.push(at(s, i / 400));
+  const cum = [0];
+  for (let i = 1; i < fine.length; i++)
+    cum.push(cum[i - 1]! + Math.hypot(fine[i]!.x - fine[i - 1]!.x, fine[i]!.y - fine[i - 1]!.y));
+  const total = cum[cum.length - 1]!;
+  const out: { p: P; t: P }[] = [];
+  let j = 0;
+  for (let d = 0; d <= total + 1e-6; d += step) {
+    while (j < cum.length - 2 && cum[j + 1]! < d) j++;
+    const f = (d - cum[j]!) / Math.max(1e-9, cum[j + 1]! - cum[j]!);
+    const p = { x: fine[j]!.x + (fine[j + 1]!.x - fine[j]!.x) * f, y: fine[j]!.y + (fine[j + 1]!.y - fine[j]!.y) * f };
+    const dx = fine[j + 1]!.x - fine[j]!.x;
+    const dy = fine[j + 1]!.y - fine[j]!.y;
+    const len = Math.hypot(dx, dy) || 1;
+    out.push({ p, t: { x: dx / len, y: dy / len } });
   }
   return out;
 }
 
-/** One scale and row width for the whole scene, chosen from the largest group. */
-function layout(maxCount: number) {
-  if (maxCount > MAX_FIGURES)
-    throw new Error(`diagram shows at most ${MAX_FIGURES} figures per group (got ${maxCount})`);
-  const s = maxCount <= 5 ? 1 : maxCount <= 10 ? 0.8 : 0.65;
-  return { s, perRow: 5 };
-}
+const pts = (ps: P[]) => ps.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
 
-function rails(path: string): string {
-  return `<path d="${path}" stroke="${RAIL}" stroke-width="10" fill="none" stroke-linecap="round"/><path d="${path}" stroke="#fff" stroke-width="3" fill="none" stroke-dasharray="2 14"/>`;
-}
-
-function trolley(x: number, y: number): string {
-  // Trolley at the bottom, pointing up toward the fork; motion lines below it.
-  return `<g><rect x="${x - 26}" y="${y - 20}" width="52" height="40" rx="8" fill="${TROLLEY}"/><rect x="${x - 18}" y="${y - 14}" width="36" height="12" rx="3" fill="#fecaca"/><path d="M${x - 14} ${y + 30} v18 M${x} ${y + 30} v26 M${x + 14} ${y + 30} v18" stroke="${RAIL}" stroke-width="3"/></g>`;
-}
-
-export function svg(scene: Scene): string {
-  const jx = W / 2;
-  const jy = 300;
-  let body = rails(`M${jx} ${H - 20} L${jx} ${jy}`);
-  let extra = '';
-  if (scene.kind === 'fork') {
-    // Main branch continues straight up; side branch curves right. Lever at the junction, set to "straight".
-    body += rails(`M${jx} ${jy} L${jx} 60`) + rails(`M${jx} ${jy} Q${jx} ${jy - 90} ${jx + 230} ${jy - 150}`);
-    const { s: sc, perRow } = layout(Math.max(scene.main, scene.side));
-    // Main-track group starts just under the top edge and fills downward along the track.
-    extra += crowd(scene.main, jx, 58, sc, perRow, 'down') + crowd(scene.side, jx + 228, jy - 156, sc, perRow);
-    const lx = jx - 70;
-    const ly = jy + 20;
-    extra += `<g><path d="M${lx - 28} ${ly - 30} A40 40 0 0 1 ${lx + 28} ${ly - 30}" stroke="${RAIL}" stroke-width="2" fill="none" stroke-dasharray="4 4"/><rect x="${lx - 16}" y="${ly}" width="32" height="10" rx="3" fill="${INK}"/><line x1="${lx}" y1="${ly}" x2="${lx - 22}" y2="${ly - 36}" stroke="${INK}" stroke-width="6" stroke-linecap="round"/><circle cx="${lx - 22}" cy="${ly - 36}" r="8" fill="${INK}"/></g>`;
-  } else {
-    // Symmetric fork: left and right branches, trolley exactly between them.
-    body +=
-      rails(`M${jx} ${jy} Q${jx} ${jy - 90} ${jx - 230} ${jy - 150}`) +
-      rails(`M${jx} ${jy} Q${jx} ${jy - 90} ${jx + 230} ${jy - 150}`);
-    const { s: sc, perRow } = layout(Math.max(scene.left, scene.right));
-    extra += crowd(scene.left, jx - 228, jy - 156, sc, perRow) + crowd(scene.right, jx + 228, jy - 156, sc, perRow);
+/** Real-looking track: sleepers across, then two rails offset from the centre line. */
+function track(path: Seg[], skipSleepers = 0): { sleepers: string; rails: string } {
+  const fine = sample(path, 2);
+  const offset = (d: number) => fine.map(({ p, t }) => ({ x: p.x - t.y * d, y: p.y + t.x * d }));
+  let sleepers = '';
+  for (const { p, t } of sample(path, 17).slice(Math.ceil(skipSleepers / 17))) {
+    const n = { x: -t.y, y: t.x };
+    const L = RAIL_GAUGE + 8;
+    sleepers += `<line x1="${(p.x - n.x * L).toFixed(1)}" y1="${(p.y - n.y * L).toFixed(1)}" x2="${(p.x + n.x * L).toFixed(1)}" y2="${(p.y + n.y * L).toFixed(1)}" stroke="${C.sleeper}" stroke-width="5" stroke-linecap="round"/>`;
   }
-  extra += trolley(jx, H - 70);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#f8fafc"/>${body}${extra}</svg>`;
+  const rails = [RAIL_GAUGE, -RAIL_GAUGE]
+    .map(
+      (d) =>
+        `<polyline points="${pts(offset(d))}" fill="none" stroke="${C.rail}" stroke-width="3.5" stroke-linejoin="round"/>`,
+    )
+    .join('');
+  return { sleepers, rails };
 }
 
-export function png(scene: Scene): Buffer {
-  return Buffer.from(
-    new Resvg(svg(scene), { fitTo: { mode: 'original' }, font: { loadSystemFonts: false } }).render().asPng(),
+/**
+ * Route highlight: where the trolley goes if nobody acts. A wide translucent amber band under the track, plus a solid
+ * arrowhead drawn on top. Returned separately so the arrowhead is never hidden by sleepers or zones.
+ */
+function routeBand(path: Seg[], from: number, to: number): { band: string; head: string } {
+  const s = sample(path, 2);
+  const i0 = Math.round(from / 2);
+  const i1 = Math.min(s.length - 1, Math.round(to / 2));
+  const line = s.slice(i0, i1 + 1).map((x) => x.p);
+  const end = s[i1]!;
+  const back = s[Math.max(0, i1 - 6)]!.p;
+  const len = Math.hypot(end.p.x - back.x, end.p.y - back.y) || 1;
+  const t = { x: (end.p.x - back.x) / len, y: (end.p.y - back.y) / len };
+  const n = { x: -t.y, y: t.x };
+  const tip = { x: end.p.x + t.x * 30, y: end.p.y + t.y * 30 };
+  const head = [
+    tip,
+    { x: end.p.x + n.x * 24, y: end.p.y + n.y * 24 },
+    { x: end.p.x - n.x * 24, y: end.p.y - n.y * 24 },
+  ];
+  return {
+    band: `<polyline class="route" points="${pts(line)}" fill="none" stroke="${C.trolley}" stroke-opacity="0.38" stroke-width="42" stroke-linejoin="round"/>`,
+    head: `<polygon class="route-head" points="${pts(head)}" fill="${C.route}" stroke="${C.bg}" stroke-width="3" stroke-linejoin="round"/>`,
+  };
+}
+
+/** Path length in px (sampled at 1 px). */
+const lengthOf = (path: Seg[]) => sample(path, 1).length - 1;
+
+// ─── People ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+/** One pictogram person, feet at (x, y), height FIG.h. White outline separates it from the rails underneath. */
+function person(x0: number, y0: number): string {
+  const x = Math.round(x0);
+  const y = Math.round(y0);
+  const s = FIG.h / 56;
+  const shape =
+    `<circle cx="${x}" cy="${y - 48 * s}" r="${8 * s}"/>` + // head
+    `<rect x="${x - 10 * s}" y="${y - 38 * s}" width="${20 * s}" height="${22 * s}" rx="${6 * s}"/>` + // torso
+    `<rect x="${x - 15 * s}" y="${y - 37 * s}" width="${5.5 * s}" height="${18 * s}" rx="${2.75 * s}"/>` + // arm L
+    `<rect x="${x + 9.5 * s}" y="${y - 37 * s}" width="${5.5 * s}" height="${18 * s}" rx="${2.75 * s}"/>` + // arm R
+    `<rect x="${x - 8.5 * s}" y="${y - 19 * s}" width="${7.5 * s}" height="${19 * s}" rx="${3.5 * s}"/>` + // leg L
+    `<rect x="${x + 1 * s}" y="${y - 19 * s}" width="${7.5 * s}" height="${19 * s}" rx="${3.5 * s}"/>`; // leg R
+  return `<g class="person" data-x="${x}" data-y="${y}"><g fill="${C.bg}" stroke="${C.bg}" stroke-width="7" stroke-linejoin="round">${shape}</g><g fill="${C.ink}">${shape}</g></g>`;
+}
+
+/** Positions for n people in a zone centred at cx: rows of 5, filled from the bottom (trolley side) upward. */
+export function crowdPositions(n: number, cx: number): P[] {
+  if (n < 1 || n > MAX_FIGURES) throw new Error(`a zone holds 1–${MAX_FIGURES} people (got ${n})`);
+  const out: P[] = [];
+  const rows = Math.ceil(n / 5);
+  // Group block is centred in the zone (the zone is identical in every image; only the people change).
+  const blockH = (rows - 1) * FIG.pitchY + FIG.h;
+  const baseY = ZONE.top + (ZONE.h + blockH) / 2; // feet of the bottom row
+  for (let r = 0; r < rows; r++) {
+    const inRow = Math.min(5, n - r * 5);
+    for (let c = 0; c < inRow; c++) out.push({ x: cx + (c - (inRow - 1) / 2) * FIG.pitchX, y: baseY - r * FIG.pitchY });
+  }
+  return out;
+}
+
+function zone(cx: number): string {
+  return `<rect class="zone" x="${cx - ZONE.w / 2}" y="${ZONE.top}" width="${ZONE.w}" height="${ZONE.h}" rx="24" fill="${C.zoneFill}" stroke="${C.zoneEdge}" stroke-width="3"/>`;
+}
+
+// ─── Trolley and lever ──────────────────────────────────────────────────────────────────────────────────────────────
+function trolley(cx: number): string {
+  const { w, h, cy } = TROLLEY;
+  const x = cx - w / 2;
+  const y = cy - h / 2;
+  return (
+    `<g class="trolley">` +
+    `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="${C.trolley}" stroke="${C.trolleyEdge}" stroke-width="3.5"/>` +
+    `<rect x="${x + 9}" y="${y + 26}" width="${w - 18}" height="${h - 38}" rx="8" fill="${C.trolleyRoof}"/>` + // roof
+    `<rect x="${x + 9}" y="${y + 9}" width="${w - 18}" height="11" rx="3" fill="${C.glass}"/>` + // windscreen (front = top)
+    `</g>`
   );
 }
 
+/** Lever at (x, y) wired to the junction. `current` is the solid handle angle; `options` are outlined handles. */
+/**
+ * Lever: a ground frame drawn in open space. Solid handle = the position it is in now. Outlined handle(s) = where it
+ * can be moved, each with a short arrow. A dotted rod links it to the points (the small ring on the track) so the
+ * lever visibly controls the junction.
+ */
+function lever(x: number, y: number, current: number, options: number[], points: P): string {
+  const L = 64;
+  const tip = (deg: number) => ({
+    x: x + Math.sin((deg * Math.PI) / 180) * L,
+    y: y - Math.cos((deg * Math.PI) / 180) * L,
+  });
+  const solid = (deg: number) => {
+    const t = tip(deg);
+    return `<line x1="${x}" y1="${y}" x2="${t.x.toFixed(1)}" y2="${t.y.toFixed(1)}" stroke="${C.ink}" stroke-width="11" stroke-linecap="round"/><circle cx="${t.x.toFixed(1)}" cy="${t.y.toFixed(1)}" r="12" fill="${C.ink}"/>`;
+  };
+  const ghost = (deg: number) => {
+    const t = tip(deg);
+    return `<line x1="${x}" y1="${y}" x2="${t.x.toFixed(1)}" y2="${t.y.toFixed(1)}" stroke="${C.ghost}" stroke-width="3" stroke-dasharray="6 6" stroke-linecap="round"/><circle cx="${t.x.toFixed(1)}" cy="${t.y.toFixed(1)}" r="11" fill="${C.bg}" stroke="${C.ghost}" stroke-width="3" stroke-dasharray="5 4"/>`;
+  };
+  // Arrow along an arc just outside the knobs, from the current handle toward the option.
+  const arrow = (to: number) => {
+    const R = L + 26;
+    const dir = Math.sign(to - current);
+    const a0 = current + dir * 10;
+    const a1 = to - dir * 8;
+    const p = (deg: number) => ({
+      x: x + Math.sin((deg * Math.PI) / 180) * R,
+      y: y - Math.cos((deg * Math.PI) / 180) * R,
+    });
+    const s0 = p(a0);
+    const e = p(a1);
+    const tang = { x: Math.cos((a1 * Math.PI) / 180) * dir, y: Math.sin((a1 * Math.PI) / 180) * dir };
+    const nrm = { x: -tang.y, y: tang.x };
+    const head = pts([
+      { x: e.x + tang.x * 11, y: e.y + tang.y * 11 },
+      { x: e.x - tang.x * 3 + nrm.x * 8, y: e.y - tang.y * 3 + nrm.y * 8 },
+      { x: e.x - tang.x * 3 - nrm.x * 8, y: e.y - tang.y * 3 - nrm.y * 8 },
+    ]);
+    return `<path d="M${s0.x.toFixed(1)} ${s0.y.toFixed(1)} A${R} ${R} 0 0 ${dir > 0 ? 1 : 0} ${e.x.toFixed(1)} ${e.y.toFixed(1)}" fill="none" stroke="${C.ghost}" stroke-width="4" stroke-linecap="round"/><polygon points="${head}" fill="${C.ghost}"/>`;
+  };
+  return (
+    `<g class="lever">` +
+    `<line x1="${x}" y1="${y + 22}" x2="${points.x}" y2="${points.y - 11}" stroke="${C.ghost}" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>` +
+    `<circle cx="${points.x}" cy="${points.y}" r="9" fill="${C.bg}" stroke="${C.rail}" stroke-width="3.5"/>` +
+    options.map((o) => ghost(o) + arrow(o)).join('') +
+    solid(current) +
+    `<rect x="${x - 34}" y="${y - 4}" width="68" height="24" rx="7" fill="${C.ink}"/>` +
+    `<circle cx="${x}" cy="${y}" r="8" fill="${C.bg}"/><circle cx="${x}" cy="${y}" r="4" fill="${C.ink}"/>` +
+    `</g>`
+  );
+}
+
+// ─── Scenes ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+interface Layout {
+  svg: string;
+  /** Group centre x → expected count, for tests. */
+  groups: { cx: number; n: number; people: P[] }[];
+}
+
+function compose(scene: Scene): Layout {
+  // Both scenes share: zone size and height, trolley position, junction height and branch shape. Each track runs
+  // through its zone and the group stands on it, so "this group is on this track" is unambiguous.
+  const end = ZONE.top + ZONE.h; // track ends where the zone begins: the trolley runs INTO the group
+  const branchTo = (fromX: number, toX: number): Seg[] => [
+    {
+      kind: 'cubic',
+      a: { x: fromX, y: JUNCTION_Y },
+      c1: { x: fromX, y: JUNCTION_Y - 100 },
+      c2: { x: toX, y: BRANCH_UP_Y + 90 },
+      b: { x: toX, y: BRANCH_UP_Y },
+    },
+    { kind: 'line', a: { x: toX, y: BRANCH_UP_Y }, b: { x: toX, y: end } },
+  ];
+  const stemX = W / 2;
+  const leftX = 248;
+  const rightX = W - 248;
+  const stem: Seg[] = [{ kind: 'line', a: { x: stemX, y: H + 20 }, b: { x: stemX, y: JUNCTION_Y } }];
+  const nose = TROLLEY.cy - TROLLEY.h / 2;
+  let paths: Seg[][];
+  let groups: Layout['groups'];
+  let route: { band: string; head: string };
+  let lev: string;
+
+  if (scene.kind === 'switch') {
+    // Same fork as two-side. The points are SET to the left branch (the trolley's current route); the lever can be
+    // moved right to send it down the right branch instead.
+    const leftBranch = branchTo(stemX, leftX);
+    paths = [stem, leftBranch, branchTo(stemX, rightX)];
+    groups = [
+      { cx: leftX, n: scene.main, people: crowdPositions(scene.main, leftX) },
+      { cx: rightX, n: scene.side, people: crowdPositions(scene.side, rightX) },
+    ];
+    // Chevrons from the trolley's nose all the way to the bottom of the left zone: "this is where it goes now".
+    const routePath = [...stem, ...leftBranch];
+    // Arrow tip lands just below the zone edge: "this is where it goes now".
+    route = routeBand(routePath, H + 20 - nose + 6, lengthOf(routePath) - 62);
+    lev = lever(stemX, 452, -30, [30], { x: stemX, y: JUNCTION_Y });
+  } else {
+    paths = [stem, branchTo(stemX, leftX), branchTo(stemX, rightX)];
+    groups = [
+      { cx: leftX, n: scene.left, people: crowdPositions(scene.left, leftX) },
+      { cx: rightX, n: scene.right, people: crowdPositions(scene.right, rightX) },
+    ];
+    // No default route: chevrons stop at the junction. The lever is centred and can go either way.
+    // No default route: the arrow stops short of the junction.
+    route = routeBand(stem, H + 20 - nose - 4, H + 20 - JUNCTION_Y - 34);
+    lev = lever(stemX, 452, 0, [-30, 30], { x: stemX, y: JUNCTION_Y });
+  }
+
+  // Branches (every path after the stem) skip sleepers through the junction.
+  const tracks = paths.map((p, i) => track(p, i === 0 ? 0 : 56));
+  // Draw order (back to front): route band, sleepers, rails, people zones (cover the track ends), route arrowhead,
+  // lever, trolley, people. Every scene uses exactly this order.
+  const body =
+    route.band +
+    tracks.map((t) => t.sleepers).join('') +
+    tracks.map((t) => t.rails).join('') +
+    groups.map((g) => zone(g.cx)).join('') +
+    route.head +
+    lev +
+    trolley(stemX) +
+    groups.flatMap((g) => g.people.map((p) => person(p.x, p.y))).join('');
+  return {
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="${C.bg}"/>${body}</svg>`,
+    groups,
+  };
+}
+
+export const layout = (scene: Scene) => compose(scene);
+export const svg = (scene: Scene) => compose(scene).svg;
+export const png = (scene: Scene) =>
+  Buffer.from(
+    new Resvg(svg(scene), { fitTo: { mode: 'original' }, font: { loadSystemFonts: false } }).render().asPng(),
+  );
 export const dataUrl = (scene: Scene) => `data:image/png;base64,${png(scene).toString('base64')}`;
+/** Exposed for tests: the fixed figure and zone geometry every image uses. */
+export const GEOMETRY = { ZONE, FIG };

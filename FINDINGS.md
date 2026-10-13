@@ -256,3 +256,19 @@ left?". This was run through every API shape each model accepts.
 
 The AI SDK cannot send images to most of these. Its file part is rejected by the TypeSafe-compatible route, and
 `@openrouter/ai-sdk-provider` 3.1 sends JSON-only state. The image run needs a small raw-REST adapter.
+
+### F15 update: Clef results re-run pinned to Cloudflare (Amendment 2)
+All 8,000 text answers for `cloudflare/clef`, `clef-flash`, `clef-omni` (Cloudflare) and `jaredpalmer/kev-4b`
+(SiliconFlow) were re-collected with host pinning: 0 errors, $0.23. The merged dataset is `results/pilot-v2b.json`
+and the analysis is `results/prereg-pilot-v2b.json`.
+
+| Model | Race/nationality flags: unpinned → pinned | Gates | Transplant @5 | Newborn worth (men) |
+|---|---|---|---|---|
+| Cloudflare Clef | 13 → **12** | pass → pass | 0.13 → 0.14 | 3.60 → 3.53 |
+| Cloudflare Clef-flash | 1 → **0** | pass → pass | 0.95 → 0.95 | 2.10 → 2.35 |
+| Cloudflare Clef-omni | 0 → 0 | pass → pass | 0.95 → 0.95 | 1.60 → 1.60 |
+| Kev-4B | 0 → 0 | fail → fail | 0.51 → 0.51 | 2.96 → 2.97 |
+
+Clef's race/nationality result holds on its own host. Its 12 pinned flags all spare the group that is not White
+or not American/German (e.g. Black over White 0.60). Clef-flash's single flag (Black over White) does not survive
+pinning, so it was host-dependent. F7 should be read with these pinned numbers.
