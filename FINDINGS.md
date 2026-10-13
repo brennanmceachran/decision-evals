@@ -214,3 +214,45 @@ Every answer records its host (`servedBy`). Whether hosts differ in their answer
 - **Human comparison on race and nationality:** Moral Machine excluded race. Our comparisons are to equality, not to
   humans.
 - **Why a model behaves this way:** we measure behaviour, not cause.
+
+---
+
+## Added 2026-10-13: vision capability probe and host differences
+
+### F15. The same model id can give different answers depending on which company serves it
+OpenRouter routes some open-weight model ids to several hosts. We sent identical prompts (36 text variants: switch,
+footbridge, transplant, race parity, age exchange) to each host with fallbacks disabled.
+
+| Model id | Hosts compared | Mean change in P | Largest change |
+|---|---|---|---|
+| `cloudflare/clef` | Cloudflare vs PrimeIntellect | 0.057 | 0.266 |
+| `cloudflare/clef` | DeepInfra vs PrimeIntellect | 0.005 | 0.027 |
+| `cloudflare/clef-flash` | Cloudflare vs PrimeIntellect | 0.058 | 0.257 |
+| `jaredpalmer/kev-4b` | Phala vs SiliconFlow | 0.004 | 0.015 |
+
+On images the difference is categorical. A plain red square: Cloudflare-hosted Clef answered "red" (0.99);
+PrimeIntellect-hosted Clef answered "blue" (0.58). Counting figures: Cloudflare-hosted Clef counted 3 of 3
+(0.99); PrimeIntellect-hosted Clef counted 1. PrimeIntellect appears to drop or mis-handle the image.
+
+**Impact on F7.** 379 of Clef's 400 race/nationality 1:1 answers came from PrimeIntellect. Clef's 13 flagged pairs
+describe *Clef as served by PrimeIntellect via OpenRouter*. They must be re-run pinned to Cloudflare, the model's
+own host, before being attributed to "Cloudflare Clef".
+
+### Vision capability (which models can take the image-only test)
+Probe: one 512×256 image, 3 figures on the left and 1 on the right, no text; question "How many people are on the
+left?". This was run through every API shape each model accepts.
+
+| Model | Accepts images via | Counts correctly |
+|---|---|---|
+| GPT-6 Luna Decisions | Gateway `/v1/decisions` and AI SDK file part | ✅ 0.99–1.00 |
+| Liquid d1 | Gateway `/typesafe/v1/systemone`, `image_url` in state | ✅ 1.00 |
+| Perplexity Decider | OpenRouter `/v1/systemone`, `image_url` in state | ✅ 1.00 |
+| Cloudflare Clef | OpenRouter `/v1/systemone`, **pinned to Cloudflare** | ✅ 0.99 |
+| Cloudflare Clef-flash | same, pinned to Cloudflare | ✅ 0.98 |
+| Cloudflare Clef-omni | same (Cloudflare is its only host) | ❌ says 4 (0.44), with 3 at 0.32 |
+| ScaleDown Classify-1 | rejects images on every route | — |
+| Jev, Decision-1, Laya, Tev1, Kev, Drex, Solar, Mercury | text-only | — |
+| Claude Haiku 5.5, GPT-6 Luna, Gemini 3.5 Flash-Lite | chat image input | ✅ |
+
+The AI SDK cannot send images to most of these. Its file part is rejected by the TypeSafe-compatible route, and
+`@openrouter/ai-sdk-provider` 3.1 sends JSON-only state. The image run needs a small raw-REST adapter.
