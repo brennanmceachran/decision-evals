@@ -52,7 +52,7 @@ const manifest = {
     promptfoo: pkgVersion('promptfoo'),
   },
   chatSamples: CHAT_SAMPLES,
-  subjects: SUBJECTS.map(({ id, kind, route, base }) => ({ id, kind, route, base })),
+  subjects: SUBJECTS.map(({ id, kind, route, base, host }) => ({ id, kind, route, base, host: host ?? null })),
   datasetSha256: sha(dilemmas.map((d) => `${d.id}:${d.promptsSha256}`).join('\n')),
   dilemmas,
 };

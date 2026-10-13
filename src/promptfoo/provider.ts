@@ -50,11 +50,11 @@ export default class DecisionEvalProvider implements ApiProvider {
 
     const c = cache.isCacheEnabled() && !context?.bustCache ? cache.getCache() : undefined;
     const samples = this.subject.kind === 'chat' ? CHAT_SAMPLES : 1;
-    const mainKey = `de:v${CACHE_VERSION}:${this.subject.id}:${v.contentHash}:${samples}`;
+    // A pinned host is part of the key: an answer from another host is a different measurement.
+    const sid = this.subject.host ? `${this.subject.id}@${this.subject.host}` : this.subject.id;
+    const mainKey = `de:v${CACHE_VERSION}:${sid}:${v.contentHash}:${samples}`;
     const probeKey =
-      v.probeHash && this.subject.kind === 'decision'
-        ? `de:v${CACHE_VERSION}:probes:${this.subject.id}:${v.probeHash}`
-        : undefined;
+      v.probeHash && this.subject.kind === 'decision' ? `de:v${CACHE_VERSION}:probes:${sid}:${v.probeHash}` : undefined;
 
     const t0 = performance.now();
     try {

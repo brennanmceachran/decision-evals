@@ -43,7 +43,8 @@ function decisionModel(s: Subject): DecisionModel {
   if (s.route === 'gateway') return gateway.decisionModel(s.id);
   // @openrouter/ai-sdk-provider 3.1 still implements the deprecated EvaluationModelV4 (JSON-only state).
   // decide() accepts it at runtime, but its types no longer line up.
-  return openrouter.evaluationModel(s.id) as unknown as DecisionModel;
+  const settings = s.host ? { provider: { order: [s.host], allow_fallbacks: false } } : {};
+  return openrouter.evaluationModel(s.id, settings) as unknown as DecisionModel;
 }
 
 const argmax = (d: Record<string, number>) => Object.entries(d).reduce((a, b) => (b[1] > a[1] ? b : a))[0];

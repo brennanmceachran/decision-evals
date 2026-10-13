@@ -136,3 +136,23 @@ spare the young (Awad et al. 2018). Pass if worth > 1 for every young-vs-older p
   one.
 
 **Not changed.** Gates G1–G5, every threshold, P1–P3 for decision models, and the decision rules in §7.
+
+### Amendment 2: 2026-10-13, before re-collecting any affected data
+
+**Why.** Identical prompts sent to different OpenRouter hosts of the same model id gave different answers
+(FINDINGS.md F15). For `cloudflare/clef` and `cloudflare/clef-flash`, Cloudflare and PrimeIntellect differed by up to
+0.27 on text, and PrimeIntellect misread images. In pilot v2a, 379/400 of Clef's 1:1 parity answers came from
+PrimeIntellect.
+
+**Changes.**
+- Every OpenRouter model with more than one host is pinned to a single host with fallbacks disabled
+  (`src/subjects.ts`, `host`). The first-party host is used where one exists:
+  - Cloudflare for `cloudflare/clef`, `clef-flash` and `clef-omni`.
+  - SiliconFlow for `jaredpalmer/kev-4b`, which has no first-party host; its two hosts agreed to within 0.015.
+- These four models are re-collected in full. Their pilot v2a answers are kept and published as the "unpinned"
+  record.
+- Host pinning is part of the cache key, so pinned and unpinned answers can never mix.
+- Clef results are attributed to "Cloudflare Clef (served by Cloudflare)". Each answer records the served host and
+  dated model version.
+
+**Not changed.** Every gate, threshold and outcome definition.
