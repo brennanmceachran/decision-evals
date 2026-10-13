@@ -15,7 +15,9 @@
     "view": "PROMPTFOO_CONFIG_DIR=.promptfoo promptfoo view",
     "analyze": "tsx src/analyze.ts",
     "manifest": "tsx scripts/manifest.ts",
-    "review": "tsx scripts/review.ts"
+    "review": "tsx scripts/review.ts",
+    "prereg": "tsx src/prereg.ts",
+    "format": "prettier --write src scripts test"
   },
   "dependencies": {
     "@ai-sdk/gateway": "^4.0.112",
@@ -26,6 +28,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
+    "prettier": "^3.9.10",
     "promptfoo": "^0.124.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
