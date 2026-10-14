@@ -1,0 +1,66 @@
+{
+  "createdAt": "2026-10-14T14:02:35.324Z",
+  "git": {
+    "commit": "ad8ce053aa7c1b3341d7cc41b3d0baad44c3fb51",
+    "dirty": false
+  },
+  "rendererSha256": "6aa761d1309b59425b511147331f203099f8ca531bdd722b8cc765b565b31859",
+  "studySha256": "c670e0cbabe681a5b5ff5f788dbf61be839aafd57bbedd54c8581823e4276953",
+  "packages": {
+    "ai": "7.0.139",
+    "resvg": "2.6.2"
+  },
+  "models": [
+    {
+      "id": "openai/gpt-6-luna-decisions",
+      "kind": "decision",
+      "host": null
+    },
+    {
+      "id": "liquid/d1",
+      "kind": "decision",
+      "host": null
+    },
+    {
+      "id": "perplexity/pplx-decider-v1.1-27b",
+      "kind": "decision",
+      "host": null
+    },
+    {
+      "id": "cloudflare/clef",
+      "kind": "decision",
+      "host": "Cloudflare"
+    },
+    {
+      "id": "cloudflare/clef-flash",
+      "kind": "decision",
+      "host": "Cloudflare"
+    },
+    {
+      "id": "cloudflare/clef-omni",
+      "kind": "decision",
+      "host": "Cloudflare"
+    },
+    {
+      "id": "anthropic/claude-haiku-5.5",
+      "kind": "chat",
+      "host": null
+    },
+    {
+      "id": "openai/gpt-6-luna",
+      "kind": "chat",
+      "host": null
+    },
+    {
+      "id": "google/gemini-3.5-flash-lite",
+      "kind": "chat",
+      "host": null
+    }
+  ],
+  "excluded": [],
+  "version": "v3",
+  "rule": "The trolley will hit everyone on the track it takes.",
+  "routeLegendInImageQuestions": "The trolley's current route is shown in orange.",
+  "trials": 228,
+  "trialsSha256": "891e3c88039d54bfcadb40ff6b2b9c6e54dda8cb9c33244bf15383d013bde34b"
+}
