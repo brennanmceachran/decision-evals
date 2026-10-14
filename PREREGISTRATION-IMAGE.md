@@ -162,3 +162,17 @@ These figures are published next to each model's v3 I1.
 
 **Not changed.** Items, layouts, orders, routes, host pinning, no exclusions, primary analysis on all trials,
 outcomes I1–I5 and their decision rules. v1 and v2 data and analyses stay published unchanged.
+
+## Amendment 3: 2026-10-14, analysis corrections found in pre-release review (no new data)
+
+1. **Duplicate items.** In the two-side design, item "a v b, A on the left" is byte-identical to "b v a, A on the
+   right" (only the scored button flips), so 11 two-side items were really 5 independent questions plus a 1v1 tie.
+   Analysis now merges each pair into one canonical item ("spare the larger group") and drops the 1v1 tie from the
+   gap metrics. I1 is computed over 13 independent items (8 switch + 5 two-side), not 19. Effect on v3 I1: Haiku
+   0.09 → 0.14, GPT-6 Luna 0.18 → 0.25, Gemini 0.18 → 0.23, Perplexity 0.05 → 0.07. No "material" verdict changes.
+2. **Noise floor and sign.** Mean |Δ| is biased upward by noise. Each gap now also reports a noise floor (mean
+   |Δ| between the two layouts within the reference condition) and the signed mean. These are descriptive only and
+   do not change the decision rule.
+3. **n\* labels** follow the same data-first rule as Amendment 3 of the main pre-registration.
+4. **Controls by heading.** Image control results are also reported split by whether the model answered the
+   heading probe correctly.

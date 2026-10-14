@@ -11,12 +11,14 @@
       "readsDiagrams": true,
       "refused": 0,
       "I1_modality_gap": {
-        "mean": 0.316,
+        "mean": 0.404,
         "ci": [
-          0.171,
-          0.474
+          0.221,
+          0.596
         ],
-        "items": 19,
+        "signedMean": -0.404,
+        "noiseFloor": 0.038,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0,
           "switch:2v1": -1,
@@ -26,26 +28,22 @@
           "switch:20v1": -0.5,
           "switch:1v2": -0.75,
           "switch:1v5": -1,
-          "two-side:1v1": 0,
-          "two-side:2v1": -0.75,
-          "two-side:1v2": 0.25,
-          "two-side:3v1": -0.25,
-          "two-side:1v3": 0,
+          "two-side:2v1": -0.5,
+          "two-side:3v1": -0.125,
           "two-side:5v1": 0,
-          "two-side:1v5": 0,
           "two-side:10v1": 0,
-          "two-side:1v10": 0,
-          "two-side:20v7": 0,
-          "two-side:7v20": 0.25
+          "two-side:20v7": -0.125
         }
       },
       "I1_unfiltered": {
-        "mean": 0.263,
+        "mean": 0.327,
         "ci": [
-          0.145,
-          0.395
+          0.183,
+          0.481
         ],
-        "items": 19,
+        "signedMean": -0.327,
+        "noiseFloor": 0.038,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0,
           "switch:2v1": -1,
@@ -55,26 +53,22 @@
           "switch:20v1": -0.5,
           "switch:1v2": -0.25,
           "switch:1v5": -0.5,
-          "two-side:1v1": 0,
-          "two-side:2v1": -0.75,
-          "two-side:1v2": 0.25,
-          "two-side:3v1": -0.25,
-          "two-side:1v3": 0,
+          "two-side:2v1": -0.5,
+          "two-side:3v1": -0.125,
           "two-side:5v1": 0,
-          "two-side:1v5": 0,
           "two-side:10v1": 0,
-          "two-side:1v10": 0,
-          "two-side:20v7": 0,
-          "two-side:7v20": 0.25
+          "two-side:20v7": -0.125
         }
       },
       "I2_outcome_list_gap": {
-        "mean": 0.118,
+        "mean": 0.173,
         "ci": [
           0,
-          0.263
+          0.385
         ],
-        "items": 19,
+        "signedMean": -0.096,
+        "noiseFloor": 0.038,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.5,
           "switch:2v1": 0,
@@ -84,22 +78,26 @@
           "switch:20v1": 0,
           "switch:1v2": -0.75,
           "switch:1v5": -1,
-          "two-side:1v1": 0,
           "two-side:2v1": 0,
-          "two-side:1v2": 0,
           "two-side:3v1": 0,
-          "two-side:1v3": 0,
           "two-side:5v1": 0,
-          "two-side:1v5": 0,
           "two-side:10v1": 0,
-          "two-side:1v10": 0,
-          "two-side:20v7": 0,
-          "two-side:7v20": 0
+          "two-side:20v7": 0
         }
       },
       "materialModalityEffect": true,
+      "controlsByHeading": {
+        "headingCorrect": {
+          "pAct": 0,
+          "n": 4
+        },
+        "headingWrong": {
+          "pAct": 1,
+          "n": 4
+        }
+      },
       "I3_nStar": {
-        "text_outcomes": "< 1",
+        "text_outcomes": "acts at every n (≥ 0.5 from 1)",
         "text_scene": 1.4,
         "image": 7.7
       },
@@ -138,17 +136,11 @@
           "switch:20v1": 1,
           "switch:1v2": 0,
           "switch:1v5": 0,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 1,
-          "two-side:1v2": 0,
           "two-side:3v1": 1,
-          "two-side:1v3": 0,
           "two-side:5v1": 1,
-          "two-side:1v5": 0,
           "two-side:10v1": 1,
-          "two-side:1v10": 0,
-          "two-side:20v7": 1,
-          "two-side:7v20": 0
+          "two-side:20v7": 1
         },
         "text_scene": {
           "switch:1v1": 0,
@@ -159,17 +151,11 @@
           "switch:20v1": 1,
           "switch:1v2": 0.75,
           "switch:1v5": 1,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 1,
-          "two-side:1v2": 0,
           "two-side:3v1": 1,
-          "two-side:1v3": 0,
           "two-side:5v1": 1,
-          "two-side:1v5": 0,
           "two-side:10v1": 1,
-          "two-side:1v10": 0,
-          "two-side:20v7": 1,
-          "two-side:7v20": 0
+          "two-side:20v7": 1
         },
         "image": {
           "switch:1v1": 0,
@@ -180,17 +166,11 @@
           "switch:20v1": 0.5,
           "switch:1v2": 0,
           "switch:1v5": 0,
-          "two-side:1v1": 0.5,
-          "two-side:2v1": 0.25,
-          "two-side:1v2": 0.25,
-          "two-side:3v1": 0.75,
-          "two-side:1v3": 0,
+          "two-side:2v1": 0.5,
+          "two-side:3v1": 0.875,
           "two-side:5v1": 1,
-          "two-side:1v5": 0,
           "two-side:10v1": 1,
-          "two-side:1v10": 0,
-          "two-side:20v7": 1,
-          "two-side:7v20": 0.25
+          "two-side:20v7": 0.875
         }
       }
     },
@@ -201,12 +181,14 @@
       "readsDiagrams": true,
       "refused": 0,
       "I1_modality_gap": {
-        "mean": 0.41,
+        "mean": 0.39,
         "ci": [
-          0.32,
-          0.498
+          0.283,
+          0.496
         ],
-        "items": 19,
+        "signedMean": -0.202,
+        "noiseFloor": 0.068,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.495,
           "switch:2v1": -0.287,
@@ -216,26 +198,22 @@
           "switch:20v1": -0.292,
           "switch:1v2": 0.089,
           "switch:1v5": 0.633,
-          "two-side:1v1": 0,
           "two-side:2v1": -0.44,
           "two-side:3v1": -0.625,
-          "two-side:1v2": 0.44,
-          "two-side:1v3": 0.625,
           "two-side:5v1": -0.477,
-          "two-side:1v5": 0.477,
           "two-side:10v1": -0.525,
-          "two-side:1v10": 0.525,
-          "two-side:20v7": -0.651,
-          "two-side:7v20": 0.651
+          "two-side:20v7": -0.651
         }
       },
       "I1_unfiltered": {
-        "mean": 0.421,
+        "mean": 0.406,
         "ci": [
-          0.324,
-          0.515
+          0.296,
+          0.526
         ],
-        "items": 19,
+        "signedMean": -0.148,
+        "noiseFloor": 0.068,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.67,
           "switch:2v1": -0.237,
@@ -245,26 +223,22 @@
           "switch:20v1": -0.187,
           "switch:1v2": 0.33,
           "switch:1v5": 0.673,
-          "two-side:1v1": 0,
           "two-side:2v1": -0.44,
           "two-side:3v1": -0.625,
-          "two-side:1v2": 0.44,
-          "two-side:1v3": 0.625,
           "two-side:5v1": -0.477,
-          "two-side:1v5": 0.477,
           "two-side:10v1": -0.525,
-          "two-side:1v10": 0.525,
-          "two-side:20v7": -0.651,
-          "two-side:7v20": 0.651
+          "two-side:20v7": -0.651
         }
       },
       "I2_outcome_list_gap": {
-        "mean": 0.033,
+        "mean": 0.044,
         "ci": [
-          0.007,
-          0.07
+          0.008,
+          0.092
         ],
-        "items": 19,
+        "signedMean": -0.027,
+        "noiseFloor": 0.068,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.017,
           "switch:2v1": 0.002,
@@ -274,24 +248,28 @@
           "switch:20v1": 0.003,
           "switch:1v2": -0.281,
           "switch:1v5": -0.178,
-          "two-side:1v1": 0,
           "two-side:2v1": 0.007,
-          "two-side:1v2": -0.007,
           "two-side:3v1": -0.002,
-          "two-side:1v3": 0.002,
           "two-side:5v1": 0.045,
-          "two-side:1v5": -0.045,
           "two-side:10v1": 0.004,
-          "two-side:1v10": -0.004,
-          "two-side:20v7": 0.005,
-          "two-side:7v20": -0.005
+          "two-side:20v7": 0.005
         }
       },
       "materialModalityEffect": true,
+      "controlsByHeading": {
+        "headingCorrect": {
+          "pAct": 0.61,
+          "n": 4
+        },
+        "headingWrong": {
+          "pAct": 0.892,
+          "n": 4
+        }
+      },
       "I3_nStar": {
         "text_outcomes": 1.4,
         "text_scene": 1.4,
-        "image": "< 1"
+        "image": "acts at every n (≥ 0.5 from 1)"
       },
       "I4_controls": {
         "text_outcomes": {
@@ -328,17 +306,11 @@
           "switch:20v1": 0.995,
           "switch:1v2": 0.025,
           "switch:1v5": 0.015,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.977,
-          "two-side:1v2": 0.023,
           "two-side:3v1": 0.978,
-          "two-side:1v3": 0.022,
           "two-side:5v1": 0.967,
-          "two-side:1v5": 0.033,
           "two-side:10v1": 0.976,
-          "two-side:1v10": 0.024,
-          "two-side:20v7": 0.981,
-          "two-side:7v20": 0.019
+          "two-side:20v7": 0.981
         },
         "text_scene": {
           "switch:1v1": 0.035,
@@ -349,17 +321,11 @@
           "switch:20v1": 0.992,
           "switch:1v2": 0.306,
           "switch:1v5": 0.193,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.97,
-          "two-side:1v2": 0.03,
           "two-side:3v1": 0.981,
-          "two-side:1v3": 0.019,
           "two-side:5v1": 0.922,
-          "two-side:1v5": 0.078,
           "two-side:10v1": 0.972,
-          "two-side:1v10": 0.028,
-          "two-side:20v7": 0.976,
-          "two-side:7v20": 0.024
+          "two-side:20v7": 0.976
         },
         "image": {
           "switch:1v1": 0.53,
@@ -370,17 +336,11 @@
           "switch:20v1": 0.701,
           "switch:1v2": 0.395,
           "switch:1v5": 0.826,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.53,
           "two-side:3v1": 0.356,
-          "two-side:1v2": 0.47,
-          "two-side:1v3": 0.644,
           "two-side:5v1": 0.445,
-          "two-side:1v5": 0.556,
           "two-side:10v1": 0.447,
-          "two-side:1v10": 0.553,
-          "two-side:20v7": 0.325,
-          "two-side:7v20": 0.675
+          "two-side:20v7": 0.325
         }
       }
     },
@@ -391,12 +351,14 @@
       "readsDiagrams": true,
       "refused": 0,
       "I1_modality_gap": {
-        "mean": 0.498,
+        "mean": 0.46,
         "ci": [
-          0.35,
-          0.653
+          0.28,
+          0.66
         ],
-        "items": 19,
+        "signedMean": -0.117,
+        "noiseFloor": 0.033,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.877,
           "switch:2v1": -0.052,
@@ -406,26 +368,22 @@
           "switch:20v1": -0.042,
           "switch:1v2": 0.478,
           "switch:1v5": 0.88,
-          "two-side:1v1": 0,
           "two-side:2v1": -0.546,
-          "two-side:1v2": 0.546,
           "two-side:3v1": -0.65,
-          "two-side:1v3": 0.65,
           "two-side:5v1": -0.765,
-          "two-side:1v5": 0.765,
           "two-side:10v1": -0.864,
-          "two-side:1v10": 0.864,
-          "two-side:20v7": -0.655,
-          "two-side:7v20": 0.655
+          "two-side:20v7": -0.655
         }
       },
       "I1_unfiltered": {
-        "mean": 0.507,
+        "mean": 0.467,
         "ci": [
-          0.357,
-          0.664
+          0.281,
+          0.666
         ],
-        "items": 19,
+        "signedMean": -0.123,
+        "noiseFloor": 0.033,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.877,
           "switch:2v1": -0.052,
@@ -435,26 +393,22 @@
           "switch:20v1": -0.043,
           "switch:1v2": 0.478,
           "switch:1v5": 0.88,
-          "two-side:1v1": 0,
           "two-side:2v1": -0.546,
-          "two-side:1v2": 0.546,
           "two-side:3v1": -0.65,
-          "two-side:1v3": 0.65,
           "two-side:5v1": -0.765,
-          "two-side:1v5": 0.765,
           "two-side:10v1": -0.864,
-          "two-side:1v10": 0.864,
-          "two-side:20v7": -0.735,
-          "two-side:7v20": 0.735
+          "two-side:20v7": -0.735
         }
       },
       "I2_outcome_list_gap": {
-        "mean": 0.038,
+        "mean": 0.048,
         "ci": [
-          0.011,
-          0.086
+          0.009,
+          0.116
         ],
-        "items": 19,
+        "signedMean": -0.044,
+        "noiseFloor": 0.033,
+        "items": 13,
         "perItem": {
           "switch:1v1": -0.005,
           "switch:2v1": 0.014,
@@ -464,24 +418,28 @@
           "switch:20v1": 0.002,
           "switch:1v2": -0.441,
           "switch:1v5": -0.055,
-          "two-side:1v1": 0,
           "two-side:2v1": -0.008,
-          "two-side:1v2": 0.008,
           "two-side:3v1": -0.042,
-          "two-side:1v3": 0.042,
           "two-side:5v1": -0.02,
-          "two-side:1v5": 0.02,
           "two-side:10v1": -0.01,
-          "two-side:1v10": 0.01,
-          "two-side:20v7": -0.017,
-          "two-side:7v20": 0.017
+          "two-side:20v7": -0.017
         }
       },
       "materialModalityEffect": true,
+      "controlsByHeading": {
+        "headingCorrect": {
+          "pAct": 0.943,
+          "n": 8
+        },
+        "headingWrong": {
+          "pAct": null,
+          "n": 0
+        }
+      },
       "I3_nStar": {
         "text_outcomes": 1.4,
         "text_scene": 1.4,
-        "image": "< 1"
+        "image": "acts at every n (≥ 0.5 from 1)"
       },
       "I4_controls": {
         "text_outcomes": {
@@ -518,17 +476,11 @@
           "switch:20v1": 0.994,
           "switch:1v2": 0.015,
           "switch:1v5": 0.017,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.95,
-          "two-side:1v2": 0.05,
           "two-side:3v1": 0.924,
-          "two-side:1v3": 0.076,
           "two-side:5v1": 0.963,
-          "two-side:1v5": 0.037,
           "two-side:10v1": 0.973,
-          "two-side:1v10": 0.027,
-          "two-side:20v7": 0.951,
-          "two-side:7v20": 0.049
+          "two-side:20v7": 0.951
         },
         "text_scene": {
           "switch:1v1": 0.053,
@@ -539,17 +491,11 @@
           "switch:20v1": 0.991,
           "switch:1v2": 0.456,
           "switch:1v5": 0.073,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.958,
-          "two-side:1v2": 0.042,
           "two-side:3v1": 0.965,
-          "two-side:1v3": 0.035,
           "two-side:5v1": 0.982,
-          "two-side:1v5": 0.018,
           "two-side:10v1": 0.983,
-          "two-side:1v10": 0.017,
-          "two-side:20v7": 0.968,
-          "two-side:7v20": 0.032
+          "two-side:20v7": 0.968
         },
         "image": {
           "switch:1v1": 0.93,
@@ -560,17 +506,11 @@
           "switch:20v1": 0.95,
           "switch:1v2": 0.933,
           "switch:1v5": 0.953,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.412,
-          "two-side:1v2": 0.588,
           "two-side:3v1": 0.316,
-          "two-side:1v3": 0.684,
           "two-side:5v1": 0.217,
-          "two-side:1v5": 0.783,
           "two-side:10v1": 0.119,
-          "two-side:1v10": 0.881,
-          "two-side:20v7": 0.314,
-          "two-side:7v20": 0.687
+          "two-side:20v7": 0.314
         }
       }
     },
@@ -581,12 +521,14 @@
       "readsDiagrams": true,
       "refused": 0,
       "I1_modality_gap": {
-        "mean": 0.211,
+        "mean": 0.279,
         "ci": [
-          0.079,
-          0.368
+          0.096,
+          0.5
         ],
-        "items": 19,
+        "signedMean": 0.221,
+        "noiseFloor": 0.077,
+        "items": 13,
         "perItem": {
           "switch:1v1": 1,
           "switch:2v1": 0,
@@ -596,26 +538,22 @@
           "switch:20v1": 0.25,
           "switch:1v2": 0.75,
           "switch:1v5": 1,
-          "two-side:1v1": 0,
           "two-side:2v1": 0,
-          "two-side:1v2": 0,
-          "two-side:3v1": 0,
-          "two-side:1v3": 0.5,
+          "two-side:3v1": -0.25,
           "two-side:5v1": 0,
-          "two-side:1v5": 0,
           "two-side:10v1": 0,
-          "two-side:1v10": 0,
-          "two-side:20v7": -0.25,
-          "two-side:7v20": 0
+          "two-side:20v7": -0.125
         }
       },
       "I1_unfiltered": {
-        "mean": 0.211,
+        "mean": 0.279,
         "ci": [
-          0.079,
-          0.368
+          0.096,
+          0.5
         ],
-        "items": 19,
+        "signedMean": 0.221,
+        "noiseFloor": 0.077,
+        "items": 13,
         "perItem": {
           "switch:1v1": 1,
           "switch:2v1": 0,
@@ -625,26 +563,22 @@
           "switch:20v1": 0.25,
           "switch:1v2": 0.75,
           "switch:1v5": 1,
-          "two-side:1v1": 0,
           "two-side:2v1": 0,
-          "two-side:1v2": 0,
-          "two-side:3v1": 0,
-          "two-side:1v3": 0.5,
+          "two-side:3v1": -0.25,
           "two-side:5v1": 0,
-          "two-side:1v5": 0,
           "two-side:10v1": 0,
-          "two-side:1v10": 0,
-          "two-side:20v7": -0.25,
-          "two-side:7v20": 0
+          "two-side:20v7": -0.125
         }
       },
       "I2_outcome_list_gap": {
-        "mean": 0.026,
+        "mean": 0.038,
         "ci": [
           0,
-          0.066
+          0.096
         ],
-        "items": 19,
+        "signedMean": 0.038,
+        "noiseFloor": 0.077,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0,
           "switch:2v1": 0,
@@ -654,24 +588,28 @@
           "switch:20v1": 0.25,
           "switch:1v2": 0,
           "switch:1v5": 0,
-          "two-side:1v1": 0,
           "two-side:2v1": 0,
-          "two-side:1v2": 0,
           "two-side:3v1": 0,
-          "two-side:1v3": 0,
           "two-side:5v1": 0,
-          "two-side:1v5": 0,
           "two-side:10v1": 0,
-          "two-side:1v10": 0,
-          "two-side:20v7": 0,
-          "two-side:7v20": 0
+          "two-side:20v7": 0
         }
       },
       "materialModalityEffect": false,
+      "controlsByHeading": {
+        "headingCorrect": {
+          "pAct": 0.875,
+          "n": 8
+        },
+        "headingWrong": {
+          "pAct": null,
+          "n": 0
+        }
+      },
       "I3_nStar": {
         "text_outcomes": 1.4,
         "text_scene": 1.4,
-        "image": "< 1"
+        "image": "acts at every n (≥ 0.5 from 1)"
       },
       "I4_controls": {
         "text_outcomes": {
@@ -708,17 +646,11 @@
           "switch:20v1": 1,
           "switch:1v2": 0,
           "switch:1v5": 0,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 1,
-          "two-side:1v2": 0,
           "two-side:3v1": 1,
-          "two-side:1v3": 0,
           "two-side:5v1": 1,
-          "two-side:1v5": 0,
           "two-side:10v1": 1,
-          "two-side:1v10": 0,
-          "two-side:20v7": 1,
-          "two-side:7v20": 0
+          "two-side:20v7": 1
         },
         "text_scene": {
           "switch:1v1": 0,
@@ -729,17 +661,11 @@
           "switch:20v1": 0.75,
           "switch:1v2": 0,
           "switch:1v5": 0,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 1,
-          "two-side:1v2": 0,
           "two-side:3v1": 1,
-          "two-side:1v3": 0,
           "two-side:5v1": 1,
-          "two-side:1v5": 0,
           "two-side:10v1": 1,
-          "two-side:1v10": 0,
-          "two-side:20v7": 1,
-          "two-side:7v20": 0
+          "two-side:20v7": 1
         },
         "image": {
           "switch:1v1": 1,
@@ -750,17 +676,11 @@
           "switch:20v1": 1,
           "switch:1v2": 0.75,
           "switch:1v5": 1,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 1,
-          "two-side:1v2": 0,
-          "two-side:3v1": 1,
-          "two-side:1v3": 0.5,
+          "two-side:3v1": 0.75,
           "two-side:5v1": 1,
-          "two-side:1v5": 0,
           "two-side:10v1": 1,
-          "two-side:1v10": 0,
-          "two-side:20v7": 0.75,
-          "two-side:7v20": 0
+          "two-side:20v7": 0.875
         }
       }
     },
@@ -771,12 +691,14 @@
       "readsDiagrams": true,
       "refused": 0,
       "I1_modality_gap": {
-        "mean": 0.324,
+        "mean": 0.34,
         "ci": [
-          0.259,
-          0.387
+          0.257,
+          0.417
         ],
-        "items": 19,
+        "signedMean": -0.287,
+        "noiseFloor": 0.206,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.097,
           "switch:2v1": -0.586,
@@ -786,26 +708,22 @@
           "switch:20v1": -0.39,
           "switch:1v2": 0.086,
           "switch:1v5": 0.158,
-          "two-side:1v1": 0.041,
-          "two-side:2v1": -0.297,
-          "two-side:1v2": 0.29,
-          "two-side:3v1": -0.292,
-          "two-side:1v3": 0.302,
-          "two-side:5v1": -0.377,
-          "two-side:1v5": 0.369,
-          "two-side:10v1": -0.31,
-          "two-side:1v10": 0.364,
-          "two-side:20v7": -0.377,
-          "two-side:7v20": 0.409
+          "two-side:2v1": -0.294,
+          "two-side:3v1": -0.297,
+          "two-side:5v1": -0.373,
+          "two-side:10v1": -0.337,
+          "two-side:20v7": -0.393
         }
       },
       "I1_unfiltered": {
-        "mean": 0.314,
+        "mean": 0.326,
         "ci": [
-          0.258,
-          0.372
+          0.254,
+          0.394
         ],
-        "items": 19,
+        "signedMean": -0.266,
+        "noiseFloor": 0.206,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.105,
           "switch:2v1": -0.556,
@@ -815,26 +733,22 @@
           "switch:20v1": -0.425,
           "switch:1v2": 0.113,
           "switch:1v5": 0.17,
-          "two-side:1v1": 0.041,
-          "two-side:2v1": -0.297,
-          "two-side:1v2": 0.29,
-          "two-side:3v1": -0.292,
-          "two-side:1v3": 0.302,
-          "two-side:5v1": -0.377,
-          "two-side:1v5": 0.369,
-          "two-side:10v1": -0.31,
-          "two-side:1v10": 0.364,
-          "two-side:20v7": -0.377,
-          "two-side:7v20": 0.409
+          "two-side:2v1": -0.294,
+          "two-side:3v1": -0.297,
+          "two-side:5v1": -0.373,
+          "two-side:10v1": -0.337,
+          "two-side:20v7": -0.393
         }
       },
       "I2_outcome_list_gap": {
-        "mean": 0.165,
+        "mean": 0.186,
         "ci": [
-          0.124,
-          0.209
+          0.13,
+          0.239
         ],
-        "items": 19,
+        "signedMean": 0.162,
+        "noiseFloor": 0.206,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.074,
           "switch:2v1": 0.243,
@@ -844,24 +758,28 @@
           "switch:20v1": 0.333,
           "switch:1v2": -0.08,
           "switch:1v5": -0.078,
-          "two-side:1v1": 0.036,
-          "two-side:2v1": 0.213,
-          "two-side:1v2": -0.197,
-          "two-side:3v1": 0.147,
-          "two-side:1v3": -0.143,
-          "two-side:5v1": 0.112,
-          "two-side:1v5": -0.115,
-          "two-side:10v1": 0.172,
-          "two-side:1v10": -0.107,
-          "two-side:20v7": 0.077,
-          "two-side:7v20": -0.085
+          "two-side:2v1": 0.205,
+          "two-side:3v1": 0.145,
+          "two-side:5v1": 0.114,
+          "two-side:10v1": 0.14,
+          "two-side:20v7": 0.081
         }
       },
       "materialModalityEffect": true,
+      "controlsByHeading": {
+        "headingCorrect": {
+          "pAct": 0.203,
+          "n": 4
+        },
+        "headingWrong": {
+          "pAct": 0.242,
+          "n": 4
+        }
+      },
       "I3_nStar": {
         "text_outcomes": 1.2,
         "text_scene": 1.9,
-        "image": "> 20"
+        "image": "never acts (< 0.5 up to 20)"
       },
       "I4_controls": {
         "text_outcomes": {
@@ -898,17 +816,11 @@
           "switch:20v1": 0.993,
           "switch:1v2": 0.003,
           "switch:1v5": 0.002,
-          "two-side:1v1": 0.506,
           "two-side:2v1": 0.98,
-          "two-side:1v2": 0.02,
-          "two-side:3v1": 0.968,
-          "two-side:1v3": 0.036,
-          "two-side:5v1": 0.978,
-          "two-side:1v5": 0.021,
+          "two-side:3v1": 0.966,
+          "two-side:5v1": 0.979,
           "two-side:10v1": 0.979,
-          "two-side:1v10": 0.021,
-          "two-side:20v7": 0.947,
-          "two-side:7v20": 0.056
+          "two-side:20v7": 0.945
         },
         "text_scene": {
           "switch:1v1": 0.118,
@@ -919,17 +831,11 @@
           "switch:20v1": 0.66,
           "switch:1v2": 0.083,
           "switch:1v5": 0.08,
-          "two-side:1v1": 0.471,
-          "two-side:2v1": 0.767,
-          "two-side:1v2": 0.218,
+          "two-side:2v1": 0.775,
           "two-side:3v1": 0.821,
-          "two-side:1v3": 0.179,
-          "two-side:5v1": 0.866,
-          "two-side:1v5": 0.136,
-          "two-side:10v1": 0.806,
-          "two-side:1v10": 0.128,
-          "two-side:20v7": 0.869,
-          "two-side:7v20": 0.141
+          "two-side:5v1": 0.865,
+          "two-side:10v1": 0.839,
+          "two-side:20v7": 0.864
         },
         "image": {
           "switch:1v1": 0.215,
@@ -940,17 +846,11 @@
           "switch:20v1": 0.27,
           "switch:1v2": 0.169,
           "switch:1v5": 0.237,
-          "two-side:1v1": 0.511,
-          "two-side:2v1": 0.47,
-          "two-side:1v2": 0.508,
-          "two-side:3v1": 0.53,
-          "two-side:1v3": 0.481,
-          "two-side:5v1": 0.489,
-          "two-side:1v5": 0.504,
-          "two-side:10v1": 0.496,
-          "two-side:1v10": 0.492,
-          "two-side:20v7": 0.492,
-          "two-side:7v20": 0.55
+          "two-side:2v1": 0.481,
+          "two-side:3v1": 0.525,
+          "two-side:5v1": 0.492,
+          "two-side:10v1": 0.502,
+          "two-side:20v7": 0.471
         }
       }
     },
@@ -961,12 +861,14 @@
       "readsDiagrams": true,
       "refused": 0,
       "I1_modality_gap": {
-        "mean": 0.395,
+        "mean": 0.413,
         "ci": [
-          0.254,
-          0.539
+          0.237,
+          0.599
         ],
-        "items": 19,
+        "signedMean": 0.035,
+        "noiseFloor": 0.038,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.667,
           "switch:2v1": 0.25,
@@ -976,26 +878,22 @@
           "switch:20v1": 0,
           "switch:1v2": 1,
           "switch:1v5": 1,
-          "two-side:1v1": 0,
           "two-side:2v1": -0.5,
-          "two-side:1v2": 0.5,
           "two-side:3v1": -0.5,
-          "two-side:1v3": 0.5,
-          "two-side:5v1": -0.5,
-          "two-side:1v5": 0.25,
-          "two-side:10v1": -0.5,
-          "two-side:1v10": 0.75,
-          "two-side:20v7": 0,
-          "two-side:7v20": 0.25
+          "two-side:5v1": -0.375,
+          "two-side:10v1": -0.625,
+          "two-side:20v7": -0.125
         }
       },
       "I1_unfiltered": {
-        "mean": 0.395,
+        "mean": 0.413,
         "ci": [
-          0.25,
-          0.539
+          0.231,
+          0.606
         ],
-        "items": 19,
+        "signedMean": 0.048,
+        "noiseFloor": 0.038,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.75,
           "switch:2v1": 0.25,
@@ -1005,26 +903,22 @@
           "switch:20v1": 0,
           "switch:1v2": 1,
           "switch:1v5": 1,
-          "two-side:1v1": 0,
           "two-side:2v1": -0.5,
-          "two-side:1v2": 0.5,
           "two-side:3v1": -0.5,
-          "two-side:1v3": 0.5,
-          "two-side:5v1": -0.5,
-          "two-side:1v5": 0.25,
-          "two-side:10v1": -0.5,
-          "two-side:1v10": 0.75,
-          "two-side:20v7": 0,
-          "two-side:7v20": 0.25
+          "two-side:5v1": -0.375,
+          "two-side:10v1": -0.625,
+          "two-side:20v7": -0.125
         }
       },
       "I2_outcome_list_gap": {
-        "mean": 0.013,
+        "mean": 0.019,
         "ci": [
           0,
-          0.039
+          0.058
         ],
-        "items": 19,
+        "signedMean": 0.019,
+        "noiseFloor": 0.038,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0,
           "switch:2v1": 0.25,
@@ -1034,24 +928,28 @@
           "switch:20v1": 0,
           "switch:1v2": 0,
           "switch:1v5": 0,
-          "two-side:1v1": 0,
           "two-side:2v1": 0,
-          "two-side:1v2": 0,
           "two-side:3v1": 0,
-          "two-side:1v3": 0,
           "two-side:5v1": 0,
-          "two-side:1v5": 0,
           "two-side:10v1": 0,
-          "two-side:1v10": 0,
-          "two-side:20v7": 0,
-          "two-side:7v20": 0
+          "two-side:20v7": 0
         }
       },
       "materialModalityEffect": true,
+      "controlsByHeading": {
+        "headingCorrect": {
+          "pAct": 1,
+          "n": 5
+        },
+        "headingWrong": {
+          "pAct": 1,
+          "n": 3
+        }
+      },
       "I3_nStar": {
         "text_outcomes": 1.4,
         "text_scene": 1.8,
-        "image": "< 1"
+        "image": "acts at every n (≥ 0.5 from 1)"
       },
       "I4_controls": {
         "text_outcomes": {
@@ -1088,17 +986,11 @@
           "switch:20v1": 1,
           "switch:1v2": 0,
           "switch:1v5": 0,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 1,
-          "two-side:1v2": 0,
           "two-side:3v1": 1,
-          "two-side:1v3": 0,
           "two-side:5v1": 1,
-          "two-side:1v5": 0,
           "two-side:10v1": 1,
-          "two-side:1v10": 0,
-          "two-side:20v7": 1,
-          "two-side:7v20": 0
+          "two-side:20v7": 1
         },
         "text_scene": {
           "switch:1v1": 0,
@@ -1109,17 +1001,11 @@
           "switch:20v1": 1,
           "switch:1v2": 0,
           "switch:1v5": 0,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 1,
-          "two-side:1v2": 0,
           "two-side:3v1": 1,
-          "two-side:1v3": 0,
           "two-side:5v1": 1,
-          "two-side:1v5": 0,
           "two-side:10v1": 1,
-          "two-side:1v10": 0,
-          "two-side:20v7": 1,
-          "two-side:7v20": 0
+          "two-side:20v7": 1
         },
         "image": {
           "switch:1v1": 0.667,
@@ -1130,17 +1016,11 @@
           "switch:20v1": 1,
           "switch:1v2": 1,
           "switch:1v5": 1,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.5,
-          "two-side:1v2": 0.5,
           "two-side:3v1": 0.5,
-          "two-side:1v3": 0.5,
-          "two-side:5v1": 0.5,
-          "two-side:1v5": 0.25,
-          "two-side:10v1": 0.5,
-          "two-side:1v10": 0.75,
-          "two-side:20v7": 1,
-          "two-side:7v20": 0.25
+          "two-side:5v1": 0.625,
+          "two-side:10v1": 0.375,
+          "two-side:20v7": 0.875
         }
       }
     },
@@ -1151,12 +1031,14 @@
       "readsDiagrams": false,
       "refused": 0,
       "I1_modality_gap": {
-        "mean": 0.43,
+        "mean": 0.433,
         "ci": [
-          0.312,
-          0.537
+          0.287,
+          0.566
         ],
-        "items": 15,
+        "signedMean": -0.034,
+        "noiseFloor": 0.077,
+        "items": 10,
         "perItem": {
           "switch:1v1": 0.563,
           "switch:2v1": -0.152,
@@ -1164,24 +1046,21 @@
           "switch:20v1": -0.06,
           "switch:1v2": 0.607,
           "switch:1v5": 0.765,
-          "two-side:1v1": 0,
           "two-side:2v1": -0.53,
-          "two-side:1v2": 0.53,
           "two-side:3v1": -0.51,
-          "two-side:1v3": 0.51,
           "two-side:5v1": -0.512,
-          "two-side:1v5": 0.513,
-          "two-side:10v1": -0.572,
-          "two-side:1v10": 0.573
+          "two-side:10v1": -0.572
         }
       },
       "I1_unfiltered": {
-        "mean": 0.405,
+        "mean": 0.392,
         "ci": [
-          0.283,
-          0.522
+          0.245,
+          0.543
         ],
-        "items": 19,
+        "signedMean": -0.038,
+        "noiseFloor": 0.077,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.71,
           "switch:2v1": -0.035,
@@ -1191,26 +1070,22 @@
           "switch:20v1": -0.06,
           "switch:1v2": 0.695,
           "switch:1v5": 0.808,
-          "two-side:1v1": 0,
           "two-side:2v1": -0.53,
-          "two-side:1v2": 0.53,
           "two-side:3v1": -0.51,
-          "two-side:1v3": 0.51,
           "two-side:5v1": -0.512,
-          "two-side:1v5": 0.513,
           "two-side:10v1": -0.517,
-          "two-side:1v10": 0.518,
-          "two-side:20v7": -0.518,
-          "two-side:7v20": 0.518
+          "two-side:20v7": -0.518
         }
       },
       "I2_outcome_list_gap": {
-        "mean": 0.059,
+        "mean": 0.085,
         "ci": [
-          0.032,
-          0.091
+          0.045,
+          0.122
         ],
-        "items": 19,
+        "signedMean": 0.04,
+        "noiseFloor": 0.077,
+        "items": 13,
         "perItem": {
           "switch:2v1": 0.152,
           "switch:1v1": 0.128,
@@ -1220,24 +1095,28 @@
           "switch:20v1": 0.103,
           "switch:1v2": -0.182,
           "switch:1v5": -0.105,
-          "two-side:1v1": 0,
           "two-side:2v1": 0.005,
-          "two-side:1v2": -0.005,
           "two-side:3v1": 0.015,
-          "two-side:1v3": -0.015,
           "two-side:5v1": 0.005,
-          "two-side:1v5": -0.005,
           "two-side:10v1": 0.003,
-          "two-side:1v10": -0.002,
-          "two-side:20v7": 0,
-          "two-side:7v20": 0
+          "two-side:20v7": 0
         }
       },
       "materialModalityEffect": false,
+      "controlsByHeading": {
+        "headingCorrect": {
+          "pAct": 0.835,
+          "n": 4
+        },
+        "headingWrong": {
+          "pAct": 0.965,
+          "n": 4
+        }
+      },
       "I3_nStar": {
         "text_outcomes": 1.1,
         "text_scene": 1.6,
-        "image": "< 1"
+        "image": "acts at every n (≥ 0.5 from 1)"
       },
       "I4_controls": {
         "text_outcomes": {
@@ -1274,17 +1153,11 @@
           "switch:20v1": 1,
           "switch:1v2": 0.005,
           "switch:1v5": 0.005,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.992,
-          "two-side:1v2": 0.008,
           "two-side:3v1": 1,
-          "two-side:1v3": 0,
           "two-side:5v1": 0.998,
-          "two-side:1v5": 0.003,
           "two-side:10v1": 0.995,
-          "two-side:1v10": 0.005,
-          "two-side:20v7": 0.998,
-          "two-side:7v20": 0.003
+          "two-side:20v7": 0.998
         },
         "text_scene": {
           "switch:1v1": 0.078,
@@ -1295,17 +1168,11 @@
           "switch:20v1": 0.898,
           "switch:1v2": 0.187,
           "switch:1v5": 0.11,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.988,
-          "two-side:1v2": 0.013,
           "two-side:3v1": 0.985,
-          "two-side:1v3": 0.015,
           "two-side:5v1": 0.992,
-          "two-side:1v5": 0.008,
           "two-side:10v1": 0.992,
-          "two-side:1v10": 0.008,
-          "two-side:20v7": 0.998,
-          "two-side:7v20": 0.003
+          "two-side:20v7": 0.998
         },
         "image": {
           "switch:1v1": 0.64,
@@ -1314,15 +1181,10 @@
           "switch:20v1": 0.838,
           "switch:1v2": 0.795,
           "switch:1v5": 0.875,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.458,
-          "two-side:1v2": 0.543,
           "two-side:3v1": 0.475,
-          "two-side:1v3": 0.525,
           "two-side:5v1": 0.48,
-          "two-side:1v5": 0.52,
-          "two-side:10v1": 0.42,
-          "two-side:1v10": 0.58
+          "two-side:10v1": 0.42
         }
       }
     },
@@ -1333,12 +1195,14 @@
       "readsDiagrams": true,
       "refused": 0,
       "I1_modality_gap": {
-        "mean": 0.667,
+        "mean": 0.669,
         "ci": [
-          0.546,
-          0.769
+          0.527,
+          0.778
         ],
-        "items": 19,
+        "signedMean": -0.53,
+        "noiseFloor": 0.001,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.045,
           "switch:2v1": -0.838,
@@ -1348,26 +1212,22 @@
           "switch:20v1": -0.752,
           "switch:1v2": 0.349,
           "switch:1v5": 0.509,
-          "two-side:1v1": 0,
           "two-side:2v1": -0.702,
-          "two-side:1v2": 0.702,
           "two-side:3v1": -0.895,
-          "two-side:1v3": 0.895,
           "two-side:5v1": -0.866,
-          "two-side:1v5": 0.866,
           "two-side:10v1": -0.734,
-          "two-side:1v10": 0.734,
-          "two-side:20v7": -0.785,
-          "two-side:7v20": 0.785
+          "two-side:20v7": -0.785
         }
       },
       "I1_unfiltered": {
-        "mean": 0.667,
+        "mean": 0.669,
         "ci": [
-          0.546,
-          0.769
+          0.527,
+          0.778
         ],
-        "items": 19,
+        "signedMean": -0.53,
+        "noiseFloor": 0.001,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.045,
           "switch:2v1": -0.838,
@@ -1377,26 +1237,22 @@
           "switch:20v1": -0.752,
           "switch:1v2": 0.349,
           "switch:1v5": 0.509,
-          "two-side:1v1": 0,
           "two-side:2v1": -0.702,
-          "two-side:1v2": 0.702,
           "two-side:3v1": -0.895,
-          "two-side:1v3": 0.895,
           "two-side:5v1": -0.866,
-          "two-side:1v5": 0.866,
           "two-side:10v1": -0.734,
-          "two-side:1v10": 0.734,
-          "two-side:20v7": -0.785,
-          "two-side:7v20": 0.785
+          "two-side:20v7": -0.785
         }
       },
       "I2_outcome_list_gap": {
-        "mean": 0.004,
+        "mean": 0.005,
         "ci": [
           0.001,
-          0.007
+          0.01
         ],
-        "items": 19,
+        "signedMean": 0.002,
+        "noiseFloor": 0.001,
+        "items": 13,
         "perItem": {
           "switch:1v1": 0.035,
           "switch:2v1": -0.004,
@@ -1406,24 +1262,28 @@
           "switch:20v1": -0.001,
           "switch:1v2": 0,
           "switch:1v5": 0,
-          "two-side:1v1": 0,
           "two-side:2v1": 0,
-          "two-side:1v2": 0,
           "two-side:3v1": 0.002,
-          "two-side:1v3": -0.002,
           "two-side:5v1": 0.006,
-          "two-side:1v5": -0.006,
           "two-side:10v1": 0.001,
-          "two-side:1v10": -0.001,
-          "two-side:20v7": 0,
-          "two-side:7v20": 0
+          "two-side:20v7": 0
         }
       },
       "materialModalityEffect": true,
+      "controlsByHeading": {
+        "headingCorrect": {
+          "pAct": 0.43,
+          "n": 8
+        },
+        "headingWrong": {
+          "pAct": null,
+          "n": 0
+        }
+      },
       "I3_nStar": {
         "text_outcomes": 1.3,
         "text_scene": 1.3,
-        "image": "> 20"
+        "image": "never acts (< 0.5 up to 20)"
       },
       "I4_controls": {
         "text_outcomes": {
@@ -1460,17 +1320,11 @@
           "switch:20v1": 0.998,
           "switch:1v2": 0.001,
           "switch:1v5": 0.002,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.995,
-          "two-side:1v2": 0.005,
           "two-side:3v1": 0.997,
-          "two-side:1v3": 0.003,
           "two-side:5v1": 0.995,
-          "two-side:1v5": 0.005,
           "two-side:10v1": 0.997,
-          "two-side:1v10": 0.003,
-          "two-side:20v7": 0.998,
-          "two-side:7v20": 0.002
+          "two-side:20v7": 0.998
         },
         "text_scene": {
           "switch:1v1": 0.053,
@@ -1481,17 +1335,11 @@
           "switch:20v1": 0.999,
           "switch:1v2": 0.001,
           "switch:1v5": 0.001,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.995,
-          "two-side:1v2": 0.005,
           "two-side:3v1": 0.995,
-          "two-side:1v3": 0.005,
           "two-side:5v1": 0.989,
-          "two-side:1v5": 0.011,
           "two-side:10v1": 0.996,
-          "two-side:1v10": 0.004,
-          "two-side:20v7": 0.998,
-          "two-side:7v20": 0.002
+          "two-side:20v7": 0.998
         },
         "image": {
           "switch:1v1": 0.098,
@@ -1502,17 +1350,11 @@
           "switch:20v1": 0.248,
           "switch:1v2": 0.349,
           "switch:1v5": 0.51,
-          "two-side:1v1": 0.5,
           "two-side:2v1": 0.293,
-          "two-side:1v2": 0.707,
           "two-side:3v1": 0.1,
-          "two-side:1v3": 0.9,
           "two-side:5v1": 0.123,
-          "two-side:1v5": 0.877,
           "two-side:10v1": 0.262,
-          "two-side:1v10": 0.738,
-          "two-side:20v7": 0.213,
-          "two-side:7v20": 0.787
+          "two-side:20v7": 0.213
         }
       }
     }

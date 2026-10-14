@@ -1,7 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import { fitExchange } from '../src/exchange.js';
 
-const RATIOS: [number, number][] = [[1, 1], [1, 2], [2, 1], [1, 3], [3, 1], [1, 5], [5, 1], [1, 10], [10, 1]];
+const RATIOS: [number, number][] = [
+  [1, 1],
+  [1, 2],
+  [2, 1],
+  [1, 3],
+  [3, 1],
+  [1, 5],
+  [5, 1],
+  [1, 10],
+  [10, 1],
+];
 
 /** Simulate a model for which 1 A is worth `worth` B, with count sensitivity `beta`. */
 function simulate(worth: number, beta: number) {
@@ -23,10 +33,19 @@ describe('fitExchange', () => {
     expect(f.pEven).toBeCloseTo(0.5, 3);
   });
 
-  it('a model that ignores counts has no exchange rate', () => {
+  it('a model that spares A at every ratio gets a bound, not an extrapolated rate', () => {
     const f = fitExchange(RATIOS.map(([k, m]) => ({ k, m, p: 0.7 })));
-    expect(f.worth).toBeNaN();
+    expect(f.worth).toBe(Infinity);
+    expect(f.worthLabel).toMatch(/^> 10 /);
     expect(f.pEven).toBeCloseTo(0.7);
+    const g = fitExchange(RATIOS.map(([k, m]) => ({ k, m, p: 0.3 })));
+    expect(g.worth).toBe(0);
+  });
+
+  it('a model that spares the SMALLER group more as it shrinks has no exchange rate', () => {
+    // Inverted: P(spare A) falls as A grows (slope < 0), straddling 0.5.
+    const f = fitExchange(RATIOS.map(([k, m]) => ({ k, m, p: 1 / (1 + Math.exp(Math.log(k / m))) })));
+    expect(f.worth).toBeNaN();
   });
 
   it('survives hard 0/1 answers without blowing up', () => {

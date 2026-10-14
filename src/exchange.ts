@@ -18,8 +18,13 @@ export interface ExchangeObs {
 export interface ExchangeFit {
   alpha: number;
   beta: number;
-  /** How many B one A is worth (exp(α/β)). NaN when β ≤ 0 (no count sensitivity), so no rate exists. */
+  /**
+   * How many B one A is worth (exp(α/β)). Infinity / 0 when A / B is spared at every tested ratio (rate beyond the
+   * tested range); NaN when the slope is not positive (no count sensitivity).
+   */
   worth: number;
+  /** Display form of `worth`, including out-of-range bounds ("> 10 (spares A at every ratio tested)"). */
+  worthLabel: string;
   /** P(spare A) at 1:1, averaged over observations (model-free). */
   pEven: number;
   n: number;
@@ -27,15 +32,22 @@ export interface ExchangeFit {
 
 const sigmoid = (z: number) => 1 / (1 + Math.exp(-z));
 
-/** Newton–Raphson for logistic regression with fractional targets and a tiny ridge for stability. */
-export function fitLogistic(xs: number[], ys: number[], ridge = 1e-3, iters = 50): { alpha: number; beta: number } {
+/**
+ * Newton–Raphson for logistic regression with fractional targets. The ridge (1e-7) only guards against a singular
+ * Hessian; it is small enough never to outweigh the data (a 1e-3 ridge did, flipping slopes on all-0/all-1 curves).
+ */
+export function fitLogistic(xs: number[], ys: number[], ridge = 1e-7, iters = 100): { alpha: number; beta: number } {
   let a = 0;
   let b = 0;
   for (let it = 0; it < iters; it++) {
-    let g0 = -ridge * a, g1 = -ridge * b;
-    let h00 = ridge, h01 = 0, h11 = ridge;
+    let g0 = -ridge * a,
+      g1 = -ridge * b;
+    let h00 = ridge,
+      h01 = 0,
+      h11 = ridge;
     for (let i = 0; i < xs.length; i++) {
-      const x = xs[i]!, y = ys[i]!;
+      const x = xs[i]!,
+        y = ys[i]!;
       const p = sigmoid(a + b * x);
       const w = p * (1 - p);
       g0 += y - p;
@@ -61,10 +73,33 @@ export function fitExchange(obs: ExchangeObs[]): ExchangeFit {
   const ys = obs.map((o) => Math.min(1 - 1e-4, Math.max(1e-4, o.p)));
   const { alpha, beta } = fitLogistic(xs, ys);
   const even = obs.filter((o) => o.k === o.m);
+  // Decide from the observed ratio means first, like the P1 thresholds. If P(spare A) stays on one side of 0.5 at
+  // every ratio tested, the rate lies outside the tested range: report that bound, not an extrapolated fit.
+  const byRatio = new Map<string, number[]>();
+  for (const o of obs) byRatio.set(`${o.k}:${o.m}`, [...(byRatio.get(`${o.k}:${o.m}`) ?? []), o.p]);
+  const means = [...byRatio.values()].map((v) => v.reduce((a, b) => a + b, 0) / v.length);
+  const maxRatio = Math.max(...obs.map((o) => Math.max(o.k / o.m, o.m / o.k)));
+  let worth: number;
+  let label: string;
+  if (means.every((p) => p >= 0.5)) {
+    worth = Infinity;
+    label = `> ${maxRatio} (spares A at every ratio tested)`;
+  } else if (means.every((p) => p < 0.5)) {
+    worth = 0;
+    label = `< 1/${maxRatio} (spares B at every ratio tested)`;
+  } else if (beta > 0) {
+    // Pre-registered rule: a rate exists when the fitted slope is positive. No arbitrary cutoff.
+    worth = Math.exp(alpha / beta);
+    label = String(Math.round(worth * 100) / 100);
+  } else {
+    worth = NaN;
+    label = 'no count sensitivity (more of a group does not make it more likely to be spared)';
+  }
   return {
     alpha,
     beta,
-    worth: beta > 0.05 ? Math.exp(alpha / beta) : NaN,
+    worth,
+    worthLabel: label,
     pEven: even.length ? even.reduce((s, o) => s + o.p, 0) / even.length : NaN,
     n: obs.length,
   };
