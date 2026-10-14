@@ -1,0 +1,1733 @@
+{
+ "createdAt": "2026-10-14T21:14:36.589Z",
+ "rows": [
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "a",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/a-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "a",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/a-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "a",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/a-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "a",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/a-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/a-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    4,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/a-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    5
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "b",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/b-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "b",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/b-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "b",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/b-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "b",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/b-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/b-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    4,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/b-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    4
+   ],
+   "correct": false
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "a",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/a-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "a",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/a-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "a",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/a-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "a",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/a-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/a-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    5,
+    1
+   ],
+   "correct": true
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/a-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    5
+   ],
+   "correct": true
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "b",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/b-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "b",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/b-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "b",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/b-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "b",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/b-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    1,
+    2
+   ],
+   "correct": false
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/b-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    4,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "liquid/d1",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/b-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    4
+   ],
+   "correct": false
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "a",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/a-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "a",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/a-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "a",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/a-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "a",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/a-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/a-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    5,
+    1
+   ],
+   "correct": true
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/a-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    5
+   ],
+   "correct": true
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "b",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/b-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "b",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/b-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "b",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/b-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "b",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/b-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/b-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    4,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/b-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    4
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "a",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/a-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "a",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/a-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "a",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/a-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "a",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/a-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/a-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    5,
+    1
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/a-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    5
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "b",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/b-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "b",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/b-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "b",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/b-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    1,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "b",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/b-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/b-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    4,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/b-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    4
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "a",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/a-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "a",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/a-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "a",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/a-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "a",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/a-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/a-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    4,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/a-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    4
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "b",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/b-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "b",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/b-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "b",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/b-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "b",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/b-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    1,
+    2
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/b-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    3,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/b-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    4
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "a",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/a-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "a",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/a-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "a",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/a-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    2
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "a",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/a-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    2,
+    2
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/a-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    4,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/a-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    5
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "b",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/b-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "b",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/b-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "b",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/b-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    1,
+    2
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "b",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/b-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    1,
+    2
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/b-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    4,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/b-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    2,
+    4
+   ],
+   "correct": false
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "a",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/a-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "a",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/a-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "a",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/a-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "a",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/a-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/a-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    5,
+    1
+   ],
+   "correct": true
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/a-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    5
+   ],
+   "correct": true
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "b",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/b-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "b",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/b-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "b",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/b-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    2
+   ],
+   "correct": false
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "b",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/b-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/b-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    3,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/b-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    4
+   ],
+   "correct": false
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "a",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/a-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "a",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/a-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "a",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/a-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "a",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/a-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/a-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    5,
+    1
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/a-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    5
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "b",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/b-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "b",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/b-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "b",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/b-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "b",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/b-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/b-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    4,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/b-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    4
+   ],
+   "correct": false
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "a",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/a-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "a",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/a-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "a",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/a-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    2,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "a",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/a-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/a-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    6,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "a",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/a-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    5
+   ],
+   "correct": true
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "b",
+   "content": "empty",
+   "mirror": false,
+   "path": "assets/real/b-empty.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "b",
+   "content": "empty",
+   "mirror": true,
+   "path": "assets/real/b-empty-mirror.jpg",
+   "truth": [
+    0,
+    0
+   ],
+   "got": [
+    0,
+    0
+   ],
+   "correct": true
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "b",
+   "content": "two",
+   "mirror": false,
+   "path": "assets/real/b-two.jpg",
+   "truth": [
+    2,
+    0
+   ],
+   "got": [
+    1,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "b",
+   "content": "two",
+   "mirror": true,
+   "path": "assets/real/b-two-mirror.jpg",
+   "truth": [
+    0,
+    2
+   ],
+   "got": [
+    0,
+    2
+   ],
+   "correct": true
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": false,
+   "path": "assets/real/b-51.jpg",
+   "truth": [
+    5,
+    1
+   ],
+   "got": [
+    4,
+    1
+   ],
+   "correct": false
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "plate": "b",
+   "content": "five-one",
+   "mirror": true,
+   "path": "assets/real/b-51-mirror.jpg",
+   "truth": [
+    1,
+    5
+   ],
+   "got": [
+    1,
+    4
+   ],
+   "correct": false
+  }
+ ]
+}

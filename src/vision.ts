@@ -54,7 +54,12 @@ async function post(url: string, key: string, body: unknown, signal?: AbortSigna
   }
 }
 
-export type State = { kind: 'text'; text: string } | { kind: 'image'; url: string };
+export type State =
+  | { kind: 'text'; text: string }
+  | { kind: 'image'; url: string }
+  /** Text and an image in one state (text first), e.g. a controller log plus a camera frame. */
+  | { kind: 'text+image'; text: string; url: string };
+const mediaTypeOf = (url: string) => /^data:([^;,]+)/.exec(url)?.[1] ?? 'image/png';
 
 /** Back-compat helper: ask about one image. */
 export const askImage = (s: Subject, imageDataUrl: string, questions: Record<string, Question>, signal?: AbortSignal) =>
@@ -84,9 +89,8 @@ export async function ask(
           {
             role: 'user',
             content: [
-              state.kind === 'image'
-                ? { type: 'input_image', image_url: state.url }
-                : { type: 'input_text', text: state.text },
+              ...(state.kind !== 'image' ? [{ type: 'input_text', text: state.text }] : []),
+              ...(state.kind !== 'text' ? [{ type: 'input_image', image_url: state.url }] : []),
             ],
           },
         ],
@@ -127,9 +131,8 @@ export async function ask(
     model: s.id,
     ...(route === 'or-systemone' && s.host ? { provider: { order: [s.host], allow_fallbacks: false } } : {}),
     state: [
-      state.kind === 'image'
-        ? { type: 'image_url', image_url: { url: state.url } }
-        : { type: 'text', text: state.text },
+      ...(state.kind !== 'image' ? [{ type: 'text', text: state.text }] : []),
+      ...(state.kind !== 'text' ? [{ type: 'image_url', image_url: { url: state.url } }] : []),
     ],
     questions: Object.fromEntries(
       Object.entries(questions).map(([k, q]) => [
@@ -193,9 +196,10 @@ async function askChat(s: Subject, state: State, questions: Record<string, Quest
         {
           role: 'user',
           content: [
-            state.kind === 'image'
-              ? { type: 'image' as const, image: state.url.split(',')[1]!, mediaType: 'image/png' }
-              : { type: 'text' as const, text: state.text },
+            ...(state.kind !== 'image' ? [{ type: 'text' as const, text: state.text }] : []),
+            ...(state.kind !== 'text'
+              ? [{ type: 'image' as const, image: state.url.split(',')[1]!, mediaType: mediaTypeOf(state.url) }]
+              : []),
             { type: 'text' as const, text },
           ],
         },
