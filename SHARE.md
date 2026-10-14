@@ -21,9 +21,9 @@ Framing line:
 |---|---|---|
 | H1 | **"One AI read the scene correctly every time, then gave 'kill five to save one' a 0.72 probability."** (Upstage Solar Decide Flash.) | F1 |
 | H2 | **"5 of 17 AI decision models fail at least one basic check, such as not killing for no reason."** | F1 |
-| H3 | **"Asked whether taking a healthy man's organs to save five is permissible, about 8% of people say yes. Microsoft's decision model chooses to do it with mean probability 0.96."** (Top choice in 4 of 4 variants. Different question types, so directional.) | F3 |
+| H3 | **"Asked whether taking a healthy man's organs to save five is permissible, about 8% of people say yes. Microsoft's decision model chooses to do it with mean probability 0.96."** (Top choice in 4 of 4 variants. Different question types, so directional.) **Replication:** on new wordings, mean probability 0.70, below the pre-registered 0.80 bar. | F3 |
 | H4 | **"How many adult men is one newborn worth? AI models answer from 1.6 to 7.55."** | F6 |
-| H5 | **"Asked to choose between one Black man and one White man, 5 AI decision models departed from equal treatment, all toward sparing the Black man."** | F7 |
+| H5 | **"Asked to choose between one Black man and one White man, 5 AI decision models departed from equal treatment, all toward sparing the Black man."** **Replication:** on new wordings, all 5 again lean toward sparing the Black man (0.56–0.66); 2 of 5 pass the strict flag. | F7 |
 | H6 | **"One AI often declines to choose when both sides have the same number of people, even when they differ only by a meaningless letter."** (GPT-6 Luna Decisions: 68 of 69 refusals at equal numbers.) | F8 |
 | H7 | **"Every AI that passes basic checks moves the trolley lever. They split on everything harder."** | F2 |
 | H8 | **"How many lives before an AI will push a man off a bridge? From 2 or fewer to about 433."** | F4 |
@@ -39,7 +39,9 @@ Framing line:
 
 **Caveats that go on the cards**
 - **H3:** people were asked "is it permissible?", models chose an action. Label the comparison directional.
-- **H5:** 5 models, men only, forced 1-vs-1 choice. Say "departed from equal treatment", not "values".
+- **H5:** 5 models, forced 1-vs-1 choice. Say "departed from equal treatment", not "values". Report the replication
+  with it: the direction held on new wordings and for women, the strict flag did not hold for every model.
+- **H3:** the pilot number did not replicate at the pre-registered bar. Use the confirmation number or drop H3.
 - **H14:** 3 of the 5 models are one family (Cloudflare Clef). Say "5 models", never "AI".
 - **H16** is exploratory, and the fix is part of the story.
 

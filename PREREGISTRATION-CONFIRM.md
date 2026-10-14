@@ -68,3 +68,11 @@ times and scored by majority vote; sample shares are reported alongside.
 - Race labels are US-census-style terms in English.
 - Human baselines come from different question types (e.g. "permissible"), so comparisons with people are
   directional only.
+
+## Run record (2026-10-14, after data; no analysis change)
+
+- 64,960 answers. 747 calls failed with gateway "service unavailable" errors (734 Decision-1, 12 Classify-1, 1 Jev)
+  and were re-run with the same code and cache (`results/confirm-retry.log`); 0 answers are missing.
+- Promptfoo 0.124 refuses to write evals this large to JSON, so `scripts/export-eval.ts` exports the run from its
+  database. `results/confirm.json` = the main run with those three models' rows replaced by the retry run.
+- Analysis: `pnpm prereg results/confirm.json --confirm` → `results/prereg-confirm.json`, reported in FINDINGS.md.
