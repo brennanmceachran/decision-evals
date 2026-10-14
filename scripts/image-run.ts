@@ -17,7 +17,7 @@ const tag = arg('tag') ?? 'pilot';
 const only = arg('only');
 const limit = arg('limit') ? Number(arg('limit')) : undefined;
 const concurrency = Number(arg('concurrency') ?? 8);
-const version = (arg('version') ?? 'v2') as StudyVersion;
+const version = (arg('version') ?? 'v3') as StudyVersion;
 const CACHE_VERSION = 1;
 const CACHE_DIR = '.cache/image-study';
 

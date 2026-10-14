@@ -3,7 +3,7 @@
 import { execSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
-import { RULE, trials, type StudyVersion } from '../src/image-study.js';
+import { ROUTE_LEGEND, RULE, trials, type StudyVersion } from '../src/image-study.js';
 import { SUBJECTS } from '../src/subjects.js';
 import { canSeeImages } from '../src/vision.js';
 
@@ -33,6 +33,7 @@ const manifest = {
   excluded,
   version,
   rule: version === 'v1' ? null : RULE,
+  routeLegendInImageQuestions: version === 'v3' ? ROUTE_LEGEND : null,
   trials: ts.length,
   trialsSha256: sha(
     ts

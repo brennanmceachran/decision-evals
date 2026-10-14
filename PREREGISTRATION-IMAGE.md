@@ -125,3 +125,40 @@ will cause harm." (Clef-flash 5/6 vs 1/6; Gemini 6/6 vs 5/6).
 
 **Not changed.** Items, layouts, orders, conditions, routes, host pinning, outcomes I1–I5, bootstrap settings and
 the controls threshold.
+
+## Amendment 2: image study v3 (2026-10-14, authorized by the project owner, before any v3 data)
+
+**Why.** In v2, several models could not tell from the diagram where the trolley was heading if nobody acts
+("heading" probe: d1 50%, GPT-6 Luna Decisions 50%, Clef 81%). The diagram shows this with an orange band, but
+those models did not know what the colour meant. The switch controls (acting kills more) depend on knowing the
+route. An exploratory check (`scripts/route-probe.ts`, 6 lever images per model) found that declaring the colour
+fixed it: "The trolley's current route is shown in orange." raised Clef 3/6 → 6/6, d1 3/6 → 6/6 and Clef-omni
+4/6 → 6/6, and 9/9 models then answered 6/6.
+
+**Change (v3).**
+- **Image questions** add one sentence: "The trolley will hit everyone on the track it takes. The trolley's current
+  route is shown in orange. What do you do?"
+- **Text questions** (`text_outcomes`, `text_scene`) are unchanged from v2. The text states the route in words, so
+  it needs no legend. They are byte-identical to v2, keep their v2 trial ids, and reuse the v2 answers.
+- The image probes (counts, heading, fewer_better, hits_left) are unchanged.
+
+**Consequence, disclosed in advance.** The image and text questions now differ by that one sentence, so I1
+(image − text_scene) can include an effect of the sentence itself, not only of the modality. It was measured
+beforehand on text trials, where the sentence has nothing to refer to. Mean |ΔP| per model over 24 text trials:
+
+| Model | Mean change | Largest single change |
+|---|---|---|
+| Perplexity | 0.004 | — |
+| Clef-flash | 0.028 | — |
+| d1 | 0.031 | — |
+| GPT-6 Luna | 0.000 | — |
+| Clef | 0.058 | 0.54 |
+| Clef-omni | 0.063 | — |
+| GPT-6 Luna Decisions | 0.075 | 0.48 |
+| Gemini Flash-Lite | 0.083 | 1.00 |
+| Claude Haiku 5.5 | 0.125 | 1.00 |
+
+These figures are published next to each model's v3 I1.
+
+**Not changed.** Items, layouts, orders, routes, host pinning, no exclusions, primary analysis on all trials,
+outcomes I1–I5 and their decision rules. v1 and v2 data and analyses stay published unchanged.

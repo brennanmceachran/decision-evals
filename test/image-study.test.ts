@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CONDITIONS, RULE, trials, type Trial } from '../src/image-study.js';
+import { CONDITIONS, ROUTE_LEGEND, RULE, trials, type Trial } from '../src/image-study.js';
 import { layout } from '../src/render/diagram.js';
 
 const all = trials();
@@ -20,13 +20,18 @@ describe('image study trials', () => {
     expect(new Set(all.map((t) => t.id)).size).toBe(all.length);
   });
 
-  it('the three conditions of a trial share question, buttons and scored button exactly', () => {
+  it('the three conditions of a trial share buttons and scored button; text conditions share the question exactly', () => {
     const key = (t: Trial) => `${t.item}|${t.mirror}|${t.order}`;
     const groups = new Map<string, Trial[]>();
     for (const t of all) groups.set(key(t), [...(groups.get(key(t)) ?? []), t]);
     for (const ts of groups.values()) {
       expect(ts.map((t) => t.condition).sort()).toEqual([...CONDITIONS].sort());
-      expect(new Set(ts.map((t) => JSON.stringify([t.question, t.criteria, t.focalKey]))).size).toBe(1);
+      expect(new Set(ts.map((t) => JSON.stringify([t.criteria, t.focalKey]))).size).toBe(1);
+      const text = ts.filter((t) => t.condition !== 'image');
+      expect(new Set(text.map((t) => t.question)).size).toBe(1);
+      // v3 (Amendment 2): the image question = the text question + exactly one route-legend sentence.
+      const img = ts.find((t) => t.condition === 'image')!;
+      expect(img.question).toBe(text[0]!.question.replace('What do you do?', `${ROUTE_LEGEND} What do you do?`));
     }
   });
 
@@ -75,17 +80,31 @@ describe('image study trials', () => {
     }
   });
 
-  it('v2 puts the same neutral rule in every condition, and nowhere else', () => {
+  it('v3: the rule is in every question; the route legend only in image questions; neither inside a scene', () => {
     for (const t of all) {
-      expect(t.version).toBe('v2');
-      expect(t.question).toBe(`${RULE} What do you do?`);
-      if (t.state.kind === 'text') expect(t.state.text.includes(RULE)).toBe(false);
+      expect(t.version).toBe('v3');
+      expect(t.question.startsWith(`${RULE} `)).toBe(true);
+      expect(t.question.includes(ROUTE_LEGEND)).toBe(t.condition === 'image');
+      if (t.state.kind === 'text')
+        expect(t.state.text.includes(RULE) || t.state.text.includes(ROUTE_LEGEND)).toBe(false);
+    }
+  });
+
+  it('v3 text trials are byte-identical to v2 (same ids); v3 image trials are new', () => {
+    const v2 = new Map(trials({ version: 'v2' }).map((t) => [t.id, t]));
+    for (const t of all) {
+      if (t.condition === 'image') expect(v2.has(t.id)).toBe(false);
+      else {
+        const twin = v2.get(t.id)!;
+        expect(twin).toBeDefined();
+        expect([twin.question, twin.state, twin.criteria]).toEqual([t.question, t.state, t.criteria]);
+      }
     }
   });
 
   it('trial ids change whenever anything the model sees changes (no stale cache hits)', () => {
     const v1 = trials({ version: 'v1' });
-    const v2ids = new Set(all.map((t) => t.id));
+    const v2ids = new Set(trials({ version: 'v2' }).map((t) => t.id));
     expect(v1.filter((t) => v2ids.has(t.id))).toHaveLength(0);
     // Same item/layout/order/condition but a different question must not share an id.
     for (const t of v1) expect(v2ids.has(t.id)).toBe(false);
