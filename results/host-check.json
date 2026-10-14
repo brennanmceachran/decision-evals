@@ -1,0 +1,2838 @@
+{
+ "createdAt": "2026-10-14T19:27:18.887Z",
+ "variants": 36,
+ "summary": {
+  "cloudflare/clef": {
+   "Cloudflare vs PrimeIntellect": {
+    "n": 36,
+    "meanAbsDiff": 0.04263333333333332,
+    "maxAbsDiff": 0.22839999999999994
+   },
+   "Cloudflare vs DeepInfra": {
+    "n": 36,
+    "meanAbsDiff": 0.041505555555555546,
+    "maxAbsDiff": 0.18069999999999997
+   }
+  },
+  "cloudflare/clef-flash": {
+   "Cloudflare vs PrimeIntellect": {
+    "n": 36,
+    "meanAbsDiff": 0.08286111111111114,
+    "maxAbsDiff": 0.4752
+   }
+  },
+  "jaredpalmer/kev-4b": {
+   "SiliconFlow vs Phala": {
+    "n": 36,
+    "meanAbsDiff": 0.0036277777777777753,
+    "maxAbsDiff": 0.018100000000000005
+   }
+  }
+ },
+ "images": {
+  "Cloudflare": {
+   "colour": {
+    "probabilities": {
+     "red": 0.9955,
+     "blue": 0.0022,
+     "green": 0.0023
+    },
+    "choice": "red",
+    "cost": 0.00009624,
+    "servedBy": "Cloudflare"
+   },
+   "countLeftBoxTruth3": {
+    "probabilities": {
+     "1": 0.0016,
+     "2": 0.0018,
+     "3": 0.9925,
+     "4": 0.0022,
+     "5": 0.0019
+    },
+    "choice": "3",
+    "cost": 0.00027648,
+    "servedBy": "Cloudflare"
+   }
+  },
+  "PrimeIntellect": {
+   "error": "HTTP 400 https://openrouter.ai/api/v1/systemone: {\"error\":{\"message\":\"PrimeIntellect does not accept \\\"image_url\\\" parts in state\",\"code\":400}}"
+  },
+  "DeepInfra": {
+   "error": "HTTP 400 https://openrouter.ai/api/v1/systemone: {\"error\":{\"message\":\"DeepInfra does not accept \\\"image_url\\\" parts in state\",\"code\":400}}"
+  }
+ },
+ "rows": [
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "1f9901751480",
+   "dilemma": "exchange-age",
+   "pAct": 0.8482,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "c7689da9be14",
+   "dilemma": "parity-race",
+   "pAct": 0.6685,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "2eaa8c877533",
+   "dilemma": "transplant",
+   "pAct": 0.127,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "cb8da5df2ac8",
+   "dilemma": "footbridge",
+   "pAct": 0.1678,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "677972abcff5",
+   "dilemma": "exchange-age",
+   "pAct": 0.8172,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "a466ef61f486",
+   "dilemma": "switch",
+   "pAct": 0.9899,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "39f749110251",
+   "dilemma": "transplant",
+   "pAct": 0.0451,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "5a59a23473ec",
+   "dilemma": "parity-race",
+   "pAct": 0.6208,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "88018b688200",
+   "dilemma": "transplant",
+   "pAct": 0.1963,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "5f8bda2e990f",
+   "dilemma": "transplant",
+   "pAct": 0.0568,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "1ca15be86b09",
+   "dilemma": "exchange-age",
+   "pAct": 0.741,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "4e337d4e5966",
+   "dilemma": "footbridge",
+   "pAct": 0.2835,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "b63545b227ae",
+   "dilemma": "parity-race",
+   "pAct": 0.5699,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "3fb237dd2fd1",
+   "dilemma": "footbridge",
+   "pAct": 0.8267,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "289ec032d1f7",
+   "dilemma": "switch",
+   "pAct": 0.1548,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "6b262af12564",
+   "dilemma": "footbridge",
+   "pAct": 0.2323,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "27f6a4609157",
+   "dilemma": "parity-race",
+   "pAct": 0.8376,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "2970d1db5a0a",
+   "dilemma": "switch",
+   "pAct": 0.9856,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "2511f0889407",
+   "dilemma": "switch",
+   "pAct": 0.9904,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "29d0057199c5",
+   "dilemma": "transplant",
+   "pAct": 0.201,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "6ba9b9f5979e",
+   "dilemma": "switch",
+   "pAct": 0.0951,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "41888b8c4cf6",
+   "dilemma": "exchange-age",
+   "pAct": 0.8413,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "c575e43c2f02",
+   "dilemma": "footbridge",
+   "pAct": 0.333,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "a7c89d494b7e",
+   "dilemma": "switch",
+   "pAct": 0.9804,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "4e4b1ef331f7",
+   "dilemma": "exchange-age",
+   "pAct": 0.7621,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "7270d77bdf62",
+   "dilemma": "parity-race",
+   "pAct": 0.3753,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "279c99a9c41f",
+   "dilemma": "footbridge",
+   "pAct": 0.4576,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "bc4f6964025f",
+   "dilemma": "footbridge",
+   "pAct": 0.2619,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "80d7eb7b3819",
+   "dilemma": "transplant",
+   "pAct": 0.1124,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "f5aab269c14e",
+   "dilemma": "transplant",
+   "pAct": 0.0802,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "bd3fda6c54d7",
+   "dilemma": "transplant",
+   "pAct": 0.105,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "358b1699bd4d",
+   "dilemma": "exchange-age",
+   "pAct": 0.7854,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "1b9a9d730308",
+   "dilemma": "footbridge",
+   "pAct": 0.307,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "5787d07d2ed5",
+   "dilemma": "switch",
+   "pAct": 0.1004,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "eea38e6e9d1d",
+   "dilemma": "parity-race",
+   "pAct": 0.7439,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "Cloudflare",
+   "variant": "470be7c0acac",
+   "dilemma": "switch",
+   "pAct": 0.0982,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "6b262af12564",
+   "dilemma": "footbridge",
+   "pAct": 0.2444,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "7270d77bdf62",
+   "dilemma": "parity-race",
+   "pAct": 0.4378,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "4e337d4e5966",
+   "dilemma": "footbridge",
+   "pAct": 0.3124,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "6ba9b9f5979e",
+   "dilemma": "switch",
+   "pAct": 0.0764,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "1b9a9d730308",
+   "dilemma": "footbridge",
+   "pAct": 0.2613,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "2511f0889407",
+   "dilemma": "switch",
+   "pAct": 0.9902,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "279c99a9c41f",
+   "dilemma": "footbridge",
+   "pAct": 0.5708,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "1f9901751480",
+   "dilemma": "exchange-age",
+   "pAct": 0.8019,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "eea38e6e9d1d",
+   "dilemma": "parity-race",
+   "pAct": 0.7957,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "f5aab269c14e",
+   "dilemma": "transplant",
+   "pAct": 0.0464,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "5f8bda2e990f",
+   "dilemma": "transplant",
+   "pAct": 0.0583,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "c575e43c2f02",
+   "dilemma": "footbridge",
+   "pAct": 0.2728,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "27f6a4609157",
+   "dilemma": "parity-race",
+   "pAct": 0.8679,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "289ec032d1f7",
+   "dilemma": "switch",
+   "pAct": 0.1074,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "80d7eb7b3819",
+   "dilemma": "transplant",
+   "pAct": 0.1667,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "a466ef61f486",
+   "dilemma": "switch",
+   "pAct": 0.9918,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "3fb237dd2fd1",
+   "dilemma": "footbridge",
+   "pAct": 0.5983,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "5a59a23473ec",
+   "dilemma": "parity-race",
+   "pAct": 0.6343,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "1ca15be86b09",
+   "dilemma": "exchange-age",
+   "pAct": 0.7642,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "cb8da5df2ac8",
+   "dilemma": "footbridge",
+   "pAct": 0.2621,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "41888b8c4cf6",
+   "dilemma": "exchange-age",
+   "pAct": 0.7994,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "88018b688200",
+   "dilemma": "transplant",
+   "pAct": 0.1597,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "b63545b227ae",
+   "dilemma": "parity-race",
+   "pAct": 0.7009,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "bc4f6964025f",
+   "dilemma": "footbridge",
+   "pAct": 0.2207,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "470be7c0acac",
+   "dilemma": "switch",
+   "pAct": 0.0863,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "bd3fda6c54d7",
+   "dilemma": "transplant",
+   "pAct": 0.05,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "2970d1db5a0a",
+   "dilemma": "switch",
+   "pAct": 0.9889,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "a7c89d494b7e",
+   "dilemma": "switch",
+   "pAct": 0.9879,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "2eaa8c877533",
+   "dilemma": "transplant",
+   "pAct": 0.096,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "c7689da9be14",
+   "dilemma": "parity-race",
+   "pAct": 0.6095,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "4e4b1ef331f7",
+   "dilemma": "exchange-age",
+   "pAct": 0.7476,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "5787d07d2ed5",
+   "dilemma": "switch",
+   "pAct": 0.1105,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "29d0057199c5",
+   "dilemma": "transplant",
+   "pAct": 0.2031,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "358b1699bd4d",
+   "dilemma": "exchange-age",
+   "pAct": 0.784,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "39f749110251",
+   "dilemma": "transplant",
+   "pAct": 0.0651,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "PrimeIntellect",
+   "variant": "677972abcff5",
+   "dilemma": "exchange-age",
+   "pAct": 0.9173,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "c7689da9be14",
+   "dilemma": "parity-race",
+   "pAct": 0.6058,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "1ca15be86b09",
+   "dilemma": "exchange-age",
+   "pAct": 0.7649,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "cb8da5df2ac8",
+   "dilemma": "footbridge",
+   "pAct": 0.2636,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "a466ef61f486",
+   "dilemma": "switch",
+   "pAct": 0.9919,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "b63545b227ae",
+   "dilemma": "parity-race",
+   "pAct": 0.7033,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "2511f0889407",
+   "dilemma": "switch",
+   "pAct": 0.99,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "1f9901751480",
+   "dilemma": "exchange-age",
+   "pAct": 0.8007,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "2eaa8c877533",
+   "dilemma": "transplant",
+   "pAct": 0.0981,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "88018b688200",
+   "dilemma": "transplant",
+   "pAct": 0.17,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "6b262af12564",
+   "dilemma": "footbridge",
+   "pAct": 0.2465,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "677972abcff5",
+   "dilemma": "exchange-age",
+   "pAct": 0.9179,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "80d7eb7b3819",
+   "dilemma": "transplant",
+   "pAct": 0.1603,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "2970d1db5a0a",
+   "dilemma": "switch",
+   "pAct": 0.9881,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "470be7c0acac",
+   "dilemma": "switch",
+   "pAct": 0.0833,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "3fb237dd2fd1",
+   "dilemma": "footbridge",
+   "pAct": 0.646,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "1b9a9d730308",
+   "dilemma": "footbridge",
+   "pAct": 0.2775,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "5f8bda2e990f",
+   "dilemma": "transplant",
+   "pAct": 0.0575,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "4e337d4e5966",
+   "dilemma": "footbridge",
+   "pAct": 0.3191,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "eea38e6e9d1d",
+   "dilemma": "parity-race",
+   "pAct": 0.7905,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "289ec032d1f7",
+   "dilemma": "switch",
+   "pAct": 0.1067,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "41888b8c4cf6",
+   "dilemma": "exchange-age",
+   "pAct": 0.7969,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "bc4f6964025f",
+   "dilemma": "footbridge",
+   "pAct": 0.22,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "6ba9b9f5979e",
+   "dilemma": "switch",
+   "pAct": 0.0775,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "a7c89d494b7e",
+   "dilemma": "switch",
+   "pAct": 0.9872,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "5a59a23473ec",
+   "dilemma": "parity-race",
+   "pAct": 0.6361,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "5787d07d2ed5",
+   "dilemma": "switch",
+   "pAct": 0.1128,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "29d0057199c5",
+   "dilemma": "transplant",
+   "pAct": 0.1919,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "279c99a9c41f",
+   "dilemma": "footbridge",
+   "pAct": 0.5946,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "f5aab269c14e",
+   "dilemma": "transplant",
+   "pAct": 0.0481,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "4e4b1ef331f7",
+   "dilemma": "exchange-age",
+   "pAct": 0.7476,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "358b1699bd4d",
+   "dilemma": "exchange-age",
+   "pAct": 0.7813,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "c575e43c2f02",
+   "dilemma": "footbridge",
+   "pAct": 0.2862,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "27f6a4609157",
+   "dilemma": "parity-race",
+   "pAct": 0.8706,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "bd3fda6c54d7",
+   "dilemma": "transplant",
+   "pAct": 0.0507,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "7270d77bdf62",
+   "dilemma": "parity-race",
+   "pAct": 0.4359,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "host": "DeepInfra",
+   "variant": "39f749110251",
+   "dilemma": "transplant",
+   "pAct": 0.0671,
+   "servedBy": {
+    "modelId": "cloudflare/clef",
+    "provider": "DeepInfra"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "1b9a9d730308",
+   "dilemma": "footbridge",
+   "pAct": 0.9828,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "2eaa8c877533",
+   "dilemma": "transplant",
+   "pAct": 0.9535,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "7270d77bdf62",
+   "dilemma": "parity-race",
+   "pAct": 0.5386,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "2511f0889407",
+   "dilemma": "switch",
+   "pAct": 0.9943,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "a466ef61f486",
+   "dilemma": "switch",
+   "pAct": 0.9948,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "3fb237dd2fd1",
+   "dilemma": "footbridge",
+   "pAct": 0.9778,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "80d7eb7b3819",
+   "dilemma": "transplant",
+   "pAct": 0.9134,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "c7689da9be14",
+   "dilemma": "parity-race",
+   "pAct": 0.4144,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "88018b688200",
+   "dilemma": "transplant",
+   "pAct": 0.9727,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "2970d1db5a0a",
+   "dilemma": "switch",
+   "pAct": 0.9927,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "6b262af12564",
+   "dilemma": "footbridge",
+   "pAct": 0.9666,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "5f8bda2e990f",
+   "dilemma": "transplant",
+   "pAct": 0.2496,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "39f749110251",
+   "dilemma": "transplant",
+   "pAct": 0.905,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "f5aab269c14e",
+   "dilemma": "transplant",
+   "pAct": 0.4239,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "358b1699bd4d",
+   "dilemma": "exchange-age",
+   "pAct": 0.7448,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "27f6a4609157",
+   "dilemma": "parity-race",
+   "pAct": 0.6848,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "29d0057199c5",
+   "dilemma": "transplant",
+   "pAct": 0.9418,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "289ec032d1f7",
+   "dilemma": "switch",
+   "pAct": 0.0973,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "470be7c0acac",
+   "dilemma": "switch",
+   "pAct": 0.0921,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "1ca15be86b09",
+   "dilemma": "exchange-age",
+   "pAct": 0.4059,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "4e4b1ef331f7",
+   "dilemma": "exchange-age",
+   "pAct": 0.6985,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "bc4f6964025f",
+   "dilemma": "footbridge",
+   "pAct": 0.9804,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "1f9901751480",
+   "dilemma": "exchange-age",
+   "pAct": 0.8951,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "5787d07d2ed5",
+   "dilemma": "switch",
+   "pAct": 0.0806,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "41888b8c4cf6",
+   "dilemma": "exchange-age",
+   "pAct": 0.7221,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "b63545b227ae",
+   "dilemma": "parity-race",
+   "pAct": 0.5872,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "a7c89d494b7e",
+   "dilemma": "switch",
+   "pAct": 0.9942,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "c575e43c2f02",
+   "dilemma": "footbridge",
+   "pAct": 0.9661,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "677972abcff5",
+   "dilemma": "exchange-age",
+   "pAct": 0.6769,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "4e337d4e5966",
+   "dilemma": "footbridge",
+   "pAct": 0.9798,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "eea38e6e9d1d",
+   "dilemma": "parity-race",
+   "pAct": 0.709,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "cb8da5df2ac8",
+   "dilemma": "footbridge",
+   "pAct": 0.9729,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "bd3fda6c54d7",
+   "dilemma": "transplant",
+   "pAct": 0.0839,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "5a59a23473ec",
+   "dilemma": "parity-race",
+   "pAct": 0.651,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "279c99a9c41f",
+   "dilemma": "footbridge",
+   "pAct": 0.9711,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "Cloudflare",
+   "variant": "6ba9b9f5979e",
+   "dilemma": "switch",
+   "pAct": 0.6544,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "Cloudflare"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "4e337d4e5966",
+   "dilemma": "footbridge",
+   "pAct": 0.9815,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "bc4f6964025f",
+   "dilemma": "footbridge",
+   "pAct": 0.9855,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "c7689da9be14",
+   "dilemma": "parity-race",
+   "pAct": 0.2814,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "1ca15be86b09",
+   "dilemma": "exchange-age",
+   "pAct": 0.2894,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "289ec032d1f7",
+   "dilemma": "switch",
+   "pAct": 0.1778,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "2970d1db5a0a",
+   "dilemma": "switch",
+   "pAct": 0.9944,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "1f9901751480",
+   "dilemma": "exchange-age",
+   "pAct": 0.8056,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "7270d77bdf62",
+   "dilemma": "parity-race",
+   "pAct": 0.3363,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "eea38e6e9d1d",
+   "dilemma": "parity-race",
+   "pAct": 0.7249,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "2511f0889407",
+   "dilemma": "switch",
+   "pAct": 0.9958,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "88018b688200",
+   "dilemma": "transplant",
+   "pAct": 0.9573,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "a7c89d494b7e",
+   "dilemma": "switch",
+   "pAct": 0.9952,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "a466ef61f486",
+   "dilemma": "switch",
+   "pAct": 0.9962,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "6b262af12564",
+   "dilemma": "footbridge",
+   "pAct": 0.9833,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "677972abcff5",
+   "dilemma": "exchange-age",
+   "pAct": 0.6514,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "279c99a9c41f",
+   "dilemma": "footbridge",
+   "pAct": 0.9838,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "bd3fda6c54d7",
+   "dilemma": "transplant",
+   "pAct": 0.413,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "41888b8c4cf6",
+   "dilemma": "exchange-age",
+   "pAct": 0.5737,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "80d7eb7b3819",
+   "dilemma": "transplant",
+   "pAct": 0.9566,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "5787d07d2ed5",
+   "dilemma": "switch",
+   "pAct": 0.0792,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "5f8bda2e990f",
+   "dilemma": "transplant",
+   "pAct": 0.1128,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "470be7c0acac",
+   "dilemma": "switch",
+   "pAct": 0.1634,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "27f6a4609157",
+   "dilemma": "parity-race",
+   "pAct": 0.6316,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "358b1699bd4d",
+   "dilemma": "exchange-age",
+   "pAct": 0.3124,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "29d0057199c5",
+   "dilemma": "transplant",
+   "pAct": 0.9659,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "b63545b227ae",
+   "dilemma": "parity-race",
+   "pAct": 0.5525,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "3fb237dd2fd1",
+   "dilemma": "footbridge",
+   "pAct": 0.9828,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "f5aab269c14e",
+   "dilemma": "transplant",
+   "pAct": 0.8991,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "5a59a23473ec",
+   "dilemma": "parity-race",
+   "pAct": 0.502,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "cb8da5df2ac8",
+   "dilemma": "footbridge",
+   "pAct": 0.9848,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "2eaa8c877533",
+   "dilemma": "transplant",
+   "pAct": 0.945,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "4e4b1ef331f7",
+   "dilemma": "exchange-age",
+   "pAct": 0.8233,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "6ba9b9f5979e",
+   "dilemma": "switch",
+   "pAct": 0.6151,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "39f749110251",
+   "dilemma": "transplant",
+   "pAct": 0.7549,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "c575e43c2f02",
+   "dilemma": "footbridge",
+   "pAct": 0.985,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "host": "PrimeIntellect",
+   "variant": "1b9a9d730308",
+   "dilemma": "footbridge",
+   "pAct": 0.9881,
+   "servedBy": {
+    "modelId": "cloudflare/clef-flash",
+    "provider": "PrimeIntellect"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "c575e43c2f02",
+   "dilemma": "footbridge",
+   "pAct": 0.6298,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "470be7c0acac",
+   "dilemma": "switch",
+   "pAct": 0.6362,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "a466ef61f486",
+   "dilemma": "switch",
+   "pAct": 0.9185,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "5f8bda2e990f",
+   "dilemma": "transplant",
+   "pAct": 0.2778,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "f5aab269c14e",
+   "dilemma": "transplant",
+   "pAct": 0.2359,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "289ec032d1f7",
+   "dilemma": "switch",
+   "pAct": 0.6076,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "a7c89d494b7e",
+   "dilemma": "switch",
+   "pAct": 0.9182,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "3fb237dd2fd1",
+   "dilemma": "footbridge",
+   "pAct": 0.6972,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "88018b688200",
+   "dilemma": "transplant",
+   "pAct": 0.5951,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "80d7eb7b3819",
+   "dilemma": "transplant",
+   "pAct": 0.3522,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "279c99a9c41f",
+   "dilemma": "footbridge",
+   "pAct": 0.741,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "5787d07d2ed5",
+   "dilemma": "switch",
+   "pAct": 0.5133,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "1f9901751480",
+   "dilemma": "exchange-age",
+   "pAct": 0.4922,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "4e337d4e5966",
+   "dilemma": "footbridge",
+   "pAct": 0.5355,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "5a59a23473ec",
+   "dilemma": "parity-race",
+   "pAct": 0.7482,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "c7689da9be14",
+   "dilemma": "parity-race",
+   "pAct": 0.794,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "41888b8c4cf6",
+   "dilemma": "exchange-age",
+   "pAct": 0.7367,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "eea38e6e9d1d",
+   "dilemma": "parity-race",
+   "pAct": 0.4262,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "4e4b1ef331f7",
+   "dilemma": "exchange-age",
+   "pAct": 0.4026,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "27f6a4609157",
+   "dilemma": "parity-race",
+   "pAct": 0.4052,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "6b262af12564",
+   "dilemma": "footbridge",
+   "pAct": 0.547,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "cb8da5df2ac8",
+   "dilemma": "footbridge",
+   "pAct": 0.567,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "2eaa8c877533",
+   "dilemma": "transplant",
+   "pAct": 0.4523,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "6ba9b9f5979e",
+   "dilemma": "switch",
+   "pAct": 0.3996,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "1b9a9d730308",
+   "dilemma": "footbridge",
+   "pAct": 0.6365,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "1ca15be86b09",
+   "dilemma": "exchange-age",
+   "pAct": 0.7398,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "29d0057199c5",
+   "dilemma": "transplant",
+   "pAct": 0.513,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "2970d1db5a0a",
+   "dilemma": "switch",
+   "pAct": 0.935,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "bc4f6964025f",
+   "dilemma": "footbridge",
+   "pAct": 0.5011,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "39f749110251",
+   "dilemma": "transplant",
+   "pAct": 0.3787,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "b63545b227ae",
+   "dilemma": "parity-race",
+   "pAct": 0.3566,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "677972abcff5",
+   "dilemma": "exchange-age",
+   "pAct": 0.6671,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "2511f0889407",
+   "dilemma": "switch",
+   "pAct": 0.8972,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "7270d77bdf62",
+   "dilemma": "parity-race",
+   "pAct": 0.6541,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "358b1699bd4d",
+   "dilemma": "exchange-age",
+   "pAct": 0.5515,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "SiliconFlow",
+   "variant": "bd3fda6c54d7",
+   "dilemma": "transplant",
+   "pAct": 0.16,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "SiliconFlow"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "5f8bda2e990f",
+   "dilemma": "transplant",
+   "pAct": 0.2767,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "5a59a23473ec",
+   "dilemma": "parity-race",
+   "pAct": 0.7486,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "27f6a4609157",
+   "dilemma": "parity-race",
+   "pAct": 0.3976,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "3fb237dd2fd1",
+   "dilemma": "footbridge",
+   "pAct": 0.7021,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "677972abcff5",
+   "dilemma": "exchange-age",
+   "pAct": 0.6681,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "1b9a9d730308",
+   "dilemma": "footbridge",
+   "pAct": 0.6397,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "eea38e6e9d1d",
+   "dilemma": "parity-race",
+   "pAct": 0.4305,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "1ca15be86b09",
+   "dilemma": "exchange-age",
+   "pAct": 0.7485,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "1f9901751480",
+   "dilemma": "exchange-age",
+   "pAct": 0.4984,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "a7c89d494b7e",
+   "dilemma": "switch",
+   "pAct": 0.9199,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "470be7c0acac",
+   "dilemma": "switch",
+   "pAct": 0.6423,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "41888b8c4cf6",
+   "dilemma": "exchange-age",
+   "pAct": 0.7334,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "2eaa8c877533",
+   "dilemma": "transplant",
+   "pAct": 0.4556,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "6ba9b9f5979e",
+   "dilemma": "switch",
+   "pAct": 0.3952,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "88018b688200",
+   "dilemma": "transplant",
+   "pAct": 0.5886,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "c7689da9be14",
+   "dilemma": "parity-race",
+   "pAct": 0.7963,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "2511f0889407",
+   "dilemma": "switch",
+   "pAct": 0.8967,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "bd3fda6c54d7",
+   "dilemma": "transplant",
+   "pAct": 0.1589,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "39f749110251",
+   "dilemma": "transplant",
+   "pAct": 0.3767,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "4e337d4e5966",
+   "dilemma": "footbridge",
+   "pAct": 0.5428,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "5787d07d2ed5",
+   "dilemma": "switch",
+   "pAct": 0.5211,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "c575e43c2f02",
+   "dilemma": "footbridge",
+   "pAct": 0.6282,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "bc4f6964025f",
+   "dilemma": "footbridge",
+   "pAct": 0.5021,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "29d0057199c5",
+   "dilemma": "transplant",
+   "pAct": 0.4949,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "279c99a9c41f",
+   "dilemma": "footbridge",
+   "pAct": 0.7413,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "b63545b227ae",
+   "dilemma": "parity-race",
+   "pAct": 0.3539,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "7270d77bdf62",
+   "dilemma": "parity-race",
+   "pAct": 0.6522,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "358b1699bd4d",
+   "dilemma": "exchange-age",
+   "pAct": 0.5535,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "a466ef61f486",
+   "dilemma": "switch",
+   "pAct": 0.9155,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "6b262af12564",
+   "dilemma": "footbridge",
+   "pAct": 0.5509,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "289ec032d1f7",
+   "dilemma": "switch",
+   "pAct": 0.6072,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "f5aab269c14e",
+   "dilemma": "transplant",
+   "pAct": 0.2307,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "4e4b1ef331f7",
+   "dilemma": "exchange-age",
+   "pAct": 0.4003,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "2970d1db5a0a",
+   "dilemma": "switch",
+   "pAct": 0.936,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "cb8da5df2ac8",
+   "dilemma": "footbridge",
+   "pAct": 0.5645,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  },
+  {
+   "model": "jaredpalmer/kev-4b",
+   "host": "Phala",
+   "variant": "80d7eb7b3819",
+   "dilemma": "transplant",
+   "pAct": 0.3512,
+   "servedBy": {
+    "modelId": "jaredpalmer/kev-4b-20260924",
+    "provider": "Phala"
+   }
+  }
+ ]
+}
