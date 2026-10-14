@@ -37,6 +37,8 @@ Framing line:
 | H16 | **"Shown a wordless trolley diagram and asked what happens to the people it reaches, some AIs said they get on board."** (GPT-6 Luna (chat) and Gemini 3.5 Flash-Lite (chat). Exploratory. Adding "The trolley will hit everyone on the track it takes." fixes it for Gemini 3.5 Flash-Lite (chat).) | Image design check |
 | H17 | **"The same AI model gave different answers depending on whose servers ran it."** (`cloudflare/clef` Cloudflare vs PrimeIntellect: up to 0.23; `cloudflare/clef-flash` Cloudflare vs PrimeIntellect: up to 0.48.) | F13 |
 
+| H18 | **"Told it was a runaway-tram dilemma, an AI steered away from the workers. Asked by a depot system for a route, with the same camera frame, it sent the tram toward them."** (Perplexity Decider: P(spare) 0.98 as a dilemma, 0.01 as a routing request; it identifies which track has more people 1.00 of the time when asked.) | Realistic study |
+
 **Caveats that go on the cards**
 - **H3:** people were asked "is it permissible?", models chose an action. Label the comparison directional.
 - **H5:** 5 models, forced 1-vs-1 choice. Say "departed from equal treatment", not "values". Report the replication
@@ -44,9 +46,11 @@ Framing line:
 - **H3:** the pilot number did not replicate at the pre-registered bar. Use the confirmation number or drop H3.
 - **H14:** 3 of the 5 models are one family (Cloudflare Clef). Say "5 models", never "AI".
 - **H16** is exploratory, and the fix is part of the story.
+- **H18:** the routing request never says the tram cannot stop or that anyone would be hit; the people are only in the
+  photo. Say "routed toward", not "chose to kill". Generated photos, 2 depots.
 
 **Threads**
-- **Public:** H7 → H1 → H3 → H5 → H14.
+- **Public:** H7 → H1 → H3 → H5 → H14 → H18.
 - **Developers:** H13 → H17 → H2 → H11. Spell out consequences, pin your host, test your model's controls, and
   don't assume it reads images the way it reads text.
 

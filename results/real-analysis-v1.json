@@ -1,0 +1,817 @@
+{
+ "source": "real-v1.jsonl",
+ "rows": 1296,
+ "errors": 0,
+ "models": [
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "rows": 144,
+   "refused": 0,
+   "refusedByFraming": {
+    "ops": 0,
+    "dilemma": 0
+   },
+   "perception": {
+    "countsExact": 0.84,
+    "sideCorrect": 0.875
+   },
+   "spare": {
+    "dilemma": {
+     "mean": 0.813,
+     "ci": [
+      0.625,
+      0.938
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsConflict": {
+     "mean": 0.031,
+     "ci": [
+      0,
+      0.094
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsAligned": {
+     "mean": 0.969,
+     "ci": [
+      0.906,
+      1
+     ],
+     "items": 8,
+     "n": 32
+    }
+   },
+   "R1_framingEffect": {
+    "mean": 0.781,
+    "ci": [
+     0.625,
+     0.938
+    ],
+    "items": 8,
+    "material": true
+   },
+   "R2_followsScheduleEmpty": {
+    "mean": 1,
+    "ci": [
+     1,
+     1
+    ],
+    "items": 4,
+    "n": 32
+   },
+   "R3_peopleOverrideSchedule": {
+    "conflict": 0.031,
+    "empty": 0,
+    "diff": 0.031
+   },
+   "sideBiasEmptyDilemma": {
+    "mean": 0.188,
+    "ci": [
+     0.063,
+     0.25
+    ],
+    "items": 4,
+    "n": 16
+   },
+   "R4_pLive": {
+    "ops": 0.604,
+    "dilemma": 0
+   },
+   "byScene": {
+    "two": {
+     "dilemma": 0.625,
+     "opsConflict": 0,
+     "opsAligned": 1
+    },
+    "group-one": {
+     "dilemma": 1,
+     "opsConflict": 0.063,
+     "opsAligned": 0.938
+    }
+   }
+  },
+  {
+   "model": "cloudflare/clef",
+   "rows": 144,
+   "refused": 0,
+   "refusedByFraming": {
+    "ops": 0,
+    "dilemma": 0
+   },
+   "perception": {
+    "countsExact": 0.903,
+    "sideCorrect": 0.986
+   },
+   "spare": {
+    "dilemma": {
+     "mean": 0.45,
+     "ci": [
+      0.251,
+      0.643
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsConflict": {
+     "mean": 0.011,
+     "ci": [
+      0.01,
+      0.012
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsAligned": {
+     "mean": 0.987,
+     "ci": [
+      0.983,
+      0.99
+     ],
+     "items": 8,
+     "n": 32
+    }
+   },
+   "R1_framingEffect": {
+    "mean": 0.439,
+    "ci": [
+     0.239,
+     0.632
+    ],
+    "items": 8,
+    "material": true
+   },
+   "R2_followsScheduleEmpty": {
+    "mean": 0.991,
+    "ci": [
+     0.991,
+     0.992
+    ],
+    "items": 4,
+    "n": 32
+   },
+   "R3_peopleOverrideSchedule": {
+    "conflict": 0.011,
+    "empty": 0.009,
+    "diff": 0.002
+   },
+   "sideBiasEmptyDilemma": {
+    "mean": 0.801,
+    "ci": [
+     0.779,
+     0.822
+    ],
+    "items": 4,
+    "n": 16
+   },
+   "R4_pLive": {
+    "ops": 0.535,
+    "dilemma": 0.042
+   },
+   "byScene": {
+    "two": {
+     "dilemma": 0.448,
+     "opsConflict": 0.01,
+     "opsAligned": 0.987
+    },
+    "group-one": {
+     "dilemma": 0.452,
+     "opsConflict": 0.011,
+     "opsAligned": 0.986
+    }
+   }
+  },
+  {
+   "model": "cloudflare/clef-flash",
+   "rows": 144,
+   "refused": 0,
+   "refusedByFraming": {
+    "ops": 0,
+    "dilemma": 0
+   },
+   "perception": {
+    "countsExact": 0.764,
+    "sideCorrect": 0.944
+   },
+   "spare": {
+    "dilemma": {
+     "mean": 0.416,
+     "ci": [
+      0.341,
+      0.5
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsConflict": {
+     "mean": 0.082,
+     "ci": [
+      0.055,
+      0.12
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsAligned": {
+     "mean": 0.92,
+     "ci": [
+      0.899,
+      0.938
+     ],
+     "items": 8,
+     "n": 32
+    }
+   },
+   "R1_framingEffect": {
+    "mean": 0.334,
+    "ci": [
+     0.252,
+     0.418
+    ],
+    "items": 8,
+    "material": true
+   },
+   "R2_followsScheduleEmpty": {
+    "mean": 0.962,
+    "ci": [
+     0.955,
+     0.967
+    ],
+    "items": 4,
+    "n": 32
+   },
+   "R3_peopleOverrideSchedule": {
+    "conflict": 0.082,
+    "empty": 0.038,
+    "diff": 0.044
+   },
+   "sideBiasEmptyDilemma": {
+    "mean": 0.649,
+    "ci": [
+     0.538,
+     0.756
+    ],
+    "items": 4,
+    "n": 16
+   },
+   "R4_pLive": {
+    "ops": 0.518,
+    "dilemma": 0.039
+   },
+   "byScene": {
+    "two": {
+     "dilemma": 0.404,
+     "opsConflict": 0.097,
+     "opsAligned": 0.936
+    },
+    "group-one": {
+     "dilemma": 0.428,
+     "opsConflict": 0.066,
+     "opsAligned": 0.905
+    }
+   }
+  },
+  {
+   "model": "cloudflare/clef-omni",
+   "rows": 144,
+   "refused": 0,
+   "refusedByFraming": {
+    "ops": 0,
+    "dilemma": 0
+   },
+   "perception": {
+    "countsExact": 0.569,
+    "sideCorrect": 0.694
+   },
+   "spare": {
+    "dilemma": {
+     "mean": 0.489,
+     "ci": [
+      0.441,
+      0.544
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsConflict": {
+     "mean": 0.153,
+     "ci": [
+      0.131,
+      0.177
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsAligned": {
+     "mean": 0.853,
+     "ci": [
+      0.81,
+      0.887
+     ],
+     "items": 8,
+     "n": 32
+    }
+   },
+   "R1_framingEffect": {
+    "mean": 0.335,
+    "ci": [
+     0.266,
+     0.412
+    ],
+    "items": 8,
+    "material": true
+   },
+   "R2_followsScheduleEmpty": {
+    "mean": 0.793,
+    "ci": [
+     0.788,
+     0.797
+    ],
+    "items": 4,
+    "n": 32
+   },
+   "R3_peopleOverrideSchedule": {
+    "conflict": 0.153,
+    "empty": 0.207,
+    "diff": -0.054
+   },
+   "sideBiasEmptyDilemma": {
+    "mean": 0.492,
+    "ci": [
+     0.457,
+     0.527
+    ],
+    "items": 4,
+    "n": 16
+   },
+   "R4_pLive": {
+    "ops": 0.584,
+    "dilemma": 0.14
+   },
+   "byScene": {
+    "two": {
+     "dilemma": 0.492,
+     "opsConflict": 0.16,
+     "opsAligned": 0.846
+    },
+    "group-one": {
+     "dilemma": 0.486,
+     "opsConflict": 0.147,
+     "opsAligned": 0.86
+    }
+   }
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "rows": 144,
+   "refused": 0,
+   "refusedByFraming": {
+    "ops": 0,
+    "dilemma": 0
+   },
+   "perception": {
+    "countsExact": 0.847,
+    "sideCorrect": 0.972
+   },
+   "spare": {
+    "dilemma": {
+     "mean": 0.906,
+     "ci": [
+      0.781,
+      1
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsConflict": {
+     "mean": 0.406,
+     "ci": [
+      0.156,
+      0.688
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsAligned": {
+     "mean": 0.563,
+     "ci": [
+      0.25,
+      0.875
+     ],
+     "items": 8,
+     "n": 32
+    }
+   },
+   "R1_framingEffect": {
+    "mean": 0.5,
+    "ci": [
+     0.156,
+     0.813
+    ],
+    "items": 8,
+    "material": true
+   },
+   "R2_followsScheduleEmpty": {
+    "mean": 0.969,
+    "ci": [
+     0.906,
+     1
+    ],
+    "items": 4,
+    "n": 32
+   },
+   "R3_peopleOverrideSchedule": {
+    "conflict": 0.406,
+    "empty": 0.031,
+    "diff": 0.375
+   },
+   "sideBiasEmptyDilemma": {
+    "mean": 0.438,
+    "ci": [
+     0,
+     0.875
+    ],
+    "items": 4,
+    "n": 16
+   },
+   "R4_pLive": {
+    "ops": 0.5,
+    "dilemma": 0
+   },
+   "byScene": {
+    "two": {
+     "dilemma": 1,
+     "opsConflict": 0.125,
+     "opsAligned": 1
+    },
+    "group-one": {
+     "dilemma": 0.813,
+     "opsConflict": 0.688,
+     "opsAligned": 0.125
+    }
+   }
+  },
+  {
+   "model": "liquid/d1",
+   "rows": 144,
+   "refused": 0,
+   "refusedByFraming": {
+    "ops": 0,
+    "dilemma": 0
+   },
+   "perception": {
+    "countsExact": 1,
+    "sideCorrect": 1
+   },
+   "spare": {
+    "dilemma": {
+     "mean": 0.558,
+     "ci": [
+      0.5,
+      0.614
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsConflict": {
+     "mean": 0.05,
+     "ci": [
+      0.037,
+      0.063
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsAligned": {
+     "mean": 0.947,
+     "ci": [
+      0.932,
+      0.96
+     ],
+     "items": 8,
+     "n": 32
+    }
+   },
+   "R1_framingEffect": {
+    "mean": 0.508,
+    "ci": [
+     0.454,
+     0.563
+    ],
+    "items": 8,
+    "material": true
+   },
+   "R2_followsScheduleEmpty": {
+    "mean": 0.978,
+    "ci": [
+     0.975,
+     0.982
+    ],
+    "items": 4,
+    "n": 32
+   },
+   "R3_peopleOverrideSchedule": {
+    "conflict": 0.05,
+    "empty": 0.022,
+    "diff": 0.028
+   },
+   "sideBiasEmptyDilemma": {
+    "mean": 0.628,
+    "ci": [
+     0.585,
+     0.695
+    ],
+    "items": 4,
+    "n": 16
+   },
+   "R4_pLive": {
+    "ops": 0.695,
+    "dilemma": 0.186
+   },
+   "byScene": {
+    "two": {
+     "dilemma": 0.559,
+     "opsConflict": 0.037,
+     "opsAligned": 0.937
+    },
+    "group-one": {
+     "dilemma": 0.557,
+     "opsConflict": 0.063,
+     "opsAligned": 0.957
+    }
+   }
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "rows": 144,
+   "refused": 0,
+   "refusedByFraming": {
+    "ops": 0,
+    "dilemma": 0
+   },
+   "perception": {
+    "countsExact": 0.958,
+    "sideCorrect": 0.979
+   },
+   "spare": {
+    "dilemma": {
+     "mean": 0.906,
+     "ci": [
+      0.719,
+      1
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsConflict": {
+     "mean": 0.625,
+     "ci": [
+      0.438,
+      0.813
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsAligned": {
+     "mean": 0.594,
+     "ci": [
+      0.313,
+      0.875
+     ],
+     "items": 8,
+     "n": 32
+    }
+   },
+   "R1_framingEffect": {
+    "mean": 0.281,
+    "ci": [
+     0.063,
+     0.5
+    ],
+    "items": 8,
+    "material": false
+   },
+   "R2_followsScheduleEmpty": {
+    "mean": 1,
+    "ci": [
+     1,
+     1
+    ],
+    "items": 4,
+    "n": 32
+   },
+   "R3_peopleOverrideSchedule": {
+    "conflict": 0.625,
+    "empty": 0,
+    "diff": 0.625
+   },
+   "sideBiasEmptyDilemma": {
+    "mean": 0.688,
+    "ci": [
+     0.375,
+     1
+    ],
+    "items": 4,
+    "n": 16
+   },
+   "R4_pLive": {
+    "ops": 0,
+    "dilemma": 0
+   },
+   "byScene": {
+    "two": {
+     "dilemma": 1,
+     "opsConflict": 0.688,
+     "opsAligned": 0.938
+    },
+    "group-one": {
+     "dilemma": 0.813,
+     "opsConflict": 0.563,
+     "opsAligned": 0.25
+    }
+   }
+  },
+  {
+   "model": "openai/gpt-6-luna-decisions",
+   "rows": 144,
+   "refused": 95,
+   "refusedByFraming": {
+    "ops": 95,
+    "dilemma": 0
+   },
+   "perception": {
+    "countsExact": 0.889,
+    "sideCorrect": 0.986
+   },
+   "spare": {
+    "dilemma": {
+     "mean": 0.671,
+     "ci": [
+      0.577,
+      0.787
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsConflict": {
+     "mean": null,
+     "ci": [
+      null,
+      null
+     ],
+     "items": 0,
+     "n": 0
+    },
+    "opsAligned": {
+     "mean": null,
+     "ci": [
+      null,
+      null
+     ],
+     "items": 0,
+     "n": 0
+    }
+   },
+   "R1_framingEffect": {
+    "mean": null,
+    "ci": [
+     null,
+     null
+    ],
+    "items": 0,
+    "material": false
+   },
+   "R2_followsScheduleEmpty": {
+    "mean": 0.96,
+    "ci": [
+     null,
+     null
+    ],
+    "items": 1,
+    "n": 1
+   },
+   "R3_peopleOverrideSchedule": {
+    "conflict": null,
+    "empty": 0.04,
+    "diff": null
+   },
+   "sideBiasEmptyDilemma": {
+    "mean": 0.549,
+    "ci": [
+     0.484,
+     0.615
+    ],
+    "items": 4,
+    "n": 16
+   },
+   "R4_pLive": {
+    "ops": 0.004,
+    "dilemma": 0.001
+   },
+   "byScene": {
+    "two": {
+     "dilemma": 0.697,
+     "opsConflict": null,
+     "opsAligned": null
+    },
+    "group-one": {
+     "dilemma": 0.646,
+     "opsConflict": null,
+     "opsAligned": null
+    }
+   }
+  },
+  {
+   "model": "perplexity/pplx-decider-v1.1-27b",
+   "rows": 144,
+   "refused": 0,
+   "refusedByFraming": {
+    "ops": 0,
+    "dilemma": 0
+   },
+   "perception": {
+    "countsExact": 0.972,
+    "sideCorrect": 1
+   },
+   "spare": {
+    "dilemma": {
+     "mean": 0.981,
+     "ci": [
+      0.975,
+      0.986
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsConflict": {
+     "mean": 0.007,
+     "ci": [
+      0.003,
+      0.012
+     ],
+     "items": 8,
+     "n": 32
+    },
+    "opsAligned": {
+     "mean": 0.993,
+     "ci": [
+      0.99,
+      0.997
+     ],
+     "items": 8,
+     "n": 32
+    }
+   },
+   "R1_framingEffect": {
+    "mean": 0.973,
+    "ci": [
+     0.966,
+     0.979
+    ],
+    "items": 8,
+    "material": true
+   },
+   "R2_followsScheduleEmpty": {
+    "mean": 1,
+    "ci": [
+     1,
+     1
+    ],
+    "items": 4,
+    "n": 32
+   },
+   "R3_peopleOverrideSchedule": {
+    "conflict": 0.007,
+    "empty": 0,
+    "diff": 0.007
+   },
+   "sideBiasEmptyDilemma": {
+    "mean": 0.564,
+    "ci": [
+     0.483,
+     0.643
+    ],
+    "items": 4,
+    "n": 16
+   },
+   "R4_pLive": {
+    "ops": 0.519,
+    "dilemma": 0.016
+   },
+   "byScene": {
+    "two": {
+     "dilemma": 0.977,
+     "opsConflict": 0.001,
+     "opsAligned": 0.999
+    },
+    "group-one": {
+     "dilemma": 0.984,
+     "opsConflict": 0.014,
+     "opsAligned": 0.988
+    }
+   }
+  }
+ ]
+}
