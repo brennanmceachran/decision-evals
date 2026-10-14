@@ -11,10 +11,13 @@ const frame = (s: string) => s.replace(/<g class="person"[\s\S]*?<\/g><\/g>/g, '
 
 const counts = [1, 2, 3, 4, 5, 6, 10, 11, 15, 20];
 const scenes: Scene[] = [
-  ...counts.flatMap((main) => [1, 2, 5].map((side) => ({ kind: 'switch' as const, main, side }))),
+  ...counts.flatMap((main) =>
+    [1, 2, 5].flatMap((side) => [false, true].map((mirror) => ({ kind: 'switch' as const, main, side, mirror }))),
+  ),
   ...counts.flatMap((left) => counts.map((right) => ({ kind: 'two-side' as const, left, right }))),
 ];
-const want = (s: Scene) => (s.kind === 'switch' ? [s.main, s.side] : [s.left, s.right]);
+/** Expected people in [left zone, right zone]. */
+const want = (s: Scene) => (s.kind === 'switch' ? (s.mirror ? [s.side, s.main] : [s.main, s.side]) : [s.left, s.right]);
 
 describe('diagram', () => {
   it.each(scenes)('draws exactly the requested people, inside their own zone: %o', (scene) => {
@@ -44,8 +47,15 @@ describe('diagram', () => {
 
   it('uses one identical frame (tracks, zones, trolley, lever) for every image of a kind', () => {
     for (const kind of ['switch', 'two-side'] as const) {
-      const frames = new Set(scenes.filter((s) => s.kind === kind).map((s) => frame(svg(s))));
-      expect(frames.size).toBe(1);
+      const variants = kind === 'switch' ? [false, true] : [undefined];
+      for (const mirror of variants) {
+        const frames = new Set(
+          scenes
+            .filter((s) => s.kind === kind && (s.kind !== 'switch' || !!s.mirror === mirror))
+            .map((s) => frame(svg(s))),
+        );
+        expect(frames.size).toBe(1);
+      }
     }
   });
 

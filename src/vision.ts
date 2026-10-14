@@ -54,14 +54,23 @@ async function post(url: string, key: string, body: unknown, signal?: AbortSigna
   }
 }
 
-/** Ask several questions about one image in a single call (decision models score questions independently). */
-export async function askImage(
+export type State = { kind: 'text'; text: string } | { kind: 'image'; url: string };
+
+/** Back-compat helper: ask about one image. */
+export const askImage = (s: Subject, imageDataUrl: string, questions: Record<string, Question>, signal?: AbortSignal) =>
+  ask(s, { kind: 'image', url: imageDataUrl }, questions, signal);
+
+/**
+ * Ask several questions about one state (text OR image) in a single call, through the model's image-capable route.
+ * Text and image states use the SAME route and request shape, so a text/image difference can't come from the API.
+ */
+export async function ask(
   s: Subject,
-  imageDataUrl: string,
+  state: State,
   questions: Record<string, Question>,
   signal?: AbortSignal,
 ): Promise<Record<string, VisionAnswer>> {
-  if (s.kind === 'chat') return askChat(s, imageDataUrl, questions, signal);
+  if (s.kind === 'chat') return askChat(s, state, questions, signal);
   const route = VISION_ROUTES[s.id];
   if (!route) throw new Error(`${s.id} has no verified image route`);
 
@@ -71,7 +80,16 @@ export async function askImage(
       process.env.AI_GATEWAY_API_KEY!,
       {
         model: s.id,
-        input: [{ role: 'user', content: [{ type: 'input_image', image_url: imageDataUrl }] }],
+        input: [
+          {
+            role: 'user',
+            content: [
+              state.kind === 'image'
+                ? { type: 'input_image', image_url: state.url }
+                : { type: 'input_text', text: state.text },
+            ],
+          },
+        ],
         questions: Object.entries(questions).map(([name, q]) =>
           q.type === 'choice'
             ? {
@@ -108,7 +126,11 @@ export async function askImage(
   const body = {
     model: s.id,
     ...(route === 'or-systemone' && s.host ? { provider: { order: [s.host], allow_fallbacks: false } } : {}),
-    state: [{ type: 'image_url', image_url: { url: imageDataUrl } }],
+    state: [
+      state.kind === 'image'
+        ? { type: 'image_url', image_url: { url: state.url } }
+        : { type: 'text', text: state.text },
+    ],
     questions: Object.fromEntries(
       Object.entries(questions).map(([k, q]) => [
         k,
@@ -149,9 +171,8 @@ function withMeta(out: Record<string, VisionAnswer>, cost: unknown, servedBy: st
 }
 
 /** Chat models: one structured-output call per question, temperature/reasoning as in src/call.ts (single sample). */
-async function askChat(s: Subject, imageDataUrl: string, questions: Record<string, Question>, signal?: AbortSignal) {
+async function askChat(s: Subject, state: State, questions: Record<string, Question>, signal?: AbortSignal) {
   const out: Record<string, VisionAnswer> = {};
-  const image = imageDataUrl.split(',')[1]!;
   for (const [k, q] of Object.entries(questions)) {
     const options = q.type === 'choice' ? Object.keys(q.criteria) : ['true', 'false'];
     const text =
@@ -167,8 +188,10 @@ async function askChat(s: Subject, imageDataUrl: string, questions: Record<strin
         {
           role: 'user',
           content: [
-            { type: 'image', image, mediaType: 'image/png' },
-            { type: 'text', text },
+            state.kind === 'image'
+              ? { type: 'image' as const, image: state.url.split(',')[1]!, mediaType: 'image/png' }
+              : { type: 'text' as const, text: state.text },
+            { type: 'text' as const, text },
           ],
         },
       ],

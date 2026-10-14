@@ -20,7 +20,12 @@
  */
 import { Resvg } from '@resvg/resvg-js';
 
-export type Scene = { kind: 'switch'; main: number; side: number } | { kind: 'two-side'; left: number; right: number };
+/**
+ * switch: `main` people on the track the points are SET to; `side` people on the other branch. `mirror` puts the set
+ * track on the right (lever moves left) instead of the left (lever moves right), so side cannot stand in for "act".
+ */
+export type Scene =
+  { kind: 'switch'; main: number; side: number; mirror?: boolean } | { kind: 'two-side'; left: number; right: number };
 
 export const W = 1024;
 export const H = 768;
@@ -280,17 +285,21 @@ function compose(scene: Scene): Layout {
   // Forward-motion arrow: IDENTICAL in every image (same band, same arrowhead, same place on the stem).
   const forward = routeBand(stem, ROUTE_START, STEM_END);
   if (scene.kind === 'switch') {
-    const leftBranch = branchTo(stemX, leftX);
-    paths = [stem, leftBranch, branchTo(stemX, rightX)];
-    groups = [
-      { cx: leftX, n: scene.main, people: crowdPositions(scene.main, leftX) },
-      { cx: rightX, n: scene.side, people: crowdPositions(scene.side, rightX) },
-    ];
-    // Switch only: the points are SET to the left branch, so the same band continues from the points up the left
-    // branch to the zone, ending in the same arrowhead. This is the only route element two-side scenes lack.
-    const set = routeBand(leftBranch, 6, lengthOf(leftBranch) - 44);
+    const setX = scene.mirror ? rightX : leftX;
+    const otherX = scene.mirror ? leftX : rightX;
+    const setBranch = branchTo(stemX, setX);
+    paths = [stem, branchTo(stemX, leftX), branchTo(stemX, rightX)];
+    // groups[0] is always the LEFT zone and groups[1] the RIGHT (tests and probes rely on this).
+    const mainG = { cx: setX, n: scene.main, people: crowdPositions(scene.main, setX) };
+    const sideG = { cx: otherX, n: scene.side, people: crowdPositions(scene.side, otherX) };
+    groups = scene.mirror ? [sideG, mainG] : [mainG, sideG];
+    // The points are SET to one branch, so the same band continues from the points up that branch to its zone,
+    // ending in the same arrowhead. This is the only route element two-side scenes lack.
+    const set = routeBand(setBranch, 6, lengthOf(setBranch) - 44);
     route = { band: forward.band + set.band, head: forward.head + set.head };
-    lev = lever(stemX, 482, -30, [30], { x: stemX, y: JUNCTION_Y });
+    lev = scene.mirror
+      ? lever(stemX, 482, 30, [-30], { x: stemX, y: JUNCTION_Y })
+      : lever(stemX, 482, -30, [30], { x: stemX, y: JUNCTION_Y });
   } else {
     paths = [stem, branchTo(stemX, leftX), branchTo(stemX, rightX)];
     groups = [
