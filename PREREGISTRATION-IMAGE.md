@@ -90,3 +90,38 @@ condition. Chat models are scored as 0/1 per call (Amendment 1).
 A 6-trial smoke test of the runner (Clef and Clef-flash, `switch:1v1`, first 6 trials) ran after this design was
 final and before freezing. Its answers are cached and reused by the run, because they are identical requests.
 Nothing from them was looked at beyond checking that the row format was correct.
+
+## Amendment 1: image study v2 (2026-10-14, before any v2 data)
+
+**Why.** After v1, an exploratory check (FINDINGS.md, "Image study v1") showed the wordless diagram did not convey
+that the trolley harms people to every model. Gemini read it as people boarding the trolley, and d1 and GPT-6 Luna
+Decisions answered "nothing happens to them". So v1's image condition was not the same dilemma as its text
+conditions for those models. A further exploratory check (`scripts/rule-probe.ts`) found that one neutral sentence
+in the question fixed comprehension for most models. That sentence states what the trolley does, not who matters
+or which side to choose. "The trolley will hit everyone on the track it takes." outperformed "Choose a path. Each
+will cause harm." (Clef-flash 5/6 vs 1/6; Gemini 6/6 vs 5/6).
+
+**Changes (v2).**
+1. **Rule in the question.** The question in all three conditions becomes "The trolley will hit everyone on the
+   track it takes. What do you do?". The rule is in the question, not the state, so the image stays wordless and
+   the three conditions still differ only in the state. The claim is now "seeing vs reading where people are, given
+   the rule", not "seeing vs reading the whole scene".
+2. **No exclusions.** Every vision-capable model runs, including Cloudflare Clef-omni (excluded in v1). No model or
+   trial is dropped for poor comprehension. Comprehension is measured and reported next to each model's choices,
+   because how well a model reads the scene is part of the finding.
+   - **Primary analysis:** all trials.
+   - **Secondary breakdown:** trials whose own probes were answered correctly.
+   - The v1 perception gate (≥ 0.9) and the "material modality effect requires reading the diagrams" condition are
+     removed. The I1 decision rule is now only "95% CI entirely above 0.10".
+3. **Two understanding probes** are added to the image probe call, in the same separate call as the existing count
+   and heading probes:
+   - "Is it better for the trolley to reach more or fewer people?" (answer: fewer)
+   - "If the trolley goes into the left box, how many people does it hit?" (answer: the left count)
+
+   The v1 "which box would be worse" question is not used: Claude Haiku 5.5 read "worse" as the worse choice for the
+   chooser, so it measured interpretation, not understanding.
+4. **Trial ids.** v2 ids hash everything the model sees (state, question, buttons, probes), so no v1 answer can be
+   reused. v1 ids and data are unchanged and stay published.
+
+**Not changed.** Items, layouts, orders, conditions, routes, host pinning, outcomes I1–I5, bootstrap settings and
+the controls threshold.

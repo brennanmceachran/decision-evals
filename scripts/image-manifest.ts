@@ -3,7 +3,7 @@
 import { execSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
-import { trials } from '../src/image-study.js';
+import { RULE, trials, type StudyVersion } from '../src/image-study.js';
 import { SUBJECTS } from '../src/subjects.js';
 import { canSeeImages } from '../src/vision.js';
 
@@ -12,8 +12,12 @@ const out = process.argv.includes('--out')
   : 'results/manifest-image.json';
 const sha = (s: string | Buffer) => createHash('sha256').update(s).digest('hex');
 const git = (c: string) => execSync(`git ${c}`, { encoding: 'utf8' }).trim();
-const excluded = ['cloudflare/clef-omni'];
-const ts = trials();
+const version = (
+  process.argv.includes('--version') ? process.argv[process.argv.indexOf('--version') + 1] : 'v2'
+) as StudyVersion;
+// v1 excluded clef-omni for failing the perception check; from v2 on every vision-capable model runs.
+const excluded = version === 'v1' ? ['cloudflare/clef-omni'] : [];
+const ts = trials({ version });
 const manifest = {
   createdAt: new Date().toISOString(),
   git: { commit: git('rev-parse HEAD'), dirty: git('status --porcelain').length > 0 },
@@ -27,6 +31,8 @@ const manifest = {
     .filter((s) => !excluded.includes(s.id))
     .map(({ id, kind, host }) => ({ id, kind, host: host ?? null })),
   excluded,
+  version,
+  rule: version === 'v1' ? null : RULE,
   trials: ts.length,
   trialsSha256: sha(
     ts

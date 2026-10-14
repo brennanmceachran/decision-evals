@@ -1,10 +1,13 @@
 // Image study runner: every trial × every eligible model, main choice and perception probes as separate calls.
 // Resumable: each answer is cached on disk by (model, host, trial id, call kind, CACHE_VERSION), so re-running only
 // fills gaps. Writes results/image-<tag>.jsonl (one line per trial × model).
-// Usage: tsx --env-file=.env scripts/image-run.ts --tag pilot [--only substr] [--limit N] [--concurrency 8]
+// Usage: tsx --env-file=.env scripts/image-run.ts --tag v2 [--version v1|v2] [--only substr] [--limit N]
+//        [--concurrency 8]
+// Every vision-capable model is run. No model is dropped for low comprehension: comprehension is measured (probes)
+// and reported next to its choices, because how badly a model reads the scene is itself a finding.
 import { createHash } from 'node:crypto';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { trials, type Trial } from '../src/image-study.js';
+import { trials, type StudyVersion, type Trial } from '../src/image-study.js';
 import { SUBJECTS, type Subject } from '../src/subjects.js';
 import { ask, canSeeImages, type VisionAnswer } from '../src/vision.js';
 
@@ -14,19 +17,12 @@ const tag = arg('tag') ?? 'pilot';
 const only = arg('only');
 const limit = arg('limit') ? Number(arg('limit')) : undefined;
 const concurrency = Number(arg('concurrency') ?? 8);
+const version = (arg('version') ?? 'v2') as StudyVersion;
 const CACHE_VERSION = 1;
 const CACHE_DIR = '.cache/image-study';
 
-/** Models in the study (PREREGISTRATION.md, image study): vision-capable and not excluded by the perception check. */
-export const EXCLUDED: Record<string, string> = {
-  'cloudflare/clef-omni': 'failed diagram perception check (18/33)',
-};
-/** Per-model cap on people per side, from the perception check. */
-export const MAX_COUNT: Record<string, number> = {};
-
-const subjects: Subject[] = SUBJECTS.filter(canSeeImages).filter(
-  (s) => !(s.id in EXCLUDED) && (!only || s.id.includes(only)),
-);
+/** Every vision-capable subject. (v1 excluded cloudflare/clef-omni; from v2 on nothing is excluded.) */
+const subjects: Subject[] = SUBJECTS.filter(canSeeImages).filter((s) => !only || s.id.includes(only));
 
 mkdirSync(CACHE_DIR, { recursive: true });
 const cachePath = (s: Subject, t: Trial, kind: 'main' | 'probes') =>
@@ -77,6 +73,8 @@ async function runOne(s: Subject, t: Trial) {
     mirror: t.mirror,
     order: t.order,
     condition: t.condition,
+    version: t.version,
+    question: t.question,
     focalKey: t.focalKey,
     refused: !!a?.refused,
     pFocal: pFocal(a, t.focalKey),
@@ -94,10 +92,8 @@ async function runOne(s: Subject, t: Trial) {
   };
 }
 
-const all = trials();
-const jobs = subjects
-  .flatMap((s) => all.filter((t) => Math.max(t.a, t.b) <= (MAX_COUNT[s.id] ?? 20)).map((t) => [s, t] as const))
-  .slice(0, limit);
+const all = trials({ version });
+const jobs = subjects.flatMap((s) => all.map((t) => [s, t] as const)).slice(0, limit);
 const out = `results/image-${tag}.jsonl`;
 mkdirSync('results', { recursive: true });
 writeFileSync(out, '');

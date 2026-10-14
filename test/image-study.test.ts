@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CONDITIONS, trials, type Trial } from '../src/image-study.js';
+import { CONDITIONS, RULE, trials, type Trial } from '../src/image-study.js';
 import { layout } from '../src/render/diagram.js';
 
 const all = trials();
@@ -73,5 +73,21 @@ describe('image study trials', () => {
     for (const t of all.filter((t) => t.condition !== 'image')) {
       expect((t.state as { text: string }).text.includes('If you:')).toBe(t.condition === 'text_outcomes');
     }
+  });
+
+  it('v2 puts the same neutral rule in every condition, and nowhere else', () => {
+    for (const t of all) {
+      expect(t.version).toBe('v2');
+      expect(t.question).toBe(`${RULE} What do you do?`);
+      if (t.state.kind === 'text') expect(t.state.text.includes(RULE)).toBe(false);
+    }
+  });
+
+  it('trial ids change whenever anything the model sees changes (no stale cache hits)', () => {
+    const v1 = trials({ version: 'v1' });
+    const v2ids = new Set(all.map((t) => t.id));
+    expect(v1.filter((t) => v2ids.has(t.id))).toHaveLength(0);
+    // Same item/layout/order/condition but a different question must not share an id.
+    for (const t of v1) expect(v2ids.has(t.id)).toBe(false);
   });
 });
