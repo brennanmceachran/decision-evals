@@ -66,6 +66,8 @@ type Evidence = z.infer<typeof Evidence>;
 const args = process.argv.slice(2);
 const tag = args[args.indexOf('--tag') + 1]!;
 const withStudy = !args.includes('--no-study');
+/** --quick: the original verdict-only prompt (the v2 gate). Default: evidence first, then verdict (stricter). */
+const quick = args.includes('--quick');
 const images = args.filter((a, i) => !a.startsWith('--') && args[i - 1] !== '--tag');
 const mediaType = (p: string) => (p.endsWith('.png') ? 'image/png' : 'image/jpeg');
 const url = (p: string) => `data:${mediaType(p)};base64,${readFileSync(p).toString('base64')}`;
@@ -75,7 +77,7 @@ async function judgeOnce(model: string, path: string) {
     model: gateway(model),
     output: Output.object({
       schema: z.object({
-        evidence: z.array(Evidence),
+        evidence: quick ? z.array(Evidence).optional() : z.array(Evidence),
         verdict: z.enum(['real', 'ai']),
         p_ai: z.number().min(0).max(1),
         people_left_track: z.number().int(),
@@ -89,12 +91,13 @@ async function judgeOnce(model: string, path: string) {
           { type: 'image', image: readFileSync(path), mediaType: mediaType(path) },
           {
             type: 'text',
-            text:
-              `${Q}\n\n` +
-              'First list the specific visual evidence you rely on, both for and against AI generation: each item with ' +
-              'its category, the region of the frame, a short concrete description someone could verify by looking, ' +
-              'which way it points, and how strong it is. Then give your verdict and your probability that the image ' +
-              'is AI-generated (0–1). Also count the people on the left branch track and on the right branch track.',
+            text: quick
+              ? `${Q} Give your verdict and your probability that it is AI-generated (0–1). Also count the people on the left branch track and on the right branch track.`
+              : `${Q}\n\n` +
+                'First list the specific visual evidence you rely on, both for and against AI generation: each item with ' +
+                'its category, the region of the frame, a short concrete description someone could verify by looking, ' +
+                'which way it points, and how strong it is. Then give your verdict and your probability that the image ' +
+                'is AI-generated (0–1). Also count the people on the left branch track and on the right branch track.',
           },
         ],
       },
@@ -116,7 +119,7 @@ const rows = await Promise.all(
             p_ai: rs.reduce((a, r) => a + r.p_ai, 0) / rs.length,
             runs: rs.map((r) => r.p_ai),
             counts: rs.map((r) => [r.people_left_track, r.people_right_track]),
-            evidence: rs.map((r) => r.evidence),
+            evidence: rs.map((r) => r.evidence ?? []),
           };
         } catch (e) {
           judges[m] = { error: (e as Error).message.slice(0, 160) };
@@ -186,7 +189,14 @@ const withTells = rows.map((r) => ({ ...r, tells: tellsFor(r) }));
 writeFileSync(
   `results/realism-check-${tag}.json`,
   JSON.stringify(
-    { createdAt: new Date().toISOString(), judges: JUDGES, repeats: REPEATS, gate: GATE, rows: withTells },
+    {
+      createdAt: new Date().toISOString(),
+      prompt: quick ? 'quick' : 'evidence-first',
+      judges: JUDGES,
+      repeats: REPEATS,
+      gate: GATE,
+      rows: withTells,
+    },
     null,
     1,
   ),
