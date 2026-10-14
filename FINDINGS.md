@@ -373,3 +373,69 @@ added to the perception check.
   is a real limit of these models reading a diagram, and it is reported, not filtered. The trial-filtered breakdown
   (`I1_correct_probe_trials_only`) is in the analysis file.
 - Clef-omni misreads the diagram (counts 55–58% correct), so its image choices are mostly not about the scene.
+
+---
+
+## Image study v3 (2026-10-14): route legend in image questions only
+
+- **Authorization and records:** owner-authorized, written up as Amendment 2 of `PREREGISTRATION-IMAGE.md`.
+  Manifest: `results/manifest-image-v3.json`. Data: `results/image-v3.jsonl`, 2,052 rows, 0 errors. Analysis:
+  `results/image-analysis-v3.json`.
+- **Change:** image questions add "The trolley's current route is shown in orange." Text questions are unchanged.
+  All 1,368 text rows are byte-identical to v2 (same ids, same answers, $0 new spend). The image spend was $0.34.
+
+| Model | I1 image vs text, v3 [95% CI] | Material | v2 I1 | Legend's own shift on text (disclosed in advance) |
+|---|---|---|---|---|
+| Perplexity Decider | 0.05 [0.00, 0.12] | no | 0.07 | 0.00 |
+| Claude Haiku 5.5 | 0.09 [0.03, 0.17] | no | 0.07 | 0.13 |
+| Gemini 3.5 Flash-Lite | 0.18 [0.07, 0.33] | no | 0.21 | 0.08 |
+| GPT-6 Luna (chat) | 0.18 [0.05, 0.34] | no | 0.16 | 0.00 |
+| Liquid d1 | 0.34 [0.28, 0.40] | yes | 0.20 | 0.03 |
+| Cloudflare Clef-omni | 0.33 [0.26, 0.39] | yes | 0.39 | 0.06 |
+| Cloudflare Clef | 0.41 [0.33, 0.49] | yes | 0.43 | 0.06 |
+| GPT-6 Luna Decisions | 0.41 [0.34, 0.46] | yes | 0.41 | 0.07 |
+| Cloudflare Clef-flash | 0.51 [0.41, 0.60] | yes | 0.44 | 0.03 |
+
+**Controls (acting kills more), P(act) in images, v2 → v3**
+
+| Model | v2 | v3 |
+|---|---|---|
+| Perplexity | 0.30 | **0.11** (now passes) |
+| GPT-6 Luna Decisions | 0.88 | 0.57 |
+| Clef | 0.69 | 0.50 |
+| GPT-6 Luna | 1.00 | 0.88 |
+| Others | roughly unchanged | — |
+
+Every model still passes these controls when told the outcomes in words (P(act) 0.00–0.08).
+
+**Reading v3**
+- **The legend helped some models act on the route, but did not close the gap.** Five models (Clef, Clef-flash,
+  Clef-omni, GPT-6 Luna Decisions, d1) still choose materially differently when they see the scene, and the legend
+  costs almost nothing on text for them (0.03–0.07). For these models the image effect is not explained by the
+  route cue or by the legend sentence.
+- **Perplexity, Haiku, Gemini and GPT-6 Luna treat seeing and reading alike** once told the rule (all I1 CIs reach
+  below 0.10).
+- **Probe design note.** The "heading" probe question did not include the legend; only the main question did, as
+  Amendment 2 specified. So the v3 heading-probe accuracy is identical to v2 by construction (d1 50%, Luna
+  Decisions 50%, Clef 81%). It does not measure whether the legend helped the main choice. Evidence that it does:
+  the pre-run route probe (`scripts/route-probe.ts`), which asked the heading question WITH the legend (Clef and d1
+  3/6 → 6/6).
+
+## F16. Telling a model who dies changes its decision more than how the scene is shown (text and image)
+Both scenes are described in words, with the same rule, buttons and question. The only difference is whether an
+"If you: … N people die" list spells out the consequences. In the controls (moving the lever kills MORE people),
+P(choosing it):
+
+| Model | Outcomes spelled out | Scene only (must infer) |
+|---|---|---|
+| Claude Haiku 5.5 | 0.00 | **0.75** |
+| Cloudflare Clef-omni | 0.08 | **0.49** |
+| Cloudflare Clef | 0.03 | **0.32** |
+| Gemini 3.5 Flash-Lite | 0.00 | **0.25** |
+| Cloudflare Clef-flash | 0.02 | **0.21** |
+| GPT-6 Luna Decisions | 0.00 | 0.14 |
+| Liquid d1 | 0.00 | 0.06 |
+| GPT-6 Luna, Perplexity | 0.00 | 0.00 |
+
+**For developers:** with several of these models, whether you state the consequences of each action changes the
+decision more than the scenario itself. Spell out outcomes in the state if you want the model to act on them.
