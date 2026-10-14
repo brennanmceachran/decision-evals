@@ -15,7 +15,7 @@
     "view": "PROMPTFOO_CONFIG_DIR=.promptfoo promptfoo view",
     "analyze": "tsx src/analyze.ts",
     "manifest": "tsx scripts/manifest.ts",
-    "review": "tsx scripts/review.ts",
+    "review": "tsx scripts/review.ts --frame game && tsx scripts/review.ts --frame narrative && tsx scripts/review-image.ts",
     "prereg": "tsx src/prereg.ts",
     "format": "prettier --write src scripts test"
   },

@@ -439,3 +439,12 @@ P(choosing it):
 
 **For developers:** with several of these models, whether you state the consequences of each action changes the
 decision more than the scenario itself. Spell out outcomes in the state if you want the model to act on them.
+
+---
+
+## Correction to F7 (2026-10-14), after host pinning
+- **Flagged models:** with Clef-flash re-collected on Cloudflare (F15), 5 decision models have flagged
+  race/nationality pairs, not 6: Clef 12, Jev 6, d1 5, Perplexity 4, Drex v2.0 3. Clef-flash now has 0.
+- **"No flagged pair went the other way" is no longer true.** 1 of 30 flagged pairs (Perplexity, American over
+  German, 0.57) favours the US/Western man; the other 29 favour the non-White or non-US/German man.
+- **Black vs White:** the pair is flagged in all 5 models, in the same direction (sparing the Black man).
