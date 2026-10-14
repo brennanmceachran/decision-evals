@@ -1,0 +1,4863 @@
+{
+ "createdAt": "2026-10-14T23:33:59.102Z",
+ "prompt": "evidence-first",
+ "judges": [
+  "anthropic/claude-opus-5.5",
+  "openai/gpt-6-sol",
+  "google/gemini-3.1-pro-preview"
+ ],
+ "repeats": 3,
+ "gate": 0.35,
+ "rows": [
+  {
+   "image": "scratch/v4/sd/e-group-L-2.jpg",
+   "meanJudgePAi": 0.4033333333333333,
+   "passesGate": false,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.023333333333333334,
+     "runs": [
+      0.02,
+      0.03,
+      0.02
+     ],
+     "counts": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve toward their respective building entrances with consistent perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Puddles and damp concrete show uneven, subdued reflections of the workers and surroundings.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-left",
+        "detail": "The three workers have distinct helmets, high-visibility clothing, and plausible kneeling positions around the rail.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-left",
+        "detail": "The workers’ hands and the small objects beside the rail are hard to distinguish.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve smoothly into separate building bays and remain aligned with the pavement grooves.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Puddles and damp concrete show subdued reflections of the workers and building, with uneven patches of water.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Three workers kneel at the left rails, each positioned around the same work area.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-left",
+        "detail": "The workers’ hands and small items at rail level are hard to distinguish and look somewhat smeared.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve smoothly toward separate building entrances, with consistent perspective and spacing.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Puddles and muted reflections follow the uneven wet concrete rather than forming uniform mirror images.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-left",
+        "detail": "The three workers have distinct helmets, high-visibility clothing, and believable kneeling positions around the rail.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "middle-right",
+        "detail": "A fourth worker crouches separately at the other track, consistent with a maintenance scene.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "middle-left",
+        "detail": "The workers’ hands and small objects at the rail are difficult to distinguish, leaving their exact task visually ambiguous.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.85,
+     "runs": [
+      0.85,
+      0.85,
+      0.85
+     ],
+     "counts": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Left track's two rails diverge oddly: one rail curves while the other heads straight to the left depot door; workers kneel on the outer rail with no clear gauge consistency, and the rails seem to pass through without proper gauge spacing",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "middle-right",
+        "detail": "Right track rails are embedded in a raised concrete strip with grooved edges that look painted on; geometry of rails converging to door is plausible but slightly inconsistent with the left",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "center",
+        "detail": "Workers evenly arranged in tidy poses, three on left and one on right, with the classic trolley-problem staging from a vehicle's viewpoint",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-left",
+        "detail": "Worker hands and tools are blurry smudges; leftmost worker's gear on ground is an indistinct mass",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Wet concrete reflections of orange vests are consistent and plausible",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Depot building, cable drum, pallets, and fencing are coherent and realistic",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "Overhead wire span from poles terminates oddly and lacks consistent catenary over tracks",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Left track rails: the left rail of the left track curves toward the left, while the right rail continues; the two rails of the left track diverge without a proper switch, appearing as a gauge-inconsistent pair",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "middle-right",
+        "detail": "Right track rails converge toward the building but rail spacing appears to narrow unnaturally relative to perspective, and the track emerges from the depot without clear connection to the left track",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Three workers crouch in a neat row straddling rails with tools and pads that blend into wet concrete; hands and tools are indistinct mush",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-center",
+        "detail": "No legible signage, numbers or logos anywhere on depot building, doors or equipment",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Reflections of orange vests in puddles are plausible and consistent",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "Overhead catenary wires are sparse and inconsistent; poles carry arms with wires that do not form a coherent network over tracks",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard/vehicle edge at bottom frames shot as from a tram cab, a common staged prompt composition",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Overly smooth, uniformly processed look with painterly texture on concrete and trees",
+        "points_to": "ai",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Left track pair: the rails appear to merge oddly; the left rail curves toward the left worker while the right rail of the pair runs straight, and the gauge looks inconsistent along the length.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Three workers crouch in a neat row on the left track, one at each rail and one between them. The arrangement looks staged, and their hands and tools are smeared and indistinct.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The image has an overall smooth, painterly texture. Concrete joints and puddles look soft, with a uniform AI-like sheen.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "The overhead wires are sparse and disconnected. They do not form a coherent catenary system over the tracks.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark vehicle dashboard or hood edge spans the bottom of the frame. This is a plausible real-world framing.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The depot building and its bays are coherent, and the lighting inside them is plausible.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Reflections of the orange vests in the wet concrete are blurry blobs, and some of them do not align well with the workers above.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.33666666666666667,
+     "runs": [
+      0.02,
+      0.98,
+      0.01
+     ],
+     "counts": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The complex catenary wire system is structurally coherent, with straight lines and logical connections to insulators and cross-spans, a level of detail AI often struggles to render perfectly.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-left",
+        "detail": "Reflections on the wet concrete accurately reproduce the distinct yellow and orange colors of the workers' high-vis jackets, displaying natural-looking distortion from the concrete's texture.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "The rails embedded in the concrete maintain perfectly parallel curves as they recede towards the building entrances, demonstrating strict geometric consistency.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "An out-of-focus dark area, likely a dashboard, and part of a windscreen wiper are visible at the bottom edge, strongly suggesting the photo was taken from inside a vehicle.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "The worker in the orange jacket on the right track has malformed lower anatomy; his right leg appears to merge into his left or disappear, and clear feet or boots are missing.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead wires connecting to the horizontal structures are extremely thin, jagged, disjointed, and do not form a physically logical catenary system.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "The tools and equipment scattered around the three workers on the left track appear as indistinct, melting shapes rather than recognizable mechanical tools.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "The rail in the foreground of the right track lacks the 3D depth and distinct groove typical of embedded rails, looking more like a flat line drawn on the surface.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Inside the open bay of the building on the right, the arrangement of ceiling lights and structural elements is chaotic and lacks architectural logic.",
+        "points_to": "ai",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Diffuse reflections of the workers' high-visibility orange and yellow clothing are accurately cast on the wet concrete, matching the perspective and texture of the surface perfectly.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The catenary infrastructure above the tracks features mechanically coherent poles, cantilever arms, and wires that connect logically without the merging, breaking, or nonsensical paths typical of AI generation.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "An out-of-focus dark dashboard and windshield wiper pivots are visible along the very bottom edge, providing realistic foreground framing that indicates the photo was taken from inside a cab.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The tracks embedded in the concrete have clean, continuous flangeway grooves that curve naturally and smoothly towards the building's bays without distortion.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The corrugated metal building in the background has perfectly straight, consistent vertical lines, and the interior structure of the open bays is logically laid out.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {
+    "liquid/d1": 0.015906389933256757,
+    "cloudflare/clef-omni": 0.0455,
+    "perplexity/pplx-decider-v1.1-27b": 0.017469361298924332,
+    "cloudflare/clef": 0.0509,
+    "cloudflare/clef-flash": 0.0595,
+    "anthropic/claude-haiku-5.5": 0,
+    "openai/gpt-6-luna": 0,
+    "google/gemini-3.5-flash-lite": 0,
+    "openai/gpt-6-luna-decisions": 0
+   },
+   "tells": [
+    {
+     "category": "track_geometry",
+     "score": 10,
+     "agreement": "4/9",
+     "regions": [
+      "center",
+      "middle-right",
+      "bottom-right"
+     ],
+     "details": [
+      "claude-opus-5.5: Left track's two rails diverge oddly: one rail curves while the other heads straight to the left depot door; workers kneel on the outer rail with no clear gauge consistency, and the rails seem to pass through without proper gauge spacing (center, moderate)",
+      "claude-opus-5.5: Right track rails are embedded in a raised concrete strip with grooved edges that look painted on; geometry of rails converging to door is plausible but slightly inconsistent with the left (middle-right, weak)",
+      "claude-opus-5.5: Left track rails: the left rail of the left track curves toward the left, while the right rail continues; the two rails of the left track diverge without a proper switch, appearing as a gauge-inconsistent pair (center, moderate)",
+      "claude-opus-5.5: Right track rails converge toward the building but rail spacing appears to narrow unnaturally relative to perspective, and the track emerges from the depot without clear connection to the left track (middle-right, weak)",
+      "claude-opus-5.5: Left track pair: the rails appear to merge oddly; the left rail curves toward the left worker while the right rail of the pair runs straight, and the gauge looks inconsistent along the length. (center, moderate)",
+      "gemini-3.1-pro-preview: The rail in the foreground of the right track lacks the 3D depth and distinct groove typical of embedded rails, looking more like a flat line drawn on the surface. (bottom-right, moderate)"
+     ]
+    },
+    {
+     "category": "overhead_wires_or_poles",
+     "score": 8,
+     "agreement": "4/9",
+     "regions": [
+      "top-right",
+      "top-left",
+      "top-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Overhead wire span from poles terminates oddly and lacks consistent catenary over tracks (top-right, weak)",
+      "claude-opus-5.5: Overhead catenary wires are sparse and inconsistent; poles carry arms with wires that do not form a coherent network over tracks (top-left, moderate)",
+      "claude-opus-5.5: The overhead wires are sparse and disconnected. They do not form a coherent catenary system over the tracks. (top-right, moderate)",
+      "gemini-3.1-pro-preview: The overhead wires connecting to the horizontal structures are extremely thin, jagged, disjointed, and do not form a physically logical catenary system. (top-center, strong)"
+     ]
+    },
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 6,
+     "agreement": "4/9",
+     "regions": [
+      "middle-left",
+      "whole-image"
+     ],
+     "details": [
+      "gpt-6-sol: The workers’ hands and the small objects beside the rail are hard to distinguish. (middle-left, weak)",
+      "gpt-6-sol: The workers’ hands and small items at rail level are hard to distinguish and look somewhat smeared. (middle-left, weak)",
+      "claude-opus-5.5: Overly smooth, uniformly processed look with painterly texture on concrete and trees (whole-image, moderate)",
+      "claude-opus-5.5: The image has an overall smooth, painterly texture. Concrete joints and puddles look soft, with a uniform AI-like sheen. (whole-image, moderate)"
+     ]
+    },
+    {
+     "category": "people_anatomy",
+     "score": 5,
+     "agreement": "2/9",
+     "regions": [
+      "middle-left",
+      "middle-right"
+     ],
+     "details": [
+      "claude-opus-5.5: Worker hands and tools are blurry smudges; leftmost worker's gear on ground is an indistinct mass (middle-left, moderate)",
+      "gemini-3.1-pro-preview: The worker in the orange jacket on the right track has malformed lower anatomy; his right leg appears to merge into his left or disappear, and clear feet or boots are missing. (middle-right, strong)"
+     ]
+    },
+    {
+     "category": "people_pose_or_placement",
+     "score": 4,
+     "agreement": "2/9",
+     "regions": [
+      "middle-left"
+     ],
+     "details": [
+      "claude-opus-5.5: Three workers crouch in a neat row straddling rails with tools and pads that blend into wet concrete; hands and tools are indistinct mush (middle-left, moderate)",
+      "claude-opus-5.5: Three workers crouch in a neat row on the left track, one at each rail and one between them. The arrangement looks staged, and their hands and tools are smeared and indistinct. (middle-left, moderate)"
+     ]
+    },
+    {
+     "category": "tools_or_small_objects",
+     "score": 3,
+     "agreement": "2/9",
+     "regions": [
+      "middle-left",
+      "center"
+     ],
+     "details": [
+      "gpt-6-sol: The workers’ hands and small objects at the rail are difficult to distinguish, leaving their exact task visually ambiguous. (middle-left, weak)",
+      "gemini-3.1-pro-preview: The tools and equipment scattered around the three workers on the left track appear as indistinct, melting shapes rather than recognizable mechanical tools. (center, moderate)"
+     ]
+    },
+    {
+     "category": "composition_or_staging",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "claude-opus-5.5: Workers evenly arranged in tidy poses, three on left and one on right, with the classic trolley-problem staging from a vehicle's viewpoint (center, moderate)"
+     ]
+    },
+    {
+     "category": "buildings",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "top-right"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: Inside the open bay of the building on the right, the arrangement of ceiling lights and structural elements is chaotic and lacks architectural logic. (top-right, moderate)"
+     ]
+    },
+    {
+     "category": "text_signage_or_markings",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "top-center"
+     ],
+     "details": [
+      "claude-opus-5.5: No legible signage, numbers or logos anywhere on depot building, doors or equipment (top-center, weak)"
+     ]
+    },
+    {
+     "category": "camera_or_windscreen",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "bottom-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Dark dashboard/vehicle edge at bottom frames shot as from a tram cab, a common staged prompt composition (bottom-center, weak)"
+     ]
+    },
+    {
+     "category": "reflections_or_wet_surfaces",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "claude-opus-5.5: Reflections of the orange vests in the wet concrete are blurry blobs, and some of them do not align well with the workers above. (center, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/v4/sd/e-group-R-3.jpg",
+   "meanJudgePAi": 0.2855555555555556,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.02,
+     "runs": [
+      0.02,
+      0.02,
+      0.02
+     ],
+     "counts": [
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve coherently into separate building bays, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "The rain-darkened concrete has irregular puddles and subdued reflections beneath the workers and rails.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead wires and their supports line up plausibly with the tracks.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "The three workers' overlapping hands and tools are difficult to distinguish precisely.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "top-right",
+        "detail": "Fine details inside the distant building bay look indistinct, though distance and low light could explain this.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both sets of rails curve smoothly toward separate building bays and remain aligned with the pavement.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Wet concrete shows irregular puddles and muted reflections of the rails and workers.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-right",
+        "detail": "Three workers have distinct kneeling positions, hard hats, and high-visibility clothing.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark vehicle dashboard or windscreen edge cuts across the bottom of the frame.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "middle-right",
+        "detail": "The workers' hands and equipment overlap near the rail and are difficult to distinguish.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both sets of rails follow consistent curves and converge toward separate building entrances.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Puddles and damp concrete show uneven, subdued reflections rather than uniform mirror images.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Three workers kneel around the right-hand rail, with their bodies and gear overlapping plausibly.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark vehicle dashboard or windscreen edge cuts across the bottom of the frame.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "The workers' hands and tools are hard to distinguish where they meet the rail; this could look slightly muddled, though the distance and overlap explain it.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.8166666666666668,
+     "runs": [
+      0.85,
+      0.8,
+      0.8
+     ],
+     "counts": [
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Two embedded rail pairs in concrete with no visible switch or connection; left track curves toward left door, right toward right door, but rails appear simplified with no flangeways or joints",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Three workers kneeling in a tight row all on/between the right track rails, staged pose looking like a generated scenario; left worker kneels centered between rails",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "Worker figures have mushy, indistinct hands and tools; legs and boots blend into ground",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "Overhead catenary wires are sparse and inconsistent; poles with cantilever arms don't clearly support wires over tracks",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Overly smooth, painterly HDR look on concrete and building siding, typical of diffusion output",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Wet surface reflections of workers are plausible orange smears",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark vehicle dashboard/hood edge at bottom, consistent with cab view, but rendered blobby",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Depot building with lit bays plausible, but door, ladder, and cage details are vague",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Embedded tram rails in concrete lack proper groove/flangeway detail; the left track pair curves and converges oddly, and the right track's left rail continues straight with no switch connection between the two branches, which is inconsistent for a yard throat.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "middle-right",
+        "detail": "Workers are posed kneeling symmetrically on the tracks in a staged arrangement, three in a row, with no tools visibly engaged with the rails.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Overly smooth, painterly concrete and puddles with a uniform HDR-like rendering; the dark speckle grit along the rails looks like generated texture.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Catenary wires are sparse and don't connect coherently between poles; the poles have arms with no consistent contact wire over the tracks.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "Workers' hands and feet blur into their bags; the boots and gloves are indistinct, and the leftmost right-track worker's legs merge with a tool bag.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Reflections of the workers' orange vests on the wet concrete are plausible and consistent.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Depot building has a coherent, realistic structure with bay doors, ladder, and lights.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Two separate embedded track pairs run toward two different bay doors, but neither has a visible switch or junction; the rails simply parallel each other with no connection, and the rails curve gently in a slightly irregular way.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "Overhead wires attach to poles inconsistently; the catenary arms don't clearly line up above the tracks, and the wires end abruptly.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Three workers cluster tightly on the right track in a staged, symmetric kneeling arrangement, with one lone worker on the left; the poses are similar and their hands are vague at the rails.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Overall smooth, painterly rendering with an HDR-like look; concrete slab joints are soft, and the gravel along the rails looks smeared.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Wet-surface reflections of the orange vests are plausible and consistent, as is the warm bay lighting.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "The dark dashboard edge at the bottom gives a windscreen POV framing, a common prompt staging.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Building details are plausible (ladder, wall lights, doors), but the interior bays are blurry, with indistinct structures inside.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.02,
+     "runs": [
+      0.02,
+      0.02,
+      0.02
+     ],
+     "counts": [
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "The wet concrete surface displays physically accurate reflections of the workers, their high-visibility clothing colors, the building, and the yellow bollards, matching the geometry perfectly.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "All the kneeling workers are wearing black knee pads, a highly specific, practical, and consistent detail that AI models often overlook or render inconsistently.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead catenary system includes accurate engineering details, such as the hangers connecting the horizontal messenger wire to the contact wire below, without any broken lines or impossible geometry.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "middle-left",
+        "detail": "The catenary pole on the far left includes a visible set of vertical tensioning weights, a specific structural necessity for tram/light rail systems that is accurately represented.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "The very bottom of the frame shows a dark dashboard curvature and a windshield wiper blade, providing realistic physical framing of a photo taken from inside a vehicle.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "The flangeway grooves in the embedded concrete tracks are continuous, correctly proportioned, and curve smoothly into the building bays without dissolving or warping.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "The wet concrete surface accurately reflects the bright orange and yellow colors of the workers' high-visibility vests corresponding to their physical positions.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The steel rails curve smoothly and maintain a consistent, parallel gauge as they lead directly into the maintenance building bays.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The background maintenance building features highly detailed, perfectly aligned corrugated metal siding, realistic roof fixtures, and consistent interior lighting visible through the open bay doors.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-right",
+        "detail": "The cluster of workers on the right are wearing distinct, correctly rendered safety gear including hard hats, various high-visibility jackets with reflective striping, knee pads, and tool pouches without any structural merging or morphing.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "The stacked wooden pallets and large cable spools by the fence show realistic material textures, shadows, and structural coherence.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "The wet concrete surface displays highly accurate and complex reflections of the workers' high-visibility clothing, the yellow bollards, and the building structure, which perfectly match the perspective and geometry of the physical objects.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The embedded rails curve smoothly towards the building bays while maintaining a perfectly consistent parallel gauge, with realistic grooves in the concrete.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead catenary system is mechanically logical, with continuous wires, realistic insulators, and properly tensioned support structures that don't blur or disappear.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-right",
+        "detail": "The group of workers on the right have highly detailed and consistent safety gear, including hard hats, tool belts, knee pads, and high-visibility vests with accurately rendered reflective strips.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "The very bottom edge of the frame shows the dark, slightly out-of-focus silhouette of a vehicle dashboard and what appears to be a windshield wiper, indicating the photo was taken from inside a cab.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {
+    "cloudflare/clef-omni": 0.0332,
+    "perplexity/pplx-decider-v1.1-27b": 0.021586610118211908,
+    "cloudflare/clef": 0.0652,
+    "liquid/d1": 0.015906388679519302,
+    "openai/gpt-6-luna-decisions": 0,
+    "google/gemini-3.5-flash-lite": 0,
+    "cloudflare/clef-flash": 0.0586,
+    "anthropic/claude-haiku-5.5": 0,
+    "openai/gpt-6-luna": 0
+   },
+   "tells": [
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 7,
+     "agreement": "4/9",
+     "regions": [
+      "top-right",
+      "whole-image"
+     ],
+     "details": [
+      "gpt-6-sol: Fine details inside the distant building bay look indistinct, though distance and low light could explain this. (top-right, weak)",
+      "claude-opus-5.5: Overly smooth, painterly HDR look on concrete and building siding, typical of diffusion output (whole-image, moderate)",
+      "claude-opus-5.5: Overly smooth, painterly concrete and puddles with a uniform HDR-like rendering; the dark speckle grit along the rails looks like generated texture. (whole-image, moderate)",
+      "claude-opus-5.5: Overall smooth, painterly rendering with an HDR-like look; concrete slab joints are soft, and the gravel along the rails looks smeared. (whole-image, moderate)"
+     ]
+    },
+    {
+     "category": "track_geometry",
+     "score": 6,
+     "agreement": "3/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "claude-opus-5.5: Two embedded rail pairs in concrete with no visible switch or connection; left track curves toward left door, right toward right door, but rails appear simplified with no flangeways or joints (center, moderate)",
+      "claude-opus-5.5: Embedded tram rails in concrete lack proper groove/flangeway detail; the left track pair curves and converges oddly, and the right track's left rail continues straight with no switch connection between the two branches, which is inconsistent for a yard throat. (center, moderate)",
+      "claude-opus-5.5: Two separate embedded track pairs run toward two different bay doors, but neither has a visible switch or junction; the rails simply parallel each other with no connection, and the rails curve gently in a slightly irregular way. (center, moderate)"
+     ]
+    },
+    {
+     "category": "overhead_wires_or_poles",
+     "score": 6,
+     "agreement": "3/9",
+     "regions": [
+      "top-left",
+      "top-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Overhead catenary wires are sparse and inconsistent; poles with cantilever arms don't clearly support wires over tracks (top-left, moderate)",
+      "claude-opus-5.5: Catenary wires are sparse and don't connect coherently between poles; the poles have arms with no consistent contact wire over the tracks. (top-center, moderate)",
+      "claude-opus-5.5: Overhead wires attach to poles inconsistently; the catenary arms don't clearly line up above the tracks, and the wires end abruptly. (top-left, moderate)"
+     ]
+    },
+    {
+     "category": "people_anatomy",
+     "score": 5,
+     "agreement": "4/9",
+     "regions": [
+      "middle-right"
+     ],
+     "details": [
+      "gpt-6-sol: The three workers' overlapping hands and tools are difficult to distinguish precisely. (middle-right, weak)",
+      "gpt-6-sol: The workers' hands and tools are hard to distinguish where they meet the rail; this could look slightly muddled, though the distance and overlap explain it. (middle-right, weak)",
+      "claude-opus-5.5: Worker figures have mushy, indistinct hands and tools; legs and boots blend into ground (middle-right, moderate)",
+      "claude-opus-5.5: Workers' hands and feet blur into their bags; the boots and gloves are indistinct, and the leftmost right-track worker's legs merge with a tool bag. (middle-right, weak)"
+     ]
+    },
+    {
+     "category": "people_pose_or_placement",
+     "score": 4,
+     "agreement": "2/9",
+     "regions": [
+      "middle-right"
+     ],
+     "details": [
+      "claude-opus-5.5: Three workers kneeling in a tight row all on/between the right track rails, staged pose looking like a generated scenario; left worker kneels centered between rails (middle-right, moderate)",
+      "claude-opus-5.5: Three workers cluster tightly on the right track in a staged, symmetric kneeling arrangement, with one lone worker on the left; the poses are similar and their hands are vague at the rails. (middle-right, moderate)"
+     ]
+    },
+    {
+     "category": "camera_or_windscreen",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "bottom-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Dark vehicle dashboard/hood edge at bottom, consistent with cab view, but rendered blobby (bottom-center, weak)",
+      "claude-opus-5.5: The dark dashboard edge at the bottom gives a windscreen POV framing, a common prompt staging. (bottom-center, weak)"
+     ]
+    },
+    {
+     "category": "buildings",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "top-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Depot building with lit bays plausible, but door, ladder, and cage details are vague (top-center, weak)",
+      "claude-opus-5.5: Building details are plausible (ladder, wall lights, doors), but the interior bays are blurry, with indistinct structures inside. (top-center, weak)"
+     ]
+    },
+    {
+     "category": "tools_or_small_objects",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "middle-right"
+     ],
+     "details": [
+      "gpt-6-sol: The workers' hands and equipment overlap near the rail and are difficult to distinguish. (middle-right, weak)"
+     ]
+    },
+    {
+     "category": "composition_or_staging",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "middle-right"
+     ],
+     "details": [
+      "claude-opus-5.5: Workers are posed kneeling symmetrically on the tracks in a staged arrangement, three in a row, with no tools visibly engaged with the rails. (middle-right, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/v4/sd/e-two-L-2.jpg",
+   "meanJudgePAi": 0.2555555555555556,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.023333333333333334,
+     "runs": [
+      0.02,
+      0.02,
+      0.03
+     ],
+     "counts": [
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve continuously from the foreground into separate warehouse bays, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Irregular puddles and darker wet patches reflect parts of the rails, poles, and building.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Two workers kneel beside the left branch, with their bodies and gear positioned plausibly for work on the rail.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "center",
+        "detail": "The nearer rail partly obscures one worker's hands, making their exact placement hard to resolve.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "people_anatomy",
+        "region": "middle-left",
+        "detail": "The workers’ hands and tools near the rails are hard to distinguish, leaving some fine detail ambiguous.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Both workers have plausible kneeling positions beside the left branch track.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve continuously toward their respective building openings.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Irregular puddles and reflections follow the wet pavement and rails.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead supports and wires align with the tracks and recede into the scene.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both rail pairs curve continuously into separate depot bays, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Puddles and subdued reflections vary with the concrete surface rather than appearing uniformly glossy.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Two workers kneel beside the left-hand rails in plausible working positions.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark vehicle dashboard or windscreen edge cuts across the foreground.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "center",
+        "detail": "The workers' hands and gear near the rail are difficult to distinguish, though the distance and resolution could explain this.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.7266666666666667,
+     "runs": [
+      0.68,
+      0.75,
+      0.75
+     ],
+     "counts": [
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Poles with cross-arms stand beside the tracks, but there is no consistent catenary contact wire running above either track. Only a few stray diagonal wires appear near the top-left and top-right.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "The dashcam-style view from a vehicle hood shows two tracks forking to two doors, with workers on only one track. This looks like a staged dilemma scenario.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Surfaces have a smooth, slightly painterly quality, with soft and uniform detail on the concrete, puddles and building cladding.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-left",
+        "detail": "The workers' hi-vis jackets and helmets are plausible, but hands, the tool and the bags blend softly into the rail and lack crisp detail.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The embedded rails keep a plausible gauge and curve smoothly into each depot door without obvious merging errors.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Reflections of the depot lights in the wet concrete and puddles are consistent with the light positions.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The depot building, ladder, doors, bollards and cable drum are coherent and free of garbled structures. No text is visible that would reveal errors.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Left track pair converges toward left door while right track pair heads to right door; the left pair's rails appear to curve oddly, with the right rail of the left track bending around workers in a way that looks plausible but rails seem unusually narrow-gauge and inconsistent spacing near the far end",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "Overhead catenary wires are sparse and do not clearly connect over each track; wires seem to hang without consistent alignment above rails",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Overall smooth, slightly painterly rendering of concrete and puddles with uniform soft sharpness typical of generated video frames",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Two workers kneeling at the rail with a tool bar between them; hands and tool contact somewhat vague, bags merge into ground",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Depot building with lights, doors, ladder, cages looks coherent and realistic",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dashboard edge of vehicle at bottom, consistent with cab viewpoint staging common in generated rail scenes",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Puddle reflections are plausible but somewhat blurred and generic",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Left track pair converges toward the left building door while right track goes to right door; the left track's right rail appears to run oddly, and track spacing/gauge looks inconsistent between the two pairs with no visible switch connection despite both originating from same area",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Two workers kneeling directly on the track in matching hi-vis, posed neatly with bags, typical staged AI composition; hands and tools are vague",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Tool held between workers across rail is an indistinct thin line; bags beside workers are amorphous blobs",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Smooth, slightly painterly concrete and puddle reflections with soft uniform detail; building facade overly clean and symmetric",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "Overhead catenary wires are sparse and inconsistent; poles have arms but wires don't clearly connect over tracks",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard/hood edge at bottom gives plausible in-cab viewpoint",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Depot building with two lit bays, ladder, lights, fence look coherent and realistic",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.016666666666666666,
+     "runs": [
+      0.02,
+      0.01,
+      0.02
+     ],
+     "counts": [
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "The wet concrete realistically reflects the workers, tracks, poles, and the building, with natural distortion caused by the uneven water layer.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The steel rails are cleanly embedded into the concrete surface, maintaining a consistent gauge and forming smooth, realistic curves leading into the building bays.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-left",
+        "detail": "The workers are wearing highly detailed and realistic gear, including high-visibility jackets with natural folds, hard hats, tool belts, and kneepads.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "The presence of standard industrial items like the large wooden cable spool, pallets, and chain-link fencing adds realistic, coherent context to the scene.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark, slightly curved edge is visible at the very bottom of the frame, strongly suggesting the photo was taken from inside a vehicle through a windshield.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The catenary poles and overhead electrical wires feature appropriate structural elements, insulators, and tensioning devices consistent with real tram or rail infrastructure.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-left",
+        "detail": "The high-visibility jackets, hard hats, knee pads, and tool belts worn by the workers feature functional, consistent details without any strange merging or morphing of straps or pockets.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "The reflections on the wet concrete accurately mirror the geometry of the workers, building, tracks, and yellow bollards, while being correctly distorted by the uneven surface and puddles.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The rails embedded in the concrete maintain a perfectly consistent gauge and realistic flangeways (grooves) as they curve smoothly toward the building bays.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The corrugated texture of the building's metal facade is uniform, and the attached ladder has straight, parallel rungs with logical mounting brackets.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "The dark shape at the very bottom edge of the frame naturally suggests the dashboard or window frame of a vehicle from which the photo was taken.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-left",
+        "detail": "The reflections of the workers, including the colors of their high-vis gear, on the wet concrete are highly accurate and include natural distortions caused by the uneven surface, which is difficult for AI to render perfectly.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A blurry, dark shape is visible across the very bottom edge of the frame, characteristic of a vehicle dashboard or windshield wiper, strongly suggesting the photo was taken from inside a tram or similar vehicle.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "The embedded grooved rails curve smoothly and maintain a consistent gauge and structural logic as they lead into the building's bays.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-right",
+        "detail": "The concrete surface displays realistic, chaotic variations in dirt, puddles, and texture typical of a real-world industrial or maintenance environment.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {
+    "perplexity/pplx-decider-v1.1-27b": 0.009892906403193824,
+    "liquid/d1": 0.020332352378008508,
+    "cloudflare/clef": 0.0549,
+    "cloudflare/clef-flash": 0.0602,
+    "anthropic/claude-haiku-5.5": 0,
+    "cloudflare/clef-omni": 0.0307,
+    "openai/gpt-6-luna-decisions": 0,
+    "google/gemini-3.5-flash-lite": 0,
+    "openai/gpt-6-luna": 0
+   },
+   "tells": [
+    {
+     "category": "overhead_wires_or_poles",
+     "score": 6,
+     "agreement": "3/9",
+     "regions": [
+      "top-center",
+      "top-left"
+     ],
+     "details": [
+      "claude-opus-5.5: Poles with cross-arms stand beside the tracks, but there is no consistent catenary contact wire running above either track. Only a few stray diagonal wires appear near the top-left and top-right. (top-center, moderate)",
+      "claude-opus-5.5: Overhead catenary wires are sparse and do not clearly connect over each track; wires seem to hang without consistent alignment above rails (top-left, moderate)",
+      "claude-opus-5.5: Overhead catenary wires are sparse and inconsistent; poles have arms but wires don't clearly connect over tracks (top-left, moderate)"
+     ]
+    },
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 4,
+     "agreement": "3/9",
+     "regions": [
+      "whole-image"
+     ],
+     "details": [
+      "claude-opus-5.5: Surfaces have a smooth, slightly painterly quality, with soft and uniform detail on the concrete, puddles and building cladding. (whole-image, weak)",
+      "claude-opus-5.5: Overall smooth, slightly painterly rendering of concrete and puddles with uniform soft sharpness typical of generated video frames (whole-image, moderate)",
+      "claude-opus-5.5: Smooth, slightly painterly concrete and puddle reflections with soft uniform detail; building facade overly clean and symmetric (whole-image, weak)"
+     ]
+    },
+    {
+     "category": "track_geometry",
+     "score": 4,
+     "agreement": "2/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "claude-opus-5.5: Left track pair converges toward left door while right track pair heads to right door; the left pair's rails appear to curve oddly, with the right rail of the left track bending around workers in a way that looks plausible but rails seem unusually narrow-gauge and inconsistent spacing near the far end (center, moderate)",
+      "claude-opus-5.5: Left track pair converges toward the left building door while right track goes to right door; the left track's right rail appears to run oddly, and track spacing/gauge looks inconsistent between the two pairs with no visible switch connection despite both originating from same area (center, moderate)"
+     ]
+    },
+    {
+     "category": "people_anatomy",
+     "score": 3,
+     "agreement": "3/9",
+     "regions": [
+      "center",
+      "middle-left"
+     ],
+     "details": [
+      "gpt-6-sol: The nearer rail partly obscures one worker's hands, making their exact placement hard to resolve. (center, weak)",
+      "gpt-6-sol: The workers’ hands and tools near the rails are hard to distinguish, leaving some fine detail ambiguous. (middle-left, weak)",
+      "gpt-6-sol: The workers' hands and gear near the rail are difficult to distinguish, though the distance and resolution could explain this. (center, weak)"
+     ]
+    },
+    {
+     "category": "people_pose_or_placement",
+     "score": 3,
+     "agreement": "2/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "claude-opus-5.5: Two workers kneeling at the rail with a tool bar between them; hands and tool contact somewhat vague, bags merge into ground (center, weak)",
+      "claude-opus-5.5: Two workers kneeling directly on the track in matching hi-vis, posed neatly with bags, typical staged AI composition; hands and tools are vague (center, moderate)"
+     ]
+    },
+    {
+     "category": "composition_or_staging",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "whole-image"
+     ],
+     "details": [
+      "claude-opus-5.5: The dashcam-style view from a vehicle hood shows two tracks forking to two doors, with workers on only one track. This looks like a staged dilemma scenario. (whole-image, moderate)"
+     ]
+    },
+    {
+     "category": "tools_or_small_objects",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "claude-opus-5.5: Tool held between workers across rail is an indistinct thin line; bags beside workers are amorphous blobs (center, moderate)"
+     ]
+    },
+    {
+     "category": "people_clothing_or_gear",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "middle-left"
+     ],
+     "details": [
+      "claude-opus-5.5: The workers' hi-vis jackets and helmets are plausible, but hands, the tool and the bags blend softly into the rail and lack crisp detail. (middle-left, weak)"
+     ]
+    },
+    {
+     "category": "camera_or_windscreen",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "bottom-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Dashboard edge of vehicle at bottom, consistent with cab viewpoint staging common in generated rail scenes (bottom-center, weak)"
+     ]
+    },
+    {
+     "category": "reflections_or_wet_surfaces",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "claude-opus-5.5: Puddle reflections are plausible but somewhat blurred and generic (center, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/v4/sd/e-two-R-2.jpg",
+   "meanJudgePAi": 0.26999999999999996,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.02666666666666667,
+     "runs": [
+      0.04,
+      0.02,
+      0.02
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve continuously from the foreground into separate building bays, with consistent perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Irregular puddles and darker wet patches vary across the concrete rather than repeating in a pattern.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Two workers kneel beside the right-hand rails in plausible positions for working on the track.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Fencing, stacked materials, bollards, and equipment appear in distinct, spatially consistent positions.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "The workers’ hands and small items by the rail are too soft to resolve clearly, leaving some fine details uncertain.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "Both workers have coherent kneeling postures, with their arms and hands directed toward the rail.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "The two sets of rails curve continuously from the foreground into separate building entrances.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Irregular puddles and reflections match the wet concrete and overcast conditions.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Pallets, fencing, bollards, and equipment appear in plausible positions around the industrial building.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "The workers’ hands and the small objects beside the rail are difficult to distinguish at this resolution.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve smoothly into separate warehouse bays with consistent perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Irregular puddles and damp concrete show varied, subdued reflections of the building and sky.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Two workers kneel beside the right-hand rails and appear to be working at track level.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark vehicle or windscreen edge cuts across the bottom of the frame.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "The workers’ hands and the small objects near the rails are difficult to resolve at this distance.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.7666666666666666,
+     "runs": [
+      0.8,
+      0.8,
+      0.7
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Two embedded track pairs diverge from the foreground with no visible switch blades, frog, or connecting rails; the right pair simply begins at the bottom edge, inconsistent with real depot trackwork",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "Overhead catenary is sparse and inconsistent: a few wires hang from poles but don't clearly run over each track into the shed entrances",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Two workers in hi-vis kneel on the right track in near-symmetrical poses, their hands merging into indistinct tools at the rail",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Overly smooth, HDR-like rendering of the wet concrete and reflections, with uniformly soft detail and painterly puddles",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The shed has plausible cladding, lights, a ladder and yellow bollards, and coherent perspective, which supports a real photo",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark dashboard or windscreen edge along the bottom frames a staged cab-view composition, typical of generated 'driver POV' images",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Two embedded track pairs diverge from the foreground without any visible switch, frog or turnout; left pair curves left into the shed with no connection to the right pair, geometry looks implausible for a depot fan",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Two workers kneel on the right track in near-identical poses, hands on the rail with indistinct tools, staged-looking placement",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "Overhead catenary is sparse and inconsistent: thin wires from poles do not form a coherent contact wire over the tracks",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Smooth, overly clean HDR-like rendering with soft mushy detail in background fences, pallets and shed interiors",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Wet concrete reflections are plausible and consistent with overcast sky",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard/hood edge in foreground gives cab-view framing typical of generated 'driver view' prompts",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Scene closely matches a staged trolley-dilemma layout: two branch tracks seen from a vehicle's windscreen, with workers kneeling on exactly one branch, which suggests a prompted composition.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "The catenary poles and arms carry only sparse, thin wires that don't clearly run above the tracks. The wiring looks incomplete or inconsistent for a working tram depot.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "The two tracks curve apart without any visible switch or frog connecting them. The rail grooves look smoothly painted rather than showing realistic flangeway detail.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "There is an overall HDR-like, oversharpened yet smooth look. The wet concrete puddles are evenly rendered and the background objects (pallets, cages) are somewhat mushy.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "The two kneeling workers are coherent in hi-vis vests and hard hats, with plausible poses and hands near the rail. No obvious deformities.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "The depot lights reflect in the wet surface in plausible directions, consistent with the light sources.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The corrugated depot building is generic, with no legible signage or text anywhere, which is typical of generated imagery.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.016666666666666666,
+     "runs": [
+      0.02,
+      0.01,
+      0.02
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-right",
+        "detail": "The reflections of the two kneeling workers on the wet concrete perfectly match their poses, the colors of their high-visibility gear, and their exact positions relative to the camera. AI often struggles to generate physically accurate reflections of complex, non-standard poses.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "The embedded rails curve smoothly towards the building entrances, maintaining a consistent gauge and realistic flangeways all the way into the distance without wobbling, merging, or disappearing unnaturally.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The thin overhead catenary wires are continuous and connect logically to the complex support structures on the poles and the building facade. AI generation frequently breaks, tangles, or hallucinates thin lines like these against a cloudy sky.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "The workers are kneeling naturally, interacting specifically with the rail groove. The folds in their thick clothing and the positioning of their limbs look physically plausible for the task they are performing.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "The wooden cable drum, stacked pallets, and fencing exhibit consistent perspective, appropriate scaling, and realistic textures without the 'melting' or blurring often seen in AI backgrounds.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "The out-of-focus dark shape along the bottom edge suggests the photo was taken from inside a vehicle (like a train cab or truck), which provides realistic, consistent context for this type of image.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "The wet concrete surface displays complex, geometrically consistent reflections of the building, overhead poles, and the two workers. AI often struggles to match reflections perfectly with complex subjects across large surfaces.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "The rails are continuous, remain parallel through the curves, and the flangeway grooves are consistently rendered along their entire visible length.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The catenary support structures (cantilevers, insulators) and wires overhead appear structurally logical and continuous, without the random branching or tangling common in AI-generated technical infrastructure.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "The two workers are in natural, functional kneeling poses, interacting realistically with the rails and their tools, with correct weight distribution.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The corrugated siding of the building is consistent, and details like the safety ladder, downspouts, and vents are placed logically and rendered without distortion.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "The dark, slightly out-of-focus shape across the bottom edge strongly suggests the photo was taken from inside a vehicle looking over a dashboard or through a windscreen.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "The reflections of the workers, the building, and the poles on the wet concrete are perspective-accurate and realistically distorted by the uneven surface texture.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "The rails on both sets of tracks are smoothly curved, consistently parallel, and cleanly embedded in the concrete without any warping or logical errors.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "The dark, slightly out-of-focus shape across the very bottom edge is consistent with a dashboard or windshield wiper, indicating the photo was taken from inside a cab.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead catenary wires and support poles are straight, correctly tensioned, and connect logically without disappearing or creating nonsensical structures.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "The workers are in natural, functional kneeling poses, interacting credibly with the ground, and their high-visibility clothing shows realistic folds and dirt.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {
+    "cloudflare/clef-omni": 0.0537,
+    "perplexity/pplx-decider-v1.1-27b": 0.013416242806669226,
+    "liquid/d1": 0.021615330556727978,
+    "openai/gpt-6-luna-decisions": 0,
+    "anthropic/claude-haiku-5.5": 1,
+    "cloudflare/clef-flash": 0.0576,
+    "google/gemini-3.5-flash-lite": 0,
+    "cloudflare/clef": 0.1039,
+    "openai/gpt-6-luna": 0
+   },
+   "tells": [
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 6,
+     "agreement": "6/9",
+     "regions": [
+      "middle-right",
+      "whole-image"
+     ],
+     "details": [
+      "gpt-6-sol: The workers’ hands and small items by the rail are too soft to resolve clearly, leaving some fine details uncertain. (middle-right, weak)",
+      "gpt-6-sol: The workers’ hands and the small objects beside the rail are difficult to distinguish at this resolution. (middle-right, weak)",
+      "gpt-6-sol: The workers’ hands and the small objects near the rails are difficult to resolve at this distance. (middle-right, weak)",
+      "claude-opus-5.5: Overly smooth, HDR-like rendering of the wet concrete and reflections, with uniformly soft detail and painterly puddles (whole-image, weak)",
+      "claude-opus-5.5: Smooth, overly clean HDR-like rendering with soft mushy detail in background fences, pallets and shed interiors (whole-image, weak)",
+      "claude-opus-5.5: There is an overall HDR-like, oversharpened yet smooth look. The wet concrete puddles are evenly rendered and the background objects (pallets, cages) are somewhat mushy. (whole-image, weak)"
+     ]
+    },
+    {
+     "category": "overhead_wires_or_poles",
+     "score": 6,
+     "agreement": "3/9",
+     "regions": [
+      "top-right",
+      "top-left"
+     ],
+     "details": [
+      "claude-opus-5.5: Overhead catenary is sparse and inconsistent: a few wires hang from poles but don't clearly run over each track into the shed entrances (top-right, moderate)",
+      "claude-opus-5.5: Overhead catenary is sparse and inconsistent: thin wires from poles do not form a coherent contact wire over the tracks (top-right, moderate)",
+      "claude-opus-5.5: The catenary poles and arms carry only sparse, thin wires that don't clearly run above the tracks. The wiring looks incomplete or inconsistent for a working tram depot. (top-left, moderate)"
+     ]
+    },
+    {
+     "category": "track_geometry",
+     "score": 5,
+     "agreement": "3/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "claude-opus-5.5: Two embedded track pairs diverge from the foreground with no visible switch blades, frog, or connecting rails; the right pair simply begins at the bottom edge, inconsistent with real depot trackwork (center, moderate)",
+      "claude-opus-5.5: Two embedded track pairs diverge from the foreground without any visible switch, frog or turnout; left pair curves left into the shed with no connection to the right pair, geometry looks implausible for a depot fan (center, moderate)",
+      "claude-opus-5.5: The two tracks curve apart without any visible switch or frog connecting them. The rail grooves look smoothly painted rather than showing realistic flangeway detail. (center, weak)"
+     ]
+    },
+    {
+     "category": "people_pose_or_placement",
+     "score": 4,
+     "agreement": "2/9",
+     "regions": [
+      "middle-right"
+     ],
+     "details": [
+      "claude-opus-5.5: Two workers in hi-vis kneel on the right track in near-symmetrical poses, their hands merging into indistinct tools at the rail (middle-right, moderate)",
+      "claude-opus-5.5: Two workers kneel on the right track in near-identical poses, hands on the rail with indistinct tools, staged-looking placement (middle-right, moderate)"
+     ]
+    },
+    {
+     "category": "camera_or_windscreen",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "bottom-center"
+     ],
+     "details": [
+      "claude-opus-5.5: A dark dashboard or windscreen edge along the bottom frames a staged cab-view composition, typical of generated 'driver POV' images (bottom-center, weak)",
+      "claude-opus-5.5: Dark dashboard/hood edge in foreground gives cab-view framing typical of generated 'driver view' prompts (bottom-center, weak)"
+     ]
+    },
+    {
+     "category": "composition_or_staging",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "whole-image"
+     ],
+     "details": [
+      "claude-opus-5.5: Scene closely matches a staged trolley-dilemma layout: two branch tracks seen from a vehicle's windscreen, with workers kneeling on exactly one branch, which suggests a prompted composition. (whole-image, moderate)"
+     ]
+    },
+    {
+     "category": "buildings",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "top-center"
+     ],
+     "details": [
+      "claude-opus-5.5: The corrugated depot building is generic, with no legible signage or text anywhere, which is typical of generated imagery. (top-center, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/v4/sd/f-group-L-1.jpg",
+   "meanJudgePAi": 0.42444444444444446,
+   "passesGate": false,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.043333333333333335,
+     "runs": [
+      0.03,
+      0.04,
+      0.06
+     ],
+     "counts": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Three workers crouch around the left-hand rails, with their hands and attention directed toward the same work area.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails run continuously from the foreground into their respective building bays, with consistent perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-right",
+        "detail": "The wet pavement has irregular reflections from the bay lights and workers rather than a uniform sheen.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark windscreen-wiper or dashboard edge partly obscures the foreground, consistent with a photograph taken from a vehicle.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "top-center",
+        "detail": "The two similarly lit service bays give the scene a near-symmetrical appearance that could initially look synthetic.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "Fine details around the lone worker's hands and the rail are indistinct, though the dim light and distance could account for this.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails follow consistent curves into their respective depot doors.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-right",
+        "detail": "The wet pavement reflects the building lights in irregular patches.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark windscreen or dashboard edge cuts across the bottom of the frame.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "center",
+        "detail": "The workers’ hands and the equipment between them are hard to distinguish.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails lead consistently toward their respective depot bays, with plausible perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "The wet pavement has irregular, subdued reflections of the depot lights.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark windscreen edge and faint spots on the glass are visible in front of the scene.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-left",
+        "detail": "Three workers crouch around a small section of the left track; their hands and tools overlap and are hard to distinguish.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "The two depot entrances and groups of workers form a notably balanced composition, though this is also plausible in a photograph.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.5666666666666667,
+     "runs": [
+      0.2,
+      0.7,
+      0.8
+     ],
+     "counts": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "The left track's rails are embedded in asphalt and converge toward a single depot door. The geometry stays coherent with consistent gauge and perspective.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "The workers wear hi-vis orange and yellow suits with reflective strips and helmets, all rendered consistently. Kneeling poses look natural and limbs are coherent.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "Wet tarmac reflects lamp lights and the depot interior plausibly, and the reflections match their light sources.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark wiper or windscreen edge at the bottom frame suggests the photo was shot from inside a tram cab. This is a typical documentary detail.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Catenary poles with cantilever arms and thin contact wires look structurally plausible.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "There is some smoothing and compression softness, and the building facade is fairly uniform. This could be denoising rather than generation.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The depot has symmetrical bays with interior lighting rows, cages, and bollards placed logically. Small details like vents, doors, and cages are coherent.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Left track's right rail appears to merge/converge oddly near the workers, with a short rail segment entering under them; geometry of the embedded tram rails is somewhat ambiguous but plausible.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Three workers kneeling in a tight cluster on the left track, posed neatly and symmetrically, with a single worker on the right track; staged-looking arrangement.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Two depot doorways with symmetric interior lighting; the facade is clean and featureless, with generic vents and doors and no legible signage.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "whole-image",
+        "detail": "No readable text, logos, or markings anywhere on the workers' vests, the building, or the bollards, which is unusual for a real tram depot.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Wet asphalt reflections are consistent with the light sources and look plausible.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark tram dashboard/windscreen edge in the foreground, a plausible photographic framing.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Smooth, painterly rendering with uniform softness on the workers and bags; fine detail such as hands and tools is mushy.",
+        "points_to": "ai",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "Left track rails converge into a single narrow line inside the depot doorway; both rails approach each other unnaturally, and the left track's gauge appears inconsistent relative to the right track",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Three workers on left track kneel in a tidy symmetric row on the rails with indistinct hands and tools; the right worker's pose is merged with the rail",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark windscreen/dashboard edge foreground with smooth, somewhat warped shape typical of generated cab views",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead catenary wires are sparse and do not clearly connect to the tracks entering the doors; cantilever arms end abruptly",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "Wet asphalt reflections of lamps are plausible and consistent with light sources",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Depot building is coherent, with symmetric doors and plausible lighting, but very clean and generic",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Smooth, painterly texture on surfaces and figures with little genuine sensor noise despite dusk lighting",
+        "points_to": "ai",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.6633333333333333,
+     "runs": [
+      0.95,
+      0.05,
+      0.99
+     ],
+     "counts": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-right",
+        "detail": "The worker on the right track has lower limbs that meld indistinctly into the ground and the rail, lacking clear anatomical structure.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-left",
+        "detail": "The objects or tools being handled by the group of three workers are poorly defined blobs that seamlessly merge with the rails.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "The left set of tracks appears to vanish or lose its solid structural form exactly where the workers are positioned.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead wires are very faint, disjointed, and fail to form a coherent, continuous system connecting the supporting structures.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-right",
+        "detail": "The reflection directly beneath the worker on the right track is a shapeless smear of color rather than a logical reflection on a wet surface.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The image exhibits a universally smooth, slightly painterly quality, lacking the crisp, fine-grained details typical of a real photograph.",
+        "points_to": "ai",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "The wet pavement reflects the overhead lights and the orange bollards with realistic diffusion and correct perspective, matching the physical layout perfectly.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "middle-left",
+        "detail": "The tram tracks are perfectly parallel, continuous, and maintain correct perspective as they curve and recede into the depot bays.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The complex catenary system (overhead wires and support brackets on the poles) is continuous, thin, and structurally logical, which is typically difficult for AI to render without breaks or unnatural bends.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A blurry, dark shape at the very bottom edge and faint smudges/water spots suggest the photo was taken from inside a vehicle looking through a windshield, a subtle real-world artifact.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-left",
+        "detail": "The group of three workers are interacting with the track naturally, with coherent anatomy, appropriate high-visibility gear, and realistic shadowing underneath them.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "center",
+        "detail": "The interior of the lit depot bays shows a realistic recession of lights, tracks, and structural elements into the depth of the building.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "The two rails of the track on the right converge and completely lose their parallel gauge as they curve toward the building.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "The track geometry under the group of three workers is inconsistent, with the rails appearing to narrow significantly or merge.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "The solitary worker on the right lacks defined legs or a coherent lower body, appearing to melt into the track and ground.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-left",
+        "detail": "The three workers on the left blend into each other, with unclear boundaries between their bodies, limbs, and clothing.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "The orange bollards scattered across the apron appear to sit unnaturally on the surface without proper bases or consistent reflections.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead wire infrastructure is faint, broken, or logically disconnected in several places above the tracks.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The image exhibits a smeared, painterly texture upon closer inspection, lacking the sharp, distinct details expected in a photograph.",
+        "points_to": "ai",
+        "strength": "strong"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {
+    "perplexity/pplx-decider-v1.1-27b": 0.04193665260961236,
+    "cloudflare/clef": 0.1375,
+    "cloudflare/clef-omni": 0.0629,
+    "liquid/d1": 0.0373268854700467,
+    "cloudflare/clef-flash": 0.0887,
+    "openai/gpt-6-luna-decisions": 0,
+    "anthropic/claude-haiku-5.5": 0,
+    "openai/gpt-6-luna": 0,
+    "google/gemini-3.5-flash-lite": 0
+   },
+   "tells": [
+    {
+     "category": "track_geometry",
+     "score": 12,
+     "agreement": "4/9",
+     "regions": [
+      "center",
+      "bottom-left",
+      "bottom-right"
+     ],
+     "details": [
+      "claude-opus-5.5: Left track's right rail appears to merge/converge oddly near the workers, with a short rail segment entering under them; geometry of the embedded tram rails is somewhat ambiguous but plausible. (center, weak)",
+      "claude-opus-5.5: Left track rails converge into a single narrow line inside the depot doorway; both rails approach each other unnaturally, and the left track's gauge appears inconsistent relative to the right track (bottom-left, moderate)",
+      "gemini-3.1-pro-preview: The left set of tracks appears to vanish or lose its solid structural form exactly where the workers are positioned. (bottom-left, strong)",
+      "gemini-3.1-pro-preview: The two rails of the track on the right converge and completely lose their parallel gauge as they curve toward the building. (bottom-right, strong)",
+      "gemini-3.1-pro-preview: The track geometry under the group of three workers is inconsistent, with the rails appearing to narrow significantly or merge. (bottom-left, strong)"
+     ]
+    },
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 11,
+     "agreement": "6/9",
+     "regions": [
+      "middle-right",
+      "whole-image"
+     ],
+     "details": [
+      "gpt-6-sol: Fine details around the lone worker's hands and the rail are indistinct, though the dim light and distance could account for this. (middle-right, weak)",
+      "claude-opus-5.5: There is some smoothing and compression softness, and the building facade is fairly uniform. This could be denoising rather than generation. (whole-image, weak)",
+      "claude-opus-5.5: Smooth, painterly rendering with uniform softness on the workers and bags; fine detail such as hands and tools is mushy. (whole-image, moderate)",
+      "claude-opus-5.5: Smooth, painterly texture on surfaces and figures with little genuine sensor noise despite dusk lighting (whole-image, moderate)",
+      "gemini-3.1-pro-preview: The image exhibits a universally smooth, slightly painterly quality, lacking the crisp, fine-grained details typical of a real photograph. (whole-image, moderate)",
+      "gemini-3.1-pro-preview: The image exhibits a smeared, painterly texture upon closer inspection, lacking the sharp, distinct details expected in a photograph. (whole-image, strong)"
+     ]
+    },
+    {
+     "category": "people_pose_or_placement",
+     "score": 11,
+     "agreement": "5/9",
+     "regions": [
+      "bottom-left",
+      "middle-left",
+      "center",
+      "bottom-right",
+      "middle-right"
+     ],
+     "details": [
+      "gpt-6-sol: Three workers crouch around a small section of the left track; their hands and tools overlap and are hard to distinguish. (bottom-left, weak)",
+      "claude-opus-5.5: Three workers kneeling in a tight cluster on the left track, posed neatly and symmetrically, with a single worker on the right track; staged-looking arrangement. (middle-left, moderate)",
+      "claude-opus-5.5: Three workers on left track kneel in a tidy symmetric row on the rails with indistinct hands and tools; the right worker's pose is merged with the rail (center, moderate)",
+      "gemini-3.1-pro-preview: The worker on the right track has lower limbs that meld indistinctly into the ground and the rail, lacking clear anatomical structure. (bottom-right, strong)",
+      "gemini-3.1-pro-preview: The solitary worker on the right lacks defined legs or a coherent lower body, appearing to melt into the track and ground. (middle-right, strong)"
+     ]
+    },
+    {
+     "category": "overhead_wires_or_poles",
+     "score": 6,
+     "agreement": "3/9",
+     "regions": [
+      "top-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Overhead catenary wires are sparse and do not clearly connect to the tracks entering the doors; cantilever arms end abruptly (top-center, moderate)",
+      "gemini-3.1-pro-preview: The overhead wires are very faint, disjointed, and fail to form a coherent, continuous system connecting the supporting structures. (top-center, moderate)",
+      "gemini-3.1-pro-preview: The overhead wire infrastructure is faint, broken, or logically disconnected in several places above the tracks. (top-center, moderate)"
+     ]
+    },
+    {
+     "category": "people_anatomy",
+     "score": 3,
+     "agreement": "2/9",
+     "regions": [
+      "center",
+      "middle-left"
+     ],
+     "details": [
+      "gpt-6-sol: The workers’ hands and the equipment between them are hard to distinguish. (center, weak)",
+      "gemini-3.1-pro-preview: The three workers on the left blend into each other, with unclear boundaries between their bodies, limbs, and clothing. (middle-left, moderate)"
+     ]
+    },
+    {
+     "category": "tools_or_small_objects",
+     "score": 3,
+     "agreement": "1/9",
+     "regions": [
+      "bottom-left"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: The objects or tools being handled by the group of three workers are poorly defined blobs that seamlessly merge with the rails. (bottom-left, strong)"
+     ]
+    },
+    {
+     "category": "composition_or_staging",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "top-center",
+      "whole-image"
+     ],
+     "details": [
+      "gpt-6-sol: The two similarly lit service bays give the scene a near-symmetrical appearance that could initially look synthetic. (top-center, weak)",
+      "gpt-6-sol: The two depot entrances and groups of workers form a notably balanced composition, though this is also plausible in a photograph. (whole-image, weak)"
+     ]
+    },
+    {
+     "category": "text_signage_or_markings",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "whole-image"
+     ],
+     "details": [
+      "claude-opus-5.5: No readable text, logos, or markings anywhere on the workers' vests, the building, or the bollards, which is unusual for a real tram depot. (whole-image, moderate)"
+     ]
+    },
+    {
+     "category": "reflections_or_wet_surfaces",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "bottom-right"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: The reflection directly beneath the worker on the right track is a shapeless smear of color rather than a logical reflection on a wet surface. (bottom-right, moderate)"
+     ]
+    },
+    {
+     "category": "background_clutter",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: The orange bollards scattered across the apron appear to sit unnaturally on the surface without proper bases or consistent reflections. (center, moderate)"
+     ]
+    },
+    {
+     "category": "buildings",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "top-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Two depot doorways with symmetric interior lighting; the facade is clean and featureless, with generic vents and doors and no legible signage. (top-center, weak)"
+     ]
+    },
+    {
+     "category": "camera_or_windscreen",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "bottom-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Dark windscreen/dashboard edge foreground with smooth, somewhat warped shape typical of generated cab views (bottom-center, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/v4/sd/f-group-R-3.jpg",
+   "meanJudgePAi": 0.5133333333333333,
+   "passesGate": false,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.03,
+     "runs": [
+      0.03,
+      0.03,
+      0.03
+     ],
+     "counts": [
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both rail pairs curve smoothly from the foreground into separate depot doors, with consistent perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "The wet pavement has irregular reflections from the depot lights and a natural, uneven sheen.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark windscreen wiper or dashboard edge partially obscures the foreground.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-right",
+        "detail": "The three workers have distinct helmets, reflective clothing, and kneeling positions around the right-hand rail.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "The two illuminated depot entrances and worker groups make an unusually balanced composition.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "Some details around the workers’ hands and tools are too soft to identify clearly.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both sets of rails curve continuously from the foreground toward separate depot entrances.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-right",
+        "detail": "The three workers wear distinct helmets and layered high-visibility clothing with plausible folds and reflective bands.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "The wet pavement shows subdued, uneven reflections of the depot lights.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark windscreen-wiper edge crosses the foreground, consistent with a photograph taken through a vehicle window.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "middle-right",
+        "detail": "The workers' hands and the rail component they are handling are difficult to distinguish where their bodies overlap.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-left",
+        "detail": "The distant worker's hands and equipment look indistinct, though they occupy very few pixels.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "The wet pavement reflects the depot lights, with reflections that vary across the ground.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails converge toward their respective depot entrances with consistent perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark windscreen wiper crosses the foreground, consistent with a photograph taken from inside a vehicle.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-right",
+        "detail": "The three workers are huddled over the right-hand track; their overlapping arms and tools are difficult to distinguish.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The two illuminated depot bays look unusually similar, though a repeated industrial layout would explain this.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.85,
+     "runs": [
+      0.85,
+      0.85,
+      0.85
+     ],
+     "counts": [
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "The two track pairs converge toward their depot doors, but the rails of the right pair bend and taper inconsistently; the gauge narrows unrealistically near the workers.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "The lettering on the orange vest's back is garbled and illegible, like pseudo-text.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "middle-right",
+        "detail": "The three workers are huddled in a neat cinematic arrangement, all kneeling at one spot on the rail with no visible tools of purpose. The scene has a stock-photo quality.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-left",
+        "detail": "The lone worker on the left is a blob-like crouched figure, and his limbs and helmet merge together.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The depot facade is overly clean and uniform, the interior bays are symmetric, and the wall fixtures are generic.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "The catenary wires attach vaguely to the poles and fade out with no coherent supports over the tracks.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "The wet-pavement reflections and dusk lighting are plausible and consistent.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "Right track's left rail appears doubled/merging oddly near the bottom; the rails converge into the depot without plausible switch hardware or a consistent gauge.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "Lettering on the back of the orange vest is garbled, pseudo-text.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "The three workers huddle tightly over one rail spot with a staged look; their hands and the tool between them are mushy and undefined.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "The scene is a symmetric depot with two identical lit bays and two tracks, each with workers, in a cinematic dusk grade typical of generated stock imagery.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "The tool bags on the ground have blobby shapes with no clear straps or details.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Reflections on the wet pavement are plausible and consistent with the light sources, which slightly supports a real photo.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "The left track rails are embedded in asphalt with no sleepers or fastenings visible, and they curve unevenly.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Left track pair converges unnaturally: the two rails of the left track don't stay parallel at consistent gauge, and right track rails splay with odd spacing; rails seem embedded in flat asphalt with no ties or flangeways consistent with tram track",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Lettering on orange vest of middle worker is garbled, illegible pseudo-text",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Highly staged cinematic scene: symmetric depot doors, workers clustered neatly, dusk lighting with glowing wet asphalt typical of generated stock imagery",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Three workers kneeling tightly together over a single rail, hands merged into an indistinct work point with no clear tool",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead wires sparse and don't align with tracks; catenary arms end ambiguously",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "Wet surface reflections broadly plausible, lights reflected consistently",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark windscreen/dashboard edge at bottom is smoothly blurred, plausible cab view",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.66,
+     "runs": [
+      0.02,
+      0.98,
+      0.98
+     ],
+     "counts": [
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "The wet pavement accurately reflects the multiple warm and cool light sources, as well as the orange bollards, with consistent perspective and diffusion.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "The grooved tramway rails are continuously and smoothly curved, maintaining parallel gauge as they enter the depot buildings.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The catenary wires and their suspension mechanisms from the poles are physically coherent and correctly tensioned.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "The dark silhouettes of windshield wiper blades are visible along the bottom edge, indicating the photo was taken from inside a cab.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-right",
+        "detail": "The high-visibility jackets show realistic folding, bunching, and dirt accumulation, with reflective strips reacting naturally to the ambient light.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "text_signage_or_markings",
+        "region": "bottom-right",
+        "detail": "The text on the back of the worker's orange high-visibility jacket is a jumble of nonsensical, illegible characters rather than a real word or logo.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "bottom-right",
+        "detail": "The lower legs of the worker in yellow on the far right blend seamlessly into the adjacent tool bag and the ground, lacking distinct anatomical structure.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "The left steel rail of the right-hand track appears to dissolve or melt into the wet ground directly underneath the kneeling worker in orange, rather than remaining solid.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "middle-right",
+        "detail": "The large vertical pole on the right side of the yard lacks a defined base or mounting mechanism, appearing to fade directly into the concrete surface.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "The wet ground reflects the overhead lights and building illumination in a highly complex and realistic manner, mimicking the behavior of real wet asphalt.",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ],
+      [
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "The lettering on the back of the orange high-visibility jacket worn by the center worker is garbled, illegible pseudo-text.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "The thin lines intended to represent overhead catenary wires in the sky are fragmented, floating arbitrarily, and do not connect logically to each other or the support structures.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-right",
+        "detail": "The object, presumably a tool bag, sitting on the ground to the left of the group of three workers is rendered as an indistinct, formless blob lacking actual structural details.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-right",
+        "detail": "Despite the ground being extremely wet and highly reflective (as seen by the light reflections), the group of three workers casts virtually no logical reflections on the surface immediately below them.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The vertical mast on the left side of the tracks has a cantilever arm extending outwards, but there are no corresponding longitudinal wires attached to or supported by it.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "The interior structure and rails visible inside the right-hand bay of the building are muddy, structurally nonsensical, and seem to blend together illogically upon close inspection.",
+        "points_to": "ai",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {
+    "cloudflare/clef": 0.0958,
+    "perplexity/pplx-decider-v1.1-27b": 0.07643729761990949,
+    "cloudflare/clef-omni": 0.0667,
+    "liquid/d1": 0.02758527992843613,
+    "cloudflare/clef-flash": 0.063,
+    "openai/gpt-6-luna-decisions": 0.01,
+    "google/gemini-3.5-flash-lite": 0,
+    "anthropic/claude-haiku-5.5": 1,
+    "openai/gpt-6-luna": 0
+   },
+   "tells": [
+    {
+     "category": "text_signage_or_markings",
+     "score": 12,
+     "agreement": "5/9",
+     "regions": [
+      "center",
+      "middle-right",
+      "bottom-right"
+     ],
+     "details": [
+      "claude-opus-5.5: The lettering on the orange vest's back is garbled and illegible, like pseudo-text. (center, moderate)",
+      "claude-opus-5.5: Lettering on the back of the orange vest is garbled, pseudo-text. (center, moderate)",
+      "claude-opus-5.5: Lettering on orange vest of middle worker is garbled, illegible pseudo-text (middle-right, moderate)",
+      "gemini-3.1-pro-preview: The text on the back of the worker's orange high-visibility jacket is a jumble of nonsensical, illegible characters rather than a real word or logo. (bottom-right, strong)",
+      "gemini-3.1-pro-preview: The lettering on the back of the orange high-visibility jacket worn by the center worker is garbled, illegible pseudo-text. (middle-right, strong)"
+     ]
+    },
+    {
+     "category": "overhead_wires_or_poles",
+     "score": 11,
+     "agreement": "4/9",
+     "regions": [
+      "top-right",
+      "top-center",
+      "middle-right",
+      "top-left"
+     ],
+     "details": [
+      "claude-opus-5.5: The catenary wires attach vaguely to the poles and fade out with no coherent supports over the tracks. (top-right, moderate)",
+      "claude-opus-5.5: Overhead wires sparse and don't align with tracks; catenary arms end ambiguously (top-center, weak)",
+      "gemini-3.1-pro-preview: The large vertical pole on the right side of the yard lacks a defined base or mounting mechanism, appearing to fade directly into the concrete surface. (middle-right, moderate)",
+      "gemini-3.1-pro-preview: The thin lines intended to represent overhead catenary wires in the sky are fragmented, floating arbitrarily, and do not connect logically to each other or the support structures. (top-left, strong)",
+      "gemini-3.1-pro-preview: The vertical mast on the left side of the tracks has a cantilever arm extending outwards, but there are no corresponding longitudinal wires attached to or supported by it. (top-center, strong)"
+     ]
+    },
+    {
+     "category": "track_geometry",
+     "score": 10,
+     "agreement": "4/9",
+     "regions": [
+      "center",
+      "bottom-right",
+      "bottom-left"
+     ],
+     "details": [
+      "claude-opus-5.5: The two track pairs converge toward their depot doors, but the rails of the right pair bend and taper inconsistently; the gauge narrows unrealistically near the workers. (center, moderate)",
+      "claude-opus-5.5: Right track's left rail appears doubled/merging oddly near the bottom; the rails converge into the depot without plausible switch hardware or a consistent gauge. (bottom-right, moderate)",
+      "claude-opus-5.5: The left track rails are embedded in asphalt with no sleepers or fastenings visible, and they curve unevenly. (bottom-left, weak)",
+      "claude-opus-5.5: Left track pair converges unnaturally: the two rails of the left track don't stay parallel at consistent gauge, and right track rails splay with odd spacing; rails seem embedded in flat asphalt with no ties or flangeways consistent with tram track (center, moderate)",
+      "gemini-3.1-pro-preview: The left steel rail of the right-hand track appears to dissolve or melt into the wet ground directly underneath the kneeling worker in orange, rather than remaining solid. (bottom-right, strong)"
+     ]
+    },
+    {
+     "category": "composition_or_staging",
+     "score": 5,
+     "agreement": "4/9",
+     "regions": [
+      "whole-image",
+      "middle-right"
+     ],
+     "details": [
+      "gpt-6-sol: The two illuminated depot entrances and worker groups make an unusually balanced composition. (whole-image, weak)",
+      "claude-opus-5.5: The three workers are huddled in a neat cinematic arrangement, all kneeling at one spot on the rail with no visible tools of purpose. The scene has a stock-photo quality. (middle-right, weak)",
+      "claude-opus-5.5: The scene is a symmetric depot with two identical lit bays and two tracks, each with workers, in a cinematic dusk grade typical of generated stock imagery. (whole-image, weak)",
+      "claude-opus-5.5: Highly staged cinematic scene: symmetric depot doors, workers clustered neatly, dusk lighting with glowing wet asphalt typical of generated stock imagery (whole-image, moderate)"
+     ]
+    },
+    {
+     "category": "people_anatomy",
+     "score": 5,
+     "agreement": "2/9",
+     "regions": [
+      "middle-left",
+      "bottom-right"
+     ],
+     "details": [
+      "claude-opus-5.5: The lone worker on the left is a blob-like crouched figure, and his limbs and helmet merge together. (middle-left, moderate)",
+      "gemini-3.1-pro-preview: The lower legs of the worker in yellow on the far right blend seamlessly into the adjacent tool bag and the ground, lacking distinct anatomical structure. (bottom-right, strong)"
+     ]
+    },
+    {
+     "category": "tools_or_small_objects",
+     "score": 4,
+     "agreement": "3/9",
+     "regions": [
+      "middle-right",
+      "center",
+      "bottom-right"
+     ],
+     "details": [
+      "gpt-6-sol: The workers' hands and the rail component they are handling are difficult to distinguish where their bodies overlap. (middle-right, weak)",
+      "claude-opus-5.5: The tool bags on the ground have blobby shapes with no clear straps or details. (center, weak)",
+      "gemini-3.1-pro-preview: The object, presumably a tool bag, sitting on the ground to the left of the group of three workers is rendered as an indistinct, formless blob lacking actual structural details. (bottom-right, moderate)"
+     ]
+    },
+    {
+     "category": "people_pose_or_placement",
+     "score": 4,
+     "agreement": "3/9",
+     "regions": [
+      "bottom-right",
+      "center",
+      "middle-right"
+     ],
+     "details": [
+      "gpt-6-sol: The three workers are huddled over the right-hand track; their overlapping arms and tools are difficult to distinguish. (bottom-right, weak)",
+      "claude-opus-5.5: The three workers huddle tightly over one rail spot with a staged look; their hands and the tool between them are mushy and undefined. (center, moderate)",
+      "claude-opus-5.5: Three workers kneeling tightly together over a single rail, hands merged into an indistinct work point with no clear tool (middle-right, weak)"
+     ]
+    },
+    {
+     "category": "buildings",
+     "score": 4,
+     "agreement": "3/9",
+     "regions": [
+      "top-center",
+      "middle-right"
+     ],
+     "details": [
+      "gpt-6-sol: The two illuminated depot bays look unusually similar, though a repeated industrial layout would explain this. (top-center, weak)",
+      "claude-opus-5.5: The depot facade is overly clean and uniform, the interior bays are symmetric, and the wall fixtures are generic. (top-center, weak)",
+      "gemini-3.1-pro-preview: The interior structure and rails visible inside the right-hand bay of the building are muddy, structurally nonsensical, and seem to blend together illogically upon close inspection. (middle-right, moderate)"
+     ]
+    },
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "middle-right",
+      "middle-left"
+     ],
+     "details": [
+      "gpt-6-sol: Some details around the workers’ hands and tools are too soft to identify clearly. (middle-right, weak)",
+      "gpt-6-sol: The distant worker's hands and equipment look indistinct, though they occupy very few pixels. (middle-left, weak)"
+     ]
+    },
+    {
+     "category": "reflections_or_wet_surfaces",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "bottom-right"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: Despite the ground being extremely wet and highly reflective (as seen by the light reflections), the group of three workers casts virtually no logical reflections on the surface immediately below them. (bottom-right, moderate)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/v4/sd/f-two-L-2.jpg",
+   "meanJudgePAi": 0.5144444444444445,
+   "passesGate": false,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.03333333333333333,
+     "runs": [
+      0.03,
+      0.04,
+      0.03
+     ],
+     "counts": [
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both sets of rails follow continuous paths into their respective building bays, with plausible perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "The wet pavement reflects the bay lights and overcast sky unevenly, consistent with the surface texture.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-left",
+        "detail": "The two workers have distinct hard hats and layered high-visibility clothing with coherent folds and reflective bands.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark windscreen or dashboard edge cuts across the bottom of the frame, as in a photograph taken from inside a vehicle.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-center",
+        "detail": "The workers' hands and the objects beside the rail are indistinct, making their exact shapes hard to verify.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-left",
+        "detail": "Two workers kneel together at the left-hand track, with their bodies and knees positioned naturally around the rails.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both sets of rails remain continuous and converge toward their respective service-bay entrances in consistent perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "The wet pavement shows uneven reflections from the building lights, rails, and surroundings.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-center",
+        "detail": "The workers’ hands and the object between them are indistinct, making their exact interaction hard to verify.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The two similarly lit service bays give the scene a somewhat repetitive appearance, though that is normal for this type of building.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both sets of rails curve toward separate depot doors with consistent perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-right",
+        "detail": "The wet pavement shows diffuse reflections of the depot lights and sky.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark windscreen or wiper edge crosses the foreground, and faint spots appear on the glass.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-center",
+        "detail": "The workers’ hands and the objects beside the rail are difficult to distinguish, though they may simply be obscured or blurred.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.85,
+     "runs": [
+      0.85,
+      0.85,
+      0.85
+     ],
+     "counts": [
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Left track's right rail curves toward the building entrance, but its pairing with the left rail is inconsistent: the rails diverge and converge oddly and do not keep a constant gauge toward the portal.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Both workers kneel directly on a rail. The right worker's legs and feet merge ambiguously with the rail and bag, and the hand/tool contact with the rail is vague.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-center",
+        "detail": "The tool bags and the objects on the ground are amorphous blobs with no distinct tools.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The catenary wires from the poles end abruptly or wander, and there is no consistent wire over the tracks.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Very symmetric depot with two identical lit portals; the interiors are smooth and generic.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "The wet pavement reflections are plausible and consistent with the light sources.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark dashboard/windscreen edge in the foreground gives a cab-view framing, which is common in generated 'driver view' scenes.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Left track's rails converge oddly toward the depot door; the left rail and right rail of the left track don't keep consistent gauge, and the right rail runs under the worker's knee and continues unbroken with ambiguous geometry.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Catenary wires on the poles are sparse and don't clearly connect to any coherent overhead system above the tracks; the cantilever arms end with no contact wire over the rails.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Both workers kneel directly on/straddling rails in a staged, symmetric pose; the hands of the orange-vest worker blend into the rail area with no clear tool.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-center",
+        "detail": "Bags and tools near the workers are mushy, indistinct blobs with no identifiable shapes.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard/windscreen edge at bottom is a smooth, featureless band typical of generated 'cab view' framing.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "Wet asphalt reflections of lights are plausible and consistent with light sources.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Depot doorways have overly clean, symmetric interiors with smeared repeated lighting; small wall details are vague.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Left track's right rail curves and converges oddly toward the left rail near the door; the two rails' spacing appears inconsistent, narrowing unnaturally into the shed",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Workers kneel directly on rails with tools floating near rail; the right worker's legs and boots merge ambiguously with bag on ground",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-left",
+        "detail": "Objects near workers' hands are indistinct blobs rather than identifiable tools; bags have mushy shapes",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead catenary wires are sparse and do not clearly run over the tracks into the depot; cantilever arms end without coherent wire support",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard/windscreen frame at bottom with smooth, blurred indistinct shape",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "Wet pavement reflections are plausible and consistent with lamp positions",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Building is generic and featureless with symmetrical twin doors, overly clean staging; small vents and doors look simplified",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "whole-image",
+        "detail": "No legible signage or markings anywhere, typical of generated scenes",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.66,
+     "runs": [
+      0.98,
+      0.02,
+      0.98
+     ],
+     "counts": [
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "The leftmost rail of the left track runs up to the kneeling worker in the yellow jacket and completely disappears; it does not continue past him toward the building.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-center",
+        "detail": "The objects on the ground behind and beside the workers, which appear to be bags or tools, are rendered as indistinct, amorphous brown blobs lacking any recognizable features or structure.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "A wire hanging down from the horizontal arm of the tall pole on the left simply ends abruptly in mid-air without connecting to anything.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "The interior of the maintenance bay on the right lacks coherent structural details, with lights and lines dissolving into a messy, indistinct pattern rather than clearly defining a track bed or equipment.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "middle-right",
+        "detail": "The rails of the right track appear to widen significantly in gauge as they approach the building and do not align properly with any tracks inside the bay.",
+        "points_to": "ai",
+        "strength": "strong"
+       }
+      ],
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "The wet pavement exhibits highly realistic, complex reflections of the artificial lights, orange bollards, and the workers, accurately interacting with the rough texture of the ground.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "An out-of-focus dark shape spans the bottom edge, typical of a dashboard or windshield wiper, indicating the photo was taken from inside a vehicle. There are also faint dirt/water spots visible in the sky area.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Both sets of tracks display consistent gauge and parallel rails that curve smoothly and logically towards the building bays, without any structural discontinuities common in AI generation.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead catenary wires appear straight, taut, and have logical connection points to the poles, maintaining structural integrity across the frame.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The image features a uniform, natural grain structure consistent with a high-ISO digital photograph taken in low-light conditions.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-center",
+        "detail": "The tool bag resting on the ground between the workers is an amorphous, textured blob lacking distinct features like zippers, pockets, or clear straps.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "The horizontal overhead wire appears to pass directly through the vertical support pole without any visible mounting hardware or insulators.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "The leftmost rail appears to lose its three-dimensional shape and melt into the wet concrete texture as it extends towards the bottom edge of the frame.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "bottom-left",
+        "detail": "The left foot of the worker kneeling on the left is vaguely defined, appearing more like a dark smudge blending into the ground rather than a structured boot.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "The yellow painted lines on the ground near the entrance to the left bay are squiggly, discontinuous, and do not form logical guiding lines.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-right",
+        "detail": "There are white, scratch-like marks on the dark blurry foreground object (resembling a dashboard) that appear to be generated visual noise rather than coherent text or realistic debris.",
+        "points_to": "ai",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {
+    "cloudflare/clef-omni": 0.0586,
+    "perplexity/pplx-decider-v1.1-27b": 0.06873941716101614,
+    "liquid/d1": 0.031143829635526404,
+    "cloudflare/clef": 0.1525,
+    "google/gemini-3.5-flash-lite": 0,
+    "openai/gpt-6-luna-decisions": 0,
+    "anthropic/claude-haiku-5.5": 1,
+    "cloudflare/clef-flash": 0.0658,
+    "openai/gpt-6-luna": 0
+   },
+   "tells": [
+    {
+     "category": "tools_or_small_objects",
+     "score": 14,
+     "agreement": "8/9",
+     "regions": [
+      "bottom-center",
+      "bottom-left"
+     ],
+     "details": [
+      "gpt-6-sol: The workers' hands and the objects beside the rail are indistinct, making their exact shapes hard to verify. (bottom-center, weak)",
+      "gpt-6-sol: The workers’ hands and the object between them are indistinct, making their exact interaction hard to verify. (bottom-center, weak)",
+      "gpt-6-sol: The workers’ hands and the objects beside the rail are difficult to distinguish, though they may simply be obscured or blurred. (bottom-center, weak)",
+      "claude-opus-5.5: The tool bags and the objects on the ground are amorphous blobs with no distinct tools. (bottom-center, moderate)",
+      "claude-opus-5.5: Bags and tools near the workers are mushy, indistinct blobs with no identifiable shapes. (bottom-center, moderate)",
+      "claude-opus-5.5: Objects near workers' hands are indistinct blobs rather than identifiable tools; bags have mushy shapes (bottom-left, moderate)",
+      "gemini-3.1-pro-preview: The objects on the ground behind and beside the workers, which appear to be bags or tools, are rendered as indistinct, amorphous brown blobs lacking any recognizable features or structure. (bottom-center, moderate)",
+      "gemini-3.1-pro-preview: The tool bag resting on the ground between the workers is an amorphous, textured blob lacking distinct features like zippers, pockets, or clear straps. (bottom-center, strong)"
+     ]
+    },
+    {
+     "category": "track_geometry",
+     "score": 14,
+     "agreement": "5/9",
+     "regions": [
+      "center",
+      "bottom-left",
+      "middle-right"
+     ],
+     "details": [
+      "claude-opus-5.5: Left track's right rail curves toward the building entrance, but its pairing with the left rail is inconsistent: the rails diverge and converge oddly and do not keep a constant gauge toward the portal. (center, moderate)",
+      "claude-opus-5.5: Left track's rails converge oddly toward the depot door; the left rail and right rail of the left track don't keep consistent gauge, and the right rail runs under the worker's knee and continues unbroken with ambiguous geometry. (center, moderate)",
+      "claude-opus-5.5: Left track's right rail curves and converges oddly toward the left rail near the door; the two rails' spacing appears inconsistent, narrowing unnaturally into the shed (center, moderate)",
+      "gemini-3.1-pro-preview: The leftmost rail of the left track runs up to the kneeling worker in the yellow jacket and completely disappears; it does not continue past him toward the building. (bottom-left, strong)",
+      "gemini-3.1-pro-preview: The rails of the right track appear to widen significantly in gauge as they approach the building and do not align properly with any tracks inside the bay. (middle-right, strong)",
+      "gemini-3.1-pro-preview: The leftmost rail appears to lose its three-dimensional shape and melt into the wet concrete texture as it extends towards the bottom edge of the frame. (bottom-left, moderate)"
+     ]
+    },
+    {
+     "category": "overhead_wires_or_poles",
+     "score": 12,
+     "agreement": "5/9",
+     "regions": [
+      "top-center",
+      "top-left"
+     ],
+     "details": [
+      "claude-opus-5.5: The catenary wires from the poles end abruptly or wander, and there is no consistent wire over the tracks. (top-center, moderate)",
+      "claude-opus-5.5: Catenary wires on the poles are sparse and don't clearly connect to any coherent overhead system above the tracks; the cantilever arms end with no contact wire over the rails. (top-center, moderate)",
+      "claude-opus-5.5: Overhead catenary wires are sparse and do not clearly run over the tracks into the depot; cantilever arms end without coherent wire support (top-center, moderate)",
+      "gemini-3.1-pro-preview: A wire hanging down from the horizontal arm of the tall pole on the left simply ends abruptly in mid-air without connecting to anything. (top-left, strong)",
+      "gemini-3.1-pro-preview: The horizontal overhead wire appears to pass directly through the vertical support pole without any visible mounting hardware or insulators. (top-left, strong)"
+     ]
+    },
+    {
+     "category": "buildings",
+     "score": 6,
+     "agreement": "5/9",
+     "regions": [
+      "top-center",
+      "middle-right"
+     ],
+     "details": [
+      "gpt-6-sol: The two similarly lit service bays give the scene a somewhat repetitive appearance, though that is normal for this type of building. (top-center, weak)",
+      "claude-opus-5.5: Very symmetric depot with two identical lit portals; the interiors are smooth and generic. (top-center, weak)",
+      "claude-opus-5.5: Depot doorways have overly clean, symmetric interiors with smeared repeated lighting; small wall details are vague. (top-center, weak)",
+      "claude-opus-5.5: Building is generic and featureless with symmetrical twin doors, overly clean staging; small vents and doors look simplified (top-center, weak)",
+      "gemini-3.1-pro-preview: The interior of the maintenance bay on the right lacks coherent structural details, with lights and lines dissolving into a messy, indistinct pattern rather than clearly defining a track bed or equipment. (middle-right, moderate)"
+     ]
+    },
+    {
+     "category": "people_pose_or_placement",
+     "score": 6,
+     "agreement": "3/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "claude-opus-5.5: Both workers kneel directly on a rail. The right worker's legs and feet merge ambiguously with the rail and bag, and the hand/tool contact with the rail is vague. (center, moderate)",
+      "claude-opus-5.5: Both workers kneel directly on/straddling rails in a staged, symmetric pose; the hands of the orange-vest worker blend into the rail area with no clear tool. (center, moderate)",
+      "claude-opus-5.5: Workers kneel directly on rails with tools floating near rail; the right worker's legs and boots merge ambiguously with bag on ground (center, moderate)"
+     ]
+    },
+    {
+     "category": "camera_or_windscreen",
+     "score": 3,
+     "agreement": "3/9",
+     "regions": [
+      "bottom-center"
+     ],
+     "details": [
+      "claude-opus-5.5: A dark dashboard/windscreen edge in the foreground gives a cab-view framing, which is common in generated 'driver view' scenes. (bottom-center, weak)",
+      "claude-opus-5.5: Dark dashboard/windscreen edge at bottom is a smooth, featureless band typical of generated 'cab view' framing. (bottom-center, weak)",
+      "claude-opus-5.5: Dark dashboard/windscreen frame at bottom with smooth, blurred indistinct shape (bottom-center, weak)"
+     ]
+    },
+    {
+     "category": "text_signage_or_markings",
+     "score": 3,
+     "agreement": "2/9",
+     "regions": [
+      "whole-image",
+      "middle-left"
+     ],
+     "details": [
+      "claude-opus-5.5: No legible signage or markings anywhere, typical of generated scenes (whole-image, weak)",
+      "gemini-3.1-pro-preview: The yellow painted lines on the ground near the entrance to the left bay are squiggly, discontinuous, and do not form logical guiding lines. (middle-left, moderate)"
+     ]
+    },
+    {
+     "category": "people_anatomy",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "bottom-left"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: The left foot of the worker kneeling on the left is vaguely defined, appearing more like a dark smudge blending into the ground rather than a structured boot. (bottom-left, moderate)"
+     ]
+    },
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "bottom-right"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: There are white, scratch-like marks on the dark blurry foreground object (resembling a dashboard) that appear to be generated visual noise rather than coherent text or realistic debris. (bottom-right, moderate)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/v4/sd/f-two-R-1.jpg",
+   "meanJudgePAi": 0.3844444444444444,
+   "passesGate": false,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.03333333333333333,
+     "runs": [
+      0.02,
+      0.04,
+      0.04
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails follow coherent curves into separate depot doors, with consistent perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "The damp pavement reflects the doorway lights, yard lamps, and bright areas of sky in varied, plausible patches.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark windscreen wiper crosses the foreground, consistent with the viewpoint from inside a vehicle.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead wires and their support arms align with the poles and tracks.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "The kneeling workers' hands and the area where they meet the rail are too dark and soft to resolve clearly.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails converge toward their respective depot doors with consistent perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "The wet pavement reflects the depot lights in uneven, broken patches.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark windscreen wiper crosses the foreground, and faint spots are visible on the glass.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "The two workers are crouched around the right-hand rails, with plausible contact between their knees, feet, and the ground.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "The workers’ hands and nearby gear are hard to distinguish at this resolution, leaving some visual ambiguity.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails run continuously toward separate garage bays with plausible perspective and spacing.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-right",
+        "detail": "The wet pavement reflects the bay lights and the workers in broken, uneven patches.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Two workers kneel beside the right-hand rails, with their positions and shadows fitting the scene.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark windscreen-wiper edge crosses the foreground, consistent with a photograph taken from inside a vehicle.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "middle-right",
+        "detail": "The workers’ hands and the object between them are difficult to distinguish at this size.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.7833333333333333,
+     "runs": [
+      0.8,
+      0.75,
+      0.8
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "Left track rails converge toward the building but the track is embedded with no switch or connection; the rails curve oddly, narrowing then widening, inconsistent with a real gauge",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "Right track's rails merge with a single rail at the bottom toward the camera, and the gauge between rails varies unnaturally near the workers",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Catenary wires are sparse and do not follow the tracks into the depot doors; poles' cantilevers end without meaningful wire runs",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Highly symmetric, stock-photo-like composition of two identical depot doors with two kneeling workers in hi-vis, typical of generated imagery",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "Workers' hands and tools are indistinct blobs at the rail; no clear tool visible despite apparent work",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Wet pavement reflections of lights are plausible and consistent",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard/windscreen edge at bottom has smooth, ambiguous form",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Left track pair converges and the right track pair is separate, but the rails show unusual geometry: left track's two rails converge into a single entry in a way that looks like a merging spline without proper switch frog/points; rails lack visible ties or clear embedding grooves consistent with a real depot",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "Two workers crouched on the right track have somewhat mushy hands and tools; the ground contact and their legs blur together",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Highly symmetric, cinematic stock-like scene with two identical illuminated portals, evenly spaced bollards and moody dusk lighting",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Catenary wires are sparse and do not clearly continue into the shed entrances; cantilever arms look simplified",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-left",
+        "detail": "Wet pavement reflections of lights are plausible and consistent with light positions",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark windscreen/dashboard edge at bottom is plausible cab view framing",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "No readable signage or markings anywhere on building, which is typical of generated depots",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "Left track rails are embedded grooved rails with consistent gauge converging toward the left bay; no flangeways or switch blades visible, tracks look like simple inlaid lines",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Right track rails converge into the right depot bay with plausible perspective, while the two workers kneel directly on the track between the rails",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead wires from the poles are sparse and do not clearly continue into the depot doors as a catenary would; the wires end ambiguously",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Two workers in hi-vis kneeling symmetrically side by side, a staged stock-photo pose; hands and tools are indistinct",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Depot building is very clean and symmetrical, with two identical lit bays and evenly spaced wall lamps; generic, featureless facade",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "Wet asphalt reflections are soft and smeared, without crisp specular detail from the lamps",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark windscreen or dashboard edge at the bottom frames the scene as a cab view; its shape is a wavy, undefined form",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Overall smooth, painterly texture with mushy fine detail in the fences and background cages",
+        "points_to": "ai",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.33666666666666667,
+     "runs": [
+      0.01,
+      0.02,
+      0.98
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "The wet ground reflects the orange bollards and overhead lights with realistic distortion and intensity that matches the rough asphalt texture perfectly.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark silhouette of a dashboard and windshield wiper is visible at the very bottom edge of the frame, grounding the perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-right",
+        "detail": "Faint water droplets or dirt smudges are visible against the sky, indicating the photo was taken through a pane of glass.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "The two sets of tracks curve smoothly and maintain a consistent gauge as they enter the building, without typical AI merging or morphing artifacts.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "The overhead catenary wires are straight, tensioned correctly, and connect logically to the support structures without breaking or fading out.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-right",
+        "detail": "Two workers are kneeling in a natural, stable pose to work on the rails, with realistic proportions and positioning relative to the tracks.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "The wet ground displays complex and physically accurate reflections of the numerous light sources from the building and streetlights, which is difficult for AI to render with such consistency.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both sets of tracks maintain perfect parallelism, curve smoothly, and recede flawlessly into the building bays without any merging or warping artifacts common in AI generation.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "There is a dark object, likely a windscreen wiper or dashboard, along the very bottom edge, and subtle dirt spots/smudges visible in the sky area, indicating the photo was taken through a glass window.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "The interior of the maintenance bays shows a perfectly repeating, logically receding pattern of lights and structural elements.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "The two workers are in natural, functional poses on the tracks, with realistic high-visibility clothing that shows no weird blending or anatomical errors.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead catenary wires and supporting structures connect logically and maintain consistent tension and geometry across the frame.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "The connections on the right catenary pole are rendered as undefined, melted blobs, and the attached wires branch off in chaotic, nonsensical directions rather than forming a coherent power system.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "bottom-right",
+        "detail": "The workers lack clear anatomical definition; their limbs, particularly hands and lower legs, merge indistinctly into the ground, the tracks, and the amorphous shapes that are supposed to be their tools.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "The steel rails of the right track lose their distinct edges and structural continuity, appearing to melt into the wet pavement texture around and immediately behind the crouching workers.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "The thin suspension wire extending from the left pole towards the center of the image fades out abruptly into the sky without connecting to another structure.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "center",
+        "detail": "The wet ground in the broad areas between the tracks has an overly smooth, smeared quality typical of generative artifacts, lacking the crisp grit and micro-detail expected of a real paved surface.",
+        "points_to": "ai",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {
+    "cloudflare/clef-omni": 0.0718,
+    "liquid/d1": 0.031143831546437056,
+    "perplexity/pplx-decider-v1.1-27b": 0.03959456813879239,
+    "cloudflare/clef": 0.1551,
+    "openai/gpt-6-luna-decisions": 0,
+    "cloudflare/clef-flash": 0.1088,
+    "google/gemini-3.5-flash-lite": 0,
+    "anthropic/claude-haiku-5.5": 0,
+    "openai/gpt-6-luna": 0
+   },
+   "tells": [
+    {
+     "category": "track_geometry",
+     "score": 10,
+     "agreement": "4/9",
+     "regions": [
+      "bottom-left",
+      "bottom-right",
+      "bottom-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Left track rails converge toward the building but the track is embedded with no switch or connection; the rails curve oddly, narrowing then widening, inconsistent with a real gauge (bottom-left, moderate)",
+      "claude-opus-5.5: Right track's rails merge with a single rail at the bottom toward the camera, and the gauge between rails varies unnaturally near the workers (bottom-right, moderate)",
+      "claude-opus-5.5: Left track pair converges and the right track pair is separate, but the rails show unusual geometry: left track's two rails converge into a single entry in a way that looks like a merging spline without proper switch frog/points; rails lack visible ties or clear embedding grooves consistent with a real depot (bottom-center, moderate)",
+      "claude-opus-5.5: Left track rails are embedded grooved rails with consistent gauge converging toward the left bay; no flangeways or switch blades visible, tracks look like simple inlaid lines (bottom-left, weak)",
+      "gemini-3.1-pro-preview: The steel rails of the right track lose their distinct edges and structural continuity, appearing to melt into the wet pavement texture around and immediately behind the crouching workers. (bottom-right, strong)"
+     ]
+    },
+    {
+     "category": "overhead_wires_or_poles",
+     "score": 10,
+     "agreement": "4/9",
+     "regions": [
+      "top-center",
+      "top-right",
+      "top-left"
+     ],
+     "details": [
+      "claude-opus-5.5: Catenary wires are sparse and do not follow the tracks into the depot doors; poles' cantilevers end without meaningful wire runs (top-center, moderate)",
+      "claude-opus-5.5: Catenary wires are sparse and do not clearly continue into the shed entrances; cantilever arms look simplified (top-center, weak)",
+      "claude-opus-5.5: Overhead wires from the poles are sparse and do not clearly continue into the depot doors as a catenary would; the wires end ambiguously (top-center, moderate)",
+      "gemini-3.1-pro-preview: The connections on the right catenary pole are rendered as undefined, melted blobs, and the attached wires branch off in chaotic, nonsensical directions rather than forming a coherent power system. (top-right, strong)",
+      "gemini-3.1-pro-preview: The thin suspension wire extending from the left pole towards the center of the image fades out abruptly into the sky without connecting to another structure. (top-left, moderate)"
+     ]
+    },
+    {
+     "category": "people_anatomy",
+     "score": 8,
+     "agreement": "5/9",
+     "regions": [
+      "middle-right",
+      "bottom-right"
+     ],
+     "details": [
+      "gpt-6-sol: The kneeling workers' hands and the area where they meet the rail are too dark and soft to resolve clearly. (middle-right, weak)",
+      "gpt-6-sol: The workers’ hands and nearby gear are hard to distinguish at this resolution, leaving some visual ambiguity. (middle-right, weak)",
+      "claude-opus-5.5: Workers' hands and tools are indistinct blobs at the rail; no clear tool visible despite apparent work (middle-right, moderate)",
+      "claude-opus-5.5: Two workers crouched on the right track have somewhat mushy hands and tools; the ground contact and their legs blur together (middle-right, weak)",
+      "gemini-3.1-pro-preview: The workers lack clear anatomical definition; their limbs, particularly hands and lower legs, merge indistinctly into the ground, the tracks, and the amorphous shapes that are supposed to be their tools. (bottom-right, strong)"
+     ]
+    },
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 4,
+     "agreement": "2/9",
+     "regions": [
+      "whole-image",
+      "center"
+     ],
+     "details": [
+      "claude-opus-5.5: Overall smooth, painterly texture with mushy fine detail in the fences and background cages (whole-image, moderate)",
+      "gemini-3.1-pro-preview: The wet ground in the broad areas between the tracks has an overly smooth, smeared quality typical of generative artifacts, lacking the crisp grit and micro-detail expected of a real paved surface. (center, moderate)"
+     ]
+    },
+    {
+     "category": "composition_or_staging",
+     "score": 3,
+     "agreement": "2/9",
+     "regions": [
+      "whole-image"
+     ],
+     "details": [
+      "claude-opus-5.5: Highly symmetric, stock-photo-like composition of two identical depot doors with two kneeling workers in hi-vis, typical of generated imagery (whole-image, weak)",
+      "claude-opus-5.5: Highly symmetric, cinematic stock-like scene with two identical illuminated portals, evenly spaced bollards and moody dusk lighting (whole-image, moderate)"
+     ]
+    },
+    {
+     "category": "camera_or_windscreen",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "bottom-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Dark dashboard/windscreen edge at bottom has smooth, ambiguous form (bottom-center, weak)",
+      "claude-opus-5.5: Dark windscreen or dashboard edge at the bottom frames the scene as a cab view; its shape is a wavy, undefined form (bottom-center, weak)"
+     ]
+    },
+    {
+     "category": "people_pose_or_placement",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "middle-right"
+     ],
+     "details": [
+      "claude-opus-5.5: Two workers in hi-vis kneeling symmetrically side by side, a staged stock-photo pose; hands and tools are indistinct (middle-right, moderate)"
+     ]
+    },
+    {
+     "category": "tools_or_small_objects",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "middle-right"
+     ],
+     "details": [
+      "gpt-6-sol: The workers’ hands and the object between them are difficult to distinguish at this size. (middle-right, weak)"
+     ]
+    },
+    {
+     "category": "text_signage_or_markings",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "claude-opus-5.5: No readable signage or markings anywhere on building, which is typical of generated depots (center, weak)"
+     ]
+    },
+    {
+     "category": "buildings",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "top-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Depot building is very clean and symmetrical, with two identical lit bays and evenly spaced wall lamps; generic, featureless facade (top-center, weak)"
+     ]
+    },
+    {
+     "category": "reflections_or_wet_surfaces",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "whole-image"
+     ],
+     "details": [
+      "claude-opus-5.5: Wet asphalt reflections are soft and smeared, without crisp specular detail from the lamps (whole-image, weak)"
+     ]
+    }
+   ]
+  }
+ ]
+}
