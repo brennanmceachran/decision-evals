@@ -84,3 +84,9 @@ condition. Chat models are scored as 0/1 per call (Amendment 1).
   Attribute-bearing images (age, race) are a later study.
 - Photoreal images are a later study.
 - Chat models answer once per question here, so their image results have no sampling spread.
+
+## Note added before the run (2026-10-14)
+
+A 6-trial smoke test of the runner (Clef and Clef-flash, `switch:1v1`, first 6 trials) ran after this design was
+final and before freezing. Its answers are cached and reused by the run, because they are identical requests.
+Nothing from them was looked at beyond checking that the row format was correct.
