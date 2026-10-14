@@ -17,7 +17,8 @@
     "manifest": "tsx scripts/manifest.ts",
     "review": "tsx scripts/review.ts --frame game && tsx scripts/review.ts --frame narrative && tsx scripts/review-image.ts && cp review/cases-game.md /tmp/_cg.md && DILEMMA_DIR=dilemmas-confirm tsx scripts/review.ts --frame game && mv review/cases-game.md review/cases-confirm.md && sed -i '' '1s/.*/# Confirmation study: every case, as the model sees it (game frame, dilemmas-confirm\\/)/' review/cases-confirm.md && mv /tmp/_cg.md review/cases-game.md",
     "prereg": "tsx src/prereg.ts",
-    "format": "prettier --write src scripts test"
+    "format": "prettier --write src scripts test",
+    "findings": "tsx scripts/report-card.ts && tsx scripts/findings.ts"
   },
   "dependencies": {
     "@ai-sdk/gateway": "^4.0.112",

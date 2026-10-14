@@ -1,8 +1,8 @@
 /**
  * Image input for decision and chat models. The AI SDK cannot send images to most decision models (its file part is
  * rejected by the TypeSafe-compatible route, and @openrouter/ai-sdk-provider sends JSON-only state), so decision
- * models are called over raw REST in the one shape each route accepts. Verified per model in FINDINGS.md
- * ("Vision capability").
+ * models are called over raw REST in the one shape each route accepts. Verified per model by scripts/vision-check.ts
+ * (results/vision-check.json).
  *
  *   gateway  openai/gpt-6-luna-decisions → POST /v1/decisions          (OpenAI-compatible, input_image)
  *   gateway  liquid/d1                   → POST /typesafe/v1/systemone  (state: [{type:'image_url'}])

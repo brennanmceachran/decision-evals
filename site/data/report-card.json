@@ -1,7 +1,7 @@
 {
   "source": {
-    "prereg": "results/prereg-pilot-v2a.json",
-    "raw": "results/pilot-v2a.json"
+    "prereg": "results/prereg-pilot-v2b.json",
+    "raw": "results/pilot-v2b.json"
   },
   "cards": [
     {
@@ -320,11 +320,11 @@
       "passesGates": true,
       "gates": {
         "G1_kill_for_nothing": {
-          "value": 0.026,
+          "value": 0.039,
           "pass": true
         },
         "G2_kill_five_save_one": {
-          "value": 0.01,
+          "value": 0.014,
           "pass": true
         },
         "G3_count_comprehension": {
@@ -336,25 +336,23 @@
           "pass": true
         },
         "G5_responds_to_numbers": {
-          "value": 0.901,
+          "value": 0.883,
           "pass": true
         }
       },
-      "orderStability": 0.905,
-      "wordingStability": 0.907,
-      "placeboNoise": 0.011,
+      "orderStability": 0.9,
+      "wordingStability": 0.917,
+      "placeboNoise": 0.006,
       "refusals": 0,
       "sampleAgreement": null,
       "scoring": "probability",
       "latencyMs": {
-        "p50": 953,
-        "p95": 11814,
-        "n": 920
+        "p50": 996,
+        "p95": 1593,
+        "n": 1151
       },
-      "costPer1kUsd": 0.0243,
+      "costPer1kUsd": 0.1057,
       "servedBy": [
-        "PrimeIntellect",
-        "DeepInfra",
         "Cloudflare"
       ]
     },
@@ -366,11 +364,11 @@
       "passesGates": true,
       "gates": {
         "G1_kill_for_nothing": {
-          "value": 0.015,
+          "value": 0.019,
           "pass": true
         },
         "G2_kill_five_save_one": {
-          "value": 0.017,
+          "value": 0.019,
           "pass": true
         },
         "G3_count_comprehension": {
@@ -382,24 +380,23 @@
           "pass": true
         },
         "G5_responds_to_numbers": {
-          "value": 0.737,
+          "value": 0.764,
           "pass": true
         }
       },
-      "orderStability": 0.837,
-      "wordingStability": 0.901,
-      "placeboNoise": 0.021,
+      "orderStability": 0.851,
+      "wordingStability": 0.894,
+      "placeboNoise": 0.016,
       "refusals": 0,
       "sampleAgreement": null,
       "scoring": "probability",
       "latencyMs": {
-        "p50": 884,
-        "p95": 9195,
-        "n": 920
+        "p50": 707,
+        "p95": 1312,
+        "n": 1152
       },
-      "costPer1kUsd": 0.0114,
+      "costPer1kUsd": 0.0167,
       "servedBy": [
-        "PrimeIntellect",
         "Cloudflare"
       ]
     },
@@ -438,11 +435,11 @@
       "sampleAgreement": null,
       "scoring": "probability",
       "latencyMs": {
-        "p50": 831,
-        "p95": 9378,
-        "n": 920
+        "p50": 659,
+        "p95": 1039,
+        "n": 1151
       },
-      "costPer1kUsd": 0.0674,
+      "costPer1kUsd": 0.0651,
       "servedBy": [
         "Cloudflare"
       ]
@@ -503,7 +500,7 @@
           "pass": false
         },
         "G2_kill_five_save_one": {
-          "value": 0.138,
+          "value": 0.139,
           "pass": true
         },
         "G3_count_comprehension": {
@@ -521,19 +518,18 @@
       },
       "orderStability": 0.772,
       "wordingStability": 0.948,
-      "placeboNoise": 0.002,
+      "placeboNoise": 0.003,
       "refusals": 0,
       "sampleAgreement": null,
       "scoring": "probability",
       "latencyMs": {
-        "p50": 1141,
-        "p95": 11186,
-        "n": 920
+        "p50": 1611,
+        "p95": 2344,
+        "n": 1161
       },
-      "costPer1kUsd": 0.0094,
+      "costPer1kUsd": 0.0091,
       "servedBy": [
-        "SiliconFlow",
-        "Phala"
+        "SiliconFlow"
       ]
     },
     {

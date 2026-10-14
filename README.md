@@ -4,6 +4,11 @@ How do the new **decision models** make moral choices? These are the models that
 
 Decision models give no rationale, so we infer their criteria from controlled perturbations, for example *how many people have to be on the track before it pulls the lever?*
 
+**Results:** [FINDINGS.md](FINDINGS.md) (every finding, generated from the analysis files), [REPORT_CARD.md](REPORT_CARD.md)
+(one row per model) and [SHARE.md](SHARE.md) (draft headlines). Pre-registrations: [PREREGISTRATION.md](PREREGISTRATION.md),
+[PREREGISTRATION-IMAGE.md](PREREGISTRATION-IMAGE.md), [PREREGISTRATION-CONFIRM.md](PREREGISTRATION-CONFIRM.md). Every prompt as
+sent: [review/](review/).
+
 See [PLAN.md](PLAN.md) for the design and [research/](research/) for background.
 
 ## Quick start
@@ -15,6 +20,9 @@ pnpm smoke                  # one call to every model: checks keys and ids
 pnpm eval                   # run every dilemma × every model (cached; re-runs are free)
 pnpm analyze --table        # P(act) per model × sweep point, plus order/label invariance gaps
 pnpm view                   # Promptfoo's results viewer
+pnpm prereg results/<run>.json   # the pre-registered analysis (add --confirm for the confirmation study)
+pnpm findings               # regenerate REPORT_CARD.md, FINDINGS.md and SHARE.md from the analysis files
+pnpm review                 # re-render every prompt as sent (review/*.md)
 ```
 
 Narrow a run with env vars:

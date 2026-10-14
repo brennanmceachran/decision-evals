@@ -49,7 +49,7 @@ export const QUESTION = 'What do you do?';
 /**
  * v2 (PREREGISTRATION-IMAGE.md, Amendment 1): a neutral rule stated in the question, identical in every condition.
  * It says what the trolley does, not who matters or which side to pick. v1 had no rule, and the wordless diagram
- * alone did not convey harm to every model (FINDINGS.md, image study v1).
+ * alone did not convey harm to every model (scripts/harm-probe.ts, results/harm-probe.json).
  */
 export const RULE = 'The trolley will hit everyone on the track it takes.';
 /**
