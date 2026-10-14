@@ -11,7 +11,7 @@ import type { Frame } from '../schema.js';
 export default function generateTests() {
   const only = process.env.DILEMMAS?.split(',').filter(Boolean);
   const frames = process.env.FRAMES?.split(',').filter(Boolean) as Frame[] | undefined;
-  const dilemmas = loadDilemmas().filter((d) => !only || only.includes(d.id));
+  const dilemmas = loadDilemmas(process.env.DILEMMA_DIR ?? 'dilemmas').filter((d) => !only || only.includes(d.id));
   return dilemmas.flatMap((d) =>
     expand(d, { frames }).map((v) => ({
       description: `${v.dilemmaId} [${v.pointKey || '-'}] p${v.paraphrase} ${v.order}/${v.labelStyle}`,

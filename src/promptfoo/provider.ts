@@ -21,7 +21,7 @@ import type { Variant } from '../expand.js';
 import { CHAT_SAMPLES, SUBJECTS, type Subject } from '../subjects.js';
 
 // Bump to invalidate every cached answer (e.g. after changing how a subject is called).
-const CACHE_VERSION = 2;
+const CACHE_VERSION = 3;
 
 export default class DecisionEvalProvider implements ApiProvider {
   private readonly subject: Subject;
@@ -52,7 +52,13 @@ export default class DecisionEvalProvider implements ApiProvider {
     const samples = this.subject.kind === 'chat' ? CHAT_SAMPLES : 1;
     // A pinned host is part of the key: an answer from another host is a different measurement.
     const sid = this.subject.host ? `${this.subject.id}@${this.subject.host}` : this.subject.id;
-    const mainKey = `de:v${CACHE_VERSION}:${sid}:${v.contentHash}:${samples}`;
+    // The key covers everything that changes the answer: subject+host, what the model sees (contentHash), samples,
+    // the display-key → option mapping (so a remap with identical text can't reuse an already-un-permuted answer),
+    // and, for chat models, the system-prompt mode. CACHE_VERSION 3 introduced the mapping and mode; pilot results
+    // were collected under version 2 and are kept as published files, not re-read from cache.
+    const sysMode =
+      this.subject.kind === 'chat' ? `:sys=${process.env.CHAT_SYSTEM_PROMPT === 'pilot' ? 'pilot' : 'none'}` : '';
+    const mainKey = `de:v${CACHE_VERSION}:${sid}:${v.contentHash}:${samples}${sysMode}:map=${JSON.stringify(v.presentation.keyToCanonical)}`;
     const probeKey =
       v.probeHash && this.subject.kind === 'decision' ? `de:v${CACHE_VERSION}:probes:${sid}:${v.probeHash}` : undefined;
 

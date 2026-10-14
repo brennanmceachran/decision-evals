@@ -13,7 +13,7 @@ const dilemmaId = arg('dilemma') ?? 'switch';
 const frame = arg('frame') ?? 'game';
 const n = Number(arg('n') ?? 5);
 
-const dilemma = loadDilemmas().find((d) => d.id === dilemmaId);
+const dilemma = loadDilemmas(process.env.DILEMMA_DIR ?? 'dilemmas').find((d) => d.id === dilemmaId);
 if (!dilemma) throw new Error(`no dilemma "${dilemmaId}"`);
 const variant = expand(dilemma).find(
   (v) =>

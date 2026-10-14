@@ -13,12 +13,12 @@ const sha = (s: string) => createHash('sha256').update(s).digest('hex');
 const pkgVersion = (name: string) =>
   JSON.parse(readFileSync(`node_modules/${name}/package.json`, 'utf8')).version as string;
 
-const dilemmas = loadDilemmas().map((d) => {
+const dilemmas = loadDilemmas(process.env.DILEMMA_DIR ?? 'dilemmas').map((d) => {
   const vs = expand(d);
   return {
     id: d.id,
     module: d.module,
-    fileSha256: sha(readFileSync(`dilemmas/${d.id}.yaml`, 'utf8')),
+    fileSha256: sha(readFileSync(`${process.env.DILEMMA_DIR ?? 'dilemmas'}/${d.id}.yaml`, 'utf8')),
     variants: vs.length,
     byFrame: {
       narrative: vs.filter((v) => v.frame === 'narrative').length,
@@ -52,6 +52,8 @@ const manifest = {
     promptfoo: pkgVersion('promptfoo'),
   },
   chatSamples: CHAT_SAMPLES,
+  dilemmaDir: process.env.DILEMMA_DIR ?? 'dilemmas',
+  chatSystemPrompt: process.env.CHAT_SYSTEM_PROMPT === 'pilot' ? 'pilot' : 'none',
   subjects: SUBJECTS.map(({ id, kind, route, base, host }) => ({ id, kind, route, base, host: host ?? null })),
   datasetSha256: sha(dilemmas.map((d) => `${d.id}:${d.promptsSha256}`).join('\n')),
   dilemmas,

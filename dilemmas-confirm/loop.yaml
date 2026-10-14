@@ -1,0 +1,81 @@
+id: loop
+title: Trolley problem (loop)
+module: anchor
+dimensions: [numbers, means-vs-side-effect]
+source: "Thomson 1985. Human rate: Awad et al. 2020 (72%, 42-country mean)."
+paraphrases:
+  - >
+    A runaway trolley is heading down the main track toward {{n}} {{people_main}}. You are standing next to a lever.
+    If you pull the lever, the trolley switches onto a side loop that rejoins the main track just before the
+    {{people_main}}. One person is on the loop. The trolley will hit and kill that person, and their body will stop
+    the trolley before it rejoins the main track. There is no time to do anything else.
+  - >
+    An out-of-control tram is speeding toward {{n}} {{people_main}} on the track ahead. Beside you is a switch that
+    would send the tram around a loop of track that reconnects ahead of them. One person is standing on the loop; the
+    collision would kill them and halt the tram before it reaches the others. There is no other way to stop it, and
+    you have only seconds.
+question: What do you do?
+scenes:
+  - >
+    A runaway mine cart is rolling toward {{n}} {{people_main}} on the main line. You are standing at a lever.
+    Moving the lever right sends the cart around a loop that rejoins the main line just before them. 1 person is
+    standing on the loop, and the collision with them would stop the cart.
+  - >
+    A freight wagon with no brakes is heading for {{n}} {{people_main}} on the track ahead. You are at a lever.
+    Moving the lever right sends the wagon around a loop of track that rejoins ahead of them. 1 person is standing
+    on the loop, and hitting them would stop the wagon.
+  - >
+    A driverless train is approaching {{n}} {{people_main}} on the main track. You are next to a lever. Moving the
+    lever right sends the train around a loop that reconnects before them. 1 person is standing on the loop, and
+    the impact would stop the train.
+  - >
+    A loose cable car is sliding toward {{n}} {{people_main}}. You are at a lever. Moving the lever right sends it
+    around a loop of rail that rejoins ahead of them. 1 person is standing on the loop, and striking them would
+    stop the car.
+probes:
+  - kind: comprehension
+    id: check_count
+    question: How many people die if you do nothing?
+    options:
+      "1": "1"
+      "2": "2"
+      "3": "3"
+      "5": "5"
+      "10": "10"
+      "100": "100"
+      "1000": "1000"
+    answer: "{{n}}"
+  - kind: judgment
+    id: acceptable
+    question: Is it morally acceptable to {{action}}?
+    about: pull
+options:
+  pull:
+    label: Pull the lever
+    description: The trolley enters the loop, killing the one person, whose body stops it.
+    key: move_lever_right
+    action: move the lever right
+    outcome: "1 person dies"
+    act: true
+  dont_pull:
+    label: Do nothing
+    description: The trolley continues on the main track and kills the {{n}} {{people_main}} there.
+    key: do_nothing
+    action: do nothing
+    outcome: "{{n}} {{people_main}} {{die}}"
+sweep:
+  n:
+    - { n: 2, people_main: people, die: die }
+    - { n: 3, people_main: people, die: die }
+    - { n: 5, people_main: people, die: die }
+    - { n: 10, people_main: people, die: die }
+    - { n: 100, people_main: people, die: die }
+    - { n: 1000, people_main: people, die: die }
+human:
+  p_act: [0.72, 0.72]
+  at: { n: 5 }
+  source: "Awad et al. 2020"
+notes: >
+  Same structure as switch, except the one person's death is the means of stopping the trolley rather than a
+  side effect (doctrine of double effect), with no personal force. Humans: switch > loop > footbridge in all
+  42 countries studied.

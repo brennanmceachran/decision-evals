@@ -26,7 +26,7 @@ function check(v: Variant) {
     for (const side of ['left', 'right']) {
       const key = `steer_${side}`;
       if (!(key in v.criteria)) continue;
-      const group = v.state.match(new RegExp(`${side} (?:track|lane|tunnel|side): ([^.]+)\\.`))?.[1];
+      const group = v.state.match(new RegExp(`${side} (?:track|lane|tunnel|side|line|rail): ([^.]+)\\.`))?.[1];
       const line = lines[keys.indexOf(key)];
       if (!group || !line?.includes(`the ${group} di`))
         problems.push(`${where}: ${key} kills "${line}" but scene puts "${group}" on the ${side}`);
@@ -85,7 +85,7 @@ function symmetry(v: Variant, where: string, lines: string[]) {
   }
 }
 
-for (const d of loadDilemmas()) {
+for (const d of loadDilemmas(process.env.DILEMMA_DIR ?? 'dilemmas')) {
   const vs = expand(d).filter((v) => v.frame === frame);
   vs.forEach(check);
   if (!vs.length) continue;
