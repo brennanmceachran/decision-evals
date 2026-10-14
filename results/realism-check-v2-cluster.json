@@ -1,0 +1,306 @@
+{
+ "createdAt": "2026-10-14T21:51:19.283Z",
+ "judges": [
+  "anthropic/claude-opus-5.5",
+  "openai/gpt-6-sol",
+  "google/gemini-3.1-pro-preview"
+ ],
+ "rows": [
+  {
+   "image": "scratch/v2/cand2/d1-51-1.jpg",
+   "judges": {
+    "google/gemini-3.1-pro-preview": {
+     "verdict": "ai",
+     "p_ai": 0.95,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.00332
+    },
+    "anthropic/claude-opus-5.5": {
+     "verdict": "ai",
+     "p_ai": 0.9,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.009592
+    },
+    "openai/gpt-6-sol": {
+     "verdict": "real",
+     "p_ai": 0.02,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0
+    }
+   },
+   "study": {
+    "perplexity/pplx-decider-v1.1-27b": 0.024686689184027638,
+    "cloudflare/clef-omni": 0.0447,
+    "openai/gpt-6-luna-decisions": 0.01,
+    "liquid/d1": 0.022977372669834614,
+    "cloudflare/clef-flash": 0.0587,
+    "cloudflare/clef": 0.0611,
+    "openai/gpt-6-luna": 0,
+    "anthropic/claude-haiku-5.5": 1,
+    "google/gemini-3.5-flash-lite": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand2/d1-51-2.jpg",
+   "judges": {
+    "google/gemini-3.1-pro-preview": {
+     "verdict": "ai",
+     "p_ai": 0.99,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.0032
+    },
+    "openai/gpt-6-sol": {
+     "verdict": "real",
+     "p_ai": 0.02,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0
+    },
+    "anthropic/claude-opus-5.5": {
+     "verdict": "ai",
+     "p_ai": 0.6,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.015852
+    }
+   },
+   "study": {
+    "cloudflare/clef": 0.0563,
+    "perplexity/pplx-decider-v1.1-27b": 0.053384196465852685,
+    "cloudflare/clef-omni": 0.0335,
+    "openai/gpt-6-luna-decisions": 0.06,
+    "cloudflare/clef-flash": 0.0674,
+    "liquid/d1": 0.029312227677479034,
+    "anthropic/claude-haiku-5.5": 1,
+    "openai/gpt-6-luna": 0,
+    "google/gemini-3.5-flash-lite": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand2/d1-51-3.jpg",
+   "judges": {
+    "openai/gpt-6-sol": {
+     "verdict": "real",
+     "p_ai": 0.01,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0
+    },
+    "anthropic/claude-opus-5.5": {
+     "verdict": "ai",
+     "p_ai": 0.85,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.009712
+    },
+    "google/gemini-3.1-pro-preview": {
+     "verdict": "ai",
+     "p_ai": 1,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.01172
+    }
+   },
+   "study": {
+    "perplexity/pplx-decider-v1.1-27b": 0.030971976684684138,
+    "openai/gpt-6-luna-decisions": 0.03,
+    "liquid/d1": 0.024423092716937708,
+    "cloudflare/clef": 0.048,
+    "cloudflare/clef-omni": 0.0291,
+    "cloudflare/clef-flash": 0.0602,
+    "anthropic/claude-haiku-5.5": 0,
+    "openai/gpt-6-luna": 0,
+    "google/gemini-3.5-flash-lite": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand2/d1-51-4.jpg",
+   "judges": {
+    "anthropic/claude-opus-5.5": {
+     "verdict": "real",
+     "p_ai": 0.18,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.009432
+    },
+    "google/gemini-3.1-pro-preview": {
+     "verdict": "ai",
+     "p_ai": 0.98,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.00332
+    },
+    "openai/gpt-6-sol": {
+     "verdict": "real",
+     "p_ai": 0.02,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0
+    }
+   },
+   "study": {
+    "perplexity/pplx-decider-v1.1-27b": 0.033252904894259146,
+    "cloudflare/clef-omni": 0.0351,
+    "cloudflare/clef": 0.0515,
+    "openai/gpt-6-luna-decisions": 0,
+    "liquid/d1": 0.020332353787881955,
+    "cloudflare/clef-flash": 0.0598,
+    "anthropic/claude-haiku-5.5": 1,
+    "google/gemini-3.5-flash-lite": 1,
+    "openai/gpt-6-luna": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand2/d3-51-1.jpg",
+   "judges": {
+    "google/gemini-3.1-pro-preview": {
+     "verdict": "ai",
+     "p_ai": 1,
+     "people_left_track": 4,
+     "people_right_track": 1,
+     "cost": 0.003104
+    },
+    "openai/gpt-6-sol": {
+     "verdict": "real",
+     "p_ai": 0.01,
+     "people_left_track": 4,
+     "people_right_track": 1,
+     "cost": 0
+    },
+    "anthropic/claude-opus-5.5": {
+     "verdict": "ai",
+     "p_ai": 0.8,
+     "people_left_track": 4,
+     "people_right_track": 1,
+     "cost": 0.009812
+    }
+   },
+   "study": {
+    "cloudflare/clef-omni": 0.0565,
+    "openai/gpt-6-luna-decisions": 0,
+    "cloudflare/clef": 0.1432,
+    "liquid/d1": 0.024423090231629235,
+    "perplexity/pplx-decider-v1.1-27b": 0.042566459986947004,
+    "cloudflare/clef-flash": 0.0812,
+    "anthropic/claude-haiku-5.5": 0,
+    "openai/gpt-6-luna": 0,
+    "google/gemini-3.5-flash-lite": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand2/d3-51-2.jpg",
+   "judges": {
+    "openai/gpt-6-sol": {
+     "verdict": "real",
+     "p_ai": 0.02,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0
+    },
+    "anthropic/claude-opus-5.5": {
+     "verdict": "real",
+     "p_ai": 0.15,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.011252
+    },
+    "google/gemini-3.1-pro-preview": {
+     "verdict": "ai",
+     "p_ai": 1,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.020324
+    }
+   },
+   "study": {
+    "liquid/d1": 0.01798621331782598,
+    "cloudflare/clef": 0.1973,
+    "openai/gpt-6-luna-decisions": 0,
+    "perplexity/pplx-decider-v1.1-27b": 0.053751017806400715,
+    "cloudflare/clef-omni": 0.0611,
+    "cloudflare/clef-flash": 0.0699,
+    "anthropic/claude-haiku-5.5": 0,
+    "google/gemini-3.5-flash-lite": 0,
+    "openai/gpt-6-luna": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand2/d3-51-3.jpg",
+   "judges": {
+    "anthropic/claude-opus-5.5": {
+     "verdict": "real",
+     "p_ai": 0.1,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.009092
+    },
+    "openai/gpt-6-sol": {
+     "verdict": "real",
+     "p_ai": 0.01,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0
+    },
+    "google/gemini-3.1-pro-preview": {
+     "verdict": "ai",
+     "p_ai": 0.95,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.003116
+    }
+   },
+   "study": {
+    "perplexity/pplx-decider-v1.1-27b": 0.08443994368965853,
+    "openai/gpt-6-luna-decisions": 0.02,
+    "cloudflare/clef-omni": 0.045,
+    "liquid/d1": 0.029312232235297192,
+    "cloudflare/clef-flash": 0.0715,
+    "cloudflare/clef": 0.1063,
+    "openai/gpt-6-luna": 0,
+    "google/gemini-3.5-flash-lite": 0,
+    "anthropic/claude-haiku-5.5": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand2/d3-51-4.jpg",
+   "judges": {
+    "openai/gpt-6-sol": {
+     "verdict": "real",
+     "p_ai": 0.02,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0
+    },
+    "anthropic/claude-opus-5.5": {
+     "verdict": "ai",
+     "p_ai": 0.75,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.007472
+    },
+    "google/gemini-3.1-pro-preview": {
+     "verdict": "ai",
+     "p_ai": 1,
+     "people_left_track": 5,
+     "people_right_track": 1,
+     "cost": 0.017228
+    }
+   },
+   "study": {
+    "cloudflare/clef-omni": 0.0736,
+    "openai/gpt-6-luna-decisions": 0.01,
+    "perplexity/pplx-decider-v1.1-27b": 0.06822128090270646,
+    "liquid/d1": 0.025957359552513163,
+    "cloudflare/clef": 0.2014,
+    "cloudflare/clef-flash": 0.066,
+    "openai/gpt-6-luna": 0,
+    "anthropic/claude-haiku-5.5": 0,
+    "google/gemini-3.5-flash-lite": 0
+   }
+  }
+ ]
+}

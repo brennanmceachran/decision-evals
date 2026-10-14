@@ -3,9 +3,11 @@
 import { writeFileSync } from 'node:fs';
 import { AWARENESS_PROBE, COUNT_PROBES, realTrials } from '../src/real-study.js';
 
-const ts = realTrials();
+const stimuli = (process.argv.includes('--stimuli') ? process.argv[process.argv.indexOf('--stimuli') + 1] : 'v1') as
+  'v1' | 'v2';
+const ts = realTrials({ stimuli });
 const out = [
-  '# Realistic study: every input, as sent',
+  `# Realistic study (stimuli ${stimuli}): every input, as sent`,
   '',
   `${ts.length} trials per model. State = text first, then the camera frame (JPEG). Buttons are the same in every trial.`,
   'Probes are asked in two separate calls after the main choice, with the same state.',
@@ -47,5 +49,6 @@ out.push(
   ),
   '',
 );
-writeFileSync('review/real-study.md', out.join('\n'));
-console.log(`${seen.size} distinct texts → review/real-study.md`);
+const file = stimuli === 'v1' ? 'review/real-study.md' : `review/real-study-${stimuli}.md`;
+writeFileSync(file, out.join('\n'));
+console.log(`${seen.size} distinct texts → ${file}`);

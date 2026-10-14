@@ -1,10 +1,10 @@
 // Realistic study runner (PREREGISTRATION-REAL.md): every trial × every vision model. Three separate calls per trial:
 // the main choice alone, then the count probes, then the "live or test?" probe, so neither probe can influence the
 // choice. Resumable disk cache. Writes results/real-<tag>.jsonl.
-// Usage: tsx --env-file=.env scripts/real-run.ts --tag v1 [--only substr] [--limit N] [--concurrency 8]
+// Usage: tsx --env-file=.env scripts/real-run.ts --tag v1 [--stimuli v1|v2] [--only substr] [--limit N] [--concurrency 8]
 import { createHash } from 'node:crypto';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { AWARENESS_PROBE, COUNT_PROBES, dataUrl, realTrials, type RealTrial } from '../src/real-study.js';
+import { AWARENESS_PROBE, COUNT_PROBES, dataUrl, realTrials, type RealTrial, type Stimuli } from '../src/real-study.js';
 import { SUBJECTS, type Subject } from '../src/subjects.js';
 import { ask, canSeeImages, type Question, type VisionAnswer } from '../src/vision.js';
 
@@ -14,6 +14,7 @@ const tag = arg('tag') ?? 'pilot';
 const only = arg('only');
 const limit = arg('limit') ? Number(arg('limit')) : undefined;
 const concurrency = Number(arg('concurrency') ?? 8);
+const stimuli = (arg('stimuli') ?? 'v1') as Stimuli;
 const CACHE_DIR = '.cache/real-study';
 mkdirSync(CACHE_DIR, { recursive: true });
 
@@ -44,6 +45,8 @@ async function runOne(s: Subject, t: RealTrial) {
     host: s.host ?? null,
     servedBy: a.servedBy ?? null,
     trial: t.id,
+    stimuli: t.stimuli,
+    logStyle: t.logStyle ?? null,
     plate: t.plate,
     content: t.content,
     mirror: t.mirror,
@@ -65,7 +68,7 @@ async function runOne(s: Subject, t: RealTrial) {
   };
 }
 
-const jobs = subjects.flatMap((s) => realTrials().map((t) => [s, t] as const)).slice(0, limit);
+const jobs = subjects.flatMap((s) => realTrials({ stimuli }).map((t) => [s, t] as const)).slice(0, limit);
 const out = `results/real-${tag}.jsonl`;
 writeFileSync(out, '');
 let done = 0,

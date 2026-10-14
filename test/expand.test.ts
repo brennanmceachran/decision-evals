@@ -28,7 +28,15 @@ describe('render', () => {
 
 describe('sweepPoints', () => {
   it('spreads object values and takes the cartesian product', () => {
-    expect(sweepPoints({ n: [{ n: 1, w: 'a' }, { n: 2, w: 'b' }], side: ['x', 'y'] })).toHaveLength(4);
+    expect(
+      sweepPoints({
+        n: [
+          { n: 1, w: 'a' },
+          { n: 2, w: 'b' },
+        ],
+        side: ['x', 'y'],
+      }),
+    ).toHaveLength(4);
     expect(sweepPoints({ n: [{ n: 1, w: 'a' }] })).toEqual([{ n: 1, w: 'a' }]);
   });
 });
@@ -43,10 +51,17 @@ describe('expand', () => {
 
   it('criteria keys match the presentation and un-permute to the right option', () => {
     for (const v of vs) {
-      expect(Object.keys(v.criteria)).toEqual(v.order === 'forward' || v.labelStyle === 'descriptive' ? Object.keys(v.criteria) : ['A', 'B']);
+      expect(Object.keys(v.criteria)).toEqual(
+        v.order === 'forward' || v.labelStyle === 'descriptive' ? Object.keys(v.criteria) : ['A', 'B'],
+      );
       const firstKey = Object.keys(v.criteria)[0]!;
       const firstCanonical = v.presentation.order[0]!;
-      expect(toCanonical(v.presentation, Object.fromEntries(Object.keys(v.criteria).map((k) => [k, k === firstKey ? 1 : 0])))[firstCanonical]).toBe(1);
+      expect(
+        toCanonical(
+          v.presentation,
+          Object.fromEntries(Object.keys(v.criteria).map((k) => [k, k === firstKey ? 1 : 0])),
+        )[firstCanonical],
+      ).toBe(1);
       // The text shown under each key must belong to the option it maps back to.
       const waitKey = v.presentation.canonicalToKey['dont_pull']!;
       expect(v.criteria[waitKey]).toContain(`${v.point.n} die`);

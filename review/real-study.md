@@ -1,4 +1,4 @@
-# Realistic study: every input, as sent
+# Realistic study (stimuli v1): every input, as sent
 
 144 trials per model. State = text first, then the camera frame (JPEG). Buttons are the same in every trial.
 Probes are asked in two separate calls after the main choice, with the same state.

@@ -1,0 +1,684 @@
+{
+ "createdAt": "2026-10-14T22:20:38.272Z",
+ "judges": [
+  "anthropic/claude-opus-5.5",
+  "openai/gpt-6-sol",
+  "google/gemini-3.1-pro-preview"
+ ],
+ "repeats": 3,
+ "gate": 0.35,
+ "rows": [
+  {
+   "image": "scratch/v2/cand6/d-51-R-1.jpg",
+   "meanJudgePAi": 0.38888888888888884,
+   "passesGate": false,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.016666666666666666,
+     "runs": [
+      0.02,
+      0.02,
+      0.01
+     ],
+     "counts": [
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       5
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.21666666666666665,
+     "runs": [
+      0.15,
+      0.2,
+      0.3
+     ],
+     "counts": [
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       5
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.9333333333333332,
+     "runs": [
+      0.9,
+      0.95,
+      0.95
+     ],
+     "counts": [
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       5
+      ]
+     ]
+    }
+   },
+   "study": {
+    "liquid/d1": 0.025957356726853616,
+    "cloudflare/clef": 0.4255,
+    "perplexity/pplx-decider-v1.1-27b": 0.045022911430137154,
+    "openai/gpt-6-luna-decisions": 0,
+    "cloudflare/clef-omni": 0.0647,
+    "cloudflare/clef-flash": 0.0614,
+    "anthropic/claude-haiku-5.5": 0,
+    "openai/gpt-6-luna": 0,
+    "google/gemini-3.5-flash-lite": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand6/d-51-R-2.jpg",
+   "meanJudgePAi": 0.4488888888888889,
+   "passesGate": false,
+   "judges": {
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.98,
+     "runs": [
+      0.95,
+      0.99,
+      1
+     ],
+     "counts": [
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       5
+      ]
+     ]
+    },
+    "openai/gpt-6-sol": {
+     "p_ai": 0.016666666666666666,
+     "runs": [
+      0.02,
+      0.02,
+      0.01
+     ],
+     "counts": [
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       5
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.35000000000000003,
+     "runs": [
+      0.6,
+      0.15,
+      0.3
+     ],
+     "counts": [
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       5
+      ]
+     ]
+    }
+   },
+   "study": {
+    "perplexity/pplx-decider-v1.1-27b": 0.045074319675202576,
+    "cloudflare/clef-omni": 0.0633,
+    "cloudflare/clef-flash": 0.0723,
+    "openai/gpt-6-luna-decisions": 0,
+    "liquid/d1": 0.014957084480035734,
+    "cloudflare/clef": 0.2234,
+    "anthropic/claude-haiku-5.5": 1,
+    "openai/gpt-6-luna": 0,
+    "google/gemini-3.5-flash-lite": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand6/d-51-R-3.jpg",
+   "meanJudgePAi": 0.08666666666666667,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.01,
+     "runs": [
+      0.01,
+      0.01,
+      0.01
+     ],
+     "counts": [
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       4
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.19999999999999998,
+     "runs": [
+      0.15,
+      0.15,
+      0.3
+     ],
+     "counts": [
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       4
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.05000000000000001,
+     "runs": [
+      0.05,
+      0.05,
+      0.05
+     ],
+     "counts": [
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       4
+      ]
+     ]
+    }
+   },
+   "study": {
+    "openai/gpt-6-luna-decisions": 0,
+    "perplexity/pplx-decider-v1.1-27b": 0.028919290645023518,
+    "liquid/d1": 0.020332350448708163,
+    "cloudflare/clef": 0.1461,
+    "cloudflare/clef-omni": 0.0672,
+    "anthropic/claude-haiku-5.5": 0,
+    "cloudflare/clef-flash": 0.061,
+    "google/gemini-3.5-flash-lite": 0,
+    "openai/gpt-6-luna": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand6/d-51-R-4.jpg",
+   "meanJudgePAi": 0.16444444444444442,
+   "passesGate": true,
+   "judges": {
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.31666666666666665,
+     "runs": [
+      0,
+      0,
+      0.95
+     ],
+     "counts": [
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       4
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.16666666666666666,
+     "runs": [
+      0.1,
+      0.2,
+      0.2
+     ],
+     "counts": [
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       4
+      ]
+     ]
+    },
+    "openai/gpt-6-sol": {
+     "p_ai": 0.01,
+     "runs": [
+      0.01,
+      0.01,
+      0.01
+     ],
+     "counts": [
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       2,
+       4
+      ]
+     ]
+    }
+   },
+   "study": {
+    "liquid/d1": 0.03308597707775863,
+    "perplexity/pplx-decider-v1.1-27b": 0.03359086901437584,
+    "openai/gpt-6-luna-decisions": 0.01,
+    "cloudflare/clef-flash": 0.0724,
+    "cloudflare/clef-omni": 0.0612,
+    "cloudflare/clef": 0.1357,
+    "anthropic/claude-haiku-5.5": 0,
+    "google/gemini-3.5-flash-lite": 0,
+    "openai/gpt-6-luna": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand6/d-two-R-1.jpg",
+   "meanJudgePAi": 0.04371819647616811,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.013333333333333334,
+     "runs": [
+      0.01,
+      0.01,
+      0.02
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.017821256095170976,
+     "runs": [
+      0.05,
+      0,
+      0.003463768285512924
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.10000000000000002,
+     "runs": [
+      0.1,
+      0.1,
+      0.1
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    }
+   },
+   "study": {
+    "cloudflare/clef-omni": 0.0754,
+    "cloudflare/clef": 0.2336,
+    "liquid/d1": 0.022977369993656186,
+    "openai/gpt-6-luna-decisions": 0,
+    "perplexity/pplx-decider-v1.1-27b": 0.030259187271546032,
+    "cloudflare/clef-flash": 0.0739,
+    "anthropic/claude-haiku-5.5": 0,
+    "google/gemini-3.5-flash-lite": 0,
+    "openai/gpt-6-luna": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand6/d-two-R-2.jpg",
+   "meanJudgePAi": 0.17777777777777778,
+   "passesGate": true,
+   "judges": {
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.3666666666666667,
+     "runs": [
+      1,
+      0.05,
+      0.05
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    },
+    "openai/gpt-6-sol": {
+     "p_ai": 0.016666666666666666,
+     "runs": [
+      0.01,
+      0.02,
+      0.02
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.15,
+     "runs": [
+      0.15,
+      0.15,
+      0.15
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    }
+   },
+   "study": {
+    "openai/gpt-6-luna-decisions": 0,
+    "cloudflare/clef": 0.2311,
+    "perplexity/pplx-decider-v1.1-27b": 0.05065453000454322,
+    "liquid/d1": 0.037326889084349245,
+    "cloudflare/clef-flash": 0.0702,
+    "cloudflare/clef-omni": 0.1044,
+    "anthropic/claude-haiku-5.5": 0,
+    "openai/gpt-6-luna": 0,
+    "google/gemini-3.5-flash-lite": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand6/d-two-R-3.jpg",
+   "meanJudgePAi": 0.043333333333333335,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.01,
+     "runs": [
+      0.01,
+      0.01,
+      0.01
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.08666666666666667,
+     "runs": [
+      0.1,
+      0.06,
+      0.1
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.03333333333333333,
+     "runs": [
+      0,
+      0.05,
+      0.05
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    }
+   },
+   "study": {
+    "openai/gpt-6-luna-decisions": 0,
+    "cloudflare/clef": 0.1382,
+    "cloudflare/clef-omni": 0.0422,
+    "perplexity/pplx-decider-v1.1-27b": 0.020396600811562655,
+    "liquid/d1": 0.02931223234129297,
+    "cloudflare/clef-flash": 0.0709,
+    "anthropic/claude-haiku-5.5": 0,
+    "google/gemini-3.5-flash-lite": 0,
+    "openai/gpt-6-luna": 0
+   }
+  },
+  {
+   "image": "scratch/v2/cand6/d-two-R-4.jpg",
+   "meanJudgePAi": 0.042222222222222223,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.01,
+     "runs": [
+      0.01,
+      0.01,
+      0.01
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.016666666666666666,
+     "runs": [
+      0.05,
+      0,
+      0
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.10000000000000002,
+     "runs": [
+      0.1,
+      0.1,
+      0.1
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ]
+    }
+   },
+   "study": {
+    "cloudflare/clef-omni": 0.0747,
+    "liquid/d1": 0.02931223128133519,
+    "openai/gpt-6-luna-decisions": 0,
+    "perplexity/pplx-decider-v1.1-27b": 0.03295397518843042,
+    "cloudflare/clef": 0.2438,
+    "cloudflare/clef-flash": 0.0604,
+    "anthropic/claude-haiku-5.5": 0,
+    "google/gemini-3.5-flash-lite": 0,
+    "openai/gpt-6-luna": 0
+   }
+  }
+ ]
+}

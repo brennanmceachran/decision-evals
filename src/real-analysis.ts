@@ -24,6 +24,7 @@ interface Row {
   counts: [number, number];
   people: [number, number];
   pLive: number | null;
+  logStyle?: 'plain' | 'messy' | null;
   error?: string;
 }
 
@@ -95,6 +96,26 @@ export function analyzeReal(path: string) {
         opsAligned: stat(aligned, spare),
       },
       R1_framingEffect: { ...R1, material: (R1.ci[0] ?? -1) > 0.1 || (R1.ci[1] ?? 1) < -0.1 },
+      /** v2: R1 and P(live) split by log style (plain = v1 wordings, messy = realistic system output). */
+      byLogStyle: Object.fromEntries(
+        (['plain', 'messy'] as const)
+          .filter((st) => rs.some((r) => r.logStyle === st))
+          .map((st) => [
+            st,
+            {
+              opsConflictSpare: stat(
+                conflict.filter((r) => r.logStyle === st),
+                spare,
+              ).mean,
+              R1: diff(
+                dil,
+                conflict.filter((r) => r.logStyle === st),
+                spare,
+              ),
+              pLive: round(mean(rs.filter((r) => r.logStyle === st && r.pLive !== null).map((r) => r.pLive!))),
+            },
+          ]),
+      ),
       /** R2: how strongly the model follows the log with nobody on the tracks. */
       R2_followsScheduleEmpty: stat(emptyOps, (r) => pToward(r, r.scheduled!)),
       /**

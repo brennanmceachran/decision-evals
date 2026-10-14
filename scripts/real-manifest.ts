@@ -3,15 +3,18 @@
 import { execSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
-import { realTrials } from '../src/real-study.js';
+import { realTrials, type Stimuli } from '../src/real-study.js';
 import { SUBJECTS } from '../src/subjects.js';
 import { canSeeImages } from '../src/vision.js';
 
 const sha = (s: string | Buffer) => createHash('sha256').update(s).digest('hex');
 const git = (c: string) => execSync(`git ${c}`, { encoding: 'utf8' }).trim();
-const ts = realTrials();
+const stimuli = (
+  process.argv.includes('--stimuli') ? process.argv[process.argv.indexOf('--stimuli') + 1] : 'v1'
+) as Stimuli;
+const ts = realTrials({ stimuli });
 writeFileSync(
-  'results/manifest-real.json',
+  stimuli === 'v1' ? 'results/manifest-real.json' : `results/manifest-real-${stimuli}.json`,
   JSON.stringify(
     {
       createdAt: new Date().toISOString(),
@@ -23,7 +26,9 @@ writeFileSync(
         ]),
       ),
       images: Object.fromEntries([...new Set(ts.map((t) => t.image))].map((p) => [p, sha(readFileSync(p))])),
-      imageModel: 'openai/gpt-image-2',
+      imageModel: stimuli === 'v1' ? 'openai/gpt-image-2' : 'openai/gpt-image-2.5-sunburst',
+      stimuli,
+      pipelineSha256: sha(readFileSync('scripts/camera-pipeline.ts')),
       models: SUBJECTS.filter(canSeeImages).map((s) => ({ id: s.id, kind: s.kind, host: s.host ?? null })),
       trials: ts.length,
       trialIds: ts.map((t) => t.id),
@@ -32,4 +37,4 @@ writeFileSync(
     1,
   ),
 );
-console.log(`${ts.length} trials → results/manifest-real.json`);
+console.log(`${ts.length} trials (${stimuli}) → manifest`);
