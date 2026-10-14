@@ -120,7 +120,7 @@ export async function ask(
           cost: 0,
         };
     }
-    return withMeta(out, j.cost ?? j.usage?.cost, 'openai');
+    return withMeta(out, j.provider_metadata?.gateway?.cost ?? j.cost ?? j.usage?.cost, 'openai');
   }
 
   const body = {
@@ -155,7 +155,12 @@ export async function ask(
     else if (a.type === 'noul' || a.type === 'boolean') out[k] = boolAnswer(a.probability!);
     else out[k] = { probabilities: a.probabilities ?? { [a.choice!]: 1 }, choice: a.choice!, cost: 0 };
   }
-  return withMeta(out, j.usage?.cost, j.provider);
+  // Cost: gateway reports it in provider_metadata.gateway.cost; OpenRouter in usage.cost.
+  return withMeta(
+    out,
+    j.provider_metadata?.gateway?.cost ?? j.usage?.cost,
+    j.provider ?? j.provider_metadata?.gateway?.routing?.finalProvider,
+  );
 }
 
 const boolAnswer = (p: number): VisionAnswer => ({
