@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { CONDITIONS, ROUTE_LEGEND, RULE, trials, type Trial } from '../src/image-study.js';
 import { layout } from '../src/render/diagram.js';
 
+// Rendering 228 trials (76 PNGs) takes several seconds, so each version is built once per file.
 const all = trials();
+const v1All = trials({ version: 'v1' });
+const v2All = trials({ version: 'v2' });
 /** Parse "On the left track: N …. On the right track: M …." from a text state. */
 const counts = (t: Trial) => {
   const s = t.state.kind === 'text' ? t.state.text : '';
@@ -91,7 +94,7 @@ describe('image study trials', () => {
   });
 
   it('v3 text trials are byte-identical to v2 (same ids); v3 image trials are new', () => {
-    const v2 = new Map(trials({ version: 'v2' }).map((t) => [t.id, t]));
+    const v2 = new Map(v2All.map((t) => [t.id, t]));
     for (const t of all) {
       if (t.condition === 'image') expect(v2.has(t.id)).toBe(false);
       else {
@@ -103,8 +106,8 @@ describe('image study trials', () => {
   });
 
   it('trial ids change whenever anything the model sees changes (no stale cache hits)', () => {
-    const v1 = trials({ version: 'v1' });
-    const v2ids = new Set(trials({ version: 'v2' }).map((t) => t.id));
+    const v1 = v1All;
+    const v2ids = new Set(v2All.map((t) => t.id));
     expect(v1.filter((t) => v2ids.has(t.id))).toHaveLength(0);
     // Same item/layout/order/condition but a different question must not share an id.
     for (const t of v1) expect(v2ids.has(t.id)).toBe(false);
