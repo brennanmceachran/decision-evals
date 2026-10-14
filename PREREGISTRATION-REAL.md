@@ -96,3 +96,22 @@ Decisions refused the ops framing in the smoke test; refusals are a result), and
 - Each study model's own "real or AI-generated?" rating of every frame, as an outcome (in the realism-check file).
 
 v1 data and analysis stay published unchanged.
+
+### Note to Amendment 1 (2026-10-14, after the v2 freeze, no study data used): burned-in camera overlay tested and rejected
+
+The owner asked whether a dashcam text overlay would add realism. It was tested with the same realism gate on all 12
+v2 frames:
+- **Variant A:** camera id, date and time, and speed (`CAB-T7-FWD`, `2026/10/14 16:41:08`, `011KM/H`).
+- **Variant B:** no date (camera id and speed only).
+
+Both were drawn before blur, grain and JPEG (`scripts/camera-pipeline.ts --overlay` / `--overlay-no-date`).
+
+| Images | Mean judge P(AI) | Pass the gate |
+|---|---|---|
+| v2 as frozen (no overlay) | 0.11 | 12 / 12 |
+| + id, date, time, speed | 0.52 | 2 / 12 |
+| + id, speed (no date) | 0.25 | 9 / 12 |
+
+The judges used the 2026 date as evidence the photo is fake ("timestamp in the future"), which reflects their training
+cutoffs, not the image. Even without the date, the overlay made images look less real. The study models barely
+changed. **Decision:** no overlay; the frozen v2 frames stand. Results: `results/realism-check-v2-overlay*.json`.
