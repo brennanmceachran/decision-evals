@@ -20,6 +20,7 @@
     "format": "prettier --write src scripts test",
     "findings": "tsx scripts/report-card.ts && tsx scripts/findings.ts",
     "site": "tsx scripts/site.ts",
+    "site:v2": "tsx scripts/site-v2.ts",
     "site:extract": "node --max-old-space-size=12288 --import tsx scripts/site-extract.ts"
   },
   "dependencies": {
