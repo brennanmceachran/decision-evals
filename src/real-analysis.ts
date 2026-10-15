@@ -186,6 +186,16 @@ export function analyzeReal(path: string) {
                   saf.filter((r) => r.relation === 'conflict'),
                   spare,
                 ),
+                /** H3 by log style (plain = wording 1, messy = wording 3). */
+                safetyConflictByLogStyle: Object.fromEntries(
+                  (['plain', 'messy'] as const).map((st) => [
+                    st,
+                    stat(
+                      saf.filter((r) => r.relation === 'conflict' && r.logStyle === st),
+                      spare,
+                    ).mean,
+                  ]),
+                ),
                 safetyEmptyFollowsSchedule: stat(
                   saf.filter((r) => r.content === 'empty'),
                   (r) => pToward(r, r.scheduled!),

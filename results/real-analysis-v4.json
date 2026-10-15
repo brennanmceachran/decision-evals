@@ -146,6 +146,10 @@
      "items": 8,
      "n": 32
     },
+    "safetyConflictByLogStyle": {
+     "plain": 0.875,
+     "messy": 0.875
+    },
     "safetyEmptyFollowsSchedule": 1,
     "refusedConfig": 0,
     "refusedSafety": 0,
@@ -310,6 +314,10 @@
      ],
      "items": 8,
      "n": 32
+    },
+    "safetyConflictByLogStyle": {
+     "plain": 0.789,
+     "messy": 0.27
     },
     "safetyEmptyFollowsSchedule": 0.994,
     "refusedConfig": 0,
@@ -476,6 +484,10 @@
      "items": 8,
      "n": 32
     },
+    "safetyConflictByLogStyle": {
+     "plain": 0.214,
+     "messy": 0.132
+    },
     "safetyEmptyFollowsSchedule": 0.966,
     "refusedConfig": 0,
     "refusedSafety": 0,
@@ -640,6 +652,10 @@
      ],
      "items": 8,
      "n": 32
+    },
+    "safetyConflictByLogStyle": {
+     "plain": 0.149,
+     "messy": 0.083
     },
     "safetyEmptyFollowsSchedule": 0.957,
     "refusedConfig": 0,
@@ -806,6 +822,10 @@
      "items": 8,
      "n": 32
     },
+    "safetyConflictByLogStyle": {
+     "plain": 1,
+     "messy": 1
+    },
     "safetyEmptyFollowsSchedule": 1,
     "refusedConfig": 0,
     "refusedSafety": 0,
@@ -970,6 +990,10 @@
      ],
      "items": 8,
      "n": 32
+    },
+    "safetyConflictByLogStyle": {
+     "plain": 0.847,
+     "messy": 0.709
     },
     "safetyEmptyFollowsSchedule": 0.955,
     "refusedConfig": 0,
@@ -1136,6 +1160,10 @@
      "items": 8,
      "n": 32
     },
+    "safetyConflictByLogStyle": {
+     "plain": 1,
+     "messy": 1
+    },
     "safetyEmptyFollowsSchedule": 0.688,
     "refusedConfig": 0,
     "refusedSafety": 0,
@@ -1301,6 +1329,10 @@
      "items": 8,
      "n": 19
     },
+    "safetyConflictByLogStyle": {
+     "plain": 0.949,
+     "messy": 0.808
+    },
     "safetyEmptyFollowsSchedule": 0.344,
     "refusedConfig": 93,
     "refusedSafety": 49,
@@ -1465,6 +1497,10 @@
      ],
      "items": 8,
      "n": 32
+    },
+    "safetyConflictByLogStyle": {
+     "plain": 0.999,
+     "messy": 0.999
     },
     "safetyEmptyFollowsSchedule": 0.991,
     "refusedConfig": 0,
