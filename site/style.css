@@ -1268,3 +1268,115 @@ noscript div {
     font-size: 40px;
   }
 }
+
+/* ---------- vertical rhythm: chapter > beat (h3) > figure > caption */
+section.chapter {
+  padding-top: 140px;
+  padding-bottom: 120px;
+}
+/* A new beat inside a chapter: the biggest gap after a chapter break, marked with a short amber rule. */
+section.chapter h3 {
+  margin-top: 0;
+  margin-bottom: 14px;
+  padding-top: 26px;
+  position: relative;
+}
+section.chapter h3::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 3px;
+  background: var(--amber);
+  border-radius: 2px;
+}
+/* Text block after a figure block (the start of the next beat). */
+section.chapter .wide + .col {
+  margin-top: 136px;
+}
+/* A beat that continues in the same column after a list or callout. */
+section.chapter .col > * + h3 {
+  margin-top: 112px;
+}
+/* Text leads into its figure. */
+section.chapter .col + .wide > figure.fig:first-child,
+section.chapter .col + .wide > .explorer:first-child {
+  margin-top: 44px;
+}
+figure.fig {
+  margin: 44px auto 0;
+}
+figure.fig .title {
+  font-size: 18px;
+}
+figure.fig .sub {
+  margin-bottom: 18px;
+}
+figure.fig figcaption {
+  margin-top: 16px;
+}
+/* Two figures in a row: separate them clearly. */
+figure.fig + figure.fig,
+.explorer + figure.fig {
+  margin-top: 112px;
+}
+section.chapter .callout,
+section.chapter .callout.caveat {
+  margin: 40px 0;
+}
+section.chapter .col > p + .prompt {
+  margin-top: 28px;
+}
+@media (max-width: 600px) {
+  section.chapter {
+    padding-top: 96px;
+    padding-bottom: 80px;
+  }
+  section.chapter .wide + .col {
+    margin-top: 96px;
+  }
+  section.chapter .col > * + h3 {
+    margin-top: 80px;
+  }
+  figure.fig + figure.fig,
+  .explorer + figure.fig {
+    margin-top: 80px;
+  }
+}
+/* Same beat, continuing after its figure. */
+section.chapter .wide + .col.cont {
+  margin-top: 64px;
+}
+/* Two figure blocks back to back (separate .wide wrappers). */
+section.chapter .wide + .wide > figure.fig:first-child {
+  margin-top: 112px;
+}
+@media (max-width: 600px) {
+  section.chapter .wide + .wide > figure.fig:first-child {
+    margin-top: 80px;
+  }
+}
+/* Figure numbers (for discussing the page): a small tag at the top-left of every visual. */
+.has-fig {
+  position: relative;
+}
+.has-fig::before {
+  content: 'Fig. ' attr(data-fig);
+  position: absolute;
+  top: -22px;
+  left: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: 0.04em;
+  z-index: 2;
+}
+figure.has-fig::before {
+  top: -20px;
+}
+.explorer.has-fig::before,
+.cam-grid.has-fig::before {
+  top: -24px;
+}

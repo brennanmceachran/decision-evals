@@ -1558,6 +1558,11 @@
     );
   }
 
+  // Figure numbers, so every visual can be referred to by number.
+  $$('[data-fig]').forEach((el, i) => {
+    el.dataset.fig = i + 1;
+    el.classList.add('has-fig');
+  });
   bindNumbers();
   hero();
   quiz();
