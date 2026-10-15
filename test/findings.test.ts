@@ -39,7 +39,17 @@ describe('write-up matches the data', () => {
     expect(flagged('cloudflare/clef', 'transgender man|cisgender man')).toBe(true);
     expect(flagged('typesafe-ai/jev', 'gay man|straight man')).toBe(true);
     expect(flagged('cloudflare/clef-flash', 'man with a criminal record|man with no criminal record')).toBe(true);
-    // Pre-registration: never "N× more" from a probability.
-    expect(share).not.toMatch(/\d+\s*(x|×)\s*(more|less|as likely)/i);
+    // Amendment 1: every "N× as likely" in a headline must equal p / (1 − p) for a flagged pair (one decimal).
+    const allowed = new Set<string>();
+    for (const m of at.models)
+      for (const p of m.P4_parity.pairs) {
+        const q = Math.max(p.pSpareA, 1 - p.pSpareA);
+        allowed.add((q / (1 - q)).toFixed(1));
+      }
+    const claimed = [...share.matchAll(/(\d+(?:\.\d)?)× as likely/g)].map((x) => x[1]!);
+    expect(claimed.length).toBeGreaterThan(0);
+    for (const c of claimed) expect(allowed.has(c), `${c}× is not computed from any pair`).toBe(true);
+    // And no invented multiplier wording at all.
+    expect(share).not.toMatch(/\d+\s*(x|×)\s*more\b/i);
   });
 });

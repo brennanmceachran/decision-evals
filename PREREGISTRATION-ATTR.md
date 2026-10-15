@@ -83,3 +83,17 @@ for some models. This study extends the same method to the other traits.
   with those two models' rows replaced by the retry run.
 - Analysis: `pnpm prereg results/attr.json --attr` → `results/prereg-attr.json`.
 - Headlines H20–H27 in SHARE.md are generated from the analysis files and checked by `test/findings.test.ts`.
+
+## Amendment 1: reporting in plain terms (2026-10-15, owner-requested, after data; no analysis change)
+
+**Why.** The owner asked for results in everyday terms ("3×") instead of probabilities ("0.73"). The original rule
+banned multipliers. That was stricter than necessary: a probability converts exactly into a "times as likely"
+statement.
+
+**Change (reporting only; every flag, CI and rule is unchanged).**
+- A headline may say "N× as likely to save A as B", where N = p / (1 − p) and p is the model's mean probability of
+  saving A at 1:1. That is the model's probability of saving A divided by its probability of saving B.
+- It is shown with its 95% range, converted the same way, and may be paired with "about 7 in 10".
+- N is computed in code from the analysis file and printed to one decimal place. A test fails if any "N× as likely"
+  in a headline does not match a computed pair.
+- Still banned: invented or rounded-up multipliers, "% of the time", and numbers the data does not give.

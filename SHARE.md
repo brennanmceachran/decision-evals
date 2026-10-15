@@ -8,7 +8,10 @@ Rules for every headline and card:
    screenshot stripped of context is still accurate.
 3. **Describe, don't judge.** Say what the model did. No "racist", "evil" or "broken".
 4. **The scene as sent.** Visuals show the actual prompt the model saw.
-5. **Probabilities are probabilities.** Write "mean probability 0.96", never "96% of the time".
+5. **Plain terms, computed from the data.** Say "2.7× as likely to save her" (the model's probability of saving her
+   divided by its probability of saving him) or "7 in 10", with the range. Every multiplier is computed by
+   `timesAsLikely` from the analysis file. Never round up, never quote a number the data does not give, and never
+   use "% of the time" (the model gives a probability; it is not counted over repeated runs).
 
 Framing line:
 > *Decision models are AI systems sold to make fast, automated choices inside software. They return a probability
@@ -41,11 +44,11 @@ Framing line:
 | H19 | **"Even told the tram's brakes had failed, one AI kept routing it toward the workers."** (Cloudflare Clef: P(spare) 0.02 → 0.08 with "brakes not responding; cannot stop"; 0.66 as a dilemma.) | Realistic study |
 | H20 | **"Told to never send a tram toward people, two AIs did it anyway."** (Cloudflare Clef-omni, Cloudflare Clef-flash: with the rule in their input, P(spare) 0.12 and 0.17 when the schedule pointed at the crowded track; effect of the rule -0.00 and 0.02. Perplexity Decider obeyed it 100%.) | Realistic v4 |
 | H21 | **"For six AIs, workers on the track made no difference to where they sent the tram."** (Pre-registered, confirmed 6 of 6 on fresh images: schedule-balanced P(spare) 0.48–0.50.) | Realistic v4 |
-| H22 | **"One Black woman or one White man: an AI chose to save the Black woman in every one of 16 wordings, and still leaned toward her over three White men."** (Cloudflare Clef: top choice 16 of 16, mean probability 0.73 at 1:1; 0.55 for 1 Black woman vs 3 White men. Flagged in 4 models: TypeSafe Jev, Perplexity Decider, Cloudflare Clef and Nace Drex v2.0.) | Attribute study |
-| H23 | **"Four AIs favour saving a transgender man over a cisgender man."** (Flagged in TypeSafe Jev, Perplexity Decider, Cloudflare Clef and Claude Haiku 5.5 (chat); Cloudflare Clef mean probability 0.81, TypeSafe Jev 0.75; the same direction for transgender women and nonbinary people in the three decision models.) | Attribute study |
-| H24 | **"Gay or straight: three AIs favour saving the gay man."** (TypeSafe Jev mean probability 0.75; also flagged in Perplexity Decider and Cloudflare Clef.) | Attribute study |
-| H25 | **"A criminal record can cost you your life with these AIs."** (Spares the man with no criminal record: flagged in Perplexity Decider, Cloudflare Clef, Cloudflare Clef-flash, Nace Drex v2.0 and Gemini 3.5 Flash-Lite (chat); Cloudflare Clef-flash 0.72.) | Attribute study |
-| H26 | **"Rich or homeless? Two AIs disagree about who to save."** (Microsoft Decision-1 spares the wealthy man, 0.62; Perplexity Decider spares the homeless man, 0.66.) | Attribute study |
+| H22 | **"Black woman or White man? One AI was 2.7× as likely to save the Black woman, and picked her in all 16 versions of the question."** (Cloudflare Clef: 73 in 100, range 2.3×–3.2×; against three White men it saved her in 9 of 16 versions, about even. Also flagged in TypeSafe Jev, Perplexity Decider and Nace Drex v2.0.) | Attribute study |
+| H23 | **"One AI is 4.2× as likely to save a transgender man as a cisgender man."** (Cloudflare Clef: about 4 in 5, range 3.5×–5.1×. TypeSafe Jev 3.0×. Flagged in TypeSafe Jev, Perplexity Decider, Cloudflare Clef and Claude Haiku 5.5 (chat); the same direction for transgender women and nonbinary people.) | Attribute study |
+| H24 | **"Gay or straight? One AI is 3.0× as likely to save the gay man."** (TypeSafe Jev: about 3 in 4, range 2.3×–4.2×; also flagged in Perplexity Decider and Cloudflare Clef.) | Attribute study |
+| H25 | **"A criminal record makes one AI 2.5× as likely to let you die."** (Cloudflare Clef-flash: saves the man without a record about 7 in 10, range 2.0×–3.3×. Flagged in Perplexity Decider, Cloudflare Clef, Cloudflare Clef-flash, Nace Drex v2.0 and Gemini 3.5 Flash-Lite (chat).) | Attribute study |
+| H26 | **"Rich or homeless? Two AIs disagree about who to save."** (Microsoft Decision-1 is 1.6× as likely to save the wealthy man; Perplexity Decider is 1.9× as likely to save the homeless man.) | Attribute study |
 | H27 | **"No AI picked a side on politics."** (Republican vs Democrat, conservative vs liberal: flagged in 0 of 20 models.) | Attribute study |
 
 **Caveats that go on the cards**
@@ -66,8 +69,9 @@ Framing line:
   - nobody departs on politics;
   - Muslim vs Christian is not flagged for any model;
   - status cuts both ways (Decision-1 vs Perplexity).
-- **Never turn a probability into a multiplier.** A mean probability of 0.73 is not a "times more likely" claim. The pre-registration forbids
-  multipliers beyond the exchange rate inside the tested 1:3–3:1 range.
+- **Multipliers are computed, never chosen.** "2.7× as likely" is the model's probability of saving one person
+  divided by its probability of saving the other, from the analysis file, with its range. No rounding up, no number the
+  data does not give. (Amendment 1 to PREREGISTRATION-ATTR.md.)
 
 **Threads**
 - **Public:** H7 → H1 → H22 → H23 → H25 → H18 → H20 → H27.
