@@ -1,0 +1,3237 @@
+{
+ "createdAt": "2026-10-15T19:12:00.454Z",
+ "prompt": "evidence-first",
+ "judges": [
+  "spacexai/grok-4.5"
+ ],
+ "repeats": 3,
+ "gate": 0.35,
+ "rows": [
+  {
+   "image": "assets/real-v4/u-empty-L.jpg",
+   "meanJudgePAi": 0.10666666666666667,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.10666666666666667,
+     "runs": [
+      0.12,
+      0.08,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "Left pair of rails curves smoothly with consistent gauge and realistic setts/cobbles packed tightly between and beside the rails, including natural wear and slight misalignment of individual stones",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "Right pair of rails similarly curves with proper flangeway gaps, continuous metal rails showing subtle surface wear and dirt, and matching brick paving pattern that follows the curve without warping",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Brick building facade shows irregular mortar lines, varied brick tones and weathering, arched windows with realistic glazing reflections and slight asymmetries typical of aged industrial architecture",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Stack of long metal rails/sleepers and a yellow dumpster sit on the ground with natural shadows, rust/dirt texture and precise perspective foreshortening",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Multiple vertical poles cast consistent long shadows across the cobbles matching a low sun angle; poles themselves show slight lean and surface grime",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel, concrete cracks and cobble surface detail remain sharp and coherent into the distance without the over-smoothed or repetitive noise patterns common in AI renders",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-left",
+        "detail": "Soft circular lens flares / water-droplet-like artifacts on the glass indicate the photo was taken through a vehicle windscreen, a common real-world capture artifact",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Directional low-angle sunlight produces long, soft-edged shadows from poles and building features that align consistently across the entire scene",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant archway reveals continuing track and faint outdoor elements with natural atmospheric haze and correct vanishing-point perspective",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Damp patches on the asphalt/concrete between tracks show realistic specular highlights and darkening without unnatural pooling shapes",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "Left pair of rails curve smoothly with consistent gauge and realistic cobblestone embedding; joints and wear patterns look physical",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "Right pair of rails also curve naturally toward the arch with proper perspective foreshortening and matching brickwork between rails",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Brick warehouse façade shows irregular mortar, weathering stains, varied window arch details and realistic depth under the roofline",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Stack of long metal rails/beams and a yellow dumpster sit naturally on the cobbles with correct contact shadows and no floating",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Multiple vertical metal poles cast consistent long shadows matching the low sun angle and have realistic surface wear",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel texture, cobblestone edges and brick grain remain sharp yet natural across depth; no AI smoothing or repeated patterns",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft directional sunlight from upper left produces coherent shadows from poles, arches and rails that match one light source",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-left",
+        "detail": "Circular lens flare / dirt spots on the glass indicate a real camera shooting through a dirty windscreen or window",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-right",
+        "detail": "Distant track vanishing into the dark archway and bare trees beyond look photographically correct rather than invented",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Damp patches on the asphalt between tracks show subtle reflections consistent with real moisture, not generative artifacts",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "Left pair of rails curves smoothly with consistent gauge and properly set brick paving between and beside the rails, including realistic wear and slight irregularities in brick alignment",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "Right pair of rails curves correctly with matching brickwork texture and realistic joint gaps; rails show proper metallic reflection and slight surface imperfections",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Victorian brick engine shed with arched windows, stone lintels, and weathered brickwork showing mortar variation, soot staining, and individual brick imperfections consistent with real aging",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Multiple vertical metal poles of varying heights and slight lean, with realistic base fixtures and shadow casting on the ground; no floating or poorly attached elements",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Stack of long metal rails/sleepers piled haphazardly with realistic overlapping shadows and uneven ends; nearby yellow dumpster with visible dents and dirt",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain, fine gravel texture, and subtle noise across the cobbled surface; no over-smoothed AI artifacts or inconsistent detail levels between foreground and background",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft, consistent directional lighting with long shadows from poles and building that match a low sun angle; shadows fall correctly without multiple light sources or floating edges",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-left",
+        "detail": "Visible dirt spots, smudges, and light flares on the lens or windscreen typical of a real camera shooting through glass or dirty optics",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Scattered debris, uneven gravel patches, and miscellaneous items near the left arch that look randomly placed rather than compositionally perfect",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Subtle damp patches and slight sheen on the asphalt/cobble areas that catch light naturally without exaggerated mirror-like reflections",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Slightly off-center framing and natural perspective from what appears to be a vehicle or trackside viewpoint; no overly dramatic or perfectly balanced AI staging",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "assets/real-v4/u-empty-R.jpg",
+   "meanJudgePAi": 0.13999999999999999,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.13999999999999999,
+     "runs": [
+      0.12,
+      0.18,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Two sets of tram tracks curve smoothly with consistent gauge, realistic brick paving between rails, and natural wear patterns that align with real tram infrastructure",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Brick building facade shows irregular mortar lines, varied brick discoloration, arched windows with individual frame details, and weathered stonework consistent with aged real architecture",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine grain and sensor noise visible across cobblestones, asphalt patches, and brick surfaces; no over-smoothed AI textures or unnatural sharpness gradients",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft directional daylight creates coherent long shadows from poles and building edges that fall consistently across the ground plane",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical metal poles of slightly varying height and alignment cast proper shadows; wires and attachments appear functional rather than decorative",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Stack of long rails or beams and a yellow skip bin sit on the ground with realistic metal texture, shadows, and casual placement",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-left",
+        "detail": "Damp patches and subtle reflections on cobbles and asphalt look physically plausible under overcast light",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Slight vignetting, soft focus falloff at edges, and faint circular artifacts near corners suggest capture through glass or a real lens rather than perfect digital rendering",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-left",
+        "detail": "Distant bare trees, street furniture, and uneven ground debris appear naturally disordered without AI repetition artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Viewpoint looks like a handheld or vehicle-mounted shot looking into a tram depot yard; no overly perfect symmetry or cinematic staging typical of many AI scenes",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Tram rails curve smoothly with consistent gauge, realistic perspective foreshortening, and proper setts packing between rails that align with real street-track construction",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Brickwork shows irregular weathering, mismatched brick colors, mortar variations, and arched windows with slightly uneven brick voussoirs typical of aged industrial buildings",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel, cobble texture, and asphalt cracks retain natural high-frequency detail without AI smoothing or repetitive generative patterns",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical poles of slightly different heights and diameters stand at irregular intervals with realistic shadows and base contact on the ground",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Stack of long metal rails/pipes and a yellow skip bin sit with natural irregular stacking and cast coherent soft shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft directional daylight creates consistent long shadows from poles and building features matching a single light source without contradictory AI lighting",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Circular out-of-focus dust/water spots and slight edge vignette consistent with shooting through a dirty vehicle windscreen or lens",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Distant parked cars and miscellaneous debris visible through the left archway appear naturally placed rather than staged or hallucinated",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere in the frame to evaluate anatomy or pose artifacts",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails curve smoothly into two diverging paths with consistent gauge and realistic perspective foreshortening; setts/cobbles between rails align properly without warping or melting.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Brick warehouse facade shows irregular mortar, weathered brick color variation, arched windows with correct perspective, and a long row of arched openings that remain coherent under the roof line.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Multiple vertical metal poles of slightly different heights and diameters cast consistent shadows and line up with the tracks and building in a physically plausible way.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Stack of long metal rails/beams and a yellow skip/bin sit on the pavement with correct contact shadows and no duplicated or floating geometry.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine grain/noise across the cobbles and asphalt, plus slight optical softness and dirt on the glass, match a real camera capture rather than overly smooth AI textures.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Circular out-of-focus spots and smudges on the lens/windscreen are visible especially on the right and top edges, typical of a photo taken through a dirty vehicle window.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "middle-left",
+        "detail": "Soft directional daylight produces coherent long shadows from poles and building arches that fall consistently across the cobbled ground.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-left",
+        "detail": "Distant vehicles and miscellaneous debris inside the left archway appear naturally messy rather than hallucinated or repeated patterns.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are present anywhere in the frame, so no anatomical artifacts to evaluate.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-right",
+        "detail": "Damp or oily patches on the asphalt show subtle specular highlights consistent with real surface reflectance.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "assets/real-v4/u-group-L.jpg",
+   "meanJudgePAi": 0.13999999999999999,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.13999999999999999,
+     "runs": [
+      0.12,
+      0.18,
+      0.12
+     ],
+     "counts": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "High-visibility jackets show realistic fabric wrinkles, reflective strip patterns, and dirt/wear consistent with work clothing; helmets have proper straps and scuffs",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Three workers kneeling in natural crouched postures with weight distributed on knees/toes, hands near tools on rails, no impossible joint angles",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Single worker kneeling on right track with realistic balance and tool interaction matching left group",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "middle-left",
+        "detail": "Tool bags and scattered hand tools next to workers have correct metal/plastic textures, shadows, and placement as if set down during work",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Curving rails with embedded cobbles show continuous perspective foreshortening, proper gauge, and wear marks without AI warping or inconsistent spacing",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Brick arches, windows, and weathered facade have irregular mortar lines, moss/stains, and depth consistent with real Victorian industrial architecture",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical poles and wires align correctly in 3D space with consistent thickness and slight perspective taper",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast daylight produces coherent soft shadows under workers, bags, and poles matching a single light direction without floating or mismatched lengths",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural sensor noise and slight softness in distance; cobbles and bricks retain fine irregular detail without over-smoothed AI skin or plastic sheen",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Visible dirt/smudges and faint reflections on the lens/windscreen edges typical of a real vehicle-mounted or dirty camera shot",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Pile of rails, skip bin, and distant clutter arranged naturally without repetitive AI patterns or floating objects",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Damp patches on asphalt and cobbles show realistic specular highlights and darkening consistent with recent moisture",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "High-visibility jackets show realistic fabric wrinkles, dirt marks, and reflective strip wear consistent with real work gear",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Three workers crouched naturally on the left track with varied kneeling postures and tool bags placed beside them",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Single worker kneeling on the right track in a realistic working posture with a tool bag nearby",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails curve smoothly with correct perspective, consistent gauge, and proper embedding in cobblestones",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain, slight softness, and uneven pavement wear without AI-typical over-smoothing or plastic textures",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Brick warehouse has irregular mortar, weathered arches, and varied window details that look photographed rather than generated",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Soft vignette and faint circular artifacts at edges consistent with shooting through a vehicle windscreen or dirty lens",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "middle-left",
+        "detail": "Tool bags and small scattered tools on the ground have plausible shapes and shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Diffuse overcast lighting with soft consistent shadows under workers and objects",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Stack of rails, yellow skip, and poles arranged naturally without repetitive AI patterns",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-left",
+        "detail": "High-visibility jackets show realistic fabric folds, dirt smudges, and reflective stripe wear consistent with real workwear",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Three workers crouch naturally around the rail joint with varied knee angles and tool bags placed irregularly beside them",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Single worker kneels on the right track with realistic weight distribution and a tool bag offset to the side",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "middle-left",
+        "detail": "Open tool bags and scattered hand tools next to the left group show irregular placement and metal/plastic textures",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Curved rails embed correctly into cobblestones with consistent gauge, perspective foreshortening, and no impossible intersections",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Brick arches, windows, and weathering show irregular mortar lines, individual brick variations, and realistic depth through the open bays",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast lighting produces coherent, low-contrast shadows under workers and poles that match the diffuse sky",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain, slight motion softness on distant elements, and fine cobblestone texture variation without AI over-smoothing or plastic look",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Circular water droplets and smudges on the lens/windscreen in the upper corners are physically consistent with a real camera behind glass",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Stack of rails, yellow dumpster, and scattered debris appear casually placed with correct scale and no duplicated patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-left",
+        "detail": "Hands, helmets, and body proportions of the three workers are anatomically correct with no extra/missing limbs or fused fingers",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Damp patches on asphalt and cobbles show subtle specular highlights consistent with real wet ground under overcast light",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "assets/real-v4/u-group-R.jpg",
+   "meanJudgePAi": 0.12666666666666668,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.12666666666666668,
+     "runs": [
+      0.12,
+      0.18,
+      0.08
+     ],
+     "counts": [
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "High-vis jackets show realistic folds, dirt smudges, and varied orange/yellow tones with reflective strips that catch light naturally",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Three workers crouched/kneeling in natural awkward work postures with one holding a tool near the rail, bodies oriented toward the track work",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "middle-right",
+        "detail": "Hands, boots, helmets and limb proportions look correct without extra fingers or melted limbs",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails curve smoothly with consistent gauge, embedded in worn cobblestones that show individual stone edges and wear patterns",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Brick arches, windows and weathered brickwork have irregular mortar lines, soot staining and realistic perspective recession into the building",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "top-center",
+        "detail": "Stack of long metal rails/poles and a dumpster have correct perspective foreshortening and cast soft ground shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Diffuse overcast lighting produces soft consistent shadows under workers and poles matching the ambient sky",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Scattered water droplets and smudges on the lens/windscreen create realistic out-of-focus spots and slight distortion near edges",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel texture, brick detail and cobblestone edges remain sharp where expected and soften naturally with distance; no plastic AI smoothness",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant bare trees, additional poles and building extensions appear with natural occlusion and no repeated patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Wide documentary-style framing from inside a vehicle looking out, with natural empty space and no overly perfect symmetry",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Multiple circular water droplets and smudges scattered across the frame, consistent with shooting through a dirty or wet glass window/windscreen",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain, slight softness, and realistic asphalt/cobblestone texture variation without the overly smooth plastic look common in AI images",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "High-vis orange and yellow jackets with reflective strips, white/yellow hard hats, and work gloves show realistic fabric folds, dirt, and wear",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Three workers crouched in natural working postures around the rails, with plausible body proportions and tool handling",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Single worker kneeling alone on the left track curve in a believable isolated pose",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails curve smoothly with correct perspective foreshortening, embedded in cobbles with realistic gaps and wear",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Red brick arched facade with varied weathering, mortar lines, and window details that hold up under scrutiny without AI warping",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "middle-right",
+        "detail": "Small tools, bags, and a yellow object near the workers look physically grounded and appropriately scaled",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Stack of long metal rails/beams and a dumpster sit naturally against the building wall with correct shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Diffuse overcast lighting produces soft consistent shadows under workers and poles without the harsh or mismatched lighting AI often creates",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical poles and overhead structures align consistently in perspective without bending or floating anomalies",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Damp patches on the ground and slight sheen on rails appear physically plausible under the lighting",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "Three workers on right track wear matching high-vis orange/yellow jackets with reflective strips, hard hats (white/yellow), and dark trousers; gear and posture look authentic for track work",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Workers kneeling/crouching in natural, slightly varied postures while handling tools or rail fittings; no stiff or duplicated limbs",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "center",
+        "detail": "Visible hands, gloves, and body proportions of the three workers appear correct without extra/missing fingers or warped joints",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Single distant worker kneeling alone on left curved track in consistent high-vis gear, scale and posture matching the scene depth",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "Left pair of rails curves smoothly with proper gauge, embedded in worn cobblestones; perspective and metal reflections look physically accurate",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "Right pair of rails runs straighter then slight curve, correctly spaced, with cobble/setts between and beside them matching real tram/rail yards",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large red-brick arched building with multiple arched windows/doors, weathered mortar, and roof details that show consistent perspective and aging",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Multiple vertical grey metal poles of varying heights cast coherent shadows and align with real overhead-line infrastructure",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Small tools, bags or rail components near the three workers, plus stacked long metal rails/sleepers and a yellow skip in mid-ground, all with plausible placement and shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast daylight produces consistent soft shadows under workers, poles and rails without contradictory light sources",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain/noise, slight softness and dirt on cobbles and rails; no plastic skin, over-smooth surfaces or repeating texture tiles typical of AI",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Faint circular smudges and droplets on the lens/windscreen (especially upper area) indicate real camera glass dirt, common in vehicle-mounted shots",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Open archway leading to further tracks, distant fencing and bare trees with natural irregularity",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Documentary-style wide shot from slightly elevated/vehicle viewpoint with natural framing and no obvious AI ‘perfect’ symmetry or floating objects",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "assets/real-v4/u-two-L.jpg",
+   "meanJudgePAi": 0.13999999999999999,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.13999999999999999,
+     "runs": [
+      0.12,
+      0.12,
+      0.18
+     ],
+     "counts": [
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-left",
+        "detail": "Two workers wear high-vis jackets (one orange, one yellow-green), hard hats, and dark trousers; gear looks practical and slightly dirty with realistic folds and wear.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-left",
+        "detail": "Both men kneel on the left track pair, gripping a long metal lever/tool at a switch or joint; body weight and hand placement look biomechanically natural.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-left",
+        "detail": "A long crowbar/lever and a small bucket or tool bag sit next to the workers; metal surfaces show expected scuffs and the bucket has a simple cylindrical shape.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Two pairs of rails curve smoothly with consistent gauge; the left pair has a clear switch/frog area where the men work, and the right pair continues unbroken toward the arch.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large red-brick railway shed with arched openings, multipane windows, and weathered brickwork; mortar lines and slight discoloration vary naturally across the facade.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Multiple vertical metal poles of slightly different heights and finishes stand around the yard; some carry small fittings or boxes consistent with real infrastructure.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Stack of spare rails/ties, a yellow skip/bin, and scattered debris sit in the mid-ground; arrangement looks casually piled rather than symmetrically staged.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft, diffuse daylight produces gentle shadows under the workers and along the rails; no harsh inconsistent light sources or floating highlights.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Cobblestones, asphalt patches, brick texture and rail surfaces show fine grain and micro-variation; slight atmospheric haze in the distance is natural.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-left",
+        "detail": "Small circular water droplets or lens dirt spots appear in the upper left corner, typical of a photo taken through a dirty windscreen or after rain.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "The framing is slightly asymmetric and documentary-style, with empty space on the right track and ordinary industrial mess, not a perfectly balanced AI tableau.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Damp patches on the asphalt and slight sheen on the rails are consistent with recent moisture; no impossible mirror-like reflections.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-left",
+        "detail": "High-vis jackets show realistic fabric folds, dirt smudges, and reflective strip wear consistent with actual work gear",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-left",
+        "detail": "Two workers kneeling in natural postures gripping a rail tool with visible hand contact and body weight distribution",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-left",
+        "detail": "Metal rail tool and small bucket with debris look physically grounded with correct shadows and contact points",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Cobblestone setts and rail flanges show consistent weathering, joints, and perspective without warping or melting",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Brick arches, windows, and mortar lines have irregular real-world variation and correct vanishing points",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast lighting produces coherent soft shadows under workers, poles, and rails matching a single light source",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural sensor noise and slight depth-of-field falloff on distant building details, not AI over-smoothing",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-left",
+        "detail": "Dust/water spots and edge vignette consistent with shooting through a dirty vehicle window or lens",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Stack of rails, skip bin, and poles show casual real placement without duplicated or floating objects",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "bottom-left",
+        "detail": "Hands, gloves, helmets and body proportions appear anatomically correct under work clothing",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ],
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-left",
+        "detail": "Two workers wear high-vis jackets (orange and yellow-green), hard hats, and dark trousers with visible fabric wrinkles, seams, and dirt consistent with real workwear; gloves and posture look natural.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-left",
+        "detail": "Both men kneel on the tracks in a coordinated working pose, hands on a rail tool or joint, with natural weight distribution, knee contact, and slight body lean that matches real physical interaction.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-left",
+        "detail": "A long metal bar/tool is held between them on the rail, plus a small bucket or container nearby; the tool casts a plausible shadow and contacts the rail convincingly.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Curving dual tracks with setts/cobbles between rails show correct perspective foreshortening, consistent rail gauge, and natural wear/discoloration along the curves without geometric warping.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large red-brick industrial building with arched openings, multipane windows, and a slate roof exhibits irregular brick weathering, mortar variation, and architectural details that align with a real heritage structure.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Multiple vertical metal poles (likely catenary or lighting) stand at irregular spacings with bases set into the ground; no impossible intersections or floating elements.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Stack of long rails/timbers, a dumpster, and scattered debris near the building wall appear casually placed with realistic shadows and no repetitive AI patterning.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Diffuse overcast daylight produces soft, directionally consistent shadows under the workers, poles, and rails; no conflicting light sources or overly smooth gradients typical of some generators.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Ground setts, asphalt patches, brickwork, and clothing show fine grain, wear, and micro-contrast variation; slight overall softness and lens artifacts (possible windscreen smudges) match a real camera capture rather than synthetic perfection.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-left",
+        "detail": "Circular out-of-focus spots and faint smudges in the upper corners resemble dirt or water droplets on a vehicle windscreen or lens, a common real-world photography artifact rarely simulated cleanly by AI.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Damp or slightly reflective patches on the asphalt and rails catch light naturally without mirrored distortions or impossible highlights.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "The wide industrial yard view with workers mid-task feels documentary rather than posed; no tell-tale AI symmetry, floating objects, or uncanny empty spaces.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "bottom-left",
+        "detail": "Hands, heads under hard hats, and limb proportions appear correct with no extra fingers, melted joints, or distorted faces (faces largely obscured by hats and angle).",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "assets/real-v4/u-two-R.jpg",
+   "meanJudgePAi": 0.10666666666666667,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.10666666666666667,
+     "runs": [
+      0.12,
+      0.12,
+      0.08
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "Two workers wear high-vis jackets (yellow and orange), hard hats, gloves and work trousers with realistic fabric folds, dirt marks and strap details that match real PPE.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Both workers kneel in natural, slightly asymmetric working postures with hands on tools or rails; weight distribution and joint angles look biomechanically correct.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Small tool bag, loose tools and debris sit beside the workers in plausible positions; no floating or duplicated objects.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Curved rails with correct flangeways, consistent gauge and realistic perspective foreshortening; brick sett paving follows the rails without warping or melting.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Victorian brick depot façade shows irregular mortar, weathered brick texture, arched windows with correct spacing and a corrugated roof with authentic weathering stains.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft directional daylight casts consistent long shadows from poles, workers and rails onto the ground; shadow directions and penumbra match a single light source.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural sensor noise, slight motion blur on distant edges and micro-texture variation on cobbles and brick; no over-smoothed AI skin or plastic surfaces.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Circular water-droplet or dirt spots and faint reflections across the frame indicate the photo was taken through a dirty glass or windscreen, a common real-world artifact rarely simulated this way by AI.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Stack of rails, dumpster and miscellaneous equipment are arranged haphazardly yet physically stable, with correct contact shadows.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical poles of slightly varying height and alignment stand with realistic perspective and no impossible intersections.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Damp patches on the asphalt and cobbles show subtle specular highlights consistent with the lighting, not uniform AI gloss.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Wide-angle lens distortion is natural (rails curve outward near camera) and the scene is not overly ‘perfect’ or symmetrically staged.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "Two workers wear high-vis jackets (yellow and orange) with reflective strips, hard hats, and work trousers; clothing shows natural folds, dirt, and fabric wrinkles consistent with real wear.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Workers are kneeling on the rails in a realistic working posture, one holding a tool near the track joint; body proportions and joint angles look natural without distortion.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Small tools, bags, and equipment scattered near the workers on the ground and rails, with consistent shadows and contact points.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Curving dual tracks embedded in cobblestones with realistic perspective convergence, rail joints, and embedded sleepers that match real tram/railway infrastructure.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Red-brick industrial building with arched openings, arched windows, weathered brick texture, and roof details that show consistent aging and mortar lines without AI artifacts.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain, slight lens dirt/spots on glass, uneven cobblestone wear, and asphalt cracks with fine detail that does not look overly smooth or generative.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft directional daylight casting coherent long shadows from poles, workers, and building that match a single light source; no floating or inconsistent shadows.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Visible dirt spots, smudges, and reflections on what appears to be a vehicle windscreen or lens in the foreground, typical of real photography from inside a vehicle.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Stacked rails, dumpster, and miscellaneous debris arranged naturally against the building wall without repetitive AI patterns.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical metal poles with consistent perspective and slight weathering, casting proper shadows on the ground.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "Two workers wearing high-visibility yellow/orange jackets, hard hats, gloves and work trousers; clothing folds, dirt and wear look natural and consistent with real PPE.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Both men kneel in plausible working postures on the rails, one using a hand tool on the track; body proportions, joint angles and contact with the ground appear anatomically correct.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Curving dual-gauge or embedded rails set in brick paving show correct perspective foreshortening, consistent gauge, realistic wear and proper alignment into the distant archway.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Victorian brick railway shed with multiple arches, arched windows, stone coping and weathered brickwork exhibits irregular mortar lines, stains and architectural detail typical of a real historic structure.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine brick texture, gravel, surface cracks and metal rail highlights remain sharp and coherent across depth; no plastic smoothing, melting edges or repetitive AI texture patterns.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft directional daylight produces consistent soft shadows under the workers, poles and rails that match the light direction and do not float or contradict geometry.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Hand tools, a small bag and loose items lie next to the kneeling workers in natural disarray; a stack of rails/timbers and a dumpster in the mid-ground also look physically plausible.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical metal poles of slightly varying thickness and height cast consistent shadows and align naturally with the yard layout.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Scattered circular water-droplet or dirt blemishes across the frame (especially upper left and right) are characteristic of a real photo taken through a dirty windscreen or lens.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Piles of rails, a yellow skip, distant scaffolding and miscellaneous yard debris show organic randomness rather than AI-generated repetition or emptiness.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Damp patches on the asphalt and brick paving catch light realistically without the over-specular or inconsistent reflections common in generative images.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Wide-angle view from roughly eye/vehicle height looking into a working railway yard feels documentary rather than the overly balanced or cinematic staging often seen in AI images.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "assets/real-v4/w-empty-L.jpg",
+   "meanJudgePAi": 0.12,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.12,
+     "runs": [
+      0.12,
+      0.12,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Dirt spots, smudges and fine scratches visible across the entire frame, consistent with photographing through a dirty vehicle windscreen or window",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Two curved railway tracks diverge realistically with consistent sleeper spacing, correct rail gauge and natural perspective foreshortening toward the background",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Gravel ballast shows varied stone sizes, irregular edges and natural grain without the overly smooth or repetitive patterns typical of AI texture synthesis",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Industrial warehouse has multiple roller shutters of slightly different weathering, realistic panel seams, and open bays revealing interior clutter that matches real industrial sites",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "Concrete poles, catenary wires and cross-arms show slight irregularities, weathering stains and correct tension sag expected of real overhead line equipment",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "center",
+        "detail": "Soft daylight shadows under rails, poles and fence posts are directionally consistent and have natural penumbra rather than hard or floating AI shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Pile of concrete pipes, portable toilet, chain-link fence and sparse weeds appear casually placed with natural disorder rather than staged AI composition",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-left",
+        "detail": "Open warehouse doorway shows interior depth and faint reflections on glass panels that remain coherent under the dirty-window overlay",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Viewpoint is a typical low-angle shot from a rail vehicle approaching a yard switch; nothing feels symmetrically perfect or unnaturally centered",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "other",
+        "region": "bottom-right",
+        "detail": "Dark diagonal cable or wiper element in the extreme foreground further supports capture from inside a moving vehicle",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Multiple dirty smudges, water spots and light reflections across the entire frame consistent with shooting through a dirty vehicle window or windscreen",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Two diverging rail tracks with continuous rails, correctly spaced sleepers, and realistic ballast and gravel texture that follow proper railway perspective and curvature",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural fine grain, slight softness and optical aberrations typical of a real camera lens rather than the overly clean or inconsistently sharp look of many AI images",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Industrial warehouse facade with multiple roller doors, glass panels and structural columns showing consistent weathering, shadows and minor imperfections",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "Utility poles and thin overhead wires that align correctly with perspective and cast plausible shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Pile of concrete pipes, portable toilet, chain-link fence and scattered weeds that appear randomly placed and physically consistent",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft daylight illumination with coherent soft shadows under poles and along the building that match a single outdoor light source",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "Specular highlights and dirt on the glass create localized bright spots that do not correspond to any scene geometry, confirming an intervening dirty pane",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "other",
+        "region": "bottom-right",
+        "detail": "Dark diagonal cable or antenna element in the extreme foreground, typical of equipment inside the photographing vehicle",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Multiple circular smudges, water spots and dirt on a foreground glass surface (windscreen) creating consistent out-of-focus bokeh across the frame",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Two rail lines curve smoothly and correctly toward a switch/frog area with proper sleeper spacing, rail head wear and ballast texture that remains coherent under perspective",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Catenary poles and wires show realistic sag, attachment hardware and slight perspective foreshortening without impossible intersections",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Industrial warehouse facade with corrugated metal, roller doors, glass panels and concrete bases exhibits natural weathering, panel seams and shadowing",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel texture, weeds and concrete cracks retain photographic grain and depth-of-field falloff rather than the overly smooth or uniformly sharp look common in AI",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Pile of concrete pipes, portable toilet, chain-link fence and scattered weeds appear casually placed with correct scale and occlusion",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-left",
+        "detail": "Subtle reflections and dirt on the open bay interior and glass doors are consistent with real lighting rather than generative artifacts",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft daylight shadows cast by poles and building edges fall in a single consistent direction without the multi-light or floating-shadow errors sometimes seen in AI",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "other",
+        "region": "bottom-right",
+        "detail": "Black cable or wiper element crossing the extreme foreground, typical of a photo taken from inside a vehicle",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "assets/real-v4/w-empty-R.jpg",
+   "meanJudgePAi": 0.12,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.12,
+     "runs": [
+      0.12,
+      0.12,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Multiple smudges, water spots and faint reflections across the entire frame consistent with shooting through a dirty vehicle window or windscreen",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Two curved rail lines diverge realistically with proper rail gauge, wooden sleepers of slightly irregular spacing and weathering, and gravel ballast that looks physically correct",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural fine grain and slight softness typical of a real camera photograph rather than the over-smooth or overly crisp look common in AI images",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Industrial warehouse with corrugated metal siding, roller doors of slightly different heights and wear, and open bays showing interior clutter that is complex and non-repeating",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Pile of concrete pipes, portable toilet, chain-link fence and scattered weeds all sit naturally on the ground plane without floating or melting into surroundings",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent sunlight direction casting soft shadows from poles and building edges that match across the scene",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "Thin overhead contact wires and support poles show realistic perspective and slight sag without the geometric glitches AI often produces",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-left",
+        "detail": "Glass panels on the left building facade show believable reflections and dirt rather than mirrored AI artifacts",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "other",
+        "region": "whole-image",
+        "detail": "No people visible anywhere in the frame, so no anatomical or pose errors that often betray AI generation",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Visible dirt, smudges, and reflections on a glass surface (likely train windscreen) with dark frame edges in corners, consistent with real photography through a window",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Railway tracks diverge realistically with proper perspective, consistent sleeper spacing, rail curvature, and gravel ballast that matches real track construction",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain, slight softness from glass, and varied gravel/weed textures without the overly smooth or plastic look common in AI images",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Industrial warehouse with roller doors, glass panels, and metal cladding showing realistic weathering, shadows, and structural details",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Scattered concrete pipes, portable toilet, chain-link fence, weeds, and poles placed naturally without AI-typical symmetry or floating objects",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent daylight illumination with soft shadows under poles and building overhangs matching the sun position",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "Utility poles and overhead wires align properly with perspective and cast matching shadows",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-left",
+        "detail": "Subtle reflections and dirt streaks on the viewing glass rather than on the scene itself",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Multiple circular water-spot and dirt marks plus faint reflection streaks across the entire frame, consistent with shooting through a dirty train windscreen or window",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Two tracks diverge smoothly from a common point with continuous rails, properly spaced sleepers, and realistic ballast; curvature and perspective are physically consistent",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Gravel ballast shows fine irregular grain, individual stones of varying size and color, and natural shadows between them without repeating patterns or over-smoothing",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Industrial warehouse facade with multiple roller doors, glass panels, and corrugated metal siding exhibits consistent panel seams, slight weathering, and correct perspective vanishing points",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "middle-right",
+        "detail": "Vertical metal poles with concrete bases cast sharp directional shadows onto the ground that match the sun angle implied by other shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Pile of concrete pipe sections and a portable toilet sit on the concrete apron with natural spacing, slight misalignment, and ground contact shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Sparse weeds growing through cracks in pavement and along fence line appear irregular and botanically plausible rather than decorative",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Hard sunlight from upper right produces coherent long shadows from poles, rails, and building edges with no contradictory light sources",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "top-left",
+        "detail": "Glass door panels show interior reflections and slight glare consistent with real glazing rather than flat generated textures",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Viewpoint is low and slightly off-center as if from a moving rail vehicle looking out at a yard; framing is utilitarian rather than aesthetically perfected",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Small safety signs and yellow bollards near the left doors are legible enough and correctly placed for an industrial site",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "other",
+        "region": "whole-image",
+        "detail": "No obvious anatomical errors, floating objects, duplicated textures, or impossible geometry that commonly betray AI generation",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "assets/real-v4/w-group-L.jpg",
+   "meanJudgePAi": 0.12666666666666668,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.12666666666666668,
+     "runs": [
+      0.18,
+      0.12,
+      0.08
+     ],
+     "counts": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-right",
+        "detail": "Dark diagonal streak and scattered smudges/spots consistent with viewing through a dirty vehicle windscreen or window glass",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-left",
+        "detail": "Three workers kneeling in natural staggered working postures on the left rail, hands near track hardware, bodies oriented realistically toward the work",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-left",
+        "detail": "High-visibility jackets with correct reflective striping, hard hats (mixed white/yellow), and a backpack that drapes and folds naturally without geometric distortion",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails show continuous gauge, proper sleeper spacing, and a realistic diverging switch geometry with correct ballast transition between left and right branches",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-right",
+        "detail": "Tool bag and small items resting on ballast next to the lone right-track worker, casting soft natural shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large industrial shed with roll-up doors, glass panels, concrete bases, and weathered metal siding showing consistent perspective and surface wear",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Stack of concrete pipes, chain-link fence, portable toilet, and sparse weeds all placed with natural irregular spacing and scale",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Sunlight from upper left produces consistent short shadows under workers, poles, and rails; no conflicting light directions",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel texture and slight overall softness plus window dirt match real photographic capture rather than typical AI over-smoothing or plastic skin",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "Catenary poles and wires align with correct vanishing points and show slight real-world sag and attachment hardware",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Visible diagonal black streaks and smudges across the frame consistent with photographing through a dirty vehicle windscreen or window",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-left",
+        "detail": "High-visibility vests with realistic folds, dirt, and wear; one orange safety vest with reflective strips that catch light naturally; hard hats and gloves with proper fit and shadows",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-center",
+        "detail": "Four workers kneeling in natural, slightly asymmetric working postures on the rails, tools and bags placed realistically beside them",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails diverge with correct perspective, consistent sleeper spacing, ballast texture, and proper curve geometry without warping or impossible junctions",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Harsh sunlight casting coherent directional shadows from poles, workers, and rails onto gravel; consistent with outdoor midday lighting",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Industrial warehouse with multiple roller doors, glass panels, and metal cladding showing realistic weathering, seams, and slight imperfections",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Scattered concrete pipes, portable toilet, chain-link fence, weeds, and debris arranged naturally rather than symmetrically or overly clean",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain, slight softness from window glass, and detailed gravel/ballast texture without AI-typical oversharpening or plastic skin/fabric look",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "Utility poles and overhead wires with correct vanishing points and attachments, no floating or broken geometry",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "No unnatural reflections; dirty glass artifacts are physical smudges rather than AI reflection hallucinations",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-left",
+        "detail": "Three workers kneel in a tight cluster on the left track with natural, varied postures: one leaning forward with a tool, another with head turned, third bent over rail; body weights and joint angles look biomechanically correct",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Single worker kneeling alone on the right track, body oriented along the curve, hands near rail, consistent with working posture and not symmetrically mirrored to the left group",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-center",
+        "detail": "High-visibility vests show realistic fabric folds, shadows in creases, and slightly different shades/orange panel placement; hard hats have scuffs and chin-strap details that vary per person",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-left",
+        "detail": "Tool bags, a small black case, and hand tools rest on ballast next to workers with correct scale, soft contact shadows, and no floating or melted geometry",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails diverge cleanly into left and right branches with continuous gauge, properly spaced wooden sleepers, and gravel ballast that follows real trackbed texture and elevation changes",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical metal poles with bases, overhead contact wire, and guy wires show consistent perspective, slight lean, and real metal reflections without AI warping",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large industrial building has correctly aligned roller doors, riveted panel seams, open bays revealing interior structure, and chain-link fence with natural sag and shadow",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Hard sunlight from upper left casts coherent long shadows from poles, workers, and rails onto gravel; shadow directions and softness match across the entire scene",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Gravel ballast, concrete, metal corrugation and clothing fabric all retain fine photographic grain and micro-detail without the overly smooth or plastic look common in generative images",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Diagonal dark lines and slight smudges across the frame are consistent with shooting through a vehicle window or fence mesh, adding authentic optical artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Scattered concrete pipes, a portable toilet, weeds growing through cracks, and yellow bollards appear randomly placed with correct scale and ground contact",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "bottom-left",
+        "detail": "Hands, boots and knee positions of the three workers show proper proportions and no extra/missing fingers or fused limbs",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "assets/real-v4/w-group-R.jpg",
+   "meanJudgePAi": 0.12666666666666668,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.12666666666666668,
+     "runs": [
+      0.12,
+      0.18,
+      0.08
+     ],
+     "counts": [
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-left",
+        "detail": "Single worker crouching alone on left track branch with natural weight distribution and boot placement on ties",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-right",
+        "detail": "Three workers clustered crouching/kneeling on right track with varied realistic postures and overlapping limbs",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-right",
+        "detail": "High-vis jackets, hard hats in yellow/white, and work boots show fabric wrinkles, dirt, and proper layering consistent with real gear",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-right",
+        "detail": "Workers appear to be handling track tools or fasteners near the rails with hands in contact with metal",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails form a realistic switch/turnout with correct curvature, tie spacing, ballast, and converging geometry without AI distortions",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical poles with bases and overhead line hardware cast consistent shadows and align with industrial railway setup",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large industrial warehouse with corrugated metal, multiple roller doors of varying openness, and realistic weathering/stains",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Scattered concrete pipes, portable toilet, fencing, weeds, and gravel piles arranged naturally without repetitive AI patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent sunlight direction casting soft shadows from poles, workers, and building features matching time of day",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural gravel texture variation, metal reflections on rails, and slight depth-of-field blur; no over-smoothed AI skin or surfaces",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Visible dirt/smudges and light reflections on foreground glass (likely vehicle window) with black wiper-like edge at bottom-right",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Candid work-site framing with workers mid-task, not posed symmetrically; slight motion or casual grouping typical of documentary photo",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Subtle highlights and reflections along polished rail tops consistent with real metal under sun",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Multiple dirty smudges, water spots and reflections across the entire frame consistent with shooting through a vehicle windscreen",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-right",
+        "detail": "Three workers clustered tightly around the right rail with natural crouching postures, overlapping limbs and tools in hands",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-left",
+        "detail": "Single worker kneeling alone on the left track facing away, realistic weight distribution and boot placement on sleepers",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-right",
+        "detail": "High-visibility jackets, hard hats of different colours, and dark work trousers with visible folds and dirt consistent with real PPE",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails diverge smoothly into a realistic switch/turnout with correct sleeper spacing, ballast and gauge that match physical railway construction",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-right",
+        "detail": "Workers appear to be adjusting or inspecting the switch points/frog area with tools, matching real maintenance activity",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple concrete poles and overhead catenary wires with correct perspective recession and attachment hardware",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large industrial depot building with roller doors, glass panels, signage and weathered metal cladding showing natural wear",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Piles of concrete pipes, portable toilet, fencing and sparse weeds scattered in a non-uniform, realistic industrial yard layout",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent hard daylight shadows cast by poles, workers and rails that align with a single sun direction",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain, slight motion softness and depth-of-field fall-off rather than the overly smooth or uniformly sharp look common in AI images",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "top-right",
+        "detail": "Specular highlights and dirt patterns on the glass that match real windscreen photography rather than generated artefacts",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "other",
+        "region": "bottom-right",
+        "detail": "Thin black cable or wire running diagonally across the lower right foreground, typical of in-vehicle clutter",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Multiple circular water droplets and smudges on the lens/windscreen create realistic optical distortions and bokeh across the frame, especially visible against the sky and building",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-right",
+        "detail": "High-visibility jackets show natural fabric wrinkles, dirt stains, and varied wear patterns; hard hats have realistic scuffs and logos",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-right",
+        "detail": "Three workers crouch in natural, slightly awkward working postures with weight distributed realistically on gravel and ties; one alone on left track in similar crouch",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails curve smoothly with consistent gauge, proper rail fastening details, and wooden ties showing individual grain, weathering, and spacing irregularities typical of real track",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Strong directional sunlight casts sharp, consistent shadows from poles, workers, and rails onto the gravel that match sun position; no conflicting light sources",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "center",
+        "detail": "Gravel ballast has varied stone sizes, sharp individual edges, and natural color variation without the repetitive or overly smooth texture common in AI",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Scattered concrete pipes, weeds growing through gravel, portable toilet, and chain-link fence debris appear randomly placed and weathered in a documentary style",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Industrial warehouse has consistent corrugated metal paneling, roller doors with realistic panel lines and shadows, and open bay revealing interior structure without geometric glitches",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "Catenary poles and wires align correctly with vanishing points and cast accurate shadows; insulator details visible",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "Lens droplets create authentic refractive highlights and slight blurring of background elements behind them",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "assets/real-v4/w-two-L.jpg",
+   "meanJudgePAi": 0.12,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.12,
+     "runs": [
+      0.12,
+      0.12,
+      0.12
+     ],
+     "counts": [
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Visible smudges, dust spots, and faint reflections across the frame consistent with shooting through a dirty vehicle window or windscreen",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "Two workers in high-vis orange and yellow jackets, hard hats, and work pants kneeling on the rails with realistic fabric wrinkles, dirt, and tool bags",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Natural kneeling postures focused on the rail joint/switch area, bodies casting consistent shadows on the ballast",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails diverge in a realistic Y-switch geometry with properly spaced wooden sleepers, ballast texture, and correct rail profile continuity",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical metal poles with bases and overhead wires that align naturally with perspective and cast matching shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large industrial building with corrugated siding, roller doors of varying openness, and glass panels showing interior details without warping",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Scattered weeds, concrete pipe segments piled irregularly, chain-link fence, and a portable toilet placed naturally in the yard",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent sunlight from upper left creating sharp shadows of poles, workers, and rails on the ground that match object positions",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain, slight softness through glass, and varied gravel/ballast texture without over-smoothed AI artifacts or unnatural sharpness",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "No anomalous reflections; window dirt and light flares appear photographic rather than generated",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Casual documentary framing of maintenance work with no perfect symmetry or overly staged elements typical of AI",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Dirty glass with smudges, water spots and reflections across the entire frame, consistent with shooting through a vehicle windscreen",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "Two workers in high-vis orange and yellow jackets, hard hats, work trousers and boots, kneeling in realistic work poses on the rails",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Workers crouch naturally on the left track switch point with tools/bags beside them; anatomy and fabric folds look correct",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails form a clear Y-switch with proper sleepers, ballast and continuous rail curvature that matches real track engineering",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical metal poles with concrete bases and overhead wires correctly aligned for a tram/rail yard",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large industrial shed with roller doors, glass panels and fencing shows realistic weathering, seams and shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Scattered pipes, portable toilet, weeds growing through ballast and chain-link fence are ordinary yard clutter",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent hard sunlight casting sharp shadows from poles, workers and rails onto the ground",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel texture, rail rust and fabric details remain sharp under the glass dirt; no typical AI smoothing or warping",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "Specular highlights and dirt patterns on the intervening glass match real photography rather than generated overlays",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Multiple circular out-of-focus spots and smudges across the entire frame consistent with dirt or water droplets on a vehicle windscreen, plus dark cable or frame edges in the bottom-right corner",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "Two workers in high-visibility gear: left in bright orange jacket with reflective stripes and white hard hat, right in yellow-green jacket with black pants and yellow hard hat; clothing shows natural folds, dirt, and realistic fabric texture",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Workers kneeling/crouching on the left track branch, bodies oriented toward the rails in a natural working posture with tools or hands near the track joints",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Railway tracks diverge in a Y-shape with consistent sleeper spacing, proper rail curvature, and realistic ballast gravel that varies naturally in size and distribution",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple vertical metal poles with concrete bases and overhead wires attached, casting consistent shadows; poles align with track infrastructure realistically",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large industrial warehouse with corrugated metal siding, multiple roller shutter doors of varying openness, and glass panels showing interior depth and equipment",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Scattered concrete pipes stacked near a temporary toilet unit, chain-link fencing, weeds growing through gravel, and miscellaneous debris that appear unstaged",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Harsh sunlight from upper left casting sharp, consistent shadows from poles, workers, and rails onto the ground and ballast",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain and slight softness from shooting through glass, with fine gravel texture and metal rail details remaining coherent under magnification-like inspection",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "No unnatural specular highlights or mirrored geometry; the windscreen dirt creates authentic optical interference rather than generative artifacts",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "assets/real-v4/w-two-R.jpg",
+   "meanJudgePAi": 0.09333333333333334,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.09333333333333334,
+     "runs": [
+      0.08,
+      0.08,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "High-vis jackets show realistic fabric folds, dirt smudges, and proper reflective strip placement consistent with worn workwear",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Two workers kneeling on the rails with natural weight distribution, one reaching down to track components, bags and tools placed beside them realistically",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Black tool bags and small hand tools next to the workers cast consistent shadows and rest naturally on gravel and ties",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails curve smoothly with correct gauge, wooden ties evenly spaced and weathered, ballast stones irregular and piled naturally around the switch area",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "center",
+        "detail": "Visible switch points and frogs where tracks diverge look mechanically correct without warped or floating metal",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Multiple vertical metal poles with concrete bases and thin overhead wires align consistently across the yard without impossible intersections",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large industrial hangar with corrugated metal siding, roll-up doors of slightly different heights, and open bay revealing interior structure and lighting",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Pile of concrete pipes, portable toilet, chain-link fence sections, and scattered weeds appear unposed and physically grounded",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Hard sunlight from upper left casts coherent short shadows from poles, workers, and rails onto gravel; no conflicting light directions",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Gravel, rail rust, and metal siding show fine natural grain and slight optical softness toward edges rather than plastic AI smoothness or over-sharpening",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Subtle circular smudges and dust spots across the frame indicate shooting through a dirty window or lens, a common real-photo artifact",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "top-right",
+        "detail": "No unnatural specular highlights or mirrored geometry on metal doors or rails",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Slightly off-center framing with foreground fence wire and casual worker activity lacks the perfectly balanced, sterile look common in AI generations",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Small signs and red markings near open bay are legible at distance without garbled AI lettering",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Multiple circular water spots and smudges across the entire frame, consistent with photographing through a dirty train windscreen or window glass",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "Two workers in high-vis: one orange/yellow striped jacket with hard hat, one neon yellow jacket with yellow hard hat; realistic fabric wrinkles, dirt, and tool bags beside them",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Both workers kneeling/crouching on the right-hand track rails in natural working postures, hands near the rails as if inspecting or adjusting",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Railway tracks split into a left-curving branch and a right-curving branch with consistent sleeper spacing, rail wear, and gravel ballast that follows real perspective",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "center",
+        "detail": "Visible pointwork/switch area where the tracks diverge; rails and sleepers align correctly at the frog without geometric glitches",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large industrial warehouse with multiple roller shutter doors, glass windows, and corrugated metal siding showing real weathering and panel seams",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Pile of concrete pipes, portable toilet, chain-link fence, and sparse weeds scattered naturally on the gravel yard",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "Multiple tall metal poles with overhead contact wires and cross-arms consistent with electrified rail infrastructure",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "center",
+        "detail": "Harsh sunlight casting sharp, consistent shadows of the workers and poles onto the gravel in the correct direction",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel texture, rail rust detail, and building surfaces retain photographic grain and slight optical softness rather than AI over-smoothing or plastic look",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "No unnatural specular highlights; the dirty glass reflections and dust are organic and vary across the frame",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Casual documentary framing looking out from a train cab onto a worksite; nothing appears deliberately posed or symmetrically perfect",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-right",
+        "detail": "Two workers kneeling on the right track branch in natural working postures with proper weight distribution and tool bags at feet; no unnatural limb bending or floating.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "bottom-right",
+        "detail": "High-vis orange/yellow jackets with reflective strips, hard hats, dark pants and work boots show realistic fabric folds, dirt and wear consistent with rail work.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Y-shaped track switch with correctly spaced wooden ties, continuous rails that curve smoothly and meet at a realistic frog/point geometry without warping.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-right",
+        "detail": "Black tool bags and a small white object near the workers' hands sit naturally on the ballast and ties.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large industrial warehouse with multiple roll-up doors, open bays showing interior structure, and consistent panel seams and shadows.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Piles of concrete pipes, a portable toilet, chain-link fence and sparse weeds on gravel look randomly placed and weathered as in a real yard.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Multiple vertical metal poles with concrete bases and overhead catenary wires aligned consistently across the scene.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "bottom-right",
+        "detail": "Sharp, consistent shadows cast by the workers and poles under bright daylight match the sun direction without multiple light sources or soft AI glow.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Gravel ballast, wooden ties and metal rails show fine natural grain and slight optical softness/vignetting typical of a real camera rather than AI over-sharpening or plastic textures.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Dark linear artifacts and smudges in the foreground corners suggest the photo was taken through a vehicle window or fence, a common real-world capture trait.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "top-right",
+        "detail": "Slight lens flare/halation and dust spots on the image surface consistent with outdoor photography through glass.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Casual documentary framing of workers mid-task with empty left track and industrial backdrop has no 'perfect' AI symmetry or impossible perspective.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  }
+ ]
+}

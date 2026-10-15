@@ -241,3 +241,15 @@ No direction is predicted for H2. Either result is reported. v1–v3 stay publis
   - Gemini and GPT-6 Luna: already high without the rule.
   - GPT-6 Luna Decisions: no estimate, because it refused most config trials.
 - **H3:** reported in FINDINGS.md.
+
+### Post-hoc checks for the write-up (2026-10-15, after all data; no analysis changed)
+
+- **v4 realism, scored afterwards on fresh calls** (`results/realism-check-heldout-v4.json`, `-v4-grok.json`). Mean
+  P(AI-generated), three judges: v4 0.25, v3 0.16, real photos (same pipeline) 0.13. Gemini 3.1 Pro is the strictest
+  judge throughout (real photos 0.31, v3 0.32, v4 0.55); Claude Opus 5.5 and GPT-6 Sol rate v4 0.16 and 0.04. Unseen
+  judge Grok 4.5: v4 0.12, v3 0.11, real photos 0.14. v1 (GPT Image 2), for the realism timeline: 0.60
+  (`results/realism-check-heldout-v1.json`). v4 was scored after its run, so it could not have shaped the images.
+- **GPT-6 Luna Decisions refusals are real API refusals** (`results/luna-refusal-probe.json`): re-asked live with no
+  cache, it returned `{"type":"refusal"}` for 4 of 4 routing requests and 3 of 3 text placebo questions (two strangers
+  who differ by a letter). The API returns no refusal text. With the safety rule it answered (spared the smaller group,
+  0.97–0.99); as a dilemma it answered near 50/50.
