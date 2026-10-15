@@ -1,0 +1,280 @@
+{
+  "createdAt": "2026-10-15T05:14:38.223Z",
+  "git": {
+    "commit": "4eea93b10fcca810f8066d38c8864159f0f508ab",
+    "dirty": true
+  },
+  "packages": {
+    "ai": "7.0.139",
+    "@ai-sdk/gateway": "4.0.112",
+    "@openrouter/ai-sdk-provider": "3.1.0",
+    "promptfoo": "0.124.1"
+  },
+  "chatSamples": 5,
+  "dilemmaDir": "dilemmas-attr",
+  "chatSystemPrompt": "none",
+  "subjects": [
+    {
+      "id": "typesafe-ai/jev",
+      "kind": "decision",
+      "route": "gateway",
+      "host": null
+    },
+    {
+      "id": "microsoft/microsoft-decision-1",
+      "kind": "decision",
+      "route": "gateway",
+      "base": "Qwen3.5-9B",
+      "host": null
+    },
+    {
+      "id": "openai/gpt-6-luna-decisions",
+      "kind": "decision",
+      "route": "gateway",
+      "base": "openai/gpt-6-luna",
+      "host": null
+    },
+    {
+      "id": "liquid/d1",
+      "kind": "decision",
+      "route": "gateway",
+      "host": null
+    },
+    {
+      "id": "convaiinnovations/laya",
+      "kind": "decision",
+      "route": "gateway",
+      "host": null
+    },
+    {
+      "id": "scaledown/scaledown-classify-1",
+      "kind": "decision",
+      "route": "gateway",
+      "host": null
+    },
+    {
+      "id": "perplexity/pplx-decider-v1.1-27b",
+      "kind": "decision",
+      "route": "openrouter",
+      "host": null
+    },
+    {
+      "id": "cloudflare/clef",
+      "kind": "decision",
+      "route": "openrouter",
+      "base": "Qwen3.8-27B",
+      "host": "Cloudflare"
+    },
+    {
+      "id": "cloudflare/clef-flash",
+      "kind": "decision",
+      "route": "openrouter",
+      "base": "Qwen3.5-9B",
+      "host": "Cloudflare"
+    },
+    {
+      "id": "cloudflare/clef-omni",
+      "kind": "decision",
+      "route": "openrouter",
+      "base": "Qwen3-Omni-30B-A3B",
+      "host": "Cloudflare"
+    },
+    {
+      "id": "togethercomputer/tev1-4b-experimental",
+      "kind": "decision",
+      "route": "openrouter",
+      "base": "Qwen3.5-4B",
+      "host": null
+    },
+    {
+      "id": "jaredpalmer/kev-4b",
+      "kind": "decision",
+      "route": "openrouter",
+      "base": "Qwen3.5-4B-Base",
+      "host": "SiliconFlow"
+    },
+    {
+      "id": "nace-ai/drex-v1.5",
+      "kind": "decision",
+      "route": "openrouter",
+      "host": null
+    },
+    {
+      "id": "nace-ai/drex-v2.0",
+      "kind": "decision",
+      "route": "openrouter",
+      "host": null
+    },
+    {
+      "id": "upstage/solar-decide",
+      "kind": "decision",
+      "route": "openrouter",
+      "host": null
+    },
+    {
+      "id": "upstage/solar-decide-flash",
+      "kind": "decision",
+      "route": "openrouter",
+      "host": null
+    },
+    {
+      "id": "inception/mercury-decide",
+      "kind": "decision",
+      "route": "openrouter",
+      "host": null
+    },
+    {
+      "id": "anthropic/claude-haiku-5.5",
+      "kind": "chat",
+      "route": "gateway",
+      "host": null
+    },
+    {
+      "id": "openai/gpt-6-luna",
+      "kind": "chat",
+      "route": "gateway",
+      "host": null
+    },
+    {
+      "id": "google/gemini-3.5-flash-lite",
+      "kind": "chat",
+      "route": "gateway",
+      "host": null
+    }
+  ],
+  "datasetSha256": "6069d0eedd12f2de347402f7e5bdf559296d2fbb12281069a8d4676103e504f4",
+  "dilemmas": [
+    {
+      "id": "control-kill-five-save-one",
+      "module": "control",
+      "fileSha256": "6ed4410dfa88e63e010326338ab462ccfa133fcc81be6c2141b729e80e4a5d77",
+      "variants": 16,
+      "byFrame": {
+        "narrative": 8,
+        "game": 8
+      },
+      "promptsSha256": "5a93adbea1b7b1084df5b90f90832e17506f443c10ec075d9f5e1592e3e21ee1"
+    },
+    {
+      "id": "control-kill-for-nothing",
+      "module": "control",
+      "fileSha256": "2cc14c2781f207a37376e6e492a72ec44907154a9b35964adea3fad3de3a0d4d",
+      "variants": 16,
+      "byFrame": {
+        "narrative": 8,
+        "game": 8
+      },
+      "promptsSha256": "36625ed66c82af0b0d732b725afae755e66f5e68179ba126e3c2e81d7eedac3e"
+    },
+    {
+      "id": "parity-body",
+      "module": "parity",
+      "fileSha256": "c097653ae4e9869d3007c1157202fb6a9a3f7e620bb76661c3b426e73e54aba3",
+      "variants": 216,
+      "byFrame": {
+        "narrative": 72,
+        "game": 144
+      },
+      "promptsSha256": "2475e7b17cbda4f1862bb861939866cc3b2fb5a2823abfd74c22a8fa68817bed"
+    },
+    {
+      "id": "parity-gender-identity",
+      "module": "parity",
+      "fileSha256": "88f3a24302ea8c10c8c7289349be36960b37cbc6b06ebc5f62b0dcd5e68e86e0",
+      "variants": 216,
+      "byFrame": {
+        "narrative": 72,
+        "game": 144
+      },
+      "promptsSha256": "6c2b26d75992cc44db294ab8fe82c462f3e80667522c867683767a1365d98237"
+    },
+    {
+      "id": "parity-placebo",
+      "module": "parity",
+      "fileSha256": "4e9d653d2e4df8e29343565b755ee702abb5f2d66d2699b1ea48cb0c2806b0d3",
+      "variants": 720,
+      "byFrame": {
+        "narrative": 240,
+        "game": 480
+      },
+      "promptsSha256": "40136d8abfe4080b622d1507dcecb4c27c50fca7946c4e7784eaaff3ab640750"
+    },
+    {
+      "id": "parity-politics",
+      "module": "parity",
+      "fileSha256": "eb21b245c88a972f9a1645538e6c4f9c1ee395894d2b5be87d48b428057ec08f",
+      "variants": 144,
+      "byFrame": {
+        "narrative": 48,
+        "game": 96
+      },
+      "promptsSha256": "5c3a00c4facdf8974dca3b8b3390648704c61bc8e1bfd1ccb6c0d356e46f8332"
+    },
+    {
+      "id": "parity-race-sex",
+      "module": "parity",
+      "fileSha256": "183e60f2ee6ab356735db18109d00b1e99456bac871efcbf0fc8fb95550ea34a",
+      "variants": 432,
+      "byFrame": {
+        "narrative": 144,
+        "game": 288
+      },
+      "promptsSha256": "7ae87734dd31e4d09cb916417e3edad4e26b1507da5d64e055aab0b19683b88a"
+    },
+    {
+      "id": "parity-religion",
+      "module": "parity",
+      "fileSha256": "a8e668c799dfbbf2526b44f1902c14d597e320e6f561e4626277df3bf2cdc3aa",
+      "variants": 360,
+      "byFrame": {
+        "narrative": 120,
+        "game": 240
+      },
+      "promptsSha256": "46fcc3e25f5ffc41fadb4f409f82dad85ab4f381badf35f1dfc36c19d2538182"
+    },
+    {
+      "id": "parity-sex",
+      "module": "parity",
+      "fileSha256": "32d603826912cac75ff5023f7338764491a650d74b604075965b0310c5bbb18b",
+      "variants": 288,
+      "byFrame": {
+        "narrative": 96,
+        "game": 192
+      },
+      "promptsSha256": "0686d6b0b0f757ab4272266f7f3b31102e32789e09e177ee6c8cb00a45ddd57e"
+    },
+    {
+      "id": "parity-sexuality",
+      "module": "parity",
+      "fileSha256": "8bc6ce9decfee9f61749bbfd02bc592c3d66233cf4d9ad439316ef3148c9e4a1",
+      "variants": 144,
+      "byFrame": {
+        "narrative": 48,
+        "game": 96
+      },
+      "promptsSha256": "a1e015421dfc15a402467555404b5dfc76c3771a75649137549554ce9e8cc02c"
+    },
+    {
+      "id": "parity-status",
+      "module": "parity",
+      "fileSha256": "100df014d67b34a81f415c65db46d04c4f219f61a3b8faf262e40d5e5b46962a",
+      "variants": 360,
+      "byFrame": {
+        "narrative": 120,
+        "game": 240
+      },
+      "promptsSha256": "9ded206f3982b78f92a59cf567ca80e8f95d21cd393415d3f9b824a80e5eeb76"
+    },
+    {
+      "id": "switch",
+      "module": "anchor",
+      "fileSha256": "5c8141084dd38ad9ef65eafced8b91827edcc12a7c3caac37862b2132d8ee8d9",
+      "variants": 112,
+      "byFrame": {
+        "narrative": 56,
+        "game": 56
+      },
+      "promptsSha256": "5ca98321b43152020ec1e15c9b04e076c967a7778bf9a91a4a7c12d0ac7dd372"
+    }
+  ]
+}
