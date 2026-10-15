@@ -15,7 +15,10 @@ import { z } from 'zod';
 import { SUBJECTS } from '../src/subjects.js';
 import { ask, canSeeImages } from '../src/vision.js';
 
-export const JUDGES = ['anthropic/claude-opus-5.5', 'openai/gpt-6-sol', 'google/gemini-3.1-pro-preview'];
+export const DEFAULT_JUDGES = ['anthropic/claude-opus-5.5', 'openai/gpt-6-sol', 'google/gemini-3.1-pro-preview'];
+/** --judges a,b,c overrides the judge set (e.g. a held-out judge that was not used to select images). */
+const judgesArg = process.argv.includes('--judges') ? process.argv[process.argv.indexOf('--judges') + 1] : undefined;
+export const JUDGES = judgesArg ? judgesArg.split(',') : DEFAULT_JUDGES;
 export const REPEATS = 3;
 /** Gate: mean P(AI) over judges × repeats at most this. */
 export const GATE = 0.35;
@@ -68,7 +71,7 @@ const tag = args[args.indexOf('--tag') + 1]!;
 const withStudy = !args.includes('--no-study');
 /** --quick: the original verdict-only prompt (the v2 gate). Default: evidence first, then verdict (stricter). */
 const quick = args.includes('--quick');
-const images = args.filter((a, i) => !a.startsWith('--') && args[i - 1] !== '--tag');
+const images = args.filter((a, i) => !a.startsWith('--') && args[i - 1] !== '--tag' && args[i - 1] !== '--judges');
 const mediaType = (p: string) => (p.endsWith('.png') ? 'image/png' : 'image/jpeg');
 const url = (p: string) => `data:${mediaType(p)};base64,${readFileSync(p).toString('base64')}`;
 

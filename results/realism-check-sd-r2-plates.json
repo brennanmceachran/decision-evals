@@ -1,0 +1,3847 @@
+{
+ "createdAt": "2026-10-14T23:49:53.706Z",
+ "prompt": "evidence-first",
+ "judges": [
+  "anthropic/claude-opus-5.5",
+  "openai/gpt-6-sol",
+  "google/gemini-3.1-pro-preview"
+ ],
+ "repeats": 3,
+ "gate": 0.35,
+ "rows": [
+  {
+   "image": "scratch/sd/r2/s-1.jpg",
+   "meanJudgePAi": 0.14333333333333334,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.023333333333333334,
+     "runs": [
+      0.02,
+      0.02,
+      0.03
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve continuously from the foreground into their respective shed entrances.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The corrugated walls, door frames, and concrete bases have consistent perspective and construction details.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-left",
+        "detail": "A dark, curved windscreen edge cuts across the corner of the frame.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "center",
+        "detail": "The pallets and cable reel are somewhat indistinct at this resolution, making their fine details hard to verify.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both sets of rails curve smoothly into their respective shed openings, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-left",
+        "detail": "A dark, curved windscreen or dashboard edge cuts across the foreground.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Pallets, a cable spool, fencing, and weeds sit irregularly between the sheds.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "top-right",
+        "detail": "Details inside the right shed are indistinct, which could conceal generated inconsistencies, though the dark interior also explains it.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The rail pairs curve continuously toward separate shed entrances, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-left",
+        "detail": "A dark windscreen edge and slight foreground blur are visible along the bottom of the frame.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "whole-image",
+        "detail": "The corrugated walls, door frames, and shed openings retain coherent structural details.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "Some pale ground markings are fragmented and difficult to follow, though worn paint could explain them.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.07666666666666667,
+     "runs": [
+      0.06,
+      0.07,
+      0.1
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Embedded grooved tram rails curve consistently into two depot sheds with parallel gauge maintained throughout; rail pairs converge plausibly",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-left",
+        "detail": "Dashboard edge and window pillar visible at bottom/left, with faint droplets and dust on windscreen, consistent with a cab-view photo",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Wooden pallet stack and cable drum near fence, blue container, weeds in cracks — mundane, coherent details",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "Faded painted lines, worn yellow markings and drain grate rendered consistently with perspective",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Corrugated cladding, doors with consistent frames, interior ceiling lights in rows inside sheds; overhead wires coherent",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural film-like grain and slightly muted color without AI smoothness",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Embedded grooved tram rails diverge smoothly into two depot roads with consistent gauge and plausible curvature into each shed door",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-left",
+        "detail": "Dark dashboard/frame edge at bottom and faint droplets/specks on glass consistent with shooting through a tram cab windscreen",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Wooden pallet stack, cable drum, palisade fencing, blue container placed coherently with correct perspective and scale",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "Worn yellow and white painted lines, drain grate, patched concrete slabs and weeds look organically weathered",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead wires attach to poles and buildings consistently; poles vertical and properly grounded",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural film-like grain and slightly muted color with no over-smoothing",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Two embedded grooved rail pairs diverge smoothly to separate depot doors with consistent gauge and coherent curvature, plausible tram depot layout",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dashboard edge visible at bottom and water droplets/specks on windscreen in sky and building areas, consistent with shooting from inside a tram cab",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Cable drum, stacked wooden pallets, mesh fencing, blue container and drain grate all rendered with coherent detail and believable placement",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead catenary wires and support poles attach logically to building facades and align with tracks",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Film-like grain and slightly muted color consistent with a video still; worn pavement markings and patched concrete look natural",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Corrugated cladding, door frames with window panes, and interior strip lights are regular and consistent on both sheds",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.33,
+     "runs": [
+      0.02,
+      0.02,
+      0.95
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "There are faint reflections, slight water spots or dirt on the lens/glass, and an out-of-focus structural element (likely a dashboard or window frame) at the very bottom edge, indicating the photo was taken through the window of a vehicle.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "The tram rails curve smoothly and maintain consistent parallel spacing as they enter the depot buildings. The embedded grooves in the concrete are structurally coherent and realistic.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "The varied textures of the ground, including asphalt, concrete patches, faded yellow painted lines, and patches of weeds, exhibit a natural level of detail and wear without the artificial smoothness often seen in AI.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead line poles are straight and appropriately placed, with wires that appear logically tensioned and connected to the building structures above the tracks, avoiding typical AI tangling.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "The stack of wooden pallets and the large cable spool between the tracks are geometrically solid and cast consistent, realistic shadows.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-center",
+        "detail": "Dirt spots, smudges, and faint blurry reflections across the upper section strongly suggest the photo was taken through a glass windshield.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Grooved tram rails set flush into the concrete surface follow smooth, mathematically consistent curves and maintain proper gauge as they diverge.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "A stack of wooden pallets and a cable drum in the background feature highly realistic textures, natural weathering, and coherent shadowing.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "The yellow painted lines on the ground exhibit natural, uneven fading and wear consistent with outdoor exposure and vehicle traffic.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "The corrugated metal siding on the depot is uniform, and the red-framed sliding doors show correct structural perspective and alignment.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-center",
+        "detail": "The inner rails of the two diverging tracks simply merge into a 'V' shape embedded in the concrete, entirely lacking the moving switch blades or frog mechanisms required for a rail vehicle to navigate a junction.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "top-right",
+        "detail": "The lights visible inside the dark right-hand building appear as randomly scattered, blurry white streaks, failing to form a logical array or grid typical of warehouse lighting.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "A thin overhead wire visible against the sky abruptly fades out in mid-air and fails to logically connect to any of the nearby vertical support poles.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "The image features very convincing dirt spots, smudges, and faint reflections overlaying the scene, simulating a photo taken through a dirty vehicle windscreen.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": [
+    {
+     "category": "switch_mechanism",
+     "score": 3,
+     "agreement": "1/9",
+     "regions": [
+      "bottom-center"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: The inner rails of the two diverging tracks simply merge into a 'V' shape embedded in the concrete, entirely lacking the moving switch blades or frog mechanisms required for a rail vehicle to navigate a junction. (bottom-center, strong)"
+     ]
+    },
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "center",
+      "top-right"
+     ],
+     "details": [
+      "gpt-6-sol: The pallets and cable reel are somewhat indistinct at this resolution, making their fine details hard to verify. (center, weak)",
+      "gpt-6-sol: Details inside the right shed are indistinct, which could conceal generated inconsistencies, though the dark interior also explains it. (top-right, weak)"
+     ]
+    },
+    {
+     "category": "lighting_or_shadows",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "top-right"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: The lights visible inside the dark right-hand building appear as randomly scattered, blurry white streaks, failing to form a logical array or grid typical of warehouse lighting. (top-right, moderate)"
+     ]
+    },
+    {
+     "category": "overhead_wires_or_poles",
+     "score": 2,
+     "agreement": "1/9",
+     "regions": [
+      "top-left"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: A thin overhead wire visible against the sky abruptly fades out in mid-air and fails to logically connect to any of the nearby vertical support poles. (top-left, moderate)"
+     ]
+    },
+    {
+     "category": "text_signage_or_markings",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "gpt-6-sol: Some pale ground markings are fragmented and difficult to follow, though worn paint could explain them. (center, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/sd/r2/s-2.jpg",
+   "meanJudgePAi": 0.2577777777777778,
+   "passesGate": true,
+   "judges": {
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.08666666666666667,
+     "runs": [
+      0.08,
+      0.1,
+      0.08
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Grooved tram rails embedded in concrete diverge consistently into two depot roads, with parallel gauge maintained through the curves",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard edge at the bottom and faint droplet or dust spots, consistent with shooting through a cab windscreen",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Coherent stacked wooden pallets, cable drums, and a palisade fence with mundane, plausible detail",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Corrugated sheds with a brick base, a door, signage, and interior lights rendered consistently, without warping",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead wires and poles are sparse but plausible; the poles sit naturally on concrete footings",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Film-like grain and natural concrete patching and staining",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Grooved tram rails curve smoothly into each depot bay with consistent gauge and perspective; rails embedded in concrete with realistic wear strips",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard/windscreen edge at bottom and faint droplets/specks on glass consistent with filming from a tram cab",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Stacked wooden pallets and cable drums by the fence look coherent with plausible structure",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-left",
+        "detail": "Small warning signs and yellow hazard triangle on shed wall are appropriately sized and placed, no garbled text visible",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Corrugated metal sheds with brick base, door, lights inside bays all consistent; overhead wires attach plausibly to poles",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural film-like grain and muted color, stains and patches on concrete are irregular and realistic",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Grooved tram rails diverge smoothly into two depot roads with consistent gauge and perspective, embedded flush in worn concrete with realistic patching.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard edge at the bottom and faint water droplets or specks on the windscreen, consistent with a cab-view shot through glass.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Corrugated depot sheds have coherent panel lines, warning signs, lights and a brick base with a plain door, all in consistent perspective.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Wooden pallets, cable drums and a palisade fence show plausible, coherent detail rather than melted forms.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Film-like grain and muted color with natural surface stains, weeds and faded paint markings.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead wires attach logically to the poles and buildings, with no floating or broken segments.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "openai/gpt-6-sol": {
+     "p_ai": 0.02,
+     "runs": [
+      0.02,
+      0.02,
+      0.02
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails curve continuously from the foreground toward their respective shed entrances, with consistent spacing.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Soft water spots are visible against the buildings and sky, and a dark windscreen edge runs along the bottom.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "The brickwork, corrugated siding, fence, and stacked pallets retain distinct, irregular textures.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "The two open sheds and diverging tracks form a notably balanced composition, though this is readily explained by the camera position.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails curve smoothly toward separate shed entrances, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The pavement has varied stains, repairs, and wear rather than a repeated pattern.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark lower frame edge and faint spots on the image are consistent with a photograph taken through a windscreen.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "center",
+        "detail": "The pale triangular area between the tracks looks unusually neat, although it could simply be a differently surfaced patch.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails curve smoothly from the foreground into separate depot doors, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead wires connect plausibly to poles and continue across the depot yard.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Faint spots on the glass and a dark lower windscreen edge suggest the scene was photographed from inside a vehicle.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "center",
+        "detail": "The pavement has irregular patches, stains, and worn markings rather than a uniform texture.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-right",
+        "detail": "Objects inside the dark depot doorway are indistinct, leaving some details difficult to verify.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.6666666666666666,
+     "runs": [
+      0.99,
+      0.02,
+      0.99
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "The stack of wooden pallets lacks distinct, straight individual boards and spacer blocks, instead merging into a cohesive, messy block of wood texture with irregular lines.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "The large wooden cable spool has an irregularly shaped, non-circular center hole, and the wooden planks making up its side are warped and do not form a flat circular face.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "The vertical bars of the palisade fence behind the pallets are unevenly spaced and angled, and the left section of the fence abruptly melts into a solid, textureless wavy surface.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "The brickwork on the right building, just above the white door, becomes completely smeared and loses its mortar pattern, turning into a solid brownish patch.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "The warning sign on the left building wall and the small white sign on the pole contain indistinct, meaningless squiggles instead of legible text or recognizable safety symbols.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The inner rails of both tracks converge sharply at the bottom edge but do not appear to form a logical switch or frog. Additionally, the camera's centered perspective between the divergent tracks suggests the vehicle is not aligned with any valid rails directly beneath it.",
+        "points_to": "ai",
+        "strength": "strong"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "The tracks feature grooved rails typical of tramways, maintaining a consistent gauge and embedding naturally into the worn concrete without any geometric glitches.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "A stack of wooden pallets features a distinctive blue pallet at the base, which is highly accurate to real-world standard CHEP pallets found in industrial yards.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "The image has a black curved border at the bottom and out-of-focus dust or water spots near the top, indicating it was taken from behind a vehicle's windshield, characteristic of dashcam or cab-ride video footage.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "Inside the open doors of the right depot building, an inspection pit is visible between the rails, a functionally accurate architectural detail for a rail maintenance facility.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The wear patterns on the concrete, the faded state of the painted lines, and the overall compression artifacts and grain perfectly match standard digital video footage without any of the typical AI smoothing or over-sharpening.",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The inner rails from the left and right tracks converge into a sharp V-shape without any visible switch mechanism, points, or frog, which is mechanically impossible for a functional tramway or railway.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "The stack of wooden pallets and cable reels in the background are visually merged. The pallets appear as a solid textured block rather than distinct stacked boards, and the large reel has a misshapen, off-center hole.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "The overhead catenary wires near the left pole form a confusing web that lacks physical tension, with some lines appearing to fade or terminate abruptly in mid-air instead of connecting to structural insulators.",
+        "points_to": "ai",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "The white painted box with a diagonal cross on the ground to the left of the tracks is highly irregular, smeared, and its lines do not meet cleanly at the corners.",
+        "points_to": "ai",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": [
+    {
+     "category": "tools_or_small_objects",
+     "score": 9,
+     "agreement": "2/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: The stack of wooden pallets lacks distinct, straight individual boards and spacer blocks, instead merging into a cohesive, messy block of wood texture with irregular lines. (center, strong)",
+      "gemini-3.1-pro-preview: The large wooden cable spool has an irregularly shaped, non-circular center hole, and the wooden planks making up its side are warped and do not form a flat circular face. (center, strong)",
+      "gemini-3.1-pro-preview: The stack of wooden pallets and cable reels in the background are visually merged. The pallets appear as a solid textured block rather than distinct stacked boards, and the large reel has a misshapen, off-center hole. (center, strong)"
+     ]
+    },
+    {
+     "category": "track_geometry",
+     "score": 6,
+     "agreement": "2/9",
+     "regions": [
+      "bottom-center"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: The inner rails of both tracks converge sharply at the bottom edge but do not appear to form a logical switch or frog. Additionally, the camera's centered perspective between the divergent tracks suggests the vehicle is not aligned with any valid rails directly beneath it. (bottom-center, strong)",
+      "gemini-3.1-pro-preview: The inner rails from the left and right tracks converge into a sharp V-shape without any visible switch mechanism, points, or frog, which is mechanically impossible for a functional tramway or railway. (bottom-center, strong)"
+     ]
+    },
+    {
+     "category": "text_signage_or_markings",
+     "score": 4,
+     "agreement": "2/9",
+     "regions": [
+      "middle-left"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: The warning sign on the left building wall and the small white sign on the pole contain indistinct, meaningless squiggles instead of legible text or recognizable safety symbols. (middle-left, moderate)",
+      "gemini-3.1-pro-preview: The white painted box with a diagonal cross on the ground to the left of the tracks is highly irregular, smeared, and its lines do not meet cleanly at the corners. (middle-left, moderate)"
+     ]
+    },
+    {
+     "category": "background_clutter",
+     "score": 3,
+     "agreement": "2/9",
+     "regions": [
+      "middle-right",
+      "center"
+     ],
+     "details": [
+      "gpt-6-sol: Objects inside the dark depot doorway are indistinct, leaving some details difficult to verify. (middle-right, weak)",
+      "gemini-3.1-pro-preview: The vertical bars of the palisade fence behind the pallets are unevenly spaced and angled, and the left section of the fence abruptly melts into a solid, textureless wavy surface. (center, moderate)"
+     ]
+    },
+    {
+     "category": "buildings",
+     "score": 3,
+     "agreement": "1/9",
+     "regions": [
+      "middle-right"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: The brickwork on the right building, just above the white door, becomes completely smeared and loses its mortar pattern, turning into a solid brownish patch. (middle-right, strong)"
+     ]
+    },
+    {
+     "category": "overhead_wires_or_poles",
+     "score": 3,
+     "agreement": "1/9",
+     "regions": [
+      "top-left"
+     ],
+     "details": [
+      "gemini-3.1-pro-preview: The overhead catenary wires near the left pole form a confusing web that lacks physical tension, with some lines appearing to fade or terminate abruptly in mid-air instead of connecting to structural insulators. (top-left, strong)"
+     ]
+    },
+    {
+     "category": "composition_or_staging",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "whole-image",
+      "center"
+     ],
+     "details": [
+      "gpt-6-sol: The two open sheds and diverging tracks form a notably balanced composition, though this is readily explained by the camera position. (whole-image, weak)",
+      "gpt-6-sol: The pale triangular area between the tracks looks unusually neat, although it could simply be a differently surfaced patch. (center, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/sd/r2/s-3.jpg",
+   "meanJudgePAi": 0.04,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.02666666666666667,
+     "runs": [
+      0.02,
+      0.03,
+      0.03
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails curve smoothly toward separate shed doors, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Soft spots on the glass and dark framing at the bottom corners suggest the scene was photographed through a windscreen.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Pallets, a cable reel, fencing, and other stored items have distinct, plausible shapes and placement.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The corrugated siding, window row, and shed-door edges remain structurally consistent.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "Objects deep inside the right shed are hard to distinguish; that ambiguity could resemble generated detail, though the dark interior also explains it.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails curve smoothly toward separate shed doors, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The corrugated siding, rooflines, doors, and row of windows align consistently across the sheds.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-right",
+        "detail": "The concrete shows irregular stains, patches, and wear around the rails.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Soft spots on the image and dark framing at the lower corners look like a photograph taken through a window.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-right",
+        "detail": "Objects inside the right shed are very indistinct, making their exact shapes hard to verify.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails curve smoothly toward their respective shed entrances, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "whole-image",
+        "detail": "The corrugated siding, door frames, windows, and rooflines form coherent structures across both sheds.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Pallets, a cable reel, and fencing sit in a plausible, irregular arrangement between the sheds.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Soft spots and faint reflections appear over the scene, consistent with a photograph taken through glass.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "top-left",
+        "detail": "Details inside the dark shed are too indistinct to verify individually; that ambiguity offers slight support for AI generation.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.07666666666666667,
+     "runs": [
+      0.08,
+      0.07,
+      0.08
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Embedded grooved tram rails curve consistently into each depot entrance with parallel gauge maintained throughout",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Raindrop spots and out-of-focus specks on windscreen plus dark wiper/frame edge at bottom-left and right, consistent with shooting through a tram cab window",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Stacked wooden pallets, cable drum, and palisade fence with coherent structure and logical placement",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead wires attach to poles and span-wires logically without disappearing or merging",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Film-like grain and muted color, natural concrete staining and patched paving",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Small warning stickers on doors are plausible and not garbled at this resolution",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Grooved tram rails embedded in concrete curve smoothly into each depot door with consistent gauge and plausible wear marks",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Raindrops/dust specks visible on glass, plus out-of-focus dark wiper/frame edge in bottom-left and right edge, consistent with shooting through a tram windscreen",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Stacked wooden pallets, cable drum, metal palisade fence with coherent bars and red equipment—details are mundane and structurally consistent",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead wires and span wires attach logically to poles and building brackets without merging or vanishing",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Corrugated cladding, warning stickers on doors, interior fluorescent lights in depot are coherent and regularly spaced",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Film-like grain and muted color palette with natural slight softness typical of analog/compact camera",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Embedded grooved tram rails curve coherently into each depot door with consistent gauge and paired rails merging smoothly into the paving.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Dust specks and water spots on the glass, plus dark wiper or frame edges at the bottom corners, consistent with shooting through a tram windscreen.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Stacked pallets, a cable drum, a palisade fence and a red object are rendered with plausible, coherent detail.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Corrugated cladding, windows with red panels behind, and warning stickers on the doors are all consistent and regular.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-left",
+        "detail": "Overhead wires attach logically to the poles with span wires, and the poles are straight.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Film-like grain and muted color, with natural wear and staining on the concrete.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.016666666666666666,
+     "runs": [
+      0.02,
+      0.02,
+      0.01
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-right",
+        "detail": "There are out-of-focus spots and subtle reflections visible, strongly suggesting the photo was taken through a somewhat dirty window, like that of a train or tram cab.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-left",
+        "detail": "A dark, blurry structural element is visible in the corner, consistent with the interior framing of the vehicle the photographer is riding in.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The tram tracks are correctly embedded in the paved surface with consistent, continuous flangeways (grooves) that curve naturally without warping or structural errors.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "The stacked wooden pallets and the cable drum in the central yard area have correct geometric proportions, distinct parts, and cast realistic shadows.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead catenary wiring is complex but logical, with wires correctly attaching to the support poles and building structures, a detail AI often renders as disjointed lines.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "The corrugated metal siding shows realistic, subtle variations in dirt and weathering near the ground, with straight, consistent vertical lines.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Out-of-focus spots resembling dirt or water droplets on a glass surface, along with a part of a wiper blade visible in the bottom left, indicating the photo was taken through a cab window.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Grooved tram tracks curve naturally into the buildings, embedded in concrete that shows realistic wear, cracking, and staining.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Stacks of wooden pallets, a cable drum, and metal fencing are structurally coherent and exhibit realistic textures and placement.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The image has a natural, consistent level of grain or sensor noise typical of a real photograph, lacking AI-like smoothness or synthetic artifacts.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The corrugated metal structures of the depot have consistent geometry, realistic dirt and wear, and coherent window reflections.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "Realistic weathering, dirt, and stains on the concrete, along with weeds growing naturally in the joints and cracks.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "The stacked wooden pallets and the wooden cable spool are arranged logically with consistent geometry, natural texture, and appropriate shadows.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "The grooved rails embedded in the concrete are perfectly parallel, curve smoothly, and show realistic wear, dirt, and rust.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead wires are thin, continuous, and connect logically to the poles and support structures, lacking the broken or melting appearance common in AI.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Faint water spots/reflections in the upper areas and the dark structural framing at the bottom corners suggest the photo was taken through the windscreen of a vehicle, adding to its authenticity.",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": [
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "middle-right",
+      "top-left"
+     ],
+     "details": [
+      "gpt-6-sol: Objects deep inside the right shed are hard to distinguish; that ambiguity could resemble generated detail, though the dark interior also explains it. (middle-right, weak)",
+      "gpt-6-sol: Details inside the dark shed are too indistinct to verify individually; that ambiguity offers slight support for AI generation. (top-left, weak)"
+     ]
+    },
+    {
+     "category": "background_clutter",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "middle-right"
+     ],
+     "details": [
+      "gpt-6-sol: Objects inside the right shed are very indistinct, making their exact shapes hard to verify. (middle-right, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/sd/r2/s-4.jpg",
+   "meanJudgePAi": 0.058888888888888886,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.023333333333333334,
+     "runs": [
+      0.02,
+      0.02,
+      0.03
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails curve smoothly toward separate shed entrances, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The pavement has irregular cracks, stains, patches, and worn markings rather than a repeated texture.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-right",
+        "detail": "A dark windscreen wiper crosses the corner; faint spots on the glass are also visible against the sheds.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "top-center",
+        "detail": "Pallets and a cable reel sit beside the building with plausible shapes and placement.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "The very dark shed interior has indistinct details that could conceal generated errors, though the lighting readily explains them.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Two pairs of rails curve smoothly away from the camera into separate workshop bays.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-right",
+        "detail": "A dark windscreen wiper crosses the corner, with small spots visible on the glass near the upper-right bay.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Stacked pallets and a large cable drum sit against the workshop wall.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "The yard has consistent, subdued overcast lighting, while both workshop interiors are much darker.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "top-left",
+        "detail": "Details deep inside the left bay are indistinct, which makes that area harder to assess for generation artifacts.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "The left pair of rails curves continuously into the left shed, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "The right rails curve smoothly toward the other shed and sit naturally in the worn pavement.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Pallets, a cable spool, and utility fixtures form irregular but coherent yard clutter.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Faint windscreen spots and a dark wiper at the lower right look like incidental camera-view details.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Objects inside the dark shed are indistinct and somewhat amorphous, though low exposure could explain this.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.11333333333333333,
+     "runs": [
+      0.12,
+      0.12,
+      0.1
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Grooved tram rails embedded in concrete curve smoothly and consistently into two depot sheds, with plausible gauge and parallel spacing maintained throughout the curves",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Stacked wooden pallets, cable drums, and mesh fencing are coherent, with believable structure and wear",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Concrete cracks, oil stains, weeds in joints, and faded paint markings show natural, non-repeating irregularity",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-right",
+        "detail": "Out-of-focus dark cables or wiper crossing the foreground, plus raindrop specks, are consistent with shooting through a vehicle windscreen",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Corrugated cladding, brick lower walls, open shed doors with interior strip lighting are architecturally consistent and symmetric in a plausible way",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Empty, symmetric depot scene with no people; slightly cinematic color grade, but nothing implausible",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Grooved tram rails embedded in concrete curve smoothly and consistently into two depot sheds, with plausible gauge and wear polish on rail heads",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Stacked wooden pallets, cable drums, and mesh fencing look coherent with correct structure and perspective",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Corrugated cladding, brick lower wall, windows, and interior strip lights inside shed are consistent and logically arranged",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-right",
+        "detail": "Dark diagonal cables/wiper-like lines and slight soft focus suggest shot from a cab window, a natural incidental artifact",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "Painted yellow/white lines on concrete are faded and irregular in realistic way; drain grate rendered properly",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Somewhat soft, cinematic color grade, but no telltale smearing or melted details",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Grooved tram rails embedded in concrete curve smoothly into two depot sheds with consistent gauge and coherent perspective",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Stacked wooden pallets, cable drums, and mesh fencing are rendered with plausible, coherent detail",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-right",
+        "detail": "Dark diagonal wiper or cable blur and faint droplets suggest the shot was taken through a tram cab windscreen",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Painted yellow and white floor markings, worn patches, and cracks in the concrete look naturally irregular",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Corrugated cladding, window frames, and interior strip lighting in the sheds are consistent and lack warping",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Poles stand straight and the overhead wires are thin and continuous",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.04,
+     "runs": [
+      0.05,
+      0.02,
+      0.05
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-right",
+        "detail": "Realistic reflections of the overcast sky and subtle dampness variations on the concrete surface.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-right",
+        "detail": "An out-of-focus dark diagonal object, likely a windshield wiper, indicates the photo was taken from inside a vehicle through glass.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "The grooved rails (typical of tram tracks) are rendered consistently with proper, uniform depth and width for the flangeway throughout the curves.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "The painted yellow and white lines on the ground show realistic, uneven wear, fading, and chipping consistent with real-world weathering and traffic.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "The stacked wooden pallets and wooden cable spools look structurally distinct, with correct geometry and textures, lacking the typical merging or warping often seen in AI generation.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-right",
+        "detail": "An out-of-focus dark line crosses the corner of the frame, strongly resembling a windshield wiper, indicating the photo was taken from inside a vehicle cab.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The concrete surface displays highly realistic and varied textures, including cracks, damp patches, stains, and faded painted lines that perfectly mimic real-world wear.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The tram tracks embedded in the concrete feature consistent and structurally accurate flangeways (grooves) along with realistic rust and wear on the running surfaces.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "The corrugated metal siding of the sheds has perfectly parallel lines and realistic weathering, with industrial fixtures like lights and windows appearing structurally sound without AI merging artifacts.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "The stack of wooden pallets and the cable drums are logically structured with consistent geometry and appropriate detailing for their distance from the camera.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "A rectangular drainage grate embedded in the concrete between the diverging tracks has a perfectly coherent grid structure.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "The tram rails are correctly embedded into the concrete, curving smoothly with consistent gauge and realistic grooves.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Wooden pallets and large cable spools are stacked logically between the tracks, with accurate textures and realistic shadows.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-right",
+        "detail": "A dark diagonal object, likely a windshield wiper or window frame, is visible in the foreground, along with faint reflections on the glass.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "A slightly damp or wet patch on the concrete realistically reflects the overcast sky.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "The corrugated metal siding and structure of the depot buildings show accurate perspective, weathering, and consistent interior lighting.",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": [
+    {
+     "category": "buildings",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "top-left"
+     ],
+     "details": [
+      "gpt-6-sol: The very dark shed interior has indistinct details that could conceal generated errors, though the lighting readily explains them. (top-left, weak)",
+      "gpt-6-sol: Objects inside the dark shed are indistinct and somewhat amorphous, though low exposure could explain this. (top-left, weak)"
+     ]
+    },
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "top-left"
+     ],
+     "details": [
+      "gpt-6-sol: Details deep inside the left bay are indistinct, which makes that area harder to assess for generation artifacts. (top-left, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/sd/r2/t-1.jpg",
+   "meanJudgePAi": 0.05333333333333334,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.023333333333333334,
+     "runs": [
+      0.03,
+      0.02,
+      0.02
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails follow continuous, plausible curves toward separate depot buildings.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-left",
+        "detail": "A dark windscreen edge cuts across the bottom of the frame, consistent with a view from inside a vehicle.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Backlighting, haze, and long shadows are consistent across the yard.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Pallets, a cable reel, fencing, and scattered small items have the irregular placement of a working yard.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "The faded white pavement markings are difficult to interpret; their indistinct shapes could suggest generated detail, though wear and glare also explain them.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve smoothly toward separate shed entrances, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "center",
+        "detail": "Long shadows from the poles cross the pavement in directions consistent with the low sun.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-left",
+        "detail": "A dark windscreen edge and faint glare are visible over the scene.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The pavement has varied wear, seams, and small stains rather than a uniform texture.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "Some faint white pavement markings are hard to make out and look irregular.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails curve smoothly toward separate shed entrances, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-left",
+        "detail": "A dark, curved windscreen edge crosses the bottom of the frame.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "center",
+        "detail": "Long shadows from the poles fall across the concrete in the same direction.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "The shed has a recessed, dark entrance and unevenly weathered wall panels.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The glare and haze soften distant details, making some surfaces hard to verify.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.10666666666666667,
+     "runs": [
+      0.1,
+      0.12,
+      0.1
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Two separate grooved-rail tracks diverge smoothly toward two depot halls. Rail spacing stays consistent within each pair, and the curvature follows a coherent perspective.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark dashboard or windscreen edge runs along the bottom of the frame, with sun haze and a faint veil consistent with shooting through a tram's front glass.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "top-left",
+        "detail": "Low sun produces lens flare and washout at top-left. Long pole shadows fall consistently across the pavement toward the right.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Wooden pallets, a cable drum, and a mesh fence behind them are rendered with plausible, coherent structure.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "White hatched ground markings, a manhole cover, and small painted dots look like natural, worn, irregular paint.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "The depot doors have interior lighting strips and plausible corrugated cladding and door frames, with no melting or warping.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Two pairs of grooved tram rails diverge from the bottom and curve smoothly toward two separate depot buildings, with consistent gauge and continuous rail heads, no merging or breaking rails",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard edge and slight haze/glare consistent with shooting through a tram windscreen into the sun",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "top-left",
+        "detail": "Sun flare and washed-out highlights at top-left, with long pole shadows cast consistently across the pavement toward the right",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Depot shed with open door, interior ceiling lights, blue doors and fencing all structurally coherent",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Faded road markings, chevrons and small painted dots are worn irregularly as in a real yard",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Pallets, cable drum and weeds by the fence look plausibly random and coherent",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark dashboard/windscreen edge runs along the bottom of the frame, with soft haze and glare consistent with shooting through tram cab glass.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Two grooved rail pairs embedded in concrete slabs keep a consistent gauge and curve smoothly toward separate depot doors, with no merging or broken rails.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Faded white road markings, a small painted rectangle and scattered paint dots look worn and irregular in a natural way.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Pallets, a cable drum, mesh fencing and blue doors are rendered with coherent structure, and the lights inside the shed are clearly defined.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "A low sun produces flare at top-left, and the pole shadows fall consistently across the slabs toward the right.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "The concrete slab joints, weeds, manhole cover and stains show plausible film-like grain with no smeared textures.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.030000000000000002,
+     "runs": [
+      0.05,
+      0.02,
+      0.02
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "The tracks are grooved tram rails, with the inner groove consistently and accurately depicted along the curves, which is typically difficult for AI to maintain without morphing into standard railway rails.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-left",
+        "detail": "Sun glare passing through what appears to be a dirty or slightly smudged glass window creates a highly realistic, organic haze and scattering effect that is characteristic of real photography.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The concrete ground displays realistic weathering, cracks, and dirt accumulation. Weeds grow sporadically out of the seams in a natural, chaotic pattern without repeating textures.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "The corrugated metal building shows consistent paneling, realistic rust spots, and coherent architectural structure around the open doorway.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "The painted white lines and triangle on the concrete are faded and worn in a manner consistent with weathering and vehicles driving over them.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "top-center",
+        "detail": "A wooden pallet and a cable drum are visible in the background, maintaining accurate perspective, structure, and shading.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-left",
+        "detail": "Visible sun glare and dirt/smudges typical of a photograph taken through a glass window, appearing natural and unstructured.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "The tram tracks are embedded in the concrete pavement perfectly, maintaining a consistent gauge and curving naturally without any impossible merges or breaks.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "center",
+        "detail": "The sunlight reflects off the metallic rails realistically, and shadows cast by the buildings and poles are consistent with the position of the sun.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Natural accumulation of dirt, weeds growing through cracks in the concrete, and rough textures that do not look overly smoothed or artificially generated.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark, out-of-focus edge at the very bottom of the frame strongly suggests the dashboard or window frame of the vehicle from which the photo was taken.",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-left",
+        "detail": "A dark, out-of-focus frame from the interior of the vehicle, along with smudges and subtle reflections on the glass, strongly suggests the photo was taken through a real windshield.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "The grooved tram tracks curve smoothly and parallelly towards the depot buildings without any bizarre merging, breaks, or unnatural bends typical of AI.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "The long shadows cast by the poles and the subtle glare from the sun at the top left are highly consistent with natural sunlight, interacting realistically with the uneven concrete surface.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "center",
+        "detail": "The concrete surface shows highly realistic wear, including fine cracks, variations in texture, and faded, weathered white painted markings that do not look artificially generated.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "The clutter between the buildings, including wooden pallets and a cable spool, is logically placed and structurally sound, showing none of the 'melting' or blending often seen in AI backgrounds.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": [
+    {
+     "category": "text_signage_or_markings",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "center"
+     ],
+     "details": [
+      "gpt-6-sol: The faded white pavement markings are difficult to interpret; their indistinct shapes could suggest generated detail, though wear and glare also explain them. (center, weak)",
+      "gpt-6-sol: Some faint white pavement markings are hard to make out and look irregular. (center, weak)"
+     ]
+    },
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "whole-image"
+     ],
+     "details": [
+      "gpt-6-sol: The glare and haze soften distant details, making some surfaces hard to verify. (whole-image, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/sd/r2/t-2.jpg",
+   "meanJudgePAi": 0.06333333333333334,
+   "passesGate": true,
+   "judges": {
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.12333333333333334,
+     "runs": [
+      0.12,
+      0.15,
+      0.1
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Embedded grooved rails curve consistently into two depot doors with parallel gauge maintained; rail grooves and paving joints align naturally",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Haze, lens flare from low sun, and dark vignette corners consistent with shooting through a tram windscreen",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Cable drum, stacked pallets, fencing and depot interior lights are coherent and plausibly detailed",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "middle-right",
+        "detail": "Long pole shadows fall consistently from low sun across pavement",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "bottom-right",
+        "detail": "Worn yellow and white ground markings with weeds in cracks look naturally weathered",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Grooved tram rails embedded in concrete diverge consistently into two depot bays with parallel gauge maintained and plausible curvature",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Haze, lens flare and dark windscreen frame edges at bottom-left/right consistent with shooting through a tram cab window into the sun",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "middle-right",
+        "detail": "Long pole shadows cast diagonally across the rails consistent with low sun direction from top-center",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Cable drum, stacked pallets, fencing and interior depot lights are coherent and mundane",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "bottom-right",
+        "detail": "Worn yellow and white ground markings fade naturally with cracks and weeds growing at edges",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "No switch blades visible at divergence; tracks appear as separate curves, slightly unusual but plausible as camera position past the switch",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Grooved tram rails embedded in concrete diverge consistently into two depot bays, with parallel gauge maintained through curves",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Haze, sun flare and dark corner at bottom-left consistent with shooting through a tram windscreen into low sun",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Cable drum, stacked pallets, fence and weeds placed coherently with natural wear and stains",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "middle-right",
+        "detail": "Long pole shadows fall in consistent direction matching the low sun position",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-right",
+        "detail": "Faded painted markings and concrete patches show plausible irregular wear, no garbled patterns",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "openai/gpt-6-sol": {
+     "p_ai": 0.02666666666666667,
+     "runs": [
+      0.03,
+      0.03,
+      0.02
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve smoothly toward their respective shed openings, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "center",
+        "detail": "Low sunlight washes across the pavement while poles cast long shadows in consistent directions.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Pallets and a cable reel sit beside the right shed with plausible shapes and placement.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "The pavement wear, rail reflections, and slightly hazy image have a consistent photographic appearance.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-left",
+        "detail": "Shapes inside the dark left shed are indistinct, making their details difficult to verify.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails remain continuous as they curve toward separate shed entrances.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "center",
+        "detail": "Long pole shadows cross the pavement in directions consistent with the low sun.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "Irregular pavement seams, patches, and worn markings have varied, concrete-looking texture.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "The backlit building surfaces are hazy and indistinct, limiting how much their details can be checked.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve smoothly toward their respective warehouse doors, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "The pavement has irregular seams, patches, and wear that continue naturally around the rails.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "center",
+        "detail": "Low sunlight creates glare and long pole shadows that agree in direction across the yard.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "top-center",
+        "detail": "Pallets and a cable reel sit beside the right-hand building with recognizable, coherent shapes.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "The right doorway is very dark and reveals little interior detail, making that area harder to verify.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.04,
+     "runs": [
+      0.05,
+      0.02,
+      0.05
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Faint reflections and smudges visible across the image, along with dark window frame edges at the bottom corners, indicating the photo was taken through a glass window from inside a vehicle.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The embedded grooved rails curve naturally and maintain consistent parallel distance and structure as they recede into the distance, which is often difficult for AI to render perfectly over long curves.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "top-center",
+        "detail": "Realistic sun glare and lens flare that interact naturally with the dirty windscreen and cast consistent shadows across the textured concrete ground.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Highly realistic wear and tear on the concrete surface, including faded yellow painted lines, cracks, patches, and small weeds growing exactly along the seams.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-right",
+        "detail": "A logically arranged collection of industrial items including a metal fence, wooden pallets, and a large cable drum near the depot wall.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "The tram tracks are perfectly parallel and correctly embedded into the ground with consistent flangeways.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "The wooden pallets and large wooden cable drum are structurally coherent and logically placed in an industrial yard.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "center",
+        "detail": "The concrete slabs feature realistic, slightly irregular tar-filled joints, cracks, and varied surface wear that is difficult for AI to replicate consistently over a large area.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "bottom-left",
+        "detail": "The faded, chipped yellow painted lines on the ground show realistic weathering and follow the curve of the track naturally.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Faint reflections and a slight haze across the image suggest it was taken through a glass window or windshield, complete with a realistic lens flare from the sun.",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ],
+      [
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "whole-image",
+        "detail": "There are subtle reflections and possible dirt marks visible across the image, suggesting the photo was taken through a windscreen or window.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "top-center",
+        "detail": "The lens flare and glare from the sun in the upper part of the image look natural and interact realistically with the environment and the window.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "The tracks curving into the left building are consistent, parallel, and embedded realistically in the concrete and asphalt.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "The tracks curving into the right building are also parallel and show realistic wear and placement within the ground.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "center",
+        "detail": "The texture of the concrete, including cracks, seams, and variations in color, appears highly realistic and not overly smooth or patterned as often seen in AI.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "The details of the building on the left, including the doors, structure, and interior darkness, look structurally sound and realistic.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The poles are straight, appropriately shadowed, and situated logically within the scene.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Objects like the fence, pallets, and a large spool are present in the background between the buildings. They have coherent shapes and shadows.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "bottom-left",
+        "detail": "The faded painted markings on the ground show realistic weathering and imperfections.",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": [
+    {
+     "category": "background_clutter",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "top-left",
+      "top-center"
+     ],
+     "details": [
+      "gpt-6-sol: Shapes inside the dark left shed are indistinct, making their details difficult to verify. (top-left, weak)",
+      "gpt-6-sol: The backlit building surfaces are hazy and indistinct, limiting how much their details can be checked. (top-center, weak)"
+     ]
+    },
+    {
+     "category": "track_geometry",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "bottom-center"
+     ],
+     "details": [
+      "claude-opus-5.5: No switch blades visible at divergence; tracks appear as separate curves, slightly unusual but plausible as camera position past the switch (bottom-center, weak)"
+     ]
+    },
+    {
+     "category": "buildings",
+     "score": 1,
+     "agreement": "1/9",
+     "regions": [
+      "top-right"
+     ],
+     "details": [
+      "gpt-6-sol: The right doorway is very dark and reveals little interior detail, making that area harder to verify. (top-right, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/sd/r2/t-3.jpg",
+   "meanJudgePAi": 0.2777777777777778,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.03666666666666667,
+     "runs": [
+      0.04,
+      0.04,
+      0.03
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails curve smoothly toward their respective depot buildings, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Faint spots and streaks are visible over the scene, especially across the right-hand building, consistent with shooting through a dirty windscreen.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "bottom-right",
+        "detail": "The long shadows across the pavement and rails agree with the bright, low sun.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Thin overhead wires connect to poles at plausible points above the tracks.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "Haze and windscreen spots obscure some details of the right-hand shed, making them hard to verify.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-right",
+        "detail": "Soft, out-of-focus spots overlay the sky and right-hand shed, as if photographed through a marked windscreen.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails curve continuously toward their respective shed entrances with consistent perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "bottom-right",
+        "detail": "A long pole shadow crosses the pavement and right-hand rails, matching the low, bright sun.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-right",
+        "detail": "Objects inside the right-hand shed are indistinct and difficult to resolve.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails curve smoothly toward their respective depot doors, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Thin overhead wires connect to poles and cross the yard in a coherent arrangement.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "whole-image",
+        "detail": "Faint spots and smears are visible over the scene, especially against the bright sky and right-hand building, as if photographed through glass.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "bottom-right",
+        "detail": "Long shadows across the pavement agree with the low, bright sun.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "The right-hand depot entrance is hazy and indistinct, obscuring some structural detail.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.7566666666666667,
+     "runs": [
+      0.8,
+      0.75,
+      0.72
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead wires are sparse and inconsistent; wires end or connect oddly to poles, and the left-center pole has a wire that doesn't route over the tracks in a plausible catenary layout",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Two separate curving track pairs lead into sheds with no visible connection or switch between them; curves are smooth but the rail gauge and paths look idealized",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "Floating bokeh/dust specks over the right shed and haze produce a stylized cinematic film look typical of generative outputs",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Small signs on shed walls are illegible blobs; ground markings are vague",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent backlit sun with long shadows across the pavement looks physically plausible",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "Right shed interior is a mottled dark texture with indistinct structure; door panels look plasticky",
+        "points_to": "ai",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead wires are sparse and inconsistent: a single wire runs diagonally from the top to the left pole with no coherent catenary over the tracks; the wires don't follow the track curves",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both track pairs curve smoothly into the sheds, but the rails are unnaturally clean and uniform, with no visible joints or drainage detail, and the left pair's gauge appears to vary slightly",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "Speckled dust/bokeh particles over the right shed doorway and interior look like an added film-grain/haze effect, and the interior detail dissolves into mush",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "bottom-left",
+        "detail": "Faded painted markings and small signs on the shed walls are illegible blobs",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "A symmetric twin-shed composition with a cinematic warm haze and film-emulation look is typical of generated 'analog photo' styles",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "bottom-right",
+        "detail": "Shadows of the poles fall consistently across the pavement, matching the backlit sun",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Cable drum and pallets by the fence are plausible, but their shapes are soft and simplified",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Two embedded tram tracks curve into separate depot sheds; the rail gauge and curvature stay consistent and the rails sit plausibly flush in the concrete.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead wires are sparse and loosely connected. The left catenary wire ends ambiguously, and the span wires do not clearly cover both tracks the way a real tram depot installation would.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "middle-right",
+        "detail": "The right shed interior and doorway are covered with uniform bokeh-like specks. The haze has a cinematic film-emulation look typical of generated images.",
+        "points_to": "ai",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "The left shed doors and interior lights are rendered softly, and the brick base and signage are indistinct with no readable text.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "bottom-right",
+        "detail": "The white painted markings on the concrete are fragmentary and seem to follow no logic.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "The scene is symmetric, with two branches leading into two sheds and a cable drum placed centrally, under golden backlit haze. This staged aesthetic is common in AI generations.",
+        "points_to": "ai",
+        "strength": "weak"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "bottom-right",
+        "detail": "The pole shadows are long and consistent with a low sun from the right rear.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.04,
+     "runs": [
+      0.05,
+      0.05,
+      0.02
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-right",
+        "detail": "Numerous out-of-focus spots and hazy areas indicate the photo was taken through a dirty window or with a dirty lens, a common artifact in real-world photography that is rarely generated by AI with this level of subtlety.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The tram tracks embedded in the concrete curve smoothly and maintain a consistent gauge, with realistic grooved rails and wear patterns.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "The concrete apron features realistic expansion joints, subtle cracks, a well-integrated metal drain cover, and faded yellow painted markings.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The overhead catenary lines, span wires, and supporting poles are logically connected and structurally sound for this type of rail infrastructure, without the nonsensical tangles often seen in AI generations.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "bottom-right",
+        "detail": "The long, sharp shadow cast by the pole on the right falls logically across the tracks, consistent with the low angle of the sun and the hazy atmospheric lighting.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The tram tracks curve smoothly and logically into the two respective sheds, with realistic grooved rails embedded in the concrete.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Overhead contact wires connect logically to the support poles with visible insulators, maintaining realistic tension and geometry without floating or disappearing.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-right",
+        "detail": "There are out-of-focus spots and smudges visible over the right-hand building, strongly suggesting the photo was taken through a dirty window (likely from inside a tram cab).",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "The concrete surface features realistic cracks, patched areas, faded painted lines, and weeds growing organically from the seams.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "The interior of the right-hand shed shows realistic structural depth, consistent shadow falloff, and logical placement of interior lights and equipment.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "camera_or_windscreen",
+        "region": "middle-right",
+        "detail": "There are circular, out-of-focus dirt spots and smudges visible over the right building and sky, strongly indicating the photo was taken through a dirty window or windshield, likely from inside a vehicle.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "The grooved tram rails curve smoothly and remain perfectly parallel as they diverge towards the two depot buildings, showing correct geometric perspective and realistic integration into the concrete.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "The shadows cast by the poles across the tracks and the shading on the buildings are entirely consistent with a single light source (the sun) positioned behind and to the left of the camera.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "The complex network of overhead contact wires and their supporting cross-span wires is structurally logical, with correct attachment points to poles and buildings without any illogical merging or floating lines.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "The painted white and yellow lines on the concrete surface appear realistically faded and worn, perfectly matching the weathered texture and cracks of the surrounding ground.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": [
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 8,
+     "agreement": "5/9",
+     "regions": [
+      "middle-right"
+     ],
+     "details": [
+      "gpt-6-sol: Haze and windscreen spots obscure some details of the right-hand shed, making them hard to verify. (middle-right, weak)",
+      "gpt-6-sol: The right-hand depot entrance is hazy and indistinct, obscuring some structural detail. (middle-right, weak)",
+      "claude-opus-5.5: Floating bokeh/dust specks over the right shed and haze produce a stylized cinematic film look typical of generative outputs (middle-right, moderate)",
+      "claude-opus-5.5: Speckled dust/bokeh particles over the right shed doorway and interior look like an added film-grain/haze effect, and the interior detail dissolves into mush (middle-right, moderate)",
+      "claude-opus-5.5: The right shed interior and doorway are covered with uniform bokeh-like specks. The haze has a cinematic film-emulation look typical of generated images. (middle-right, moderate)"
+     ]
+    },
+    {
+     "category": "overhead_wires_or_poles",
+     "score": 6,
+     "agreement": "3/9",
+     "regions": [
+      "top-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Overhead wires are sparse and inconsistent; wires end or connect oddly to poles, and the left-center pole has a wire that doesn't route over the tracks in a plausible catenary layout (top-center, moderate)",
+      "claude-opus-5.5: Overhead wires are sparse and inconsistent: a single wire runs diagonally from the top to the left pole with no coherent catenary over the tracks; the wires don't follow the track curves (top-center, moderate)",
+      "claude-opus-5.5: The overhead wires are sparse and loosely connected. The left catenary wire ends ambiguously, and the span wires do not clearly cover both tracks the way a real tram depot installation would. (top-center, moderate)"
+     ]
+    },
+    {
+     "category": "text_signage_or_markings",
+     "score": 3,
+     "agreement": "3/9",
+     "regions": [
+      "middle-left",
+      "bottom-left",
+      "bottom-right"
+     ],
+     "details": [
+      "claude-opus-5.5: Small signs on shed walls are illegible blobs; ground markings are vague (middle-left, weak)",
+      "claude-opus-5.5: Faded painted markings and small signs on the shed walls are illegible blobs (bottom-left, weak)",
+      "claude-opus-5.5: The white painted markings on the concrete are fragmentary and seem to follow no logic. (bottom-right, weak)"
+     ]
+    },
+    {
+     "category": "buildings",
+     "score": 3,
+     "agreement": "2/9",
+     "regions": [
+      "middle-right",
+      "middle-left"
+     ],
+     "details": [
+      "claude-opus-5.5: Right shed interior is a mottled dark texture with indistinct structure; door panels look plasticky (middle-right, moderate)",
+      "claude-opus-5.5: The left shed doors and interior lights are rendered softly, and the brick base and signage are indistinct with no readable text. (middle-left, weak)"
+     ]
+    },
+    {
+     "category": "composition_or_staging",
+     "score": 3,
+     "agreement": "2/9",
+     "regions": [
+      "whole-image"
+     ],
+     "details": [
+      "claude-opus-5.5: A symmetric twin-shed composition with a cinematic warm haze and film-emulation look is typical of generated 'analog photo' styles (whole-image, moderate)",
+      "claude-opus-5.5: The scene is symmetric, with two branches leading into two sheds and a cable drum placed centrally, under golden backlit haze. This staged aesthetic is common in AI generations. (whole-image, weak)"
+     ]
+    },
+    {
+     "category": "background_clutter",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "middle-right",
+      "center"
+     ],
+     "details": [
+      "gpt-6-sol: Objects inside the right-hand shed are indistinct and difficult to resolve. (middle-right, weak)",
+      "claude-opus-5.5: Cable drum and pallets by the fence are plausible, but their shapes are soft and simplified (center, weak)"
+     ]
+    },
+    {
+     "category": "track_geometry",
+     "score": 2,
+     "agreement": "2/9",
+     "regions": [
+      "bottom-center"
+     ],
+     "details": [
+      "claude-opus-5.5: Two separate curving track pairs lead into sheds with no visible connection or switch between them; curves are smooth but the rail gauge and paths look idealized (bottom-center, weak)",
+      "claude-opus-5.5: Both track pairs curve smoothly into the sheds, but the rails are unnaturally clean and uniform, with no visible joints or drainage detail, and the left pair's gauge appears to vary slightly (bottom-center, weak)"
+     ]
+    }
+   ]
+  },
+  {
+   "image": "scratch/sd/r2/t-4.jpg",
+   "meanJudgePAi": 0.052222222222222225,
+   "passesGate": true,
+   "judges": {
+    "openai/gpt-6-sol": {
+     "p_ai": 0.023333333333333334,
+     "runs": [
+      0.02,
+      0.03,
+      0.02
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve continuously from the foreground toward separate warehouse doors, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The corrugated siding, window row, door frames, and rooflines align consistently across the connected industrial buildings.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "bottom-right",
+        "detail": "A long diagonal shadow crosses the pavement in a direction consistent with the bright sunlight.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark curved edge at the bottom looks like part of the vehicle or windscreen from which the scene was photographed.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "top-right",
+        "detail": "The right-hand doorway and facade look hazy and indistinct, which could also occur in a generated image.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Both pairs of rails follow smooth, continuous curves into their respective shed entrances.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "The low-angle light and long shadows across the pavement are consistent with one another.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Pavement seams, worn patches, and small tufts of vegetation have irregular, plausible detail.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "top-right",
+        "detail": "The right shed interior is hazy and indistinct, making its details harder to verify; glare could also explain this.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Both pairs of rails curve continuously toward their respective depot doorways, with consistent spacing and perspective.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "bottom-right",
+        "detail": "A long diagonal shadow crosses the pavement and rails, while the buildings and poles cast compatible shadows.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Pavement cracks, worn patches, and rail edges have varied, irregular detail.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "A dark, out-of-focus edge intrudes along the bottom of the frame, consistent with a photograph taken through a vehicle windscreen.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "top-right",
+        "detail": "The right-hand doorway is hazy and its interior details are difficult to resolve; this could resemble generated-image smearing, though glare also explains it.",
+        "points_to": "ai",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "anthropic/claude-opus-5.5": {
+     "p_ai": 0.09333333333333334,
+     "runs": [
+      0.1,
+      0.08,
+      0.1
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Grooved tram rails embedded in concrete curve smoothly into two depot bays with consistent gauge and natural wear on the rail heads",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard/edge of tram cab at bottom and haze/dust specks on windscreen in the upper right, consistent with footage shot through a cab window",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Mundane details such as stacked pallets, cable drum, fence gate, manhole cover and faded paint markings rendered coherently",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Low sun casting consistent long shadows of poles across the yard, with lens flare/haze matching the sun direction",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Corrugated depot sheds with regular window bands and open doors showing interior lights; geometry straight and consistent",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "Ground markings are faded and irregular, as in real use, without garbled text",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Grooved tram rails embedded in concrete curve smoothly and consistently toward two depot doors, with constant gauge and realistic wear sheen",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark dashboard/windscreen edge at bottom and dust specks/haze on glass upper right, consistent with a cab-view video frame",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Mundane details: stacked pallets, cable drum, fencing, manhole cover, painted marks on concrete, weeds at slab edges, all coherent",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Low sun casting long consistent pole shadows across the yard and lens flare haze top right",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Corrugated depot walls, window rows and doorframes are straight and regular without warping",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people present on either track",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Embedded grooved tram rails curve consistently into two depot doors with uniform gauge and coherent groove channels along the full length",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-center",
+        "detail": "Dark tram dashboard edge at bottom and dust specks/flare on windscreen at top-right, typical of a cab-view video frame",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Stacked pallets, cable drum, fence gate and drain cover rendered with plausible, consistent detail",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Low sun backlighting with long pole shadows crossing pavement in consistent direction",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "bottom-left",
+        "detail": "Worn, irregular painted pavement marks and patched concrete look naturally weathered",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Corrugated depot sheds with coherent window rows and interior lights; no warping",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    },
+    "google/gemini-3.1-pro-preview": {
+     "p_ai": 0.04,
+     "runs": [
+      0.05,
+      0.05,
+      0.02
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "The rails are embedded in the concrete with clear, consistent flangeways, and the gauge remains steady as the tracks curve towards the buildings.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "top-right",
+        "detail": "Faint reflections, glare, and dirt are visible, suggesting the image was captured through a glass windscreen, typical of a cab view.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "middle-left",
+        "detail": "Shadows cast by the overhead poles fall consistently across the ground from right to left, matching a single light source (the sun).",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "The concrete surface shows natural wear and tear, including realistic cracks, expansion joints, and faded painted markings.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-right",
+        "detail": "A stack of wooden pallets and a large wire spool sit next to the fence with accurate structure and perspective.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The industrial buildings feature consistent corrugated siding, correctly aligned windows, and realistic interior darkness and lighting fixtures.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Smooth and logically curving tram tracks embedded realistically in the concrete ground, diverging naturally towards the two depot entrances.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "The concrete surface exhibits highly realistic varied textures, irregular cracks, patches, and natural wear patterns.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "middle-right",
+        "detail": "Faint reflections, glare, and slight smudges are visible, strongly indicating the photograph was taken through a glass window, likely from inside a vehicle.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "The industrial building features realistic corrugated metal siding, structural details, and plausible interior darkness with hanging lights.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Coherent everyday objects like wooden pallets and a large cable spool sit naturally in the yard with correct perspective and shadows.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "The grooved tram tracks curve smoothly and consistently towards the open garage doors without any illogical breaks, mergers, or changes in gauge.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "The concrete surface displays highly realistic, irregular cracks, discoloration, and faded painted lines that accurately reflect natural weathering and wear.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "center",
+        "detail": "Shadows cast by the vertical poles, the cable spool, and the buildings fall consistently to the left, indicating a single, coherent light source (the sun) from the right.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "camera_or_windscreen",
+        "region": "bottom-right",
+        "detail": "A faint reflection is visible over the concrete and tracks in this area, which is characteristic of a photograph taken through a vehicle's windscreen.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "The industrial depot buildings feature consistent corrugated siding, correctly aligned window panes, and logical structural geometry without the surreal melting typical of AI.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": [
+    {
+     "category": "texture_noise_or_sharpness",
+     "score": 3,
+     "agreement": "3/9",
+     "regions": [
+      "top-right"
+     ],
+     "details": [
+      "gpt-6-sol: The right-hand doorway and facade look hazy and indistinct, which could also occur in a generated image. (top-right, weak)",
+      "gpt-6-sol: The right shed interior is hazy and indistinct, making its details harder to verify; glare could also explain this. (top-right, weak)",
+      "gpt-6-sol: The right-hand doorway is hazy and its interior details are difficult to resolve; this could resemble generated-image smearing, though glare also explains it. (top-right, weak)"
+     ]
+    }
+   ]
+  }
+ ]
+}
