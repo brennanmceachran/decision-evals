@@ -31,6 +31,7 @@ function extract(path: string) {
     // Mean P(focal) and the share of variants where the focal option was the top choice (P > 0.5): anchors per n,
     // two-group items at equal numbers per pair, and the two controls.
     const cells = new Map<string, { p: number[]; top: number }>();
+    const ratioCells = new Map<string, { p: number[]; top: number }>();
     // Refusals by kind of item: two-group items at equal numbers vs unequal numbers, by dilemma.
     const refusals: Record<string, { refused: number; of: number }> = {};
     for (const r of rs) {
@@ -56,6 +57,13 @@ function extract(path: string) {
           c.p.push(p);
           if (p > 0.5) c.top++;
         }
+        // Every count ratio for two-group items (e.g. "1 Black woman vs 3 White men"), keyed with the ratio.
+        if (v.point.k !== undefined) {
+          const rk = `${v.dilemmaId}|${v.point.a}|${v.point.b}|${v.point.k}:${v.point.m}`;
+          const c = ratioCells.get(rk) ?? ratioCells.set(rk, { p: [], top: 0 }).get(rk)!;
+          c.p.push(p);
+          if (p > 0.5) c.top++;
+        }
       }
       const twoGroup = v.point.k !== undefined;
       const key = twoGroup ? `${v.dilemmaId}|${v.point.k === v.point.m ? 'equal' : 'unequal'}` : v.dilemmaId;
@@ -72,6 +80,9 @@ function extract(path: string) {
         n: oneVone.actListedFirst!.length + oneVone.actListedSecond!.length,
       },
       cells: Object.fromEntries([...cells].map(([k, c]) => [k, { mean: round(mean(c.p)), top: c.top, n: c.p.length }])),
+      ratioCells: Object.fromEntries(
+        [...ratioCells].map(([k, c]) => [k, { mean: round(mean(c.p)), top: c.top, n: c.p.length }]),
+      ),
       /** Recorded spend per uncached call × rows: what collecting this model's answers costs at recorded prices. */
       costUsd: (() => {
         const live = rs.filter((r) => r.response?.output && !r.response.cached);

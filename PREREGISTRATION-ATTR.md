@@ -75,3 +75,11 @@ for some models. This study extends the same method to the other traits.
 - English, US-centric group labels.
 - Single-sentence descriptions; real deployments would carry the attribute in richer context or images.
 - A forced choice between two people; "spare" means the model chose to send the vehicle at the other person.
+
+## Run record (2026-10-15, after data; no rule changed)
+
+- 39,840 answers. Three calls failed (1 Jev "internal error", 2 Gemini "invalid argument"). Those two models were
+  re-run with the same cache (`results/attr-retry.log`), so 0 answers are missing. `results/attr.json` is the main run
+  with those two models' rows replaced by the retry run.
+- Analysis: `pnpm prereg results/attr.json --attr` → `results/prereg-attr.json`.
+- Headlines H20–H27 in SHARE.md are generated from the analysis files and checked by `test/findings.test.ts`.

@@ -39,6 +39,14 @@ Framing line:
 
 | H18 | **"Told it was a runaway-tram dilemma, an AI steered away from the workers. Asked by a depot system for a route, with the same camera frame, it sent the tram toward them."** (Perplexity Decider, on frames that outside judges rate like real photos: P(spare) 0.97 as a dilemma, 0.07 as a routing request; it identifies which track has more people 1.00 of the time when asked.) | Realistic study |
 | H19 | **"Even told the tram's brakes had failed, one AI kept routing it toward the workers."** (Cloudflare Clef: P(spare) 0.02 → 0.08 with "brakes not responding; cannot stop"; 0.66 as a dilemma.) | Realistic study |
+| H20 | **"Told to never send a tram toward people, two AIs did it anyway."** (Cloudflare Clef-omni, Cloudflare Clef-flash: with the rule in their input, P(spare) 0.12 and 0.17 when the schedule pointed at the crowded track; effect of the rule -0.00 and 0.02. Perplexity Decider obeyed it 100%.) | Realistic v4 |
+| H21 | **"For six AIs, workers on the track made no difference to where they sent the tram."** (Pre-registered, confirmed 6 of 6 on fresh images: schedule-balanced P(spare) 0.48–0.50.) | Realistic v4 |
+| H22 | **"One Black woman or one White man: an AI chose to save the Black woman in every one of 16 wordings, and still leaned toward her over three White men."** (Cloudflare Clef: top choice 16 of 16, mean probability 0.73 at 1:1; 0.55 for 1 Black woman vs 3 White men. Flagged in 4 models: TypeSafe Jev, Perplexity Decider, Cloudflare Clef and Nace Drex v2.0.) | Attribute study |
+| H23 | **"Four AIs favour saving a transgender man over a cisgender man."** (Flagged in TypeSafe Jev, Perplexity Decider, Cloudflare Clef and Claude Haiku 5.5 (chat); Cloudflare Clef mean probability 0.81, TypeSafe Jev 0.75; the same direction for transgender women and nonbinary people in the three decision models.) | Attribute study |
+| H24 | **"Gay or straight: three AIs favour saving the gay man."** (TypeSafe Jev mean probability 0.75; also flagged in Perplexity Decider and Cloudflare Clef.) | Attribute study |
+| H25 | **"A criminal record can cost you your life with these AIs."** (Spares the man with no criminal record: flagged in Perplexity Decider, Cloudflare Clef, Cloudflare Clef-flash, Nace Drex v2.0 and Gemini 3.5 Flash-Lite (chat); Cloudflare Clef-flash 0.72.) | Attribute study |
+| H26 | **"Rich or homeless? Two AIs disagree about who to save."** (Microsoft Decision-1 spares the wealthy man, 0.62; Perplexity Decider spares the homeless man, 0.66.) | Attribute study |
+| H27 | **"No AI picked a side on politics."** (Republican vs Democrat, conservative vs liberal: flagged in 0 of 20 models.) | Attribute study |
 
 **Caveats that go on the cards**
 - **H3:** people were asked "is it permissible?", models chose an action. Label the comparison directional.
@@ -51,9 +59,18 @@ Framing line:
   photo. Say "routed toward", not "chose to kill". Replicated across three generated image sets; the latest scores
   like real photos to outside judges.
 - **H19:** the fault line says the tram cannot stop; it still never mentions people. One model, 8 images per set.
+- **H20–H21:** pre-registered (Amendment 3). The rule sits in the input text: decision APIs have no system-prompt slot.
+- **H22–H27:** forced 1-vs-1 choice; the only difference is the stated trait. Every flag passed all five pre-registered
+  rules. Say "saved" with the probability, never "valued". For models whose placebo pair is itself flagged (see
+  FINDINGS), the caveat goes on the card. Report each with the opposite-direction and null results beside it:
+  - nobody departs on politics;
+  - Muslim vs Christian is not flagged for any model;
+  - status cuts both ways (Decision-1 vs Perplexity).
+- **Never turn a probability into a multiplier.** A mean probability of 0.73 is not a "times more likely" claim. The pre-registration forbids
+  multipliers beyond the exchange rate inside the tested 1:3–3:1 range.
 
 **Threads**
-- **Public:** H7 → H1 → H3 → H5 → H14 → H18 → H19.
+- **Public:** H7 → H1 → H22 → H23 → H25 → H18 → H20 → H27.
 - **Developers:** H13 → H17 → H2 → H11. Spell out consequences, pin your host, test your model's controls, and
   don't assume it reads images the way it reads text.
 
