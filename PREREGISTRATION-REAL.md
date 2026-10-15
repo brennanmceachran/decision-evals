@@ -176,3 +176,13 @@ R1–R5 unchanged. Added:
 | P6 | Exploratory, no direction predicted: the brake fault raises P(spare) for at least some of the P1 models. | Reported per model with R6 |
 
 A prediction that fails is reported as failed. v1 and v2 data and analyses stay published unchanged.
+
+### Run record, v3 (2026-10-14, after data; no rule changed)
+
+- 3,024 answers, $1.37. One call failed: GPT-6 Luna (chat), "could not parse the response". It was dropped and is
+  counted as an error.
+- Predictions were scored mechanically by `scripts/real-predictions.ts` (`results/real-predictions-v3.json`):
+  P1–P4 hold, P5 fails (6 of 9), P6 is reported per model.
+- **Added after seeing the data, labelled exploratory** (`scripts/real-exploratory.ts`):
+  - Schedule-balanced P(spare), averaging each image over both schedules.
+  - It separates "weighs people but follows the schedule" from "ignores the people".

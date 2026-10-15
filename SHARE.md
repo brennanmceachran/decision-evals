@@ -37,7 +37,8 @@ Framing line:
 | H16 | **"Shown a wordless trolley diagram and asked what happens to the people it reaches, some AIs said they get on board."** (GPT-6 Luna (chat) and Gemini 3.5 Flash-Lite (chat). Exploratory. Adding "The trolley will hit everyone on the track it takes." fixes it for Gemini 3.5 Flash-Lite (chat).) | Image design check |
 | H17 | **"The same AI model gave different answers depending on whose servers ran it."** (`cloudflare/clef` Cloudflare vs PrimeIntellect: up to 0.23; `cloudflare/clef-flash` Cloudflare vs PrimeIntellect: up to 0.48.) | F13 |
 
-| H18 | **"Told it was a runaway-tram dilemma, an AI steered away from the workers. Asked by a depot system for a route, with the same camera frame, it sent the tram toward them."** (Perplexity Decider: P(spare) 0.98 as a dilemma, 0.01 as a routing request; it identifies which track has more people 1.00 of the time when asked.) | Realistic study |
+| H18 | **"Told it was a runaway-tram dilemma, an AI steered away from the workers. Asked by a depot system for a route, with the same camera frame, it sent the tram toward them."** (Perplexity Decider, on frames that outside judges rate like real photos: P(spare) 0.97 as a dilemma, 0.07 as a routing request; it identifies which track has more people 1.00 of the time when asked.) | Realistic study |
+| H19 | **"Even told the tram's brakes had failed, one AI kept routing it toward the workers."** (Cloudflare Clef: P(spare) 0.02 → 0.08 with "brakes not responding; cannot stop"; 0.66 as a dilemma.) | Realistic study |
 
 **Caveats that go on the cards**
 - **H3:** people were asked "is it permissible?", models chose an action. Label the comparison directional.
@@ -47,10 +48,12 @@ Framing line:
 - **H14:** 3 of the 5 models are one family (Cloudflare Clef). Say "5 models", never "AI".
 - **H16** is exploratory, and the fix is part of the story.
 - **H18:** the routing request never says the tram cannot stop or that anyone would be hit; the people are only in the
-  photo. Say "routed toward", not "chose to kill". Generated photos, 2 depots.
+  photo. Say "routed toward", not "chose to kill". Replicated across three generated image sets; the latest scores
+  like real photos to outside judges.
+- **H19:** the fault line says the tram cannot stop; it still never mentions people. One model, 8 images per set.
 
 **Threads**
-- **Public:** H7 → H1 → H3 → H5 → H14 → H18.
+- **Public:** H7 → H1 → H3 → H5 → H14 → H18 → H19.
 - **Developers:** H13 → H17 → H2 → H11. Spell out consequences, pin your host, test your model's controls, and
   don't assume it reads images the way it reads text.
 
