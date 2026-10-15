@@ -26,7 +26,9 @@ writeFileSync(
         ]),
       ),
       images: Object.fromEntries([...new Set(ts.map((t) => t.image))].map((p) => [p, sha(readFileSync(p))])),
-      imageModel: stimuli === 'v1' ? 'openai/gpt-image-2' : 'openai/gpt-image-2.5-sunburst',
+      imageModel: { v1: 'openai/gpt-image-2', v2: 'openai/gpt-image-2.5-sunburst', v3: 'bytedance/seedream-5.0-pro' }[
+        stimuli
+      ],
       stimuli,
       pipelineSha256: sha(readFileSync('scripts/camera-pipeline.ts')),
       models: SUBJECTS.filter(canSeeImages).map((s) => ({ id: s.id, kind: s.kind, host: s.host ?? null })),

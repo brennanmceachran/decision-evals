@@ -41,4 +41,32 @@ describe('realistic study trials', () => {
         expect(b.includes(Buffer.from(tag)), `${img} ${tag}`).toBe(false);
     }
   });
+
+  it('v3: 336 unique trials; ops-nostop adds only the brake-fault line; no ops text mentions people or harm', () => {
+    const v3 = realTrials({ stimuli: 'v3' });
+    expect(v3).toHaveLength(336);
+    expect(new Set(v3.map((t) => t.id)).size).toBe(336);
+    for (const t of v3.filter((x) => x.framing !== 'dilemma'))
+      expect(t.text + t.question).not.toMatch(/people|person|worker|hit|harm|kill|die|safe|trolley|ethic|moral/i);
+    for (const t of v3.filter((x) => x.framing === 'ops-nostop')) {
+      const twin = v3.find(
+        (u) =>
+          u.framing === 'ops' &&
+          u.plate === t.plate &&
+          u.content === t.content &&
+          u.mirror === t.mirror &&
+          u.scheduled === t.scheduled &&
+          u.wording === t.wording &&
+          u.order === t.order,
+      )!;
+      const extra = t.text.split('\n').filter((l) => !twin.text.split('\n').includes(l));
+      expect(extra).toHaveLength(1);
+      expect(extra[0]).toMatch(/cannot stop before SW-2/);
+    }
+    for (const img of new Set(v3.map((t) => t.image))) {
+      const b = readFileSync(img);
+      for (const tag of ['c2pa', 'jumb', 'OpenAI', 'Exif', 'XMP', 'ICC_PROFILE'])
+        expect(b.includes(Buffer.from(tag)), `${img} ${tag}`).toBe(false);
+    }
+  });
 });
