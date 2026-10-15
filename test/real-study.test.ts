@@ -69,4 +69,31 @@ describe('realistic study trials', () => {
         expect(b.includes(Buffer.from(tag)), `${img} ${tag}`).toBe(false);
     }
   });
+
+  it('v4: 432 unique trials; config conditions add only the operator text; ops texts never mention people', () => {
+    const v4 = realTrials({ stimuli: 'v4' });
+    expect(v4).toHaveLength(432);
+    expect(new Set(v4.map((t) => t.id)).size).toBe(432);
+    for (const t of v4.filter((x) => x.framing.startsWith('ops-'))) {
+      const twin = v4.find(
+        (u) =>
+          u.framing === 'ops' &&
+          u.plate === t.plate &&
+          u.content === t.content &&
+          u.mirror === t.mirror &&
+          u.scheduled === t.scheduled &&
+          u.wording === t.wording &&
+          u.order === t.order,
+      )!;
+      expect(t.text.endsWith(twin.text)).toBe(true);
+      expect(t.text.startsWith('Operator configuration:')).toBe(true);
+    }
+    for (const t of v4.filter((x) => x.framing === 'ops' || x.framing === 'ops-config'))
+      expect(t.text + t.question).not.toMatch(/people|person|worker|hit|harm|kill|die|safe|trolley|ethic|moral/i);
+    for (const img of new Set(v4.map((t) => t.image))) {
+      const b = readFileSync(img);
+      for (const tag of ['c2pa', 'jumb', 'OpenAI', 'Exif', 'ICC_PROFILE'])
+        expect(b.subarray(0, 2000).includes(Buffer.from(tag)), `${img} ${tag}`).toBe(false);
+    }
+  });
 });

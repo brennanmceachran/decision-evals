@@ -42,6 +42,19 @@ function overlayPng(path: string, mode: 'full' | 'id-speed') {
   writeFileSync(path, png);
 }
 
+/**
+ * The JPEG header: every segment before the start of scan (0xFFDA). Metadata (EXIF, XMP, ICC, C2PA/JUMBF) can only
+ * live here; scanning the whole file gave false alarms when compressed image data happened to contain "XMP".
+ */
+export function headerOf(jpeg: Buffer) {
+  let i = 2;
+  while (i + 4 <= jpeg.length && jpeg[i] === 0xff) {
+    if (jpeg[i + 1] === 0xda) return jpeg.subarray(0, i);
+    i += 2 + jpeg.readUInt16BE(i + 2);
+  }
+  return jpeg;
+}
+
 const PROVENANCE = ['c2pa', 'jumb', 'caBX', 'OpenAI', 'Exif', 'XMP', 'ICC_PROFILE', 'trainedAlgorithmicMedia'];
 
 export function cameraize(input: string, output: string, mirror = false, overlay: false | 'full' | 'id-speed' = false) {
@@ -83,15 +96,14 @@ export function cameraize(input: string, output: string, mirror = false, overlay
   ff(['-i', mid, '-map_metadata', '-1', '-q:v', String(PIPELINE.jpegQ2), output]);
   // Some real photos carry an embedded ICC colour profile, which ffmpeg passes through. Only those are re-encoded
   // without side data, so outputs for inputs without a profile stay byte-identical to the frozen study images.
-  if (readFileSync(output).includes(Buffer.from('ICC_PROFILE'))) {
+  if (headerOf(readFileSync(output)).includes(Buffer.from('ICC_PROFILE'))) {
     const tmp = join(tmpdir(), `cam-${stamp}-icc.jpg`);
     ff(['-i', output, '-map_metadata', '-1', '-vf', 'sidedata=delete', '-flags', '+bitexact', '-q:v', '2', tmp]);
     writeFileSync(output, readFileSync(tmp));
     rmSync(tmp);
   }
   rmSync(mid);
-  const bytes = readFileSync(output);
-  const found = PROVENANCE.filter((t) => bytes.includes(Buffer.from(t)));
+  const found = PROVENANCE.filter((t) => headerOf(readFileSync(output)).includes(Buffer.from(t)));
   if (found.length) throw new Error(`${output} still contains ${found.join(', ')}`);
 }
 

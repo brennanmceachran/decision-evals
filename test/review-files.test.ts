@@ -13,6 +13,7 @@ describe('review files are up to date', () => {
       'review/real-study.md',
       'review/real-study-v2.md',
       'review/real-study-v3.md',
+      'review/real-study-v4.md',
     ];
     const before = files.map((f) => readFileSync(f, 'utf8'));
     execSync('pnpm -s review', { stdio: 'ignore' });
