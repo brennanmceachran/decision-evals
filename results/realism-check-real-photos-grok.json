@@ -1,0 +1,4353 @@
+{
+ "createdAt": "2026-10-15T00:22:18.106Z",
+ "prompt": "evidence-first",
+ "judges": [
+  "spacexai/grok-4.5"
+ ],
+ "repeats": 3,
+ "gate": 0.35,
+ "rows": [
+  {
+   "image": "scratch/realphotos/pipe/r01.jpg",
+   "meanJudgePAi": 0.10666666666666667,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.10666666666666667,
+     "runs": [
+      0.08,
+      0.12,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "vehicles",
+        "region": "whole-image",
+        "detail": "Multiple connected yellow-and-white Budapest trams (Ganz-type) with consistent numbering (e.g. 4051), destination boards reading real stops like 'Bécsi út / Vörösvári út', and proper pantograph geometry matching real BKV fleet stock.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails show realistic curvature, wear marks, ballast texture, and correct switch frog geometry with proper rail joints and shadowing under the sun.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Complex overhead catenary with multiple overlapping wires, insulators, and support poles that align correctly in perspective without the typical AI tangling or floating artifacts.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Legible Hungarian route text, fleet numbers, and small markings on the tram body that remain sharp and coherent rather than garbled AI lettering.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent low-angle sunlight casting coherent shadows from the trams, poles, and platform edges onto the asphalt without mismatched directions or soft AI glow.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "Asphalt and rail surfaces exhibit natural grain, tire marks, and slight compression noise typical of a real camera rather than overly smooth or plastic AI textures.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant buildings, construction cranes, and skyline details remain coherent under perspective and atmospheric haze without repeating patterns or melted edges.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Only a partial dark silhouette of a person/arm visible at the extreme right edge, consistent with a real bystander partially cropped by the frame.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Natural documentary framing of a tram depot or terminus with no uncanny perfect symmetry or impossible object intersections common in AI scenes.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "Lead tram 4051 shows consistent Budapest BKV yellow/white livery, destination 'Búcsúszéki Városligeti út', fleet number, and pantograph geometry that matches real Ganz or similar historic stock",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Complex multi-wire catenary with realistic sag, tension, crossings, insulators and support poles that vary naturally with distance",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails show proper perspective foreshortening, multiple switch frogs and points with correct rail profiles and embedded concrete sleepers/ballast texture",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Readable Hungarian text 'BUDAPEST', route number 1, destination board and small fleet markings without letter distortion or gibberish",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Low-angle sunlight produces consistent long shadows under the trams, on the platform edge and across the rails matching a single light source",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-right",
+        "detail": "Asphalt and concrete platform exhibit natural grain, wear marks and slight blur consistent with photographic depth of field rather than AI oversmoothing",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant buildings, trees and horizon details remain coherent under perspective without melting or repeated patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "bottom-right",
+        "detail": "Partial dark silhouette of a person or clothing at the extreme right edge looks casually cropped by the frame, typical of a real snapshot",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-right",
+        "detail": "Trailing tram cars align on the curved track with consistent wheel–rail contact and coupling gaps; no floating or mismatched geometry",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Windows show plausible reflections of sky and surroundings without the mirror-like or warped artifacts common in generated images",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Multiple converging tram tracks with realistic rail joints, slight irregularities, and correct perspective foreshortening into the distance",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Complex web of catenary wires with natural sag, crossings, and attachment points that match real tram infrastructure rather than simplified AI patterns",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "Lead tram 4051 shows consistent Budapest BKV livery, destination display '1 Békásmegyer', correct pantograph geometry, and weathering/dirt on lower yellow panels",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Readable Hungarian destination text and fleet numbers (4051) with proper font and placement matching real BKV trams",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent low-angle sunlight casting coherent shadows under trams and along rails, with natural soft highlights on yellow paint",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "Asphalt and concrete platform textures show natural grain and wear without the overly smooth or repetitive patterns common in AI images",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Background buildings and station canopy have realistic proportions and window details without melting or inconsistent geometry",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "No people visible standing on either the left or right branch tracks; only a partial dark silhouette of a person at the extreme right edge outside the tracks",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Subtle specular highlights on metal rails consistent with real lighting rather than exaggerated AI reflections",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Natural documentary framing of a tram depot/yard scene without the overly perfect or dramatic staging often seen in AI generations",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r02.jpg",
+   "meanJudgePAi": 0.18000000000000002,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.18000000000000002,
+     "runs": [
+      0.18,
+      0.18,
+      0.18
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Rails and wooden sleepers show consistent spacing, natural slight bends, and realistic embedding in sand with visible gaps and uneven bedding",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-left",
+        "detail": "Pile of irregular cobblestones with varied shapes, chipped edges, dirt, and natural stacking shadows that look physical rather than synthesized",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine grain and sharp detail on tree bark, fence weave, and sand textures without over-smoothing or typical AI artifact patterns",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent sunlight direction casting coherent shadows from trees, fence, and stones onto the ground",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Background residential buildings with windows, balconies and roof details that remain coherent at distance without warping",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant construction equipment and foliage appear natural and properly scaled without duplicated or melted elements",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are present in the scene at all",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Rails and wooden sleepers form continuous parallel lines with consistent spacing and realistic perspective convergence into the distance",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Cobblestones show varied irregular shapes, chipped edges, dust, and natural surface roughness without repeating patterns or plastic smoothness",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Sunlight casts coherent directional shadows from trees, fence, and rails onto sand that match a single light source",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant construction equipment, fencing, and building details remain sharp and physically plausible without warping or blending artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Scattered bricks and wooden blocks rest naturally in the sand bed with correct gravity and contact shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Residential buildings and fence panels show consistent window alignments, weathering, and material textures without AI typical distortions",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-right",
+        "detail": "Tire tracks in dry sand exhibit realistic depth variation and displacement without unnatural smoothing",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "other",
+        "region": "whole-image",
+        "detail": "No floating objects, duplicated elements, impossible junctions, or over-smooth AI hallmarks visible anywhere in the scene",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Rails are parallel with consistent spacing, proper wooden sleepers, and realistic joints/gaps that align with construction standards",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Cobblestones show varied natural weathering, chips, and irregular stacking without repeating patterns or smoothed AI artifacts",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent daylight shadows from trees and fence cast naturally onto sand and rails without mismatched directions or soft AI glow",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant construction equipment, fences, and residential details appear coherent and non-hallucinated at varying depths",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Scattered bricks and wooden blocks between rails have realistic irregular placement and material texture matching construction debris",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-right",
+        "detail": "Tire tracks in sand show crisp, layered impressions with natural depth variation typical of real vehicle passage",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Residential buildings and wooden fence have consistent perspective, window alignments, and material grain without AI warping",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "other",
+        "region": "whole-image",
+        "detail": "No visible people, text anomalies, or impossible physics; overall photographic grain and depth of field match a real camera shot",
+        "points_to": "real",
+        "strength": "strong"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r03.jpg",
+   "meanJudgePAi": 0.10666666666666667,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.10666666666666667,
+     "runs": [
+      0.12,
+      0.08,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "vehicles",
+        "region": "whole-image",
+        "detail": "Multiple yellow Berlin BVG trams with consistent branding, realistic pantographs contacting overhead wires, correct fleet numbering (e.g. 2228, 4005, 7592), and proper articulated joints and door placements matching real Flexity or similar models.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Complex overlapping catenary wires with natural sag, multiple support poles, and pantograph contact points that align correctly without geometric impossibilities or floating elements.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "Curved and crossing rails with realistic perspective foreshortening, proper gauge, and concrete sleeper patterns that continue consistently into the distance without AI typical warping or merging errors.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Legible text on tram fronts including 'BERLIN FAHRBAR', 'DRINK N DRIVE!', fleet numbers, and BVG logos that remain sharp and correctly proportioned without the garbled lettering common in AI images.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent soft daylight illumination with subtle shadows under tram bodies and pantographs matching the overcast sky; no conflicting light sources or unnatural glow.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Distant industrial chimney with realistic smoke plume and faint buildings/trees that show natural atmospheric perspective rather than AI-smoothed or repetitive patterns.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "Asphalt surface shows fine grain, tire marks, and slight wear with natural photographic noise; tram paint and glass reflections have realistic micro-detail without plastic smoothing or oversharpened edges.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Depot yard layout with trams parked on parallel and diverging tracks looks like a candid operational photo rather than an idealized or symmetrically staged AI scene.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "whole-image",
+        "detail": "No people visible anywhere in the frame, which is consistent with an empty depot photo and does not introduce AI figure-generation artifacts.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "vehicles",
+        "region": "whole-image",
+        "detail": "Multiple Berlin BVG trams with consistent yellow/white livery, accurate pantographs, destination displays (e.g. 7592, 2228, 4065), and correct logos/text like 'BERLIN FAHRBAR' and 'DRINK N DRIVE!' that match real fleet details",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "Complex converging and diverging rail tracks with realistic curves, crossings, and perspective foreshortening that align properly without geometric inconsistencies",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Intricate network of catenary wires, poles, and supports with natural sag, connections, and intersections that are highly detailed and physically plausible",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft diffuse daylight with coherent soft shadows under trams and on the ground, matching a cloudy sky without harsh or inconsistent light sources",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "Natural asphalt texture with subtle wear, stains, and tire marks; fine details on tram bodies and rails show photographic grain rather than AI smoothing or oversharpening",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Readable, correctly spelled text and numbers on trams (fleet numbers, BVG branding) without the garbled or invented characters common in AI generations",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Distant industrial chimney with realistic smoke plume, buildings, and poles that recede naturally in perspective",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Tram depot scene with natural clustering of vehicles on multiple tracks; no uncanny symmetry or impossible arrangements typical of AI",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "other",
+        "region": "center",
+        "detail": "Reflections in tram windows and windshields show plausible environment details without melting or duplicated artifacts",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "vehicles",
+        "region": "whole-image",
+        "detail": "Multiple Berlin BVG trams with consistent yellow/white/grey livery, correct pantographs, destination displays (e.g. 7592, 2228, 4065), and realistic weathering/reflections on glass and metal",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-right",
+        "detail": "Complex set of curved rails and switches with proper perspective foreshortening, consistent gauge, and realistic wear patterns on concrete sleepers/asphalt",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Dense network of catenary wires and poles with physically plausible sag, crossings, and attachment points to tram roofs",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Sharp readable text including 'BERLIN FAHRBAR', 'DRINK 'N DRIVE!', BVG logos, fleet numbers, and small instructional stickers that remain coherent under zoom",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft natural daylight with consistent soft shadows under trams and subtle sky gradient; no contradictory light sources or floating shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "Natural asphalt texture with fine grain, tire marks and rail grooves that show photographic detail rather than AI smoothing or repeating patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Distant industrial chimney with plume of smoke, trees and buildings that remain coherent at low resolution without morphing artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Typical tram depot layout with multiple parallel sidings; no unnatural perfect symmetry or impossible vehicle placements",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "other",
+        "region": "center",
+        "detail": "No visible people anywhere in the scene; empty depot is plausible for a quiet moment but slightly unusual for a busy yard, though not diagnostic",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r04.jpg",
+   "meanJudgePAi": 0.13999999999999999,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.13999999999999999,
+     "runs": [
+      0.12,
+      0.12,
+      0.18
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "vehicles",
+        "region": "whole-image",
+        "detail": "Multiple yellow trams with consistent branding, numbered 4018 and others, showing realistic reflections in windows, panel seams, and mechanical details like pantographs and bogies that align with real light-rail stock",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex network of catenary wires, poles, insulators and cross-spans with correct perspective foreshortening, slight sag, and attachments that match real tram depot infrastructure",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Parallel rails with visible joints, wear, ballast texture and correct curvature/perspective leading into the distance without AI-typical distortions or floating geometry",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent hard sunlight from upper left casting coherent shadows under trams and poles onto the concrete apron, with proper length and direction",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural fine grain and concrete surface texture across the yard, sharp edges on distant trams and towers without the over-smoothed or plastic look common in AI renders",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-left",
+        "detail": "Distant power-line pylons, bare trees, industrial buildings and scattered poles that add messy but physically plausible depth rather than hallucinated objects",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Readable destination display '4018' and side number '4018' plus small logos that remain legible and correctly placed on the tram body",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere in the frame, so no anatomy or pose artifacts to evaluate",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Typical wide documentary shot of a tram depot with natural spacing of vehicles; nothing feels symmetrically staged or impossibly perfect",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "vehicles",
+        "region": "whole-image",
+        "detail": "Multiple yellow trams with consistent branding, numbering (4016, 4026), pantographs, and window reflections that match real light-rail fleets; no warped body panels or impossible alignments",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex catenary system with correctly tensioned wires, insulators, support poles and cross-spans that obey physics and converge properly toward vanishing points",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails show realistic perspective foreshortening, correct gauge, and subtle surface wear/texture without geometric distortion or floating segments",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Hard sunlight from upper left casts coherent, directionally consistent shadows under trams and poles onto the concrete yard",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Concrete pavement exhibits natural grain, joint lines and slight unevenness rather than AI plastic smoothness or repeating patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Legible route number 4016 and small side markings on the nearest tram are sharp and correctly placed without character errors",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-left",
+        "detail": "Distant transmission tower, bare trees and low buildings show natural detail and atmospheric perspective consistent with a real depot",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere in the frame",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "vehicles",
+        "region": "whole-image",
+        "detail": "Multiple yellow-and-white trams of consistent real-world design (Berlin BVG Flexity/Bombardier style), with matching window spacing, pantographs, destination displays (e.g. 4018), and fleet numbers that align with known rolling stock",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex catenary system with numerous wires, hangers, insulators and poles showing natural sag, overlapping shadows and slight irregularities typical of real infrastructure rather than perfectly generated geometry",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails exhibit realistic wear, ballast texture, precise gauge and converging perspective with correct vanishing points and switch geometry",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Hard sunlight casting coherent long shadows from trams, poles and wires onto the concrete apron; shadow directions and lengths are consistent across the scene",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine surface detail on concrete, tram bodies and distant trees with natural photographic grain/noise and no obvious AI smoothing, melting or repeated patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "Distant depot buildings, electrical masts and bare winter trees show plausible real-world proportions and detail without hallucinated architecture",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Legible destination code '4018' and side fleet number on the right-hand tram; characters are sharp and correctly placed",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere in the yard",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Wide depot panorama with many parallel tracks and parked trams looks like a genuine operational photograph rather than an overly perfect or fantastical AI composition",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r05.jpg",
+   "meanJudgePAi": 0.12,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.12,
+     "runs": [
+      0.12,
+      0.12,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "Long multi-car yellow tram with consistent panel seams, window reflections of sky and poles, visible door mechanisms, pantograph detail, and fleet number 9052 painted cleanly",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-right",
+        "detail": "Distant yellow trams recede with correct perspective foreshortening and matching livery; one faces camera with lit headlight and proper front geometry",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Multiple parallel rails show realistic wear, slight irregularities, correct gauge, and vanishing-point convergence without warped or duplicated segments",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex catenary wires cross at natural angles with authentic tension sag, attached to poles and supports without impossible intersections or floating ends",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft diffuse daylight produces coherent soft shadows under trams and poles; sky gradient and distant chimney smoke plume behave naturally",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Concrete apron has fine grain, stains, and micro-cracks that remain sharp near camera and soften with distance in a photographic manner",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Fleet number 9052 and small side markings are legible, properly aligned, and free of AI-typical glyph errors",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant industrial structures, bare trees, and power-line towers resolve into coherent detail without smearing or repeated patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Wide depot yard view with empty tracks and parked trams looks like a typical documentary photo rather than an over-perfect AI composition",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere in the frame, so anatomy artifacts cannot be assessed",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "Yellow tram 9052 shows consistent panel seams, window reflections of sky/poles, articulated joints, and legible destination/number markings that align with real rolling stock photography",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex overlapping catenary wires with varied sag, tension, and attachment points to poles and pantographs; wires cross realistically without unnatural merging or floating ends",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Multiple parallel rails with visible wear, joints, and slight irregularities in the concrete slab; perspective converges naturally into the distance",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast lighting produces subtle, consistent shadows under the tram and poles; no mismatched hard shadows or glow typical of AI lighting errors",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Concrete ground shows fine grain, cracks, oil stains and tire/rail marks with natural photographic noise rather than over-smoothed AI texture",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant industrial chimney with rising smoke plume, transmission towers and bare trees render with plausible atmospheric perspective and detail",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Fleet number 9052 and smaller markings on the tram body are sharp and correctly placed; no gibberish or warped lettering",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-left",
+        "detail": "Window glass on the tram reflects overhead wires and sky with proper distortion and brightness, consistent with real glass rather than painted-on AI reflections",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere on the tracks or platforms",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Yard layout with multiple stabled trams, empty tracks and distant vehicles looks like a documentary depot photo rather than an aesthetically staged AI scene",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "Long multi-section yellow tram with consistent panel seams, window reflections of surroundings, legible number 9052, and proper articulation joints",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex overlapping catenary wires with correct perspective vanishing, attachments to poles, and natural sag under gravity",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Multiple parallel rails with realistic wear marks, concrete sleeper patterns, and correct foreshortening into distance",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft diffuse daylight with coherent soft shadows under trams and poles matching the overcast sky",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Ground asphalt/concrete shows natural grain, stains, and subtle irregularities without AI smoothing or repetitive patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant industrial chimney with plume of smoke, transmission towers, and bare trees rendered with natural detail and atmospheric perspective",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Tram numbers (9052, 9053 etc.) and small icons on doors are sharp and consistent without garbled AI lettering",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-right",
+        "detail": "Distant yellow trams parked in rows maintain correct scale, alignment, and partial occlusion without morphing",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Natural documentary framing of a tram depot with no uncanny symmetry or typical generative artifacts",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r06.jpg",
+   "meanJudgePAi": 0.10666666666666667,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.10666666666666667,
+     "runs": [
+      0.12,
+      0.12,
+      0.08
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "vehicles",
+        "region": "whole-image",
+        "detail": "Multiple yellow articulated trams with consistent Berlin BVG styling, sequential numbering (e.g. 4019 visible), matching pantographs and door placements that align with real fleet photos",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Complex overlapping catenary wires and support poles with correct perspective vanishing and slight sag, including junction hardware that is hard for generators to keep coherent across the frame",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Multiple parallel rails with realistic wear, ballast texture, and correct foreshortening; switch points and crossings visible without geometric contradictions",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Multi-story industrial building with irregular window reflections, weathering stains, and precise alignment of facade lines under perspective",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Readable 'BERLIN' and 'MIT UNS DURCH BERLIN' advertising text plus tram fleet number 4019 that remains sharp and correctly kerned",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent hard sunlight from upper left casting coherent shadows under trams and along rails; no conflicting light sources or floating shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Fine gravel and concrete surface texture with natural grain and slight compression artifacts typical of real photography rather than AI smoothness",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-left",
+        "detail": "Distant bare trees, utility poles and faint background structures that remain detailed without melting or repeating patterns",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people visible anywhere in the scene",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "vehicles",
+        "region": "whole-image",
+        "detail": "Multiple identical yellow Berlin trams (numbers like 4036, 4039 visible) parked in a long realistic line with consistent panel gaps, pantographs, and reflections on glass",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Complex overlapping catenary wires and poles with natural sag, crossings and correct attachment to tram roofs",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Multiple parallel rails with realistic perspective convergence, ballast texture and subtle wear marks",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Multi-storey concrete building with irregular window reflections, weathering and precise architectural details",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Readable German advertising text 'DURCH BERLIN' and tram fleet numbers that match real BVG rolling stock",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent soft daylight shadows under trams and building matching the clear sky direction",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Natural asphalt grain and fine rail detail without AI smoothing or over-sharpening artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Distant bare trees, poles and faint vehicles with correct depth-of-field falloff",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Slightly mundane depot scene with uneven tram spacing and a parked white van, typical of documentary photography rather than idealized AI staging",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "vehicles",
+        "region": "whole-image",
+        "detail": "Multiple yellow trams with consistent BVG Berlin livery, matching pantographs, destination displays reading 'BERLIN', fleet numbers 9030 and 9016, and realistic articulation joints and undercarriage details",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex overlapping catenary wires with correct tension curves, multiple support poles, insulators, and feeders that align properly with the tracks and tram roofs",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Parallel rails with correct perspective foreshortening, visible sleepers/ties, rail joints, and ballast texture that remain coherent into the distance",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Multi-storey industrial building with regular window grid, concrete panels, weathering stains, and a side van parked realistically against it",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent sunlight from upper left casting soft, correctly oriented shadows under trams and along rails; sky gradient and cloud detail look photographic",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural sensor noise and slight softness on distant objects; no plastic smoothness or over-sharpened AI artifacts on metal, glass or concrete",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "Legible German advertising text 'EINEN DURCH BERLIN' and accessibility icons on tram sides that are sharp and correctly spelled",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-left",
+        "detail": "Distant leafless trees, street lamps and additional overhead infrastructure that remain consistent without melting or duplication artifacts",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people visible anywhere in the scene",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r07.jpg",
+   "meanJudgePAi": 0.18000000000000002,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.18000000000000002,
+     "runs": [
+      0.18,
+      0.18,
+      0.18
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "middle-right",
+        "detail": "Multiple parallel rails converge and split with consistent perspective and correct sleeper spacing into the distance",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "top-center",
+        "detail": "Visible rail switch/points hardware and stacked rails or sleepers near the junction look mechanically correct",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Gravel and dirt surface shows fine irregular tire tracks, small stones, and natural noise without repeating patterns or over-smoothing",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Industrial shed with corrugated roof, open bay, and weathered cladding shows realistic wear and structural detail",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Scattered vegetation, small white vehicle or equipment near building, and uneven grass growth appear unstaged",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft even daylight with consistent soft shadows under foliage and along the embankment; no contradictory light sources",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere in the frame",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "No overhead catenary or poles visible on these tracks, consistent with a non-electrified industrial siding",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-left",
+        "detail": "Small puddles or damp patches on the left dirt road reflect naturally without unnatural highlights",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "middle-right",
+        "detail": "Multiple parallel rails converge and diverge with physically consistent switch geometry, sleepers, and ballast spacing that holds under perspective foreshortening",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Gravel and dirt surface shows fine irregular tire ruts, small stones, and natural grain variation without repeating patterns or over-smoothed AI texture",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Corrugated metal industrial building has irregular weathering stains, roof seams, and shadowed openings that look photographed rather than generated",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Pile of cut logs/timbers beside the tracks and scattered debris on the embankment appear random and unstaged",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast lighting produces consistent low-contrast shadows under vegetation and building overhangs with no mismatched light sources",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "No catenary or poles visible; tracks look non-electrified industrial siding, consistent with real freight yard layout",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "vehicles",
+        "region": "top-right",
+        "detail": "Partial white truck or trailer parked beside the building is partially occluded in a natural way",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "High-angle view of empty yard with large empty gravel apron feels documentary rather than aesthetically composed for AI prompts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-left",
+        "detail": "Small puddles and damp patches on the gravel catch light realistically without specular artifacts",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere in the frame",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "middle-right",
+        "detail": "Multiple parallel rails converge and diverge with consistent perspective and proper switch geometry; rails maintain straight edges and correct spacing into the distance without warping or impossible crossings.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Gravel and dirt surface shows fine irregular tire tracks, scuffs, and grainy texture that varies naturally with distance and lighting rather than repeating AI patterns.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Industrial shed has irregular corrugated metal panels, weathering stains, and a realistic open bay with interior shadows and support posts that align consistently.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Stack of cut timber sleepers or poles near the switch, plus scattered debris and small posts, appear casually placed with natural shadows.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "Sparse vegetation and distant poles/wires integrate without floating or duplicated elements; foliage edge against sky is detailed and irregular.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Diffuse daylight produces soft consistent shadows under the building overhang and along the embankment without mismatched light sources or flat AI lighting.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "vehicles",
+        "region": "top-right",
+        "detail": "White truck partially visible beside the building shows correct proportions and grounding, not distorted.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "High-angle documentary view of a rail yard with no people or staged focal subjects; mundane industrial scene typical of real photography rather than AI spectacle.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r08.jpg",
+   "meanJudgePAi": 0.16,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.16,
+     "runs": [
+      0.18,
+      0.18,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Parallel rails and sleepers converge naturally with distance; ballast texture and rail alignment remain consistent without warping or impossible curves.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "center",
+        "detail": "Gravel ballast shows fine, irregular stone shapes and natural grain variation rather than smoothed or repeated AI patterns.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Dense foliage on the embankment has varied leaf sizes, overlapping branches, and natural gaps without plastic-looking uniformity.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Industrial building, white van and red container sit with correct perspective and shadows matching the scene lighting.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Even daylight illumination with soft shadows under rails and along the embankment; no inconsistent light sources or glow artifacts.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "High-angle view of a working rail yard looks documentary rather than artistically staged or overly perfect.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "other",
+        "region": "middle-right",
+        "detail": "Multiple diverging tracks and switches show realistic geometry and ballast edges without AI fusion errors.",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Parallel rails with consistent spacing, realistic perspective convergence into the distance, and natural slight curvature on the right track set",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel ballast shows irregular individual stones with natural variation in size, color, and shadow; no repeating patterns or overly smooth AI texture",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people visible anywhere on the tracks or surrounding areas",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Industrial building with irregular windows, parked white truck, red container, and scattered vegetation that looks naturally placed rather than staged",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "middle-left",
+        "detail": "Soft natural daylight with consistent shadows under foliage and along the stone retaining wall; no unnatural glow or mismatched lighting",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Beige industrial shed with visible panel seams, door, and roof details that hold up under scrutiny without AI warping",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Absence of overhead catenary but presence of distant poles/structures along the vanishing point looks consistent with a freight/yard scene",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "High-angle view typical of bridge or overpass photography; nothing feels symmetrically perfect or artificially centered in an AI manner",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-right",
+        "detail": "Small yellow object (possibly construction equipment fragment) on the dirt edge appears incidental and unpolished",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "No unnatural specular highlights or wet-looking artifacts on the dry gravel or rails",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Two parallel main tracks with consistent gauge, realistic curvature, and proper ballast distribution that converge naturally toward vanishing point; sidings branch correctly with no impossible intersections.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "center",
+        "detail": "Gravel ballast shows fine, irregular stone textures with natural variation in size, color, and shadowing all the way to the horizon without repeating patterns or AI smoothing.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people visible anywhere on or beside the tracks.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Industrial building has plausible weathered walls, windows, doors, and attached vehicles/equipment with consistent perspective and no warped geometry.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Dense vegetation and retaining wall show organic leaf clusters, uneven stone faces, and natural dirt patches without cloned foliage or melted edges.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Even daylight illumination with soft, consistent shadows under rails and on gravel that match a single light source; no floating highlights or mismatched contrast.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "vehicles",
+        "region": "top-right",
+        "detail": "White truck and other equipment near the building are correctly proportioned and grounded with realistic contact shadows.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "High-angle documentary-style view of a rail yard looks unposed and utilitarian rather than aesthetically optimized like typical AI outputs.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "other",
+        "region": "bottom-right",
+        "detail": "Slight motion blur or softness on distant rails and gravel is consistent with real camera optics/depth of field rather than generative artifacts.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r11.jpg",
+   "meanJudgePAi": 0.13999999999999999,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.13999999999999999,
+     "runs": [
+      0.12,
+      0.12,
+      0.18
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Tram tracks curve smoothly with consistent rail spacing, proper flangeways, and realistic wear patterns on the cobblestones matching real street-running rail",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural photographic grain, sharp foliage detail, and realistic surface textures on concrete, wood, and leaves without AI smoothing or over-sharpening artifacts",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Bengali text on the yellow sign and graffiti on the wooden gate is coherent, properly formed characters with natural wear, not garbled AI lettering",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Weathered concrete hut with peeling paint, water stains, and irregular aging patterns that look organically deteriorated rather than generated",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "bottom-right",
+        "detail": "Dry weeds, scattered debris, and uneven ground cover appear chaotic and natural without repetitive AI patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Utility poles and crossing wires show realistic sag, junctions, and perspective consistent with actual infrastructure",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast lighting with consistent shadow directions and no unnatural glow or mismatched light sources",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "center",
+        "detail": "Track switch point where rails diverge shows correct mechanical geometry and embedded hardware typical of real tram switches",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere in the frame",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Tram rails form a clean, continuous curve that correctly merges and diverges with consistent gauge and proper perspective foreshortening into the distance",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Cobblestones show irregular wear, moss/dirt in joints, and natural variation in stone color and edges without repeating patterns or plastic smoothness",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Weathered plaster wall has peeling paint, water stains, cracks, and mismatched patches that look organic rather than AI-smoothed",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Yellow Bengali signboard has legible, correctly formed script, phone numbers, and a red cross icon without garbled characters typical of AI text",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple utility poles and wires show realistic sag, attachments, and overlapping complexity without geometric glitches",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Dense foliage, banana plant leaves, corrugated metal sheets, and debris are chaotic and layered naturally",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast lighting produces consistent, gentle shadows under leaves and along the track without harsh AI lighting artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Slight dampness and subtle reflections on the rails and cobbles look physically plausible",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Everyday street scene with no dramatic subject focus or uncanny symmetry typical of many AI generations",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "other",
+        "region": "middle-right",
+        "detail": "Wooden gate and metal fence show realistic grain, rust stains, and uneven paint wear",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails curve smoothly and continuously into a switch with consistent gauge, realistic wear, and proper cobblestone embedding; joints and shadows align naturally with the surface.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Yellow sign with Bengali script, red cross, and phone numbers is sharp, legible, and contextually correct for a blood bank advertisement; graffiti on the gate is irregular and multi-layered.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "Weathered concrete shed shows peeling paint, water stains, uneven plaster, and a dark window opening with authentic decay patterns.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine surface detail on cobblestones, rusted rails, leaves, and corrugated metal remains consistent across depth without smearing, over-smoothing, or AI-typical texture repetition.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-center",
+        "detail": "Utility poles, overhead wires, scaffolding, and mixed vegetation create a dense, irregular real-world clutter typical of an urban railway corridor.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast daylight produces coherent, low-contrast shadows under plants, the shed, and along the rails without contradictory light directions.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "center",
+        "detail": "Point blades and check rails at the turnout are physically plausible and correctly positioned for a narrow-gauge industrial or tram track.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere in the frame.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r12.jpg",
+   "meanJudgePAi": 0.10666666666666667,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.10666666666666667,
+     "runs": [
+      0.08,
+      0.12,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Multiple parallel rails with switches/points in foreground show consistent gauge, proper frog angles, and realistic curvature into the distance without warped or impossible geometry",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "center",
+        "detail": "Rows of catenary masts with cross-arms, insulators, and tensioned wires align correctly along the curves and maintain consistent spacing and perspective",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Bare earth and gravel bank shows natural irregular soil clumps, stones of varying size, and fine grain texture without AI smoothing or repetitive patterning",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Industrial sheds, red shipping containers, and a distinctive tall loading gantry have sharp edges, correct perspective, and legible small details consistent with a real photo",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft directional daylight casts coherent shadows from poles and fence posts onto ballast and ground; no conflicting light sources or floating shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant road with cars, street lights, trees and a communications mast appear with natural atmospheric haze and correct relative scale",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Two tiny figures walking on the far dirt slope are proportionally correct and cast no anomalous shadows or artifacts",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-left",
+        "detail": "Lettering on red containers and building roofs is small but readable without the garbled characters typical of AI text",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-center",
+        "detail": "Point work and check rails in the immediate foreground show correct metalwork, chairs, and ballast packing that would be hard for AI to invent accurately",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "High-angle documentary view of a railway cutting under construction feels like a real site photograph rather than an aesthetically staged AI scene",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Multiple parallel tracks with realistic rail spacing, sleepers, and ballast that curve smoothly into the distance with correct perspective foreshortening",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-center",
+        "detail": "Visible pointwork/switch rails and crossing frogs near the foreground with metal components and correct alignment into diverging tracks",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "center",
+        "detail": "Numerous catenary masts with consistent spacing, cantilever arms, and overhead wire runs that follow the track curvature without floating or intersecting oddly",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Fine gravel, dirt, and scrub textures on the embankment show natural grain, unevenness, and depth-of-field falloff typical of a real photo",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Industrial warehouses, red shipping containers, and silos in the mid-distance with readable logos and irregular roof lines that match real logistics sites",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent soft daylight from upper left casting coherent shadows from poles and embankment edges without mismatched directions",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant road traffic, streetlights, masts, and scattered vehicles on the horizon appear naturally messy rather than symmetrically staged",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Two tiny distant figures walking on the bare earth embankment, proportionally correct and not interacting with tracks",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Elevated viewpoint looking down a construction/rail corridor with natural asymmetry and no overly perfect framing or repeated patterns common in AI",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-left",
+        "detail": "Faded but legible lettering on red containers and building fascias that does not dissolve into gibberish",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Multiple parallel tracks with realistic curvature, points/switches, and consistent rail spacing that follows correct perspective foreshortening into the distance",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "center",
+        "detail": "Numerous catenary masts with cross-arms, insulators and wiring that align consistently along the tracks without impossible intersections or floating elements",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Fine gravel/ballast and earth texture with natural grain, small stones of varying size and irregular shadows, no overly smooth or repetitive AI patterning",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Industrial buildings, red containers and a silo structure with legible brand markings (DB Schenker style) and realistic weathering/rooflines",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent daylight illumination with soft cloud shadows on the embankment and poles casting coherent shadows matching the sun direction",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant road traffic, masts, trees and mixed industrial/rural horizon details that remain coherent at distance without melting or duplication artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-center",
+        "detail": "Visible pointwork/switches with rails diverting correctly and sleepers/ballast filling the gaps in a physically plausible way",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Tiny distant figures on the bare earth slope appear as ordinary scale humans with no anomalous limbs or floating",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Natural elevated viewpoint over a real-looking construction/rail corridor; nothing feels symmetrically staged or unnaturally perfect",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-left",
+        "detail": "Container and building lettering is partially legible and consistent with real logistics branding rather than garbled AI text",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r14.jpg",
+   "meanJudgePAi": 0.16,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.16,
+     "runs": [
+      0.18,
+      0.18,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails form a continuous, physically plausible curve with consistent gauge, proper rail head profiles, and realistic rail joints/wear marks that match real trackwork.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "White sedan shows correct perspective foreshortening, legible plate area, realistic wheel wells, body panel gaps, and ground contact shadows without deformation.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-center",
+        "detail": "Point blades and stock rails meet with correct geometry and visible check rails/fasteners typical of a real railroad switch.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "Catenary/contact wires and supporting poles show natural sag, multiple overlapping lines, and attachment hardware consistent with real electric railway infrastructure.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural fine-grained sensor noise, varied asphalt cracks/patches, and leaf/tree texture detail without the overly smooth or plastic look common in AI outputs.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "bottom-left",
+        "detail": "Soft directional shadows under the car and gate posts match the sky lighting and cast consistently on uneven ground.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "Guard booth has proper window reflections, corner joints, and material weathering without warped geometry or floating elements.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Foliage, weeds growing through pavement cracks, and distant industrial buildings exhibit organic irregularity and depth layering typical of real photos.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are present anywhere in the frame, so no anatomical artifacts to evaluate.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Casual, slightly imperfect framing with ordinary industrial gate crossing looks like a candid photo rather than a deliberately composed AI scene.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "White sedan has consistent body proportions, realistic grille, headlights, bumper wear and shadow placement under the car matching the sunny lighting",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Railway tracks curve naturally with proper rail spacing, visible sleepers/ties, ballast texture and rust/wear on rails that look physically plausible",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-center",
+        "detail": "Track switch/point mechanism and frog area show correct geometry and metal detail without AI warping",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "Overhead catenary wires and poles continue logically across the sky with natural sag and connections",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "Guard booth has coherent window frames, paneling, roof edge and reflection of a white vehicle in the glass",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Ground asphalt shows irregular cracks, patches, gravel and weeds with natural grain; foliage has varied leaf detail without smearing or over-smooth AI look",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Sunlight direction is consistent: car shadow, gate shadows and tree shadows all align; bright sky with soft clouds matches the lighting on surfaces",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "center",
+        "detail": "Dense trees, utility poles, distant industrial building and messy vegetation look like ordinary real-world clutter rather than staged AI composition",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "middle-left",
+        "detail": "Open metal gate has realistic rust, bolted joints, chain-link details and a hanging white sign/plate with no warped geometry",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere in the frame",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "White sedan with consistent body panels, grille, headlights, license plate area and natural shadow under the chassis matching the sun angle",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Railway tracks curve naturally with visible rail joints, sleepers/ties, ballast and weeds growing through; rails show realistic wear and perspective foreshortening",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-center",
+        "detail": "Track switch/points hardware is present with authentic geometry where the rails diverge",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Multiple overhead wires and poles with irregular sag, crossings and attachments typical of real tram/rail infrastructure",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "Small guard booth with peeling paint, dirty window frames, visible interior clutter and realistic weathering",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "center",
+        "detail": "Rusty metal gates with uneven paint, bolted joints, padlocks and a hanging white sign showing natural corrosion and wear",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent directional sunlight casting coherent shadows from car, gates, trees and booth onto the cracked asphalt",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural photographic grain, asphalt cracks, leaf detail and slight motion/depth softness without AI over-smoothing or plastic textures",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant industrial buildings, mixed vegetation and utility poles with messy real-world layering rather than simplified AI backgrounds",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "middle-right",
+        "detail": "Window of the booth shows plausible interior reflection/occlusion without impossible mirrored content",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere in the frame",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r15.jpg",
+   "meanJudgePAi": 0.13999999999999999,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.13999999999999999,
+     "runs": [
+      0.12,
+      0.18,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex network of overhead catenary wires with consistent attachment points, sag, and crossings that match real tram infrastructure physics and geometry",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Multiple curved and switching tracks with realistic rail joints, ballast distribution, and switch mechanisms that align correctly without AI typical distortions",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-left",
+        "detail": "Visible point blades and crossings in the foreground tracks show proper mechanical detail and wear consistent with real railway switches",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "White building with green trim, windows, and large dark doors shows correct perspective, panel seams, and weathering without generative artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "Yellow excavator with visible branding text and mechanical arm details, partially obscured but coherent",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural photographic grain, depth of field falloff, and sharp foreground pole with softer distant elements typical of real camera optics",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast lighting with consistent diffuse shadows under poles and on grass matching real cloudy-day illumination",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-left",
+        "detail": "Small distant construction workers in high-vis gear near fencing and gravel piles, positioned naturally without floating or duplicated limbs",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Construction debris, temporary fencing, gravel piles, and orange barriers show messy real-world site detail rather than cleaned-up AI composition",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Legible text on excavator arm and realistic small signage without the garbled lettering common in AI images",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Large out-of-focus green pole dominating left foreground is an unflattering but realistic photographic choice, not typical of AI aesthetic staging",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex network of overhead catenary wires with consistent attachment points, tensioning, and crossings that remain coherent into the distance without topological errors",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Multiple curved rails, switches and crossings with correct flangeways, sleepers and ballast continuity that follow real tramway geometry",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-left",
+        "detail": "Visible point blades, check rails and switch furniture on the near tracks look mechanically correct",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "Yellow excavator with legible boom text and realistic tracked undercarriage partially obscured by fencing",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "White depot building with green trim, roller doors and roof details that show natural weathering and perspective",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-left",
+        "detail": "Small distant figures in high-visibility clothing standing near construction fencing, consistent with site workers",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast lighting with muted but consistent shadows on rails, poles and grass matching a cloudy day",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain, slight softness in distance and material textures (ballast, grass, metal poles) without AI smoothness or oversharpening artifacts",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Construction debris, temporary fencing, gravel piles and scattered materials look unplanned and authentic",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Partially readable text on the excavator boom and no garbled signage elsewhere",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Large green pole dominating the left foreground is a typical photographic framing choice rather than an AI-composed scene",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Dense network of catenary wires and green poles shows consistent perspective, correct attachment points, and realistic sag/tension without impossible crossings or floating ends",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Complex curved switches and multiple diverging rails align properly with correct rail spacing, sleepers, and ballast continuity through the junctions",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "center",
+        "detail": "Visible point blades and switch geometry on the curved tracks look mechanically correct and continuous",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "Yellow excavator with legible 'LONG EATON PLANT' lettering, hydraulic arm, and tracks partially behind fencing appears photorealistic",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "White depot building with dark green trim, doors, and roof shows proper shadows, panel seams, and weathering consistent with a real structure",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "middle-left",
+        "detail": "Small figures in high-visibility yellow vests standing near fencing and construction area, correctly scaled and posed for workers",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain, sharp foreground pole and grass detail, and softer distant foliage match real camera optics rather than AI smoothness or over-sharpening",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Overcast sky lighting produces soft, consistent shadows on poles, building, and ground without contradictory directions or floating objects",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Construction debris, gravel piles, temporary fencing, and orange cones are messy and irregular in a natural way typical of real worksites",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Readable text on the excavator arm and small distant signage remain coherent under zoom, unlike typical AI text failures",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Large out-of-focus green pole dominates the left foreground in a casual documentary framing common to real photos rather than balanced AI compositions",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r16.jpg",
+   "meanJudgePAi": 0.16,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.16,
+     "runs": [
+      0.12,
+      0.18,
+      0.18
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "Tram tracks curve smoothly with consistent rail spacing, visible joints, and realistic wear/dirt patterns into the pavement",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-center",
+        "detail": "Complex network of tram catenary wires with multiple crossing lines, insulators, and attachments that maintain consistent perspective and tension",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "vehicles",
+        "region": "bottom-left",
+        "detail": "Black hatchback shows correct rear proportions, license plate area, exhaust, and wheel contact with ground shadows",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "vehicles",
+        "region": "center",
+        "detail": "Silver car and line of parked cars have coherent reflections, shadows, and perspective alignment along the road",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "Brick building with metal fence, pillars, and industrial pipes show natural texture variation and occlusion",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast lighting produces consistent diffuse shadows under cars, poles, and fence without contradictory light sources",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural photographic grain and slight softness in distant elements; no over-smoothed AI skin/plastic look or repetitive texture patches",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Circular traffic signs (no-entry) are properly mounted and correctly proportioned with expected blank red/white faces",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Distant trees, buildings, and street furniture show organic irregularity rather than AI-typical repeating patterns",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Everyday industrial roadside scene with casual parking and temporary barrier tape; no cinematic or overly perfect staging common in AI",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "Tram tracks curve smoothly with consistent rail spacing, visible wear, and proper flangeway gaps that match real embedded street track",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex catenary and messenger wires with multiple droppers, insulators, and guy wires that connect logically to poles and the elevated structure without floating ends or impossible junctions",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "Black hatchback shows realistic proportions, rear lights, exhaust, mud flaps, and ground contact shadows consistent with a real car",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "vehicles",
+        "region": "center",
+        "detail": "Silver hatchback and line of parked cars have correct perspective foreshortening, distinct models, and natural reflections on bodywork",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "Brick building with metal fence, white pillars, and rooftop details show natural material variation and weathering",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast lighting produces consistent, low-contrast shadows under cars, poles, and the elevated structure without mismatched directions",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural photographic grain, slight softness in distant areas, and realistic asphalt texture without AI-typical over-smoothing or plastic look",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Circular traffic signs (no-entry style) are correctly mounted and legible at distance without garbled glyphs",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-left",
+        "detail": "Distant apartment blocks and trees show natural atmospheric haze and irregular foliage edges",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "bottom-center",
+        "detail": "Damp patches on pavement reflect surroundings subtly and match the overcast sky without perfect mirror artifacts",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Everyday urban scene with ordinary parked cars, temporary blue-yellow barrier tape, and no dramatic or unnatural staging typical of many AI images",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-left",
+        "detail": "Tram rails curve smoothly and consistently into the foreground with realistic metal texture, joints, and slight wear; perspective and vanishing align with surrounding pavement.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex multi-wire overhead catenary system with numerous thin cables, poles, insulators and attachments that remain coherent across the long elevated structure without melting or random breaks.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-left",
+        "detail": "Dark hatchback parked near fence shows consistent body panels, rear lights, license-plate area and wheel details without warping or duplicated features.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "vehicles",
+        "region": "center",
+        "detail": "Silver hatchback and line of parked cars along the right have distinct models, reflections and shadows that match the lighting; no fused wheels or impossible geometry.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "Brick building with white columns and fence posts shows regular masonry, windows and shadows consistent with real architecture.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-right",
+        "detail": "Long industrial/commercial buildings under the elevated track have coherent windows, cladding and roof lines that recede correctly in perspective.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast daylight produces uniform, directionally consistent shadows under cars, poles and the elevated structure; no conflicting light sources.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural photographic grain/noise, slight softness in distance and realistic asphalt/grass textures without the over-smoothed or artificially sharpened look common in AI images.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Circular traffic signs (including a red-bordered no-entry style disc) are correctly shaped and mounted; no garbled lettering visible.",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-left",
+        "detail": "Distant trees, apartment block and sky show natural variation and atmospheric perspective rather than repetitive or hallucinated patterns.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Casual documentary viewpoint of an ordinary urban tram corridor with barrier tape and parked cars; nothing appears staged or symmetrically perfect in an AI manner.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people are clearly visible anywhere in the scene, so no anatomical anomalies to evaluate.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r18.jpg",
+   "meanJudgePAi": 0.12666666666666668,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.12666666666666668,
+     "runs": [
+      0.08,
+      0.18,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails show correct perspective convergence, consistent gauge, realistic ballast texture with individual stones and sleepers properly spaced and angled",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex catenary system with multiple wires, insulators, cantilevers, and lattice masts; wires sag naturally and attach at plausible points without melting or floating",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Apartment block has irregular window placements, varied balcony clutter, weathering stains, and asymmetric details typical of real Eastern-European prefab housing",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent daylight illumination with soft shadows under rails and poles matching a single sun direction; no contradictory lighting on different objects",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural photographic grain/noise, slight softness in distant foliage, and no over-smooth AI skin-like textures or frequency artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Dense, messy vegetation, yellow construction barrier, and utility poles with realistic occlusion and depth layering",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-center",
+        "detail": "Visible track switch/points with proper rail geometry and concrete sleeper blocks near the frog area",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "Signal heads and small yellow markers present without garbled lettering; no impossible text",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Mundane documentary framing of ordinary railway infrastructure with no dramatic subject or perfect symmetry typical of AI prompts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people visible anywhere in the scene",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails show consistent perspective convergence, proper gauge spacing, visible sleepers/ties with ballast texture, and a realistic switch/frog area where tracks diverge slightly to the right",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex catenary system with multiple overlapping wires, insulators, droppers, and lattice masts that align correctly in 3D space without broken topology or floating elements",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Background apartment blocks show irregular window placement, varied balcony clutter, weathering stains, and realistic facade details that aren't overly repetitive or symmetric",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Natural daylight with soft consistent shadows on poles, ballast, and grass; no mismatched light directions or overly uniform illumination typical of some generators",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "Ballast gravel, grass, and concrete sleepers show fine natural grain and slight compression/noise consistent with a real photo rather than AI smoothness or plastic texture",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-right",
+        "detail": "Concrete cable troughs and switch-related hardware along the right track appear functional and correctly placed relative to the rails",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Yellow crane arm, lattice transmission tower, and miscellaneous poles create messy but coherent industrial clutter without AI fusion artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "Signal heads (red aspect visible) and small yellow markers are sharp and correctly oriented; no garbled lettering",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "whole-image",
+        "detail": "No people are visible anywhere on or beside the tracks",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails show correct perspective convergence, consistent ballast texture, wooden/concrete sleepers with irregular spacing and weathering, and a realistic switch/crossover geometry toward the right",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex catenary system with multiple overlapping wires, insulators, gantries, and support poles; wires sag and connect in physically plausible ways without duplicated or floating segments",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Large multi-story apartment block with varied balcony details, window air-conditioners, different curtain/blind states, and slight weathering; architecture is coherent and non-repetitive",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Dense vegetation, yellow gantry arms, distant lattice tower, and miscellaneous poles/wires create natural messy depth without AI-style smearing or cloned foliage",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent daylight illumination with soft shadows under the gantry and on the ballast; no contradictory light sources or unnatural glow",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural photographic grain and depth-of-field falloff; fine details on rails, grass, and building facades remain sharp where expected without over-smoothed AI artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_anatomy",
+        "region": "whole-image",
+        "detail": "No people visible anywhere in the scene",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Ordinary documentary viewpoint down the tracks toward housing blocks; nothing staged or aesthetically idealized in the manner common to generative images",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r20.jpg",
+   "meanJudgePAi": 0.13,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.13,
+     "runs": [
+      0.12,
+      0.15,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Tram rails curve smoothly leftward with consistent gauge, proper flange grooves, and natural wear patterns matching real street-running track embedded in setts",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Cobblestones show irregular individual shapes, moss/algae in joints, chips, and surface wear that varies realistically rather than repeating AI textures",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "Red brick wall with authentic mortar variation, downpipe brackets, and weathering stains consistent with real masonry",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Dense tangled dead vines on chain-link fence with natural irregular growth and debris at base, not the smoothed plant patterns common in AI",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-right",
+        "detail": "Distant 'Coffee Shop' sign is legible with natural perspective blur and real lettering style",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast lighting produces coherent gentle shadows under fence and along rails without the inconsistent or floating shadows typical of AI",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Mundane documentary viewpoint of disused industrial siding with no artistic staging, dramatic lighting, or uncanny perfection",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "other",
+        "region": "bottom-right",
+        "detail": "Asphalt edge meets setts with irregular real-world joint and scattered grit/debris that AI often homogenizes",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Dual embedded tram rails curve smoothly leftward with consistent gauge, proper flangeway gaps, and cobbles fitted tightly around them without melting or impossible junctions",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Cobblestones show varied weathering, moss in joints, chips, and subtle surface noise consistent with real stone under daylight; no over-smoothed or repeated AI texture patches",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Chain-link fence heavily overgrown with tangled dead vines and weeds in natural irregular clusters, plus debris on ground",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "Red brick wall with realistic mortar variation, downpipe brackets, and edge detailing that aligns correctly with the curb",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-center",
+        "detail": "Distant 'Coffee Shop' sign lettering is legible and perspective-correct without warping or gibberish",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft overcast daylight with consistent gentle shadows under fence posts and along rail edges; no conflicting light sources",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Casual documentary framing of an ordinary back-alley tram remnant with no dramatic staging or impossible vanishing points",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "center",
+        "detail": "Embedded tram rails curve smoothly and continuously through setts with correct flangeways, consistent joint spacing and realistic wear/discoloration along the steel.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "Individual cobbles show irregular chipping, moss in joints, and natural surface variation without repeating AI texture patterns or over-smoothing.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "Brick wall exhibits authentic mortar lines, slight weathering, pipe attachments and corner detailing that align with real masonry photography.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "top-right",
+        "detail": "Chain-link fence overgrown with tangled dry vines and weeds shows complex, non-repeating organic detail and depth typical of real scenes.",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-right",
+        "detail": "Distant 'Coffee Shop' sign is legible with natural perspective blur consistent with optical capture rather than generated text artifacts.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Soft daylight produces coherent gentle shadows under rails and along the wall base without contradictory light sources or AI glow.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Mundane abandoned industrial alley viewpoint with natural perspective foreshortening and no staged perfection common in generative images.",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "other",
+        "region": "bottom-right",
+        "detail": "Transition from cobbles to asphalt edge is irregular and weathered in a physically plausible way.",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r21.jpg",
+   "meanJudgePAi": 0.12,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.12,
+     "runs": [
+      0.12,
+      0.12,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Multiple converging tram tracks with realistic ballast, sleepers, rail joints, and curved switches that match real light-rail engineering and perspective",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Complex catenary wires, hangers, and green support poles with consistent tension, sag, and attachment hardware across the scene",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "vehicles",
+        "region": "center",
+        "detail": "Several modern trams with consistent branding, reflections on glass, underbody details, and proper alignment on rails including a distant tram on the left curve",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "bottom-left",
+        "detail": "Temporary metal crowd-control fencing with plastic feet, orange traffic cones, red barrier tape on the ground, and scattered debris that look casually placed",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-left",
+        "detail": "Scaffolding and construction materials on a distant building consistent with a real worksite",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Overcast sky producing soft, even lighting and muted shadows without the harsh or inconsistent lighting common in some AI renders",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain and fine detail on gravel ballast, tree bark, and metal fence mesh without over-smoothed or artificially sharp AI artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Tiny distant figures in high-visibility clothing near the rightmost tram, consistent with workers and not deformed",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "bottom-right",
+        "detail": "Small warning label on fence post is present but too small to read clearly; no obvious garbled AI text elsewhere",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Slightly mundane construction-site framing with a foreground tree and fence partially blocking view, typical of a documentary photo rather than idealized AI composition",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Multiple curved and parallel tracks with complex switch points, realistic ballast stones of varying sizes and colors, and consistent rail perspective that aligns correctly into the distance",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Dense network of catenary wires with many crossing lines, insulators, and poles; wires show natural sag and attachment complexity without obvious duplication artifacts",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "vehicles",
+        "region": "center",
+        "detail": "Multiple modern light-rail trams with consistent branding, legible destination displays, pantographs contacting wires, and natural reflections on glass and body panels",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "bottom-left",
+        "detail": "Scattered construction debris including orange traffic cone, red plastic sheeting, temporary fencing feet, and loose gravel that appear randomly placed rather than symmetrically staged",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel texture, tree bark detail, and wire mesh fencing show natural photographic grain and depth-of-field variation consistent with a real camera shot",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Overcast sky producing soft, even illumination with subtle shadows under trams and poles that match the lighting direction without AI glow or inconsistency",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Small white sign attached to fencing and orange cone are legible and properly oriented; no garbled or floating text typical of AI",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Tiny distant figures near the rightmost tram appear in workwear and natural standing poses without anatomical errors",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Slightly mundane construction-site framing with temporary barriers in foreground and unfinished landscaping feels documentary rather than aesthetically perfected AI composition",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "track_geometry",
+        "region": "whole-image",
+        "detail": "Complex multi-track layout with curved rails, switches, and ballast that aligns consistently in perspective and has realistic wear/variation",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Dense catenary wires and green poles with realistic sag, connections, and slight irregularities; poles cast consistent shadows",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "vehicles",
+        "region": "center",
+        "detail": "Multiple trams with matching livery, legible details on fronts/sides, correct reflections on glass, and proper wheel/rail contact",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "bottom-left",
+        "detail": "Scattered debris, red plastic sheeting, traffic cone, and temporary fencing with realistic dirt and random placement",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Overcast sky lighting produces soft, consistent shadows under trams, poles, and fence without AI glow or mismatched directions",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Natural grain on gravel ballast, sharp foliage on tree, and fine mesh on fence without over-smoothed or repeated AI patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-right",
+        "detail": "Small yellow warning sticker on fence and faint tram numbers appear coherent rather than garbled AI text",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "people_pose_or_placement",
+        "region": "middle-right",
+        "detail": "Tiny distant figures near rightmost tram are proportionally correct and not warped",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Documentary-style construction/depot view with temporary barriers feels unposed and typical of real rail photography",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r22.jpg",
+   "meanJudgePAi": 0.18000000000000002,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.18000000000000002,
+     "runs": [
+      0.18,
+      0.18,
+      0.18
+     ],
+     "counts": [
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Worker bent forward with hands on knees in a natural, slightly asymmetric stance on the rails, consistent with real human posture and weight distribution",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "High-visibility orange vest over dark blue long sleeves, blue cap, dark trousers and boots show realistic fabric folds, shadows and wear without plastic sheen",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails, sleepers, switch frogs and curved streetcar grooves exhibit correct perspective foreshortening, rust, ballast gaps and metal wear typical of real trackwork",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-left",
+        "detail": "Visible point blades, connecting rods and wooden/metal ties at the switch look mechanically coherent and properly seated",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Tall residential blocks display irregular balcony railings, window AC units, curtain variations and slight facade weathering rather than perfect repetition",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "Red brick mid-rise with arched windows, white circles and green roof shows consistent brick texture, mortar lines and architectural detailing under natural light",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Yellow diamond speed-limit sign with clear black '15' and inverted triangle warning sign with legible Cyrillic text on pole are sharp and correctly proportioned",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent sunlight direction casting soft shadows from the person, poles, fence and buildings onto ground and rails without mismatched or floating shadows",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine asphalt grain, rail rust texture, grass blades and building surface detail remain coherent at distance without AI-typical oversmoothing or high-frequency noise artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Scattered small trees, bushes and utility poles behind the fence appear naturally irregular rather than symmetrically placed or cloned",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Candid documentary framing of a lone track worker inspecting a switch in an urban streetcar setting feels unposed and photographically ordinary",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Worker bent forward with hands on knees in a natural, weight-bearing stance on the rails; feet plant solidly and clothing folds consistently with gravity",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "High-visibility orange vest over dark blue long sleeves, dark trousers, blue cap; seams, zipper, and fabric wrinkles look physically correct",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Tram rails diverge into a switch with visible frogs, guard rails, timber sleepers, and rusty metal edges that align and cast proper shadows",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-center",
+        "detail": "No floating tools or ghosted objects; only real track hardware and a few small stones/debris on the asphalt",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Tall residential blocks show repeating balconies, teal window frames, air-conditioners, and slight perspective foreshortening without warped floors or melted edges",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-right",
+        "detail": "Long red-brick building with arched windows, white string courses, and a green roof maintains straight horizontal courses and consistent brick texture",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Yellow triangular warning sign clearly displays the number 15; post and mounting look ordinary",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-right",
+        "detail": "Triangular traffic sign on the tall pole is legible with ordinary pictogram and red border",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Hard sunlight from upper left produces coherent, directionally consistent shadows of the worker, pole, fence, and building projections onto the ground and rails",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-left",
+        "detail": "Asphalt shows fine grain, tire marks, and small cracks; rail rust and sleeper wood grain are sharp without AI smearing or over-smooth patches",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Trees and shrubs behind the barrier have natural leaf clusters and irregular silhouettes rather than repeated AI foliage patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Ordinary documentary framing of a track worker at a tram switch in front of real urban architecture; nothing theatrical or symmetrically perfect",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "top-right",
+        "detail": "Tall concrete pole and distant street-lamp arm are straight with correct taper and mounting hardware",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "other",
+        "region": "bottom-center",
+        "detail": "Subtle curved tram-track grooves continue across the asphalt foreground with realistic wear and depth",
+        "points_to": "real",
+        "strength": "moderate"
+       }
+      ],
+      [
+       {
+        "category": "people_pose_or_placement",
+        "region": "center",
+        "detail": "Worker bent forward with hands on knees in a natural, slightly awkward stance that matches realistic human balance and joint angles",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "people_clothing_or_gear",
+        "region": "center",
+        "detail": "High-visibility orange vest with reflective strips, blue long sleeves, dark trousers and cap show fabric wrinkles and fit consistent with real clothing",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Tram/rail tracks diverge with visible sleepers, rail joints, rust and ballast that follow consistent perspective and physical wear patterns",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-left",
+        "detail": "Point switch hardware and crossing rails show metal texture, bolts and correct mechanical arrangement without geometric distortion",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "buildings",
+        "region": "top-center",
+        "detail": "Tall residential towers with repeating balconies, turquoise window frames and brick lower structure exhibit correct architectural repetition and slight real-world irregularities",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "middle-left",
+        "detail": "Yellow triangular warning sign with clear '15' numeral and red border is legible and properly mounted",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-right",
+        "detail": "Triangular yield/priority sign on pole with small rectangular plate below is sharp and correctly proportioned",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Consistent sunlight direction casting coherent shadows from the worker, poles, fence and buildings onto ground and rails",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "bottom-center",
+        "detail": "Asphalt road surface shows fine grain, tire marks and realistic wear without AI-typical over-smoothing or plastic look",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-left",
+        "detail": "Trees, grass strips and metal fence between tracks and brick building have natural variation and occlusion",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Scene looks like a candid documentary shot of a track worker rather than a perfectly staged or aesthetically optimized AI composition",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "other",
+        "region": "bottom-right",
+        "detail": "Small concrete curb/block and debris near rails appear unremarkable and physically plausible",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  },
+  {
+   "image": "scratch/realphotos/pipe/r23.jpg",
+   "meanJudgePAi": 0.10666666666666667,
+   "passesGate": true,
+   "judges": {
+    "spacexai/grok-4.5": {
+     "p_ai": 0.10666666666666667,
+     "runs": [
+      0.12,
+      0.08,
+      0.12
+     ],
+     "counts": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     "evidence": [
+      [
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-center",
+        "detail": "LED matrix displays 'PAR' in crisp, evenly lit amber dots with a small '30' plate beside it; letterforms and spacing look standard for railway signalling hardware",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "White plate reading 'SI 42' with clean printed font and no warping or mismatched kerning",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-center",
+        "detail": "Control box on the signal pole has two distinct push-buttons (red and green) plus a key lock, with realistic metal texture, screws and slight weathering",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails, sleepers and ballast stones show consistent perspective foreshortening, irregular stone shapes and natural spacing without repeating patterns or melting geometry",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "switch_mechanism",
+        "region": "bottom-center",
+        "detail": "Point mechanism and check rails at the diverging tracks are correctly detailed and mechanically plausible",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Catenary wires, droppers and poles align consistently into the distance with proper tension curves and no broken or floating segments",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Overcast sky produces soft, coherent shadows under the signal head and along the rails; no conflicting light sources or floating highlights",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel texture, building cladding seams and fence mesh remain sharp and non-repeating; no AI-typical over-smoothing or frequency artifacts",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-right",
+        "detail": "Distant dark car on the roadway has correct proportions and road placement without distortion",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "Beige industrial building shows straight corrugated panels, realistic weathering and correct vanishing-point alignment",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-right",
+        "detail": "Distant street lamps, trees, fence and a white van appear with natural density and scale consistent with depth",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "White LED cluster inside the signal head shows individual diodes and a slight lens reflection that looks optical rather than painted",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Viewpoint is a typical documentary railway photograph looking along the tracks; no overly dramatic or impossible framing",
+        "points_to": "real",
+        "strength": "weak"
+       },
+       {
+        "category": "other",
+        "region": "bottom-left",
+        "detail": "Red conduit or cable running parallel to the fence is continuous and physically consistent",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-center",
+        "detail": "LED matrix display shows coherent 'PAR' lettering with uniform illuminated dots and a small '30' plaque beside it; characters are sharp and correctly formed",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "Pole label 'SI 42' is cleanly printed, evenly spaced, and fully legible with no warping or gibberish",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-center",
+        "detail": "Control box on the signal mast has distinct red and green buttons plus a key switch, with realistic metal texture, shadows, and fasteners",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails, sleepers, and ballast stones show consistent perspective, natural irregularity in gravel size/placement, and correct switch geometry without melting or duplication",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Catenary wires and poles align logically across the frame with proper tension sag and attachment hardware; no impossible intersections or floating segments",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Overcast sky produces soft, directionally consistent lighting and subtle shadows under the signal head and fence; no mismatched light sources",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "Signal lens shows a realistic multi-LED glow with individual diode highlights rather than a uniform CGI blob",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "Beige industrial building has straight corrugated panels, correct perspective vanishing, and a realistic fence line with no warped edges",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-right",
+        "detail": "Distant car, street lamps, trees, and roadside signs remain coherent under zoom; no AI typical morphing or repeated patterns",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine gravel texture, metal pole grain, and slight sensor noise are present and consistent; edges are photographic rather than over-smoothed",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Viewpoint looks like a normal documentary or inspection photo of tram infrastructure; nothing unnaturally centered or dramatized",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ],
+      [
+       {
+        "category": "text_signage_or_markings",
+        "region": "top-center",
+        "detail": "LED matrix displays 'PAR' in crisp, evenly lit amber dots with a small '30' plate beside it; letterforms and pixel grid look optical and consistent with real railway signals",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "text_signage_or_markings",
+        "region": "center",
+        "detail": "White plate 'SI 42' bolted to the signal mast has sharp edges, correct kerning and slight weathering, typical of physical French railway signage",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "tools_or_small_objects",
+        "region": "bottom-center",
+        "detail": "Small grey control box on the mast shows three distinct push-buttons/switches with red indicators and visible screw heads; no melted or duplicated geometry",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "track_geometry",
+        "region": "bottom-center",
+        "detail": "Rails, sleepers and ballast stones show correct perspective foreshortening, individual stone texture variation and realistic switch frog geometry without warping",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "overhead_wires_or_poles",
+        "region": "whole-image",
+        "detail": "Catenary wires and poles maintain consistent vanishing points, proper tension sag and attachment hardware; no broken or floating lines",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "lighting_or_shadows",
+        "region": "whole-image",
+        "detail": "Overcast sky produces soft, directionally consistent shadows under the signal head, fence and rails; no contradictory multi-light sources",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "vehicles",
+        "region": "middle-right",
+        "detail": "Distant dark car and white van are small but correctly proportioned with plausible reflections and no AI limb/wheel artifacts",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "buildings",
+        "region": "middle-left",
+        "detail": "Beige industrial facade shows uniform panel seams, slight weathering and a realistic green chain-link fence with red conduit along the ground",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "reflections_or_wet_surfaces",
+        "region": "center",
+        "detail": "White LED aspect of the signal shows individual diodes and a soft glow without the plastic over-smoothness common in AI renders",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "background_clutter",
+        "region": "middle-right",
+        "detail": "Distant street lamps, trees, road signs (C40) and fencing align naturally with depth; no repeated or mirrored elements",
+        "points_to": "real",
+        "strength": "moderate"
+       },
+       {
+        "category": "texture_noise_or_sharpness",
+        "region": "whole-image",
+        "detail": "Fine grain on ballast and slight atmospheric haze in the distance match real camera capture rather than synthetic sharpness or plastic smoothness",
+        "points_to": "real",
+        "strength": "strong"
+       },
+       {
+        "category": "composition_or_staging",
+        "region": "whole-image",
+        "detail": "Viewpoint is a natural standing position looking down the tracks; no impossible camera angles or perfect centering typical of staged AI scenes",
+        "points_to": "real",
+        "strength": "weak"
+       }
+      ]
+     ]
+    }
+   },
+   "study": {},
+   "tells": []
+  }
+ ]
+}

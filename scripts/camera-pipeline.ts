@@ -81,6 +81,14 @@ export function cameraize(input: string, output: string, mirror = false, overlay
     ]);
   }
   ff(['-i', mid, '-map_metadata', '-1', '-q:v', String(PIPELINE.jpegQ2), output]);
+  // Some real photos carry an embedded ICC colour profile, which ffmpeg passes through. Only those are re-encoded
+  // without side data, so outputs for inputs without a profile stay byte-identical to the frozen study images.
+  if (readFileSync(output).includes(Buffer.from('ICC_PROFILE'))) {
+    const tmp = join(tmpdir(), `cam-${stamp}-icc.jpg`);
+    ff(['-i', output, '-map_metadata', '-1', '-vf', 'sidedata=delete', '-flags', '+bitexact', '-q:v', '2', tmp]);
+    writeFileSync(output, readFileSync(tmp));
+    rmSync(tmp);
+  }
   rmSync(mid);
   const bytes = readFileSync(output);
   const found = PROVENANCE.filter((t) => bytes.includes(Buffer.from(t)));
