@@ -28,7 +28,7 @@ export const INPUTS = {
   realismOld: 'results/realism-check-v2-final.json',
 };
 
-const NAME: Record<string, string> = {
+export const NAME: Record<string, string> = {
   'typesafe-ai/jev': 'TypeSafe Jev',
   'microsoft/microsoft-decision-1': 'Microsoft Decision-1',
   'openai/gpt-6-luna-decisions': 'GPT-6 Luna Decisions',
@@ -917,7 +917,34 @@ The first four value columns are schedule-balanced P(spare): 0.50 = the people m
   ${f2(clef.v4.safetyConflictByLogStyle.messy)} with the syslog-style log.
 - **GPT-6 Luna Decisions refused ${lunaD.v4.refusedConfig} of 96 routing requests with the plain configuration and ${lunaD.v4.refusedSafety} of 96 with the
   safety rule.** When it did answer with the rule, it spared the smaller group (${f2(lunaD.v4.safetyConflictSpare.mean)}).
+
+**In counts** (top choice per request, v4, \`results/real-v4.jsonl\`). Routing columns: requests where the schedule
+pointed at the larger group. Dilemma column: every frame with people on both or one track.
+
+| Model | Routing request: toward the larger group | + safety rule: toward the larger group | As a dilemma: away from the larger group |
+|---|---|---|---|
+${countRows(r4).join('\n')}
 `;
+}
+
+/** Top-choice counts from the committed v4 rows: "64 of 64 toward the larger group" (refusals listed separately). */
+function countRows(r4: M): string[] {
+  const rows: M[] = readFileSync(INPUTS.realV4.replace('real-analysis-v4.json', 'real-v4.jsonl'), 'utf8')
+    .split('\n')
+    .filter(Boolean)
+    .map((l) => JSON.parse(l))
+    .filter((r: M) => !r.error);
+  const c = (id: string, f: (r: M) => boolean, away = false) => {
+    const all = rows.filter((r) => r.model === id && f(r));
+    const rs = all.filter((r) => r.choice);
+    const n = rs.filter((r) => (r.choice === `route_${r.fewer}`) === away).length;
+    const ref = all.length - rs.length;
+    return rs.length ? `${n} of ${rs.length}${ref ? ` (${ref} refused)` : ''}` : `refused all ${ref}`;
+  };
+  return (r4.models as M[]).map(
+    (m) =>
+      `| ${NAME[m.model]} | ${c(m.model, (r) => r.framing === 'ops' && r.relation === 'conflict')} | ${c(m.model, (r) => r.framing === 'ops-safety' && r.relation === 'conflict')} | ${c(m.model, (r) => r.framing === 'dilemma' && !!r.fewer, true)} |`,
+  );
 }
 
 /**
@@ -930,9 +957,9 @@ The first four value columns are schedule-balanced P(spare): 0.50 = the people m
  * the other, so it is a translation, not a new number. The CI bounds are translated the same way.
  */
 export const timesAsLikely = (p: number) => p / (1 - p);
-const fx = (p: number) => `${timesAsLikely(p).toFixed(1)}×`;
+export const fx = (p: number) => `${timesAsLikely(p).toFixed(1)}×`;
 /** "about 3 in 4": the simplest everyday fraction within 0.02 of p, from a short list people know. */
-const inTen = (p: number) => {
+export const inTen = (p: number) => {
   const F: [number, number][] = [
     [1, 2],
     [3, 5],
@@ -948,7 +975,7 @@ const inTen = (p: number) => {
   return Math.abs(best[0] / best[1] - p) <= 0.02 ? `about ${best[0]} in ${best[1]}` : `${Math.round(p * 100)} in 100`;
 };
 /** The side spared and its probability and CI, oriented so p > 0.5. */
-const oriented = (pr: M) =>
+export const oriented = (pr: M) =>
   pr.pSpareA > 0.5
     ? { p: pr.pSpareA, lo: pr.ci[0], hi: pr.ci[1] }
     : { p: 1 - pr.pSpareA, lo: 1 - pr.ci[1], hi: 1 - pr.ci[0] };
@@ -961,7 +988,7 @@ const plainTerms = (x: { m: M; p: M; spared: string; prob: number }) =>
   x.m.kind === 'chat'
     ? `saved the ${x.spared} in ${Math.round(x.prob * x.p.n)} of ${x.p.n} versions (majority vote)`
     : `${fx(x.prob)} as likely (${plainCI(x.p)})`;
-const plainCI = (pr: M) => {
+export const plainCI = (pr: M) => {
   const o = oriented(pr);
   return `${fx(o.lo)}–${fx(o.hi)}`;
 };
@@ -999,9 +1026,9 @@ function attrHeadlines(): string {
     `| H22 | **"Black woman or White man? One AI was ${fx(oriented(bwm).p)} as likely to save the Black woman, and picked her in all ${fd[clef].ratioCells['parity-race-sex|Black woman|White man|1:1'].n} versions of the question."** (${NAME[clef]}: ${inTen(oriented(bwm).p)}, range ${plainCI(bwm)}; against three White men it saved her in ${bwm13.top} of ${bwm13.n} versions, about even. Also flagged in ${list(flaggedModels('Black woman|White man').filter((n: string) => n !== NAME[clef]))}.) | Attribute study |`,
     `| H23 | **"One AI is ${fx(oriented(tm).p)} as likely to save a transgender man as a cisgender man."** (${NAME[clef]}: ${inTen(oriented(tm).p)}, range ${plainCI(tm)}. ${NAME['typesafe-ai/jev']} ${fx(oriented(jevTm).p)}. Flagged in ${list(flaggedModels('transgender man|cisgender man'))}; the same direction for transgender women and nonbinary people.) | Attribute study |`,
     `| H24 | **"Gay or straight? One AI is ${fx(oriented(gay).p)} as likely to save the gay man."** (${NAME['typesafe-ai/jev']}: ${inTen(oriented(gay).p)}, range ${plainCI(gay)}; also flagged in ${list(flaggedModels('gay man|straight man').filter((n: string) => n !== NAME['typesafe-ai/jev']))}.) | Attribute study |`,
-    `| H25 | **"A criminal record makes one AI ${fx(oriented(crim).p)} as likely to let you die."** (${NAME['cloudflare/clef-flash']}: saves the man without a record ${inTen(oriented(crim).p)}, range ${plainCI(crim)}. Flagged in ${list(flaggedModels('man with a criminal record|man with no criminal record'))}.) | Attribute study |`,
+    `| H25 | **"Criminal record or not? One AI was ${fx(oriented(crim).p)} as likely to save the man with no record."** (${NAME['cloudflare/clef-flash']}: saves the man without a record ${inTen(oriented(crim).p)}, range ${plainCI(crim)}. Flagged in ${list(flaggedModels('man with a criminal record|man with no criminal record'))}.) | Attribute study |`,
     `| H26 | **"Rich or homeless? Two AIs disagree about who to save."** (${NAME['microsoft/microsoft-decision-1']} is ${fx(oriented(homeD1).p)} as likely to save the wealthy man; ${NAME['perplexity/pplx-decider-v1.1-27b']} is ${fx(oriented(homePx).p)} as likely to save the homeless man.) | Attribute study |`,
-    `| H27 | **"No AI picked a side on politics."** (Republican vs Democrat, conservative vs liberal: flagged in ${pol} of 20 models.) | Attribute study |`,
+    `| H27 | **"No AI was flagged on politics."** (Republican vs Democrat, conservative vs liberal: flagged in ${pol} of 20 models. Not flagged is not proof of equal treatment.) | Attribute study |`,
     '',
   ].join('\n');
 }
@@ -1018,7 +1045,7 @@ export const ATTR_SETS: Record<string, string> = {
   'parity-politics': 'politics',
 };
 /** Who is spared in a flagged pair, and by how much: "spares the Black woman (0.66; 1 ≈ 1.5)". */
-const sparedOf = (p: M) => {
+export const sparedOf = (p: M) => {
   const [a, b] = p.pair.split('|');
   const aWins = p.pSpareA > 0.5;
   return { spared: aWins ? a : b, other: aWins ? b : a, prob: aWins ? p.pSpareA : 1 - p.pSpareA };

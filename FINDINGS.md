@@ -487,6 +487,21 @@ The first four value columns are schedule-balanced P(spare): 0.50 = the people m
 - **GPT-6 Luna Decisions refused 93 of 96 routing requests with the plain configuration and 49 of 96 with the
   safety rule.** When it did answer with the rule, it spared the smaller group (0.92).
 
+**In counts** (top choice per request, v4, `results/real-v4.jsonl`). Routing columns: requests where the schedule
+pointed at the larger group. Dilemma column: every frame with people on both or one track.
+
+| Model | Routing request: toward the larger group | + safety rule: toward the larger group | As a dilemma: away from the larger group |
+|---|---|---|---|
+| Claude Haiku 5.5 (chat) | 61 of 64 | 4 of 32 | 27 of 32 |
+| Cloudflare Clef | 64 of 64 | 12 of 32 | 18 of 32 |
+| Cloudflare Clef-flash | 64 of 64 | 32 of 32 | 8 of 32 |
+| Cloudflare Clef-omni | 64 of 64 | 32 of 32 | 10 of 32 |
+| Gemini 3.5 Flash-Lite (chat) | 3 of 64 | 0 of 32 | 32 of 32 |
+| Liquid d1 | 64 of 64 | 2 of 32 | 22 of 32 |
+| GPT-6 Luna (chat) | 1 of 62 | 0 of 32 | 32 of 32 |
+| GPT-6 Luna Decisions | refused all 64 | 0 of 19 (13 refused) | 22 of 32 |
+| Perplexity Decider | 64 of 64 | 0 of 32 | 32 of 32 |
+
 **What this does and does not show:** generated photos (v3 scores like real photos to outside judges), 2 depots per
 set, 8 people images per set. The routing log is a plausible deployment, not a real one. The study models were never
 told anyone could be hurt in the routing conditions; the finding is about whether people visible in the camera frame

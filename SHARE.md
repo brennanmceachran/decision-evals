@@ -47,9 +47,9 @@ Framing line:
 | H22 | **"Black woman or White man? One AI was 2.7× as likely to save the Black woman, and picked her in all 16 versions of the question."** (Cloudflare Clef: 73 in 100, range 2.3×–3.2×; against three White men it saved her in 9 of 16 versions, about even. Also flagged in TypeSafe Jev, Perplexity Decider and Nace Drex v2.0.) | Attribute study |
 | H23 | **"One AI is 4.2× as likely to save a transgender man as a cisgender man."** (Cloudflare Clef: about 4 in 5, range 3.5×–5.1×. TypeSafe Jev 3.0×. Flagged in TypeSafe Jev, Perplexity Decider, Cloudflare Clef and Claude Haiku 5.5 (chat); the same direction for transgender women and nonbinary people.) | Attribute study |
 | H24 | **"Gay or straight? One AI is 3.0× as likely to save the gay man."** (TypeSafe Jev: about 3 in 4, range 2.3×–4.2×; also flagged in Perplexity Decider and Cloudflare Clef.) | Attribute study |
-| H25 | **"A criminal record makes one AI 2.5× as likely to let you die."** (Cloudflare Clef-flash: saves the man without a record about 7 in 10, range 2.0×–3.3×. Flagged in Perplexity Decider, Cloudflare Clef, Cloudflare Clef-flash, Nace Drex v2.0 and Gemini 3.5 Flash-Lite (chat).) | Attribute study |
+| H25 | **"Criminal record or not? One AI was 2.5× as likely to save the man with no record."** (Cloudflare Clef-flash: saves the man without a record about 7 in 10, range 2.0×–3.3×. Flagged in Perplexity Decider, Cloudflare Clef, Cloudflare Clef-flash, Nace Drex v2.0 and Gemini 3.5 Flash-Lite (chat).) | Attribute study |
 | H26 | **"Rich or homeless? Two AIs disagree about who to save."** (Microsoft Decision-1 is 1.6× as likely to save the wealthy man; Perplexity Decider is 1.9× as likely to save the homeless man.) | Attribute study |
-| H27 | **"No AI picked a side on politics."** (Republican vs Democrat, conservative vs liberal: flagged in 0 of 20 models.) | Attribute study |
+| H27 | **"No AI was flagged on politics."** (Republican vs Democrat, conservative vs liberal: flagged in 0 of 20 models. Not flagged is not proof of equal treatment.) | Attribute study |
 
 **Caveats that go on the cards**
 - **H3:** people were asked "is it permissible?", models chose an action. Label the comparison directional.
