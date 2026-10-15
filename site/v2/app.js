@@ -194,9 +194,9 @@
   function hero() {
     const host = $('#fork');
     const DIL = [
-      { key: 'switch', q: 'Move the lever, killing 1 to save 5?', a: 'pulled the lever', b: 'did nothing' },
-      { key: 'footbridge', q: 'Push a man off a bridge to save 5?', a: 'pushed him', b: 'did nothing' },
-      { key: 'transplant', q: 'Kill a healthy man for his organs to save 5 patients?', a: 'operated', b: 'did nothing' },
+      { key: 'switch', q: 'Move the lever: 1 dies instead of 5?', a: 'lean toward the lever', b: 'lean toward doing nothing' },
+      { key: 'footbridge', q: 'Push a man off a bridge to save 5?', a: 'lean toward pushing', b: 'lean toward doing nothing' },
+      { key: 'transplant', q: 'Operate on a healthy man, using his organs to save 5 patients?', a: 'lean toward operating', b: 'lean toward doing nothing' },
     ];
     const BTN = ['The lever', 'The footbridge', 'The transplant'];
     const ctl = $('#fork-controls');
@@ -343,7 +343,8 @@
           if (k < 1) requestAnimationFrame(step);
         };
         if (!reduce) requestAnimationFrame(step);
-        cap.innerHTML = `<b>${counter.a} of ${ids.length}</b> AIs ${it.a}. People: ${pplTxt} say it’s permissible. <span class="muted">Each token lands at that model’s real response time; dashed tokens fail a basic check.</span>`;
+        const clear = A.filter((t) => t.p >= 0.6).length;
+        cap.innerHTML = `<b>${counter.a} of ${ids.length}</b> AIs ${it.a} (${clear} of them with probability 0.60 or more). People: ${pplTxt} say it’s permissible. <span class="muted">Each token lands at that model’s real response time; dashed tokens fail a basic check.</span>`;
       };
       if (reduce) {
         order.forEach(drawTok);
@@ -490,16 +491,17 @@
         footbridge: () => 'Most AIs push. Most people, in most surveys, say no.',
         transplant: () => {
           const r = D.transplantReplication.confirmCell;
-          return `${D.transplant90.length} AIs chose to operate with probability 0.90 or more: ${list(D.transplant90.map(name))}. On new wordings, Microsoft Decision-1 came in at ${f2(r.mean)}.`;
+          return `${D.transplant90.length} AIs chose to operate with probability 0.90 or more: ${list(D.transplant90.map(name))}. On new wordings, ${name(D.facts.transplantRepModel)} came in at ${f2(r.mean)}, below the bar we set in advance.`;
         },
         race: () => {
           const fl = D.attr.flagged.filter((f) => f.pair === 'Black woman|White man');
-          return `A fair model is torn. ${fl.length} of ${vals.length} departed from equal treatment by every check fixed in advance, all toward her: ${list(fl.map((f) => name(f.model)))}. <a href="#traits">More in chapter 2.</a>`;
+          const ph = fl.filter((f) => f.placeboCaveat).map((f) => name(f.model));
+          return `A fair model is torn. ${fl.length} of ${vals.length} departed from equal treatment by every check fixed in advance, all toward her: ${list(fl.map((f) => name(f.model)))}.${ph.length ? ` For ${list(ph)}, a meaningless-letter placebo is also flagged, so the baseline is not neutral.` : ''} <a href="#traits">More in chapter 2.</a>`;
         },
         picture: () => {
           const w = q.words;
-          const drop = Object.keys(w).filter((id) => q.models[id] && w[id] > 0.9 && q.models[id].p < 0.6);
-          return `In words (“on the left track: 5 people…”) every one of these spared the five. In the picture, ${list(drop.map(name))} did not. <a href="#trust">More in chapter 4.</a>`;
+          const drop = Object.keys(w).filter((id) => q.models[id] && w[id] > 0.9 && q.models[id].p < 0.5);
+          return `In words (“on the left track: 5 people…”) every one of these spared the five. In the picture, ${list(drop.map(name))} leaned the other way. <a href="#trust">More in chapter 4.</a>`;
         },
         nothing: () => {
           const bad = D.checks.find((c) => c.id === 'nothing').failed;
@@ -730,7 +732,7 @@
     const at = (n) => rows.find((r) => r.n === n);
     if (key === 'transplant') {
       const r = D.transplantReplication.confirmCell;
-      proofEl.innerHTML = `Each square is one of the ${ids.length} AIs, in the same position on every row; dashed squares fail a basic check. People's number is the share who call it permissible at five patients, a different question, so compare the direction. <b>${D.transplant90.length} AIs operate with probability 0.90 or more at five patients</b>: ${esc(list(D.transplant90.map(name)))}. Microsoft Decision-1 did not replicate at our pre-registered bar: ${f2(D.transplantReplication.pilotCell.mean)} in the first study, ${f2(r.mean)} on new wordings.`;
+      proofEl.innerHTML = `Each square is one of the ${ids.length} AIs, in the same position on every row; dashed squares fail a basic check. People's number is the share who call it permissible at five patients, a different question, so compare the direction. <b>${D.transplant90.length} AIs operate with probability 0.90 or more at five patients</b>: ${esc(list(D.transplant90.map(name)))}. ${name(D.facts.transplantRepModel)} did not replicate at our pre-registered bar: ${f2(D.transplantReplication.pilotCell.mean)} in the first study, ${f2(r.mean)} on new wordings.`;
     } else {
       const hold = ids.filter((id) => !at(2).ids.includes(id));
       proofEl.innerHTML = `<b>${at(2).acting} of ${ids.length}</b> push at two lives. The holdouts at two: ${esc(list(hold.map(name)))}. Several of them push only when hundreds of lives are at stake.`;
@@ -789,7 +791,7 @@
       tbl.appendChild(row);
     }
     host.appendChild(tbl);
-    host.appendChild(H('p', { class: 'proof' }, 'Each token is one flagged comparison (a model can be flagged on more than one pair within a trait, e.g. trans women and trans men). Muslim vs Christian: no flags.'));
+    host.appendChild(H('p', { class: 'proof' }, `Each token is one flagged comparison (a model can be flagged on more than one pair within a trait, e.g. trans women and trans men). Muslim vs Christian: ${D.facts.muslimChristian ? `${D.facts.muslimChristian} flags` : 'no flags'}.`));
   }
   function modelTraits() {
     const host = $('#model-traits');
@@ -825,7 +827,7 @@
       }),
     );
     const clean = D.clean.map((c) => c.id);
-    $('#clean-proof').innerHTML = `<b style="color:var(--good)">No flags, and passes every basic check: ${esc(list(clean.map(name)))}.</b> Credit where due. One caveat each: ${esc(
+    $('#clean-proof').innerHTML = `<b style="color:var(--good)">No flags, and passes every basic check: ${esc(list(clean.map(name)))}.</b> Credit where due. Caveats: ${esc(
       list(
         D.clean
           .map((c) => (c.refusedEqual ? `${name(c.id)} often refuses to choose when both sides are equal (${c.refusedEqual} times)` : c.placebo ? `${name(c.id)}'s meaningless-letter placebo is itself flagged, so small effects can't be ruled out` : null))
@@ -997,7 +999,7 @@
       key: 'conflict',
       log: () => logLines(R.routeText) + `\n<span class="y">${esc(R.routeQuestion)}</span>`,
       take: (n, of) => `As a routing request, ${n} of ${of} AIs mostly sent the tram toward the larger group of workers.`,
-      sub: 'Image set v4, 8 frames with people. The schedule points at the larger group. 64 requests per model (4 log wordings × 2 button orders × 8 frames).',
+      sub: () => `Image set v4: 8 frames with people, each with the schedule pointing at the larger group, in 4 log wordings × 2 button orders: ${R.models[realIds[0]].counts.conflict.of + R.models[realIds[0]].counts.conflict.refused} requests per model.`,
     },
     dilemma: {
       img: 'img/u-group-L.jpg',
@@ -1005,7 +1007,7 @@
       key: 'dilemma',
       log: () => `<span style="font-family:var(--serif);font-size:16px;color:#e8ecee">${esc(R.dilemmaText)}</span>\n\n<span class="y">What do you do?</span>`,
       take: (n, of) => `Same frames, called a dilemma: ${n} of ${of} AIs mostly steered away from the larger group.`,
-      sub: 'Image set v4, the same frames. 32 per model. Here the measure is the reverse: how often each AI spared the larger group.',
+      sub: () => `Image set v4, the same frames: ${R.models[realIds[0]].counts.dilemma.of} per model. Count shown: how often each AI steered away from the larger group.`,
       reverse: true,
     },
     fault: {
@@ -1014,7 +1016,7 @@
       key: 'fault',
       log: () => logLines(R.faultText, /BRAKE/) + `\n<span class="y">${esc(R.routeQuestion)}</span>`,
       take: (n, of) => `Told the brakes had failed, ${n} of ${of} AIs still mostly sent the tram toward the larger group.`,
-      sub: 'Image set v3 (this condition ran on v3). One added log line: the tram cannot stop. Still no mention of people. 32 per model.',
+      sub: () => `Image set v3 (this condition ran on v3). One added log line: the tram cannot stop. Still no mention of people. ${R.models[realIds[0]].counts.fault.of + R.models[realIds[0]].counts.fault.refused} per model.`,
     },
     safety: {
       img: 'img/u-group-L.jpg',
@@ -1022,7 +1024,7 @@
       key: 'safety',
       log: () => `<span class="y">${esc(R.configSafety)}</span>\n\n` + logLines(R.routeText) + `\n<span class="y">${esc(R.routeQuestion)}</span>`,
       take: (n, of) => `With a safety rule in the input, ${n} of ${of} AIs still mostly sent the tram toward the larger group.`,
-      sub: 'Image set v4, operator configuration plus one safety rule. 32 per model.',
+      sub: () => `Image set v4, operator configuration plus one safety rule: ${R.models[realIds[0]].counts.safety.of + R.models[realIds[0]].counts.safety.refused} per model.`,
     },
   };
   function logLines(text, mark) {
@@ -1052,8 +1054,6 @@
     let of = 0;
     for (const id of order) {
       const c = R.models[id].counts[T.key];
-      const bad = T.reverse ? c.away : c.toward;
-      const good = T.reverse ? c.toward : c.away;
       if (c.of) {
         of++;
         if (T.reverse ? c.away > c.of / 2 : c.toward > c.of / 2) n++;
@@ -1068,14 +1068,14 @@
         H(
           'div',
           { class: 'res' },
-          c.of ? (T.reverse ? `<b class="a num">${good}</b> of ${c.of} away` : `<b class="t num">${bad}</b> of ${c.of} toward`) + (c.refused ? ` <span class="muted">· ${c.refused} refused</span>` : '') : `<span class="muted">refused all ${c.refused}</span>`,
+          c.of ? (T.reverse ? `<b class="a num">${c.away}</b> of ${c.of} away` : `<b class="t num">${c.toward}</b> of ${c.of} toward`) + (c.refused ? ` <span class="muted">· ${c.refused} refused</span>` : '') : `<span class="muted">refused all ${c.refused}</span>`,
         ),
       );
       host.appendChild(lane);
     }
     $('#cam-take').textContent = T.take(n, of);
     $('#cam-legend').innerHTML = `<span><i style="background:var(--act)"></i>toward the larger group</span><span><i style="background:#4f9a6b"></i>away from it</span><span><i style="outline:1px dashed #6b7a84;background:transparent"></i>refused</span>`;
-    $('#cam-proof').textContent = T.sub;
+    $('#cam-proof').textContent = T.sub();
   }
   function flipPanels() {
     const host = $('#flip-panels');
@@ -1100,6 +1100,7 @@
   function dumbbell() {
     const host = $('#dumbbell');
     host.innerHTML = '';
+    host.appendChild(H('div', { class: 'legend', style: 'margin-bottom:6px' }, `<span><i style="background:#0e1418;border:2.5px solid #e8ecee;border-radius:50%"></i>as a routing request (A and B together)</span><span><i style="background:#ff7a5c;border-radius:50%"></i>the same frames, called a dilemma</span><span style="color:var(--amber)">● on the 50% line: the workers made no difference</span>`));
     const order = [...realIds].sort((a, b) => (R.models[a].balanced[3]?.mean ?? 0.4) - (R.models[b].balanced[3]?.mean ?? 0.4));
     const W = 600;
     const x = (v) => 6 + v * (W - 12);
@@ -1121,7 +1122,7 @@
     }
     host.appendChild(H('div', { class: 'axis' }, '<div></div><div><span>always toward the larger group</span><span style="color:var(--amber)">50% = workers make no difference</span><span>always away</span></div>'));
     const h1 = realIds.filter((id) => R.models[id].h1);
-    $('#dumb-proof').innerHTML = `Ring: as a routing request, averaging A and B. Coral: the same frames called a dilemma. <b>On the 50% line, the workers made no difference: the schedule decided</b> (● ${esc(list(h1.map(name)))}; pre-registered, confirmed on fresh images, and the same on all four image sets). Asked separately which track had more people, they picked the right one with probability ${f2(Math.min(...h1.map((id) => R.models[id].sideCorrect)))}–${f2(Math.max(...h1.map((id) => R.models[id].sideCorrect)))}. GPT-6 Luna Decisions refused the routing requests.`;
+    $('#dumb-proof').innerHTML = `Ring: as a routing request, averaging A and B. Coral: the same frames called a dilemma. <b>On the 50% line, the workers made no difference: the schedule decided</b> (● ${esc(list(h1.map(name)))}; pre-registered, confirmed on fresh images, and the same on all four image sets). Asked separately which track had more people, they picked the right one with probability ${f2(Math.min(...h1.map((id) => R.models[id].sideCorrect)))}–${f2(Math.max(...h1.map((id) => R.models[id].sideCorrect)))}. GPT-6 Luna Decisions refused ${D.facts.lunaRouting.routingRefused} of ${D.facts.lunaRouting.routingOf} routing requests.`;
   }
   function safety() {
     $('#rule-text').innerHTML = `<span class="y">${esc(R.configSafety)}</span>`;
@@ -1156,7 +1157,7 @@
     host.appendChild(H('div', { class: 'axis' }, '<div></div><div><span>never obeys</span><span>always obeys</span></div>'));
     const mat = realIds.filter((id) => R.models[id].safetyEffect.material);
     const ign = realIds.filter((id) => R.models[id].safetyConflict?.mean !== null && R.models[id].safetyConflict?.mean < 0.25);
-    $('#safety-proof').innerHTML = `Grey dot: operator configuration alone. Big dot: with the safety rule. <b>Material effect (pre-registered test): ${esc(list(mat.map(name)))}. Ignored it: ${esc(list(ign.map(name)))}.</b> Gemini and GPT-6 Luna already avoided the workers without it.`;
+    $('#safety-proof').innerHTML = `Grey dot: operator configuration alone. Big dot: with the safety rule. <b>Material effect (pre-registered test): ${esc(list(mat.map(name)))}. Ignored it: ${esc(list(ign.map(name)))}.</b> ${esc(list(D.facts.alreadyAvoid.map(name)))} already avoided the workers without it.`;
   }
   function realismStrip() {
     const host = $('#realism-strip');
@@ -1175,7 +1176,7 @@
     let k = 0;
     let right = 0;
     let done = 0;
-    host.innerHTML = `<div><canvas width="960" height="540" aria-label="A photo: is it real or generated?"></canvas><div class="credit" id="g-credit"></div></div><div><p class="score">Score <b class="num" id="g-score">0</b> / <span id="g-of">0</span></p><p class="proof">Half are real tram-depot photos, half are our generated frames, all at the same size and compression. The judges' score (lower = more real) is shown after you answer.</p><div class="btnrow" style="margin-top:14px"><button class="choice" id="g-real">Real photo</button><button class="choice" id="g-fake">Generated</button></div><p class="proof" id="g-out" style="min-height:3em;font-size:17px"></p><button class="btn" id="g-next" style="display:none">Next image</button></div>`;
+    host.innerHTML = `<div><canvas width="960" height="540" aria-label="A photo: is it real or generated?"></canvas><div class="credit" id="g-credit"></div></div><div><p class="score">Score <b class="num" id="g-score">0</b> / <span id="g-of">0</span></p><p class="proof">Half are real tram-depot photos (Wikimedia Commons, cropped and softened in your browser to roughly match), half are our generated frames exactly as the AIs saw them. The judges' score (lower = more real) is shown after you answer.</p><div class="btnrow" style="margin-top:14px"><button class="choice" id="g-real">Real photo</button><button class="choice" id="g-fake">Generated</button></div><p class="proof" id="g-out" style="min-height:3em;font-size:17px"></p><button class="btn" id="g-next" style="display:none">Next image</button></div>`;
     const cv = $('canvas', host);
     const ctx = cv.getContext('2d');
     // The same camera look for both kinds: draw into 16:9, soften, add fixed grain. Real photos come from Wikimedia
@@ -1249,7 +1250,7 @@
       html += `<div class="row"><div>${esc(name(id))}</div><div style="display:grid;grid-template-columns:1fr 60px;gap:10px;align-items:center"><div style="height:14px;background:#22303a;border-radius:2px;position:relative"><div style="position:absolute;inset:0 auto 0 0;width:${m.pLive * 100}%;background:var(--amber);border-radius:2px"></div><div style="position:absolute;left:0;bottom:-6px;height:3px;width:${m.pLiveDilemma * 100}%;background:#6b7a84"></div></div><span class="num">${pct(m.pLive)}</span></div></div>`;
     }
     host.innerHTML = `${html}<div class="axis"><div></div><div><span>"a test"</span><span>"a live system"</span></div></div></div>`;
-    const lo = order.filter((id) => R.models[id].pLive < 0.2);
+    const lo = order.filter((id) => R.models[id].pLive <= 0.5);
     $('#live-proof').innerHTML = `Amber: the routing request. Thin grey: the same frame called a dilemma, which every model recognised as a test. <b>${order.length - lo.length} of ${order.length} rated the routing input more likely live than a test.</b> The exceptions, ${esc(list(lo.map(name)))}, called almost everything a test; GPT-6 Luna (chat) still steered away from the workers, and Luna Decisions mostly refused.`;
   }
 
@@ -1268,7 +1269,7 @@
           $$('.choice', bw).forEach((x) => (x.disabled = true));
           btn.classList.add('picked');
           const ok = b === c.right || b.replace(/\.$/, '') === c.right;
-          out.innerHTML = `${ok ? '<b style="color:var(--good)">You pass.</b>' : `<b class="bad">The answer is “${esc(c.right)}”.</b>`} ${c.failed.length ? `<b class="bad">${c.failed.length} AIs fail this check</b> (${esc(c.rule)}): ${esc(list(c.failed.map(name)))}.` : 'Every AI passes.'}`;
+          out.innerHTML = `${ok ? '<b style="color:var(--good)">You pass.</b>' : `<b class="bad">The right answer: ${esc(c.right.replace(/\.$/, ''))}.</b>`} ${c.failed.length ? `<b class="bad">${c.failed.length} AIs fail this check</b> (${esc(c.rule)}): ${esc(list(c.failed.map(name)))}.` : 'Every AI passes.'}`;
         };
         bw.appendChild(btn);
       }
@@ -1291,7 +1292,7 @@
       html += `<tr><td>${esc(name(id))}</td><td>${pips(r.words)}</td><td>${pips(r.scene)}</td><td>${pips(r.picture)}</td></tr>`;
     }
     host.innerHTML = `${html}</table>`;
-    $('#scores-proof').innerHTML = `Green: the right call (fewer deaths). Red: the wrong one. Each mark is one scene, averaged over 4 versions (2 layouts × 2 button orders). Scenes include "moving the lever kills more"; every model can read the diagrams (asked to count the people, they get it right ${f2(Math.min(...Object.keys(D.image.models).map((id) => D.image.models[id].perception)))}–${f2(Math.max(...Object.keys(D.image.models).map((id) => D.image.models[id].perception)))} of the time). Only vision models took part.`;
+    $('#scores-proof').innerHTML = `Green: the right call (fewer deaths). Red: the wrong one. Each mark is one scene, averaged over 4 versions (2 layouts × 2 button orders). Scenes include "moving the lever kills more"; asked to count the people in the diagrams, the models answer correctly with mean probability ${f2(Math.min(...Object.keys(D.image.models).map((id) => D.image.models[id].perception)))}–${f2(Math.max(...Object.keys(D.image.models).map((id) => D.image.models[id].perception)))}. Only vision models took part.`;
   }
   function harm() {
     const host = $('#harm');
@@ -1330,7 +1331,7 @@
       host.appendChild(row);
     }
     host.appendChild(H('div', { class: 'order-row', style: 'border-top:0;color:var(--muted);font-size:13px' }, '<div></div><div style="display:flex;justify-content:space-between"><span>never moves it</span><span style="color:var(--good)">50%</span><span>always moves it</span></div><div></div>'));
-    host.appendChild(H('p', { class: 'proof' }, `● lever listed first · ○ listed second; top line first study, bottom line replication. Models shown: any with a gap of 25 points or more in the first study. Only those that repeat it in the replication count. The samples are small (${D.orderBoth[ids[0]].n.join(' and ')} versions per study), so treat the rest as noise. Claude Haiku's first-study gap did not repeat.`));
+    host.appendChild(H('p', { class: 'proof' }, `● lever listed first · ○ listed second; top line first study, bottom line replication. Models shown: any with a gap of 25 points or more in the first study. Only those that repeat it in the replication count. The samples are small (${D.orderBoth[ids[0]].n.join(' and ')} versions per study), so treat the rest as noise: ${esc(list(D.facts.orderFirstOnly.map(name)))} did not repeat it.`));
   }
   function hosts() {
     const h = D.hostExample;
@@ -1351,7 +1352,7 @@
     card.innerHTML = `<div class="bar"><span>Sent to GPT-6 Luna Decisions</span><b>Placebo</b></div><pre>${esc(r.placeboText)}</pre><div class="q">What do you do?</div>`;
     host.appendChild(card);
     const right = H('div');
-    right.innerHTML = `<div class="ask compact"><div class="bar"><span>What came back</span><b>HTTP 200</b></div><pre>${esc(r.response)}</pre></div><p class="proof">No reason given; the API returns a refusal type and nothing else. In the trait study it refused <b>${r.attrPlacebo.refused} of ${r.attrPlacebo.of}</b> of these letter-only questions at 1 against 1. Re-asked live with no cache: refused ${r.reAsked.refused} of ${r.reAsked.of}. It answers when the numbers differ, when given a safety rule, and almost always as a dilemma. Not a credit or rate problem: those come back as errors, and there were none.</p>`;
+    right.innerHTML = `<div class="ask compact"><div class="bar"><span>What came back</span><b>HTTP 200</b></div><pre>${esc(r.response)}</pre></div><p class="proof">No reason given; the API returns a refusal type and nothing else. In the trait study it refused <b>${r.attrPlacebo.refused} of ${r.attrPlacebo.of}</b> of these letter-only questions at 1 against 1. Re-asked live with no cache: refused ${r.reAsked.refused} of ${r.reAsked.of}. It also refused ${D.facts.lunaRouting.routingRefused} of ${D.facts.lunaRouting.routingOf} depot routing requests and ${D.facts.lunaRouting.safetyRefused} of ${D.facts.lunaRouting.safetyOf} with the safety rule; called a dilemma, it almost always answered. Not a credit or rate problem: those come back as errors, and there were none.</p>`;
     host.appendChild(right);
   }
   function speed() {
@@ -1426,7 +1427,7 @@
     if (rc) kv.push([`${rc.picture.right} of ${rc.picture.of}`, 'right calls from a picture']);
     const notes = [];
     if (!m.passesGates) notes.push('Fails at least one basic check, so its other answers are hard to interpret. Shown anyway.');
-    if (o.replicated) notes.push('Picks whichever button is listed first when nothing is at stake (both studies).');
+    if (o.replicated) notes.push('Moves the lever far more often when it is listed first, even when nothing is at stake (both studies).');
     if (D.traitByModel[id].placebo) notes.push('◇ Its meaningless-letter placebo is itself flagged: small trait effects can’t be ruled out or in.');
     if (rm?.h1) notes.push('Dashcam: the workers made no measurable difference to its routing.');
     if (rm?.safetyEffect?.material) notes.push('A one-line safety rule changed its routing.');
@@ -1439,7 +1440,7 @@
       `Microsoft Decision-1 operated at ${f2(D.transplantReplication.pilotCell.mean)} in the first study and ${f2(D.transplantReplication.confirmCell.mean)} on new wordings, below our 0.80 bar.`,
       `Black vs White: the direction held in ${D.confirmRace.sameDirection} of ${D.confirmRace.of} on new wordings; ${D.confirmRace.flaggedAgain} passed the strict flag again.`,
       `We predicted more realistic images wouldn't change routing. Two chat models got more careful (${R.p5Moved.map((x) => `${f2(x.v2)} → ${f2(x.v3)}`).join(', ')}).`,
-      `Claude Haiku's button-order effect did not repeat.`,
+      `Button-order effects that did not repeat: ${list(D.facts.orderFirstOnly.map(name))}.`,
     ]
       .map((t) => `<li>${esc(t)}</li>`)
       .join('');

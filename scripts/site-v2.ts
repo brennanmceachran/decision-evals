@@ -440,8 +440,26 @@ export function buildV2() {
     d.attr.models[id]!.placeboSelfFlagged
       ? ` For ${name(id)}, a meaningless-letter placebo pair is also flagged, so its baseline is not neutral.`
       : '';
+  /** Other models flagged on this pair, each marked: ◇ placebo not neutral, † fails a basic check, (chat) majority vote. */
   const flaggedIn = (pair: string, not: string) =>
-    d.attr.flagged.filter((f) => f.pair === pair && f.model !== not).map((f) => name(f.model));
+    d.attr.flagged
+      .filter((f) => f.pair === pair && f.model !== not)
+      .map((f) => {
+        const m = d.models.find((x) => x.id === f.model)!;
+        return `${name(f.model)}${d.attr.models[f.model]!.placeboSelfFlagged ? ' ◇' : ''}${m.passesGates ? '' : ' †'}`;
+      });
+  /** The key for whichever marks a list uses. */
+  const marks = (xs: string[]) => {
+    const k = [
+      xs.some((x) => x.includes('◇')) && '◇ its placebo is also flagged, so its baseline is not neutral',
+      xs.some((x) => x.includes('†')) && '† fails a basic check',
+    ].filter(Boolean);
+    return k.length ? ` (${k.join('; ')})` : '';
+  };
+  const also = (pair: string, not: string) => {
+    const xs = flaggedIn(pair, not);
+    return `${listing(xs)}${marks(xs)}`;
+  };
   const listing = (xs: string[]) => (xs.length <= 1 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs.at(-1)}`);
   const bwm = P('cloudflare/clef', 'Black woman|White man');
   const bwmTop = (bwm.versions as (number | null)[]).filter((v) => v !== null && v > 0.5).length;
@@ -463,7 +481,7 @@ export function buildV2() {
       study: 'Traits',
       big: `${bwmTop} of ${bwm.n}`,
       take: `${name('cloudflare/clef')} saved a Black woman over a White man in ${bwmTop} of ${bwm.n} versions of the question.`,
-      proof: `Odds ${odds(bwm)} in her favour (range ${range(bwm)}). A model that treats them equally sits at 1 to 1. Also flagged in ${listing(flaggedIn('Black woman|White man', 'cloudflare/clef'))}.`,
+      proof: `Odds ${odds(bwm)} in her favour (range ${range(bwm)}). A model that treats them equally sits at 1 to 1. Also flagged in ${also('Black woman|White man', 'cloudflare/clef')}.`,
       anchor: 'traits',
       chart: { model: 'cloudflare/clef', pair: 'Black woman|White man' },
     },
@@ -480,8 +498,8 @@ export function buildV2() {
       id: 'transplant',
       study: 'The lever',
       big: `${tp5.acting} of ${tp5.of}`,
-      take: `${tp5.acting} of ${tp5.of} AIs lean toward killing a healthy man for his organs to save five patients. About ${Math.round((d.human as M).transplant.value * 100)}% of people say that is acceptable.`,
-      proof: `${tp5.ids.filter((id) => d.models.find((m) => m.id === id)!.passesGates).length} of them pass every basic check. On new wordings: ${tp5c} of ${ids.length}. People were asked whether it is permissible; the AIs chose an action, so compare the direction, not the exact numbers.`,
+      take: `${tp5.acting} of ${tp5.of} AIs lean toward operating on a healthy man to save five patients with his organs. About ${Math.round((d.human as M).transplant.value * 100)}% of people say that is permissible.`,
+      proof: `${tp5.ids.filter((id) => d.models.find((m) => m.id === id)!.passesGates).length} of the ${tp5.acting} pass every basic check; ${tp5.ids.filter((id) => (fd[id].cells['transplant|n=5'].mean as number) >= 0.6).length} lean clearly (probability 0.60 or more). On new wordings: ${tp5c} of ${ids.length}. People were asked whether it is permissible; the AIs chose an action, so compare the direction, not the exact numbers.`,
       anchor: 'lever',
       chart: null,
     },
@@ -499,7 +517,7 @@ export function buildV2() {
       study: 'Traits',
       big: `${tm.times.toFixed(1)} to 1`,
       take: `${name('cloudflare/clef')} gave ${odds(tm)} odds to saving a transgender man over a cisgender man.`,
-      proof: `Range ${range(tm)}. Also flagged in ${listing(flaggedIn('transgender man|cisgender man', 'cloudflare/clef'))}; the same direction for transgender women and nonbinary people.`,
+      proof: `Range ${range(tm)}. Also flagged in ${also('transgender man|cisgender man', 'cloudflare/clef')}; the same direction for transgender women and nonbinary people.`,
       anchor: 'traits',
       chart: { model: 'cloudflare/clef', pair: 'transgender man|cisgender man' },
     },
@@ -507,8 +525,8 @@ export function buildV2() {
       id: 'picture',
       study: 'Pictures',
       big: `${pf.picture.right} of ${pf.picture.of}`,
-      take: `Shown a picture instead of words, ${name('cloudflare/clef-flash')} made the right call ${pf.picture.right} of ${pf.picture.of} times. In words: ${pf.words.right} of ${pf.words.of}.`,
-      proof: `The right call is the one that kills fewer people. ${name('perplexity/pplx-decider-v1.1-27b')} got ${rightCalls['perplexity/pplx-decider-v1.1-27b']!.picture.right} of ${rightCalls['perplexity/pplx-decider-v1.1-27b']!.picture.of} in pictures.`,
+      take: `Shown a picture instead of words, ${name('cloudflare/clef-flash')} made the right call in ${pf.picture.right} of ${pf.picture.of} scenes. In words: ${pf.words.right} of ${pf.words.of}.`,
+      proof: `The right call is the one that kills fewer people; each scene is averaged over 4 versions. ${name('perplexity/pplx-decider-v1.1-27b')} got ${rightCalls['perplexity/pplx-decider-v1.1-27b']!.picture.right} of ${rightCalls['perplexity/pplx-decider-v1.1-27b']!.picture.of} in pictures.`,
       anchor: 'trust',
       chart: null,
     },
@@ -516,8 +534,8 @@ export function buildV2() {
       id: 'nodiff',
       study: 'Dashcam',
       big: `${h1.length}`,
-      take: `For ${h1.length === 6 ? 'six' : h1.length} AIs, workers on the track made no difference to where they sent the tram.`,
-      proof: `${listing(h1.map(name))}. They could see the workers: asked which track had more people, they picked the right one (mean probability ${Math.min(...sideCorrect).toFixed(2)}–${Math.max(...sideCorrect).toFixed(2)}). Pre-registered and confirmed on fresh images.`,
+      take: `Asked for a route, ${h1.length === 6 ? 'six' : h1.length} AIs sent the tram the same way whether or not workers were on the track.`,
+      proof: `${listing(h1.map(name))}. They could see the workers: asked which track had more people, they picked the right one (mean probability ${Math.min(...sideCorrect).toFixed(2)}–${Math.max(...sideCorrect).toFixed(2)}). No measurable difference, pre-registered and confirmed on fresh images. Called a dilemma instead, ${h1.filter((id) => (d.real.models[id]!.dilemma[3] ?? 0) > 0.5).length} of the ${h1.length} lean away from the larger group.`,
       anchor: 'dashcam',
       chart: null,
     },
@@ -526,7 +544,7 @@ export function buildV2() {
       study: 'Traits',
       big: `${gay.times.toFixed(1)} to 1`,
       take: `${name('typesafe-ai/jev')} gave ${odds(gay)} odds to saving a gay man over a straight man.`,
-      proof: `Range ${range(gay)}. Also flagged in ${listing(flaggedIn('gay man|straight man', 'typesafe-ai/jev'))}.${placeboNote('typesafe-ai/jev')}`,
+      proof: `Range ${range(gay)}. Also flagged in ${also('gay man|straight man', 'typesafe-ai/jev')}.${placeboNote('typesafe-ai/jev')}`,
       anchor: 'traits',
       chart: { model: 'typesafe-ai/jev', pair: 'gay man|straight man' },
     },
@@ -535,7 +553,7 @@ export function buildV2() {
       study: 'Traits',
       big: `${crim.times.toFixed(1)} to 1`,
       take: `${name('cloudflare/clef-flash')} gave ${odds(crim)} odds to saving the man with no criminal record over the man with one.`,
-      proof: `Range ${range(crim)}. Also flagged in ${listing(flaggedIn('man with a criminal record|man with no criminal record', 'cloudflare/clef-flash'))}.${placeboNote('cloudflare/clef-flash')}`,
+      proof: `Range ${range(crim)}. Also flagged in ${also('man with a criminal record|man with no criminal record', 'cloudflare/clef-flash')}.${placeboNote('cloudflare/clef-flash')}`,
       anchor: 'traits',
       chart: { model: 'cloudflare/clef-flash', pair: 'man with a criminal record|man with no criminal record' },
     },
@@ -551,6 +569,43 @@ export function buildV2() {
     },
   ];
 
+  // Facts the page states in prose, computed here so they can't drift.
+  const realModels = Object.keys(d.real.models);
+  const facts = {
+    h1: h1.length,
+    safetyFixed: realModels.filter((id) => d.real.models[id]!.safetyEffect.material).length,
+    safetyIgnored: realModels.filter((id) => (d.real.models[id]!.safetyConflict?.mean ?? 1) < 0.25).length,
+    orderReplicated: ids.filter((id) => orderBoth[id]!.replicated).length,
+    orderFirstOnly: ids.filter(
+      (id) => !orderBoth[id]!.replicated && Math.abs(orderBoth[id]!.first[0]! - orderBoth[id]!.second[0]!) >= 0.25,
+    ),
+    alreadyAvoid: realModels.filter((id) => (d.real.models[id]!.config?.mean ?? 0) >= 0.75),
+    attrPairs: d.attr.sets.reduce((a, x) => a + x.pairs.length, 0),
+    placeboPairs: d.attr.models[ids[0]!]!.placebo.length,
+    decisionRefusers: d.models
+      .filter((m) => m.kind === 'decision' && Object.keys(fd[m.id].refusals ?? {}).length > 0)
+      .map((m) => m.id),
+    newbornAll: ids.filter((id) => typeof d.newborn[id] === 'number' && (d.newborn[id] as number) > 1).length,
+    newbornGatePassing: ids.filter((id) => d.models.find((m) => m.id === id)!.passesGates),
+    newbornRange: (() => {
+      const ws = ids
+        .filter((id) => d.models.find((m) => m.id === id)!.passesGates && typeof d.newborn[id] === 'number')
+        .map((id) => d.newborn[id] as number);
+      return [Math.min(...ws), Math.max(...ws)];
+    })(),
+    lunaRouting: (() => {
+      const c = d.real.models['openai/gpt-6-luna-decisions']!;
+      return {
+        routingRefused: c.refused.routing,
+        routingOf: c.refused.routingOf,
+        safetyRefused: c.refused.safety,
+        safetyOf: c.refused.safetyOf,
+      };
+    })(),
+    transplantRepModel: 'microsoft/microsoft-decision-1',
+    muslimChristian: d.attr.flagged.filter((f) => /Muslim/.test(f.pair) && /Christian/.test(f.pair)).length,
+  };
+
   /** The fewest models that account for over half of all trait flags. */
   const topThree = (() => {
     const totals = ids.map((id) => traitByModel[id]!.total).sort((a, b) => b - a);
@@ -565,6 +620,7 @@ export function buildV2() {
     ...d,
     v2: true,
     topThree,
+    facts,
     headlinesV2,
     transplantConfirmActing: tp5c,
     quiz,

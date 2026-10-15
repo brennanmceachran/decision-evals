@@ -245,8 +245,9 @@ No direction is predicted for H2. Either result is reported. v1–v3 stay publis
 ### Post-hoc checks for the write-up (2026-10-15, after all data; no analysis changed)
 
 - **v4 realism, scored afterwards on fresh calls** (`results/realism-check-heldout-v4.json`, `-v4-grok.json`). Mean
-  P(AI-generated), three judges: v4 0.25, v3 0.16, real photos (same pipeline) 0.13. Gemini 3.1 Pro is the strictest
-  judge throughout (real photos 0.31, v3 0.32, v4 0.55); Claude Opus 5.5 and GPT-6 Sol rate v4 0.16 and 0.04. Unseen
+  P(AI-generated), three judges, averaged over images: v4 0.25, v3 0.15, real photos (same pipeline) 0.13. Gemini 3.1 Pro is the strictest
+  judge throughout (per-judge means: real photos 0.31, v3 0.32, v4 0.55); Claude Opus 5.5 and GPT-6 Sol rate v4 0.16 and
+  0.04. Unseen
   judge Grok 4.5: v4 0.12, v3 0.11, real photos 0.14. v1 (GPT Image 2), for the realism timeline: 0.60
   (`results/realism-check-heldout-v1.json`). v4 was scored after its run, so it could not have shaped the images.
 - **GPT-6 Luna Decisions refusals are real API refusals** (`results/luna-refusal-probe.json`): re-asked live with no
