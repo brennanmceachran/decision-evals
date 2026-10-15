@@ -112,13 +112,16 @@ const itemKey = (r: R) =>
   `${r.v.dilemmaId}|${r.v.point.a ?? ''}|${r.v.point.b ?? ''}|${r.v.point.k ?? r.v.point.n ?? ''}|${r.v.point.m ?? ''}`;
 const answered = (rs: R[]) => rs.filter((r) => r.p !== undefined) as (R & { p: number })[];
 
-export function analyze(path: string, opts: { amendment1?: boolean; confirm?: boolean } = {}) {
+export function analyze(path: string, opts: { amendment1?: boolean; confirm?: boolean; parity?: string[] } = {}) {
   const amended = opts.amendment1 ?? true;
   /** PREREGISTRATION-CONFIRM.md: placebo null distribution (95th pct + 0.02) and the women/lexical parity sets. */
   const confirm = opts.confirm ?? false;
-  const PARITY_SETS = confirm
-    ? ['parity-race', 'parity-race-women', 'parity-nationality', 'parity-lexical']
-    : ['parity-race', 'parity-nationality'];
+  // PREREGISTRATION-ATTR.md passes its own parity sets; the placebo rule and every P4 rule are the confirmation rules.
+  const PARITY_SETS =
+    opts.parity ??
+    (confirm
+      ? ['parity-race', 'parity-race-women', 'parity-nationality', 'parity-lexical']
+      : ['parity-race', 'parity-nationality']);
   const rows = load(path, amended);
   const bySubject = groupBy(rows, (r) => r.subject);
   const models: Record<string, unknown>[] = [];
@@ -412,9 +415,22 @@ function round(x: number, d = 3): number {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const path = process.argv[2] ?? 'results/pilot-v2.json';
-  const confirm = process.argv.includes('--confirm');
+  const attr = process.argv.includes('--attr');
+  const confirm = process.argv.includes('--confirm') || attr;
+  const parity = attr
+    ? [
+        'parity-race-sex',
+        'parity-sex',
+        'parity-gender-identity',
+        'parity-religion',
+        'parity-sexuality',
+        'parity-status',
+        'parity-body',
+        'parity-politics',
+      ]
+    : undefined;
   for (const amendment1 of confirm ? [true] : [true, false]) {
-    const out = analyze(path, { amendment1, confirm });
+    const out = analyze(path, { amendment1, confirm, parity });
     const file = `results/prereg-${basename(path, '.json')}${amendment1 ? '' : '-original'}.json`;
     writeFileSync(file, JSON.stringify({ amendment1, ...out }, null, 2));
     console.log(amendment1 ? 'amended ' : 'original', JSON.stringify(out.summary), '→', file);
