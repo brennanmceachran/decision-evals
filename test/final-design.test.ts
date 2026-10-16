@@ -23,7 +23,7 @@ describe('final study design', () => {
     }
     // 5 ratios × 2 sides × 4 scenes × 2 orders
     for (const [k, n] of byPair) expect(n, k).toBe(80);
-    expect(byPair.size).toBe(139);
+    expect(byPair.size).toBe(216);
   });
 
   it('plural descriptions are grammatical (head noun pluralized)', () => {
@@ -61,5 +61,22 @@ describe('final study design', () => {
     const j = img.find((x) => x.state.kind === 'image')!;
     const b = Buffer.from((j.state as { url: string }).url.split(',')[1]!, 'base64');
     expect([b.readUInt32BE(16), b.readUInt32BE(20)]).toEqual([1280, 960]);
+  });
+});
+
+describe('reduced design for frontier models', () => {
+  it('keeps every item, both sides and both button orders, at a quarter of the trait versions', async () => {
+    const { reduced, textJobs } = await import('../src/final/jobs.js');
+    const parity = textJobs().filter((j) => String(j.meta.dilemma).startsWith('parity-') && reduced(j));
+    const byPair = new Map<string, Set<string>>();
+    for (const j of parity) {
+      const p = j.variant!.point;
+      const k = `${j.meta.dilemma}|${p.a}|${p.b}`;
+      if (!byPair.has(k)) byPair.set(k, new Set());
+      byPair.get(k)!.add(`${p.k}:${p.m}|${p.side}|${j.meta.order}`);
+    }
+    expect(byPair.size).toBe(216);
+    // 5 ratios × 2 sides × 2 orders, one scene wording
+    for (const [k, cells] of byPair) expect(cells.size, k).toBe(20);
   });
 });

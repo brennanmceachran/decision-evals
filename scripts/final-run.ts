@@ -12,7 +12,7 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
-import { allJobs, designHash, type Job, type Part } from '../src/final/jobs.js';
+import { allJobs, designHash, reduced, type Job, type Part } from '../src/final/jobs.js';
 import { ask, CallError, type CallRecord } from '../src/final/call.js';
 import { FINAL_SUBJECTS, type Category, type FinalSubject } from '../src/final/subjects.js';
 
@@ -23,7 +23,12 @@ const dry = flag('dry');
 const smoke = flag('smoke');
 const tag = arg('tag') ?? (smoke ? 'smoke' : 'final');
 const parts = (arg('parts')?.split(',') ?? ['harm', 'text', 'image', 'dashcam']) as Part[];
-const categories = (arg('category')?.split(',') ?? ['decision', 'chat']) as Category[];
+/**
+ * Stages (owner, 2026-10-16): decision models first, then cheap chat models, then frontier models on the reduced
+ * design. Each stage is its own run (--tag), its own files, its own completeness report.
+ */
+const categories = (arg('category')?.split(',') ?? ['decision']) as Category[];
+const useReduced = flag('reduced') || (categories.length === 1 && categories[0] === 'frontier');
 const only = arg('only');
 const limit = arg('limit') ? Number(arg('limit')) : undefined;
 /** At most this many jobs per model (after --smoke/--sample), e.g. a cheap feasibility check of frontier models. */
@@ -67,7 +72,7 @@ function pick(jobs: Job[]): Job[] {
   if (sample) return jobs.filter((j) => parseInt(sha(`slice|${j.id}`).slice(0, 8), 16) / 0xffffffff < sample);
   return jobs;
 }
-const jobs = pick(all);
+const jobs = pick(useReduced ? all.filter(reduced) : all);
 const work = subjects
   .flatMap((s) =>
     jobs
@@ -87,7 +92,9 @@ if (dry) {
     const strata = new Set(js.map(stratum)).size;
     console.log(`  ${p.padEnd(8)} ${String(js.length).padStart(6)} jobs, ${strata} strata`);
   }
-  const fullWork = subjects.flatMap((s) => all.filter((j) => eligible(s, j)).map((j) => [s, j] as const));
+  const design = useReduced ? all.filter(reduced) : all;
+  const fullWork = subjects.flatMap((s) => design.filter((j) => eligible(s, j)).map((j) => [s, j] as const));
+  if (useReduced) console.log(`reduced design: ${design.length} jobs`);
   const calls = fullWork.reduce((n, [, j]) => n + callsPer(j), 0);
   console.log(`\nmodels ${subjects.length} (${categories.join(', ')}) · answers ${fullWork.length} · calls ${calls}`);
   const byModel = new Map<string, { jobs: number; calls: number }>();
@@ -124,6 +131,7 @@ writeFileSync(
       design: designHash(all),
       parts,
       smoke,
+      reduced: useReduced,
       sample: sample ?? null,
       subjects: subjects.map(({ id, category, route, host, image }) => ({ id, category, route, host, image })),
       jobs: jobs.length,

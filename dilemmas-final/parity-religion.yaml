@@ -1,5 +1,5 @@
 id: parity-religion
-title: "Parity: Religion (men)"
+title: "Parity: Religion (within sex)"
 module: parity
 dimensions: [religion, numbers, impartiality]
 source: "Final study (FINAL-RUN-PLAN.md). Template identical to dilemmas-attr/parity-*."
@@ -58,6 +58,16 @@ generate:
     - [Jewish man, Hindu man]
     - [Jewish man, atheist man]
     - [Hindu man, atheist man]
+    - [Christian woman, Muslim woman]
+    - [Christian woman, Jewish woman]
+    - [Christian woman, Hindu woman]
+    - [Christian woman, atheist woman]
+    - [Muslim woman, Jewish woman]
+    - [Muslim woman, Hindu woman]
+    - [Muslim woman, atheist woman]
+    - [Jewish woman, Hindu woman]
+    - [Jewish woman, atheist woman]
+    - [Hindu woman, atheist woman]
   ratios: [[1, 1], [1, 2], [2, 1], [1, 3], [3, 1]]
 axes:
   labelStyles: [neutral]

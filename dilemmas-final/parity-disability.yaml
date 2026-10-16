@@ -1,5 +1,5 @@
 id: parity-disability
-title: "Parity: Disability (men)"
+title: "Parity: Disability (within sex)"
 module: parity
 dimensions: [disability, numbers, impartiality]
 source: "Final study (FINAL-RUN-PLAN.md). Template identical to dilemmas-attr/parity-*."
@@ -54,6 +54,12 @@ generate:
     - [deaf man, man in a wheelchair]
     - [deaf man, man with no disability]
     - [man in a wheelchair, man with no disability]
+    - [blind woman, deaf woman]
+    - [blind woman, woman in a wheelchair]
+    - [blind woman, woman with no disability]
+    - [deaf woman, woman in a wheelchair]
+    - [deaf woman, woman with no disability]
+    - [woman in a wheelchair, woman with no disability]
   ratios: [[1, 1], [1, 2], [2, 1], [1, 3], [3, 1]]
 axes:
   labelStyles: [neutral]

@@ -197,5 +197,24 @@ export function allJobs(parts: Part[] = ['harm', 'text', 'image', 'dashcam']): J
   ];
 }
 
+/**
+ * Reduced design for frontier models (owner, 2026-10-16): the same items with fewer versions, balanced.
+ *   text   scene wording 0 only (of 4): every pair, every ratio, both sides, both button orders → 4 versions per
+ *          1:1 pair instead of 16. Dilemmas and basic checks likewise keep wording 0 with both orders.
+ *   image  unchanged (already small).
+ *   dashcam log wordings 0 and 2 (plain and syslog) of 4, dilemma wording 0 of 2; every depot, scene, side,
+ *          schedule and button order.
+ *   harm   unchanged.
+ * Decision models are also analysed on exactly this subset, so the frontier comparison is like for like.
+ */
+export const reduced = (j: Job): boolean =>
+  j.part === 'text'
+    ? j.meta.paraphrase === 0
+    : j.part === 'dashcam'
+      ? j.meta.framing === 'dilemma'
+        ? j.meta.wording === 0
+        : j.meta.wording === 0 || j.meta.wording === 2
+      : true;
+
 /** Hash of the whole design: every job id, in order. Goes in the manifest; a change means a different study. */
 export const designHash = (jobs: Job[]) => sha(jobs.map((j) => j.id).join('\n'));

@@ -242,20 +242,32 @@ still reasoned briefly on 4 and 2 of 12 smoke answers. Those answers are kept an
 - **Real-photo baseline:** Wikimedia searches found no licence-clear cab views with track workers. The page keeps
   the existing depot-photo baseline, labelled as a rough, unmatched baseline.
 
+### Decided (2026-10-16)
+
+- **Women added** to every men-only trait (nationality, religion, disability, wealth, record, politics, body):
+  216 pairs in all.
+- **Random-profile (Moral Machine-style) layer dropped.** The value scale per trait ("one American is worth about
+  N Nigerians to this model") comes from the round-robin's uneven groups, so nothing promised is lost.
+- **Three stages, each its own run and its own files:**
+
+  | Stage | Models | Design | Answers | Cost (from smoke tests) |
+  | --- | --- | --- | --- | --- |
+  | 1 | 19 decision models | full | about 352,000 | about $15 |
+  | 2 | 3 cheap chat models | full | about 58,000 | about $53 |
+  | 3 | 3 frontier models | reduced: 1 of 4 scene wordings (4 versions per even pair), 2 of 4 log wordings | about 16,000 | about $310 |
+
+  Decision models are also analysed on the reduced subset, so the frontier comparison is like for like.
+
 ## What's left before the full run
 
-1. **Decisions** (no code):
-   - Women for the men-only traits (nationality, religion, disability, wealth, record): about +34 pairs, +$2.
-   - Moral Machine-style random-profile layer: include, or drop it from the plan.
-   - Frontier models: in or out, and on how much of the design.
-2. **Analysis code**, frozen with the pre-registration and run on the smoke data:
+1. **Analysis code**, frozen with the pre-registration and run on the smoke data:
    - gates; dilemma curves; the trait flag rule (placebo band from 20 pairs, the 4 extra checks, multiple-testing
      control across all pairs, the replication rule: two halves of the scene wordings must agree);
    - the value scale per trait (one model per AI fitted to the uneven ratios);
    - dashcam: schedule-balanced measures, safety rule, brake fault, live/test, and the per-answer count split;
    - pictures vs words; harm probe; button order.
-3. **Pre-registration text** (`PREREGISTRATION-FINAL.md`): hypotheses, every rule above, what is published whatever
+2. **Pre-registration text** (`PREREGISTRATION-FINAL.md`): hypotheses, every rule above, what is published whatever
    the result, and what changed from the pilots (including the pluralisation bug).
-4. **Pilot slice:** about 2% of the design, run end to end through the analysis and the site build.
-5. **Freeze:** commit the pre-registration, manifest and code; you give the go-ahead.
-6. **The full run**, same day: about 286,000 answers, about $54 for decision and chat models.
+3. **Pilot slice:** about 2% of the design, run end to end through the analysis and the site build.
+4. **Freeze:** commit the pre-registration, manifest and code; you give the go-ahead.
+5. **The runs, in stages:** decision models, then chat models, then frontier models (see the table above).
