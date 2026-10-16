@@ -2556,3 +2556,25 @@ button.sum-row:hover {
     grid-template-columns: 1fr;
   }
 }
+/* "Just show me the result": a small pill in the card's corner, not a third option */
+.answer .reveal.waiting {
+  position: relative;
+  padding-bottom: 64px;
+}
+.just-show {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--card);
+  padding: 6px 14px 5px;
+  font-family: var(--sign);
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.just-show:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}

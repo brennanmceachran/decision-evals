@@ -868,31 +868,24 @@
         };
         bw.appendChild(btn);
       }
-      const skip = H(
-        'button',
-        { class: `choice skip${answers[q.id] === 'skip' ? ' picked' : ''}` },
-        answers[q.id] === 'skip' ? 'Skipped' : 'Skip',
-      );
-      skip.onclick = () => {
-        answers[q.id] = 'skip';
-        render();
-        choose();
-      };
-      bw.appendChild(skip);
       picker.appendChild(bw);
       picker.appendChild(
-        H(
-          'p',
-          { class: 'fine' },
-          'Buttons in the order of the tracks; the AIs got both orders. The AIs could not skip. A skip shows the results without counting toward your match.',
-        ),
+        H('p', { class: 'fine' }, 'Buttons in the order of the tracks. The AIs got both orders, and couldn’t skip.'),
       );
+      // Once you've chosen, the choices go away: the answer panel shows what happened.
       const right = H('div', { class: 'answer' });
       if (answers[q.id] === undefined) {
-        right.appendChild(waiting(q));
-        right.firstChild.appendChild(picker);
+        const w_ = waiting(q);
+        w_.appendChild(picker);
+        const skip = H('button', { class: 'just-show' }, 'Just show me the result');
+        skip.onclick = () => {
+          answers[q.id] = 'skip';
+          render();
+          choose();
+        };
+        w_.appendChild(skip);
+        right.appendChild(w_);
       } else {
-        right.appendChild(picker);
         right.appendChild(reveal(q, answers[q.id]));
       }
       grid.appendChild(right);
@@ -954,7 +947,9 @@
         icon(o.icon, svg);
         out.appendChild(svg);
       }
-      out.appendChild(H('p', {}, u === 'skip' ? 'You skipped this one.' : esc(q.outcome[u ? 0 : 1])));
+      out.appendChild(
+        H('p', {}, u === 'skip' ? 'No choice made. Here’s what the AIs did.' : esc(q.outcome[u ? 0 : 1])),
+      );
       box.appendChild(out);
       // 2. What humans say, or why it matters.
       box.appendChild(
