@@ -125,18 +125,15 @@ function card(d: D, h: D['headlinesV2'][number]): string {
       };
     if (h.id === 'routing' || h.id === 'rule' || h.id === 'nodiff') {
       const ih = h.id === 'nodiff' ? 540 : 380;
-      const img = `<image href="${jpeg('assets/real-v4/u-group-L.jpg')}" x="60" y="${y}" width="960" height="${ih}" preserveAspectRatio="xMidYMid slice"/><rect x="72" y="${y + 12}" width="170" height="32" rx="4" fill="rgba(0,0,0,.55)"/><text x="84" y="${y + 35}" font-family="Menlo, monospace" font-size="18" fill="#fff">● CAB-T7 FWD</text>`;
+      const img = `<image href="${jpeg(h.id === 'routing' ? 'assets/real-v4/u-two-L.jpg' : 'assets/real-v4/u-group-L.jpg')}" x="60" y="${y}" width="960" height="${ih}" preserveAspectRatio="xMidYMid slice"/><rect x="72" y="${y + 12}" width="170" height="32" rx="4" fill="rgba(0,0,0,.55)"/><text x="84" y="${y + 35}" font-family="Menlo, monospace" font-size="18" fill="#fff">● CAB-T7 FWD</text>`;
       const b = y + ih + 40; // first row below the photo
       let extra = '';
       if (h.id === 'routing') {
-        const m = d.dash['perplexity/pplx-decider-v1.1-27b']!;
+        const t = d.routingTwo;
         extra +=
-          `<text x="60" y="${b}" font-family="${SIGN}" font-size="24" fill="${muted}">Called a dilemma: away from the larger group (teal)</text>` +
-          squares(m.dilemma, 60, b + 14, 32, 30);
-        extra +=
-          `<text x="60" y="${b + 100}" font-family="${SIGN}" font-size="24" fill="${muted}">Called a routing request: toward the larger group (purple)</text>` +
-          squares(m.routing, 60, b + 114, 32, 30);
-        return { svg: img + extra, h: ih + 40 + 174 };
+          `<text x="60" y="${b}" font-family="${SIGN}" font-size="24" fill="${muted}">Routing job, other track empty: ${t.toward} of ${t.of} sent toward the workers</text>` +
+          squares({ toward: t.toward, away: t.of - t.toward, refused: 0 }, 60, b + 14, 32, 30);
+        return { svg: img + extra, h: ih + 40 + 60 };
       }
       if (h.id === 'rule') {
         for (const [i, id] of [
@@ -166,8 +163,8 @@ function card(d: D, h: D['headlinesV2'][number]): string {
       });
       const yy = y + 20 + tp.length * 80;
       const hp = (d.human as Record<string, { value: number }>).transplant!.value;
-      v += `<text x="60" y="${yy + 38}" font-family="${SIGN}" font-size="26" fill="${ink}">◆ People</text><rect x="240" y="${yy + 24}" width="${r0w}" height="8" rx="4" fill="#e2e2da"/><path d="M${240 + hp * r0w} ${yy + 12} l16 16 -16 16 -16 -16z" fill="${C.ink}"/><text x="${W - 60}" y="${yy + 38}" text-anchor="end" font-family="${SIGN}" font-size="30" font-weight="700" fill="${ink}">${Math.round(hp * 100)}%</text>`;
-      v += `<text x="60" y="${yy + 100}" font-family="${SIGN}" font-size="22" fill="${muted}">Each square: one AI. Teal: leans toward operating. ◆ share of people who say it’s permissible.</text>`;
+      v += `<text x="60" y="${yy + 38}" font-family="${SIGN}" font-size="26" fill="${ink}">Humans</text><rect x="240" y="${yy + 24}" width="${r0w}" height="8" rx="4" fill="#e2e2da"/><circle cx="${240 + hp * r0w}" cy="${yy + 10}" r="7" fill="${C.ink}"/><rect x="${240 + hp * r0w - 8}" y="${yy + 19}" width="16" height="24" rx="5" fill="${C.ink}"/><text x="${W - 60}" y="${yy + 38}" text-anchor="end" font-family="${SIGN}" font-size="30" font-weight="700" fill="${ink}">${Math.round(hp * 100)}%</text>`;
+      v += `<text x="60" y="${yy + 100}" font-family="${SIGN}" font-size="22" fill="${muted}">Each square: one AI. Teal: leans toward operating. The figure: share of humans who say it’s permissible.</text>`;
       return { svg: v, h: (tp.length + 1) * 80 + 90 };
     }
     if (h.id === 'picture') {

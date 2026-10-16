@@ -104,8 +104,8 @@
             <span class="no">What we found</span>
             <h2>The short version.</h2>
             <p class="lede">
-              The largest effects we measured, each naming the model, with the proof underneath. Every number here is
-              generated from the analysis files and checked by a test. Tap a picture to enlarge it.
+              The largest effects we measured. The model is named underneath each one, with the proof. Every number here
+              is generated from the analysis files and checked by a test. Tap a picture to enlarge it.
             </p>
           </div>
           <div class="board" id="board" data-fig></div>
@@ -127,7 +127,7 @@
         <div class="wrap">
           <div class="cast" id="cast" data-fig></div>
           <p class="proof">
-            ◆ People: share who call the act permissible in published surveys. AIs: how many of the
+            Humans: share who call the act permissible in published surveys. AIs: how many of the
             <span data-x="D.totals.models"></span> lean toward doing it at 5 lives against 1. Tap a dilemma to see every
             AI's answer.
           </p>
@@ -173,17 +173,50 @@
             <span class="no">Chapter 2</span>
             <h2>Who would you save?</h2>
             <p class="lede">
-              One stranger on each track. They differ by a word or two. There's no right answer, so a fair model is
-              torn, 50/50. Some models aren't. Pick a scenario, decide for yourself, then see all
-              <span data-x="D.totals.models"></span> AIs.
+              One stranger on each track. You can only save one. There's no right answer, so a fair AI should be torn:
+              half the time one, half the time the other. To check, we first need to know what "torn" looks like for
+              each AI.
+            </p>
+          </div>
+          <div class="beat">
+            <h3 class="take">Step 1: two strangers who differ by nothing at all.</h3>
+            <p class="why">
+              "A Group-K man" or "a Group-T man". The letters mean nothing, so any lean is noise. We asked
+              <span data-x="D.placeboDots[0].placebo.length"></span> pairs like this, 16 ways each. Each dot is one
+              pair; the grey band is how far that AI drifts on meaningless letters. That band is its noise.
+            </p>
+          </div>
+        </div>
+        <div class="wrap">
+          <div class="viz" id="noise-step1" data-fig></div>
+        </div>
+        <div class="story">
+          <div class="beat">
+            <h3 class="take">Step 2: now make the difference race.</h3>
+            <p class="why">
+              "A Black woman" or "a White man". Race shouldn't matter either, so a fair AI should land inside its own
+              band. Most do. Some don't.
+            </p>
+          </div>
+        </div>
+        <div class="wrap">
+          <div class="viz" id="noise-step2" data-fig></div>
+          <p class="proof" id="noise-step2-proof"></p>
+        </div>
+        <div class="story">
+          <div class="beat">
+            <h3 class="take">Step 3: every trait we tested, most lopsided first.</h3>
+            <p class="why">
+              Pick a pair. Each row is one AI against its own band. A red flag means it landed outside the band and
+              passed four more checks we fixed in advance.
             </p>
           </div>
         </div>
         <div class="wrap">
           <div class="scen" data-fig>
             <div>
-              <div class="viz-label" style="margin-bottom: 6px">Scenarios, most flagged first</div>
-              <div class="scen-list" id="scen-list" role="listbox" aria-label="Scenario"></div>
+              <div class="viz-label" style="margin-bottom: 6px">Pairs, most flagged first</div>
+              <div class="scen-list" id="scen-list" role="listbox" aria-label="Pair"></div>
             </div>
             <div class="scen-view" id="scen-view"></div>
           </div>

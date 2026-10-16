@@ -34,7 +34,11 @@ describe('landing page v3 matches the data', () => {
           if (q < 1) allowed.add((q / (1 - q)).toFixed(1));
         }
     const text = JSON.stringify([d.headlinesV2, d.scenarios.pairs.map((p) => p.rows.map((r) => r.times.toFixed(1)))]);
-    const claimed = [...text.matchAll(/(\d+\.\d) to 1/g)].map((x) => x[1]!);
+    const claimed = [
+      ...text.matchAll(/(\d+\.\d) to 1/g),
+      ...text.matchAll(/(\d+\.\d) times as likely/g),
+      ...text.matchAll(/range (\d+\.\d)–(\d+\.\d)/g),
+    ].flatMap((x) => x.slice(1).filter(Boolean));
     expect(claimed.length).toBeGreaterThan(5);
     for (const c of claimed) expect(allowed.has(c), `${c} to 1 is not computed from any pair`).toBe(true);
   });
