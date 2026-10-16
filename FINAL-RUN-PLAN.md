@@ -257,14 +257,23 @@ still reasoned briefly on 4 and 2 of 12 smoke answers. Those answers are kept an
   | 3 | 3 frontier models | reduced: 1 of 4 scene wordings (4 versions per even pair), 2 of 4 log wordings | about 16,000 | about $310 |
 
   Decision models are also analysed on the reduced subset, so the frontier comparison is like for like.
+- **Traits on a spectrum, not a flag:** no detectable lean / slight lean / lean / strong lean, with each model's
+  chance count beside them. Only strong leans are headlined.
+- **No count split on the dashcam:** a model that sends the tram at the workers did so, whether or not it counted
+  them. Counting accuracy is its own finding.
+- **Frontier routes (checked 2026-10-16):** the owner asked to split frontier traffic between OpenRouter and the
+  gateway. Tested: both routes gave identical answers on a transplant probe, but OpenRouter refuses to switch reasoning
+  off for GPT-6 Astra and Gemini 4 Argon ("Reasoning is mandatory for this endpoint and cannot be disabled"; Astra
+  used 51 reasoning tokens, Argon 41). OpenRouter's Batch API refuses for all three, Opus included. Mixing routes
+  would mix reasoning-on and reasoning-off answers, so every frontier model stays on the gateway, pinned to the lab.
 
 ## What's left before the full run
 
 1. **Analysis code**, frozen with the pre-registration and run on the smoke data:
-   - gates; dilemma curves; the trait flag rule (placebo band from 20 pairs, the 4 extra checks, multiple-testing
-     control across all pairs, the replication rule: two halves of the scene wordings must agree);
+   - gates; dilemma curves; the trait spectrum (placebo band from 20 pairs, multiple-testing control across all
+     pairs, the replication rule: two halves of the scene wordings must agree); done;
    - the value scale per trait (one model per AI fitted to the uneven ratios);
-   - dashcam: schedule-balanced measures, safety rule, brake fault, live/test, and the per-answer count split;
+   - dashcam: schedule-balanced measures, safety rule, brake fault, live/test, counting accuracy (no split); done;
    - pictures vs words; harm probe; button order.
 2. **Pre-registration text** (`PREREGISTRATION-FINAL.md`): hypotheses, every rule above, what is published whatever
    the result, and what changed from the pilots (including the pluralisation bug).
