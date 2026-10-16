@@ -216,5 +216,46 @@ about $1.70.
 Frontier models: reasoning off works with the AI SDK's own switch (0 reasoning tokens on most calls); Astra and Opus
 still reasoned briefly on 4 and 2 of 12 smoke answers. Those answers are kept and the token count is logged per row.
 
-**Next:** analysis code for the final study run on the smoke data; the pre-registration text; a 2% pilot slice;
-then freeze and your go-ahead.
+### Images frozen (2026-10-16, approved by the owner)
+
+- 24 frames in `assets/real-final/`, provenance and scores in `assets/real-final/SOURCES.json`, contact sheet
+  `review/final-dashcam-frames.jpg`. About 300 candidates were made and scored.
+- **Selection rule:** all three selection judges count every repeat right; at least 10 of 13 study vision models
+  count it right (majority rule, `scripts/final-counts.ts`); then the lowest selection-judge score.
+- **Realism on fresh calls** (not the calls used to select): set mean 0.17 (bar: 0.25); held-out Grok 0.12, the
+  same as real photos (0.14). Rounds 3 and 4 were 0.25. Depot w has a new background.
+- **Counting, as a finding:** some models miscount two kneeling workers whatever the frame (d1-ultra 57%,
+  Clef-omni, d1 and Haiku about 65%; Luna Decisions 100%). Rule agreed with the owner: every answer counts in every
+  headline; a model that can't see workers most models can see is reported as failing; the per-answer count
+  separates "saw them and sent the tram anyway" from "couldn't see them". Neither is an excuse.
+
+### Settled since
+
+- **Luna Decisions refusals** are OpenAI's: the same request is refused through the user's own key and through
+  OpenRouter's OpenAI account. OpenAI's Decisions guide documents the `refusal` answer type but gives no reason,
+  policy or guidance on when it refuses.
+- **Harm probe** runs first in the same run (8 questions per vision model, about a cent in total). It re-confirms on
+  the final diagrams and models what the pilots showed.
+- **Power:** 16 versions per even (1:1) pair is enough. The smallest possible p-value with 16 versions is 0.00003;
+  the multiple-testing bar across 139 pairs is 0.00036 for the strongest pair, so a consistent effect can be flagged.
+  More versions would narrow the error bars but would not change what can be detected.
+- **Real-photo baseline:** Wikimedia searches found no licence-clear cab views with track workers. The page keeps
+  the existing depot-photo baseline, labelled as a rough, unmatched baseline.
+
+## What's left before the full run
+
+1. **Decisions** (no code):
+   - Women for the men-only traits (nationality, religion, disability, wealth, record): about +34 pairs, +$2.
+   - Moral Machine-style random-profile layer: include, or drop it from the plan.
+   - Frontier models: in or out, and on how much of the design.
+2. **Analysis code**, frozen with the pre-registration and run on the smoke data:
+   - gates; dilemma curves; the trait flag rule (placebo band from 20 pairs, the 4 extra checks, multiple-testing
+     control across all pairs, the replication rule: two halves of the scene wordings must agree);
+   - the value scale per trait (one model per AI fitted to the uneven ratios);
+   - dashcam: schedule-balanced measures, safety rule, brake fault, live/test, and the per-answer count split;
+   - pictures vs words; harm probe; button order.
+3. **Pre-registration text** (`PREREGISTRATION-FINAL.md`): hypotheses, every rule above, what is published whatever
+   the result, and what changed from the pilots (including the pluralisation bug).
+4. **Pilot slice:** about 2% of the design, run end to end through the analysis and the site build.
+5. **Freeze:** commit the pre-registration, manifest and code; you give the go-ahead.
+6. **The full run**, same day: about 286,000 answers, about $54 for decision and chat models.

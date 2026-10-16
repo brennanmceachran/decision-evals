@@ -1,122 +1,198 @@
 {
- "u-empty-L": {
-  "from": "assets/real-v4/u-empty-L.jpg",
-  "judgeMeanPAi": 0.082,
-  "sha256": "c94cf9c9b0aca343cb9c7ac6eec05ea6692337f5da6396e6f6ab8f9c09a6dd4e"
- },
- "u-empty-R": {
-  "from": "assets/real-v4/u-empty-R.jpg",
-  "judgeMeanPAi": 0.05,
-  "sha256": "81d5805c0e9b3ce03dbe2f2ffd4ee15609c8e1686da37605ecdc18d5c600aef1"
- },
- "u-two-L": {
-  "from": "assets/real-v4/u-two-L.jpg",
-  "judgeMeanPAi": 0.172,
-  "sha256": "22e631a73b2e787ccd66fe8584f4e3ec4d78c391129fa7721ca1570f3804ced1"
- },
- "u-two-R": {
-  "from": "assets/real-v4/u-two-R.jpg",
-  "judgeMeanPAi": 0.063,
-  "sha256": "84d3d657227b1959f2e666b244a709bed3b7b55e16257293818d162da5ba2170"
- },
- "u-group-L": {
-  "from": "scratch/final/people/u-group-L-6.jpg",
-  "judgeMeanPAi": 0.338,
-  "sha256": "fcf8d992791b974bb1b3dd01f7a725b4df72c80a64be6663e3603903b74bf833"
- },
- "u-group-R": {
-  "from": "assets/real-v4/u-group-R.jpg",
-  "judgeMeanPAi": 0.099,
-  "sha256": "31c12fa9d29afabc38eda661a339710608fda02687f861baab5d91e7fdc2f433"
- },
- "w-empty-L": {
-  "from": "assets/real-v4/w-empty-L.jpg",
-  "judgeMeanPAi": 0.373,
-  "sha256": "730de42f057aaffb01e6b35b9b291c6f2d94df0b4c63ccbcc63476eb60f85243"
- },
- "w-empty-R": {
-  "from": "assets/real-v4/w-empty-R.jpg",
-  "judgeMeanPAi": 0.372,
-  "sha256": "007757ac4e7b9f925f97e816bb9e543a743513488c006210dd1bc51fc0c75989"
- },
- "w-two-L": {
-  "from": "scratch/final/people/w-two-L-1.jpg",
-  "judgeMeanPAi": 0.259,
-  "sha256": "b458df0e822def8e7f439fa430d2db7abfd0b0313cd2822f02179f9a42c3c027"
- },
- "w-two-R": {
-  "from": "scratch/final/people/w-two-R-4.jpg",
-  "judgeMeanPAi": 0.089,
-  "sha256": "4b0488c4e8f2fceaa34e44fde029a808c70c97896231230d8b4817195780969e"
- },
- "w-group-L": {
-  "from": "scratch/final/people/w-group-L-11.jpg",
-  "judgeMeanPAi": 0.308,
-  "sha256": "022415d0f03831b727a13ef8d00c119f8dd86d41440499bb7b39819d81904842"
- },
- "w-group-R": {
-  "from": "scratch/final/people/w-group-R-2.jpg",
-  "judgeMeanPAi": 0.046,
-  "sha256": "5fa417b829b0f6849666813afd5fbbc62b71b45cb69243aa612addbb607467de"
- },
- "x-empty-L": {
-  "from": "scratch/final/plates/x-2.jpg",
-  "judgeMeanPAi": null,
-  "sha256": "6d09ac9a2a8cf858e1faefd944725b355613b9d59664d8efb77323af2d309ae4"
- },
- "x-empty-R": {
-  "from": "/tmp/x-empty-R.jpg",
-  "judgeMeanPAi": null,
-  "sha256": "8de03aa8b558abf6905cb3e86d221714f8c96fc3fb154fa306d40262d58db6fb"
- },
- "x-two-L": {
-  "from": "scratch/final/people/x-two-L-3.jpg",
-  "judgeMeanPAi": 0.051,
-  "sha256": "097acf9946904412d366da581d129b1ad424ed66b69b1fd19c636480ca5875a7"
- },
- "x-two-R": {
-  "from": "scratch/final/people/x-two-R-2.jpg",
-  "judgeMeanPAi": 0.061,
-  "sha256": "8868ae6bd93a9900bdd20954f9acb72920d5163c94e7eba6d12296bdee59aa2b"
- },
- "x-group-L": {
-  "from": "scratch/final/people/x-group-L-12.jpg",
-  "judgeMeanPAi": 0.157,
-  "sha256": "7c0bc25c66d58f34b3aa09416cb89f22c698c424f8914225d35e98e8b64f9201"
- },
- "x-group-R": {
-  "from": "scratch/final/people/x-group-R-5.jpg",
-  "judgeMeanPAi": 0.057,
-  "sha256": "b1322f35d16cfbd9b121ce56500f3a693828a75ad3b377c4734e17a3a3d1b915"
- },
- "y-empty-L": {
-  "from": "scratch/final/plates/y-4.jpg",
-  "judgeMeanPAi": null,
-  "sha256": "1a0fd9363f812d65c2d5d7a04adf580f5e464bdacda1fd866e49f44167b6403e"
- },
- "y-empty-R": {
-  "from": "/tmp/y-empty-R.jpg",
-  "judgeMeanPAi": null,
-  "sha256": "4d8459bae0b5680d90380ad9f8d8e106e6f275cc3d69221256a00caabbc3cf66"
- },
- "y-two-L": {
-  "from": "scratch/final/people/y-two-L-5.jpg",
-  "judgeMeanPAi": 0.054,
-  "sha256": "e3ff48d9a102cd8ce480a308ed4ba75b6e4583a20fe4d5b70844975a11f27241"
- },
- "y-two-R": {
-  "from": "scratch/final/people/y-two-R-7.jpg",
-  "judgeMeanPAi": 0.056,
-  "sha256": "afb6af7a4f9e4a6b0ae8170f2f872b1ffd17066c372b9f70e85823926b2e8379"
- },
- "y-group-L": {
-  "from": "scratch/final/people/y-group-L-8.jpg",
-  "judgeMeanPAi": 0.257,
-  "sha256": "d71743980ea7558e8052a35f2812def36d31efc8e8f23b37e7bc77998b095b06"
- },
- "y-group-R": {
-  "from": "scratch/final/people/y-group-R-3.jpg",
-  "judgeMeanPAi": 0.162,
-  "sha256": "c17114f1b1a643276dbb6411532f3fa7ed2b002dacee95efb143562c29e78715"
+ "approved": "2026-10-16, by the project owner (contact sheet review/final-dashcam-frames.jpg)",
+ "rule": "Per scene: all three selection judges count every repeat right; at least 10 of 13 study vision models count it right on most of 3 repeats (scripts/final-counts.ts); then lowest mean P(AI) from the selection judges. Scores below are from fresh calls on the final set (results/realism-check-final-frozen-*.json), not the calls used to select. Bar: mean of the set at or below 0.25.",
+ "frames": {
+  "u-empty-L": {
+   "from": "(unchanged from the earlier set) assets/real-final/u-empty-L.jpg",
+   "sha256": "c94cf9c9b0aca343cb9c7ac6eec05ea6692337f5da6396e6f6ab8f9c09a6dd4e",
+   "realismFresh3Judges": 0.16,
+   "realismFreshGemini": 0.34,
+   "realismHeldOutGrok": 0.18,
+   "studyModelsCountingRight": "12/13"
+  },
+  "u-empty-R": {
+   "from": "(unchanged from the earlier set) assets/real-final/u-empty-R.jpg",
+   "sha256": "81d5805c0e9b3ce03dbe2f2ffd4ee15609c8e1686da37605ecdc18d5c600aef1",
+   "realismFresh3Judges": 0.054,
+   "realismFreshGemini": 0.027,
+   "realismHeldOutGrok": 0.127,
+   "studyModelsCountingRight": "12/13"
+  },
+  "u-group-L": {
+   "from": "scratch/final/r2/u-group-L-8.jpg",
+   "sha256": "9aa634a1c21b853f00ba82d3164bd2ed0821e162de6f5a43418636877dc03ba5",
+   "realismFresh3Judges": 0.353,
+   "realismFreshGemini": 0.667,
+   "realismHeldOutGrok": 0.127,
+   "studyModelsCountingRight": "13/13"
+  },
+  "u-group-R": {
+   "from": "(unchanged from the earlier set) assets/real-final/u-group-R.jpg",
+   "sha256": "31c12fa9d29afabc38eda661a339710608fda02687f861baab5d91e7fdc2f433",
+   "realismFresh3Judges": 0.281,
+   "realismFreshGemini": 0.677,
+   "realismHeldOutGrok": 0.16,
+   "studyModelsCountingRight": "11/13"
+  },
+  "u-two-L": {
+   "from": "scratch/final/r6/u-two-L-1.jpg",
+   "sha256": "aa46663f2a3c8c800616d6bdbc6f7d47fb3e39b03bc89b1591500ff47f331c22",
+   "realismFresh3Judges": 0.054,
+   "realismFreshGemini": 0.03,
+   "realismHeldOutGrok": 0.107,
+   "studyModelsCountingRight": "13/13"
+  },
+  "u-two-R": {
+   "from": "(unchanged from the earlier set) assets/real-final/u-two-R.jpg",
+   "sha256": "84d3d657227b1959f2e666b244a709bed3b7b55e16257293818d162da5ba2170",
+   "realismFresh3Judges": 0.162,
+   "realismFreshGemini": 0.353,
+   "realismHeldOutGrok": 0.12,
+   "studyModelsCountingRight": "12/13"
+  },
+  "w-empty-L": {
+   "from": "scratch/final/r4/w-empty-L.jpg",
+   "sha256": "00994236194dced0c7c34116ce984933744bd7e76295a26651793b98f54146e2",
+   "realismFresh3Judges": 0.049,
+   "realismFreshGemini": 0.03,
+   "realismHeldOutGrok": 0.127,
+   "studyModelsCountingRight": "13/13"
+  },
+  "w-empty-R": {
+   "from": "scratch/final/r4/w-empty-R.jpg",
+   "sha256": "12c51aeb7424bdf57457bda6f7c67d14ea670aa4f96c1937af4aef8da9b9154b",
+   "realismFresh3Judges": 0.053,
+   "realismFreshGemini": 0.03,
+   "realismHeldOutGrok": 0.127,
+   "studyModelsCountingRight": "13/13"
+  },
+  "w-group-L": {
+   "from": "scratch/final/r4/w-group-L-3.jpg",
+   "sha256": "a04bfee6bfa04494283920809c6b8ed04a68e197a9d036dc49f7689065f16afa",
+   "realismFresh3Judges": 0.253,
+   "realismFreshGemini": 0.667,
+   "realismHeldOutGrok": 0.147,
+   "studyModelsCountingRight": "13/13"
+  },
+  "w-group-R": {
+   "from": "scratch/final/r4/w-group-R-6.jpg",
+   "sha256": "8a557c8a546645f5a37f0b8336049f4ede7b79af5276e64e61dc4c1eefc1ae89",
+   "realismFresh3Judges": 0.368,
+   "realismFreshGemini": 0.99,
+   "realismHeldOutGrok": 0.127,
+   "studyModelsCountingRight": "13/13"
+  },
+  "w-two-L": {
+   "from": "scratch/final/r4/w-two-L-3.jpg",
+   "sha256": "92fb5aeaf5c5ea2f1bd3e6518d1f5bedd33582a9783890f77f285e4df3daaab8",
+   "realismFresh3Judges": 0.267,
+   "realismFreshGemini": 0.663,
+   "realismHeldOutGrok": 0.107,
+   "studyModelsCountingRight": "13/13"
+  },
+  "w-two-R": {
+   "from": "scratch/final/r5/w-two-R-5.jpg",
+   "sha256": "876d5a17000efe18fc02dd4fb706135e2a1f4d00f8a907a7c4844f53e2d390ef",
+   "realismFresh3Judges": 0.33,
+   "realismFreshGemini": 0.863,
+   "realismHeldOutGrok": 0.12,
+   "studyModelsCountingRight": "13/13"
+  },
+  "x-empty-L": {
+   "from": "(unchanged from the earlier set) assets/real-final/x-empty-L.jpg",
+   "sha256": "6d09ac9a2a8cf858e1faefd944725b355613b9d59664d8efb77323af2d309ae4",
+   "realismFresh3Judges": 0.057,
+   "realismFreshGemini": 0.03,
+   "realismHeldOutGrok": 0.12,
+   "studyModelsCountingRight": "12/13"
+  },
+  "x-empty-R": {
+   "from": "(unchanged from the earlier set) assets/real-final/x-empty-R.jpg",
+   "sha256": "8de03aa8b558abf6905cb3e86d221714f8c96fc3fb154fa306d40262d58db6fb",
+   "realismFresh3Judges": 0.152,
+   "realismFreshGemini": 0.35,
+   "realismHeldOutGrok": 0.107,
+   "studyModelsCountingRight": "12/13"
+  },
+  "x-group-L": {
+   "from": "scratch/final/r6/x-group-L-10.jpg",
+   "sha256": "31639e5908303b9629cb3a6ab923383af42cbe2c65b77eb3feabd0d5baab0ac5",
+   "realismFresh3Judges": 0.154,
+   "realismFreshGemini": 0.343,
+   "realismHeldOutGrok": 0.127,
+   "studyModelsCountingRight": "12/13"
+  },
+  "x-group-R": {
+   "from": "scratch/final/r3/x-group-R-6.jpg",
+   "sha256": "532a1af05f25ba8260739cca156699809159dd6e4bade16fbf634820b3c5f1d8",
+   "realismFresh3Judges": 0.156,
+   "realismFreshGemini": 0.33,
+   "realismHeldOutGrok": 0.107,
+   "studyModelsCountingRight": "13/13"
+  },
+  "x-two-L": {
+   "from": "scratch/final/people/x-two-L-3.jpg",
+   "sha256": "097acf9946904412d366da581d129b1ad424ed66b69b1fd19c636480ca5875a7",
+   "realismFresh3Judges": 0.048,
+   "realismFreshGemini": 0.03,
+   "realismHeldOutGrok": 0.093,
+   "studyModelsCountingRight": "11/13"
+  },
+  "x-two-R": {
+   "from": "scratch/final/r5/x-two-R-8.jpg",
+   "sha256": "21c82fed4b64383d169dd14747e7b2f747139c14585ac0fa3dac050f787888a6",
+   "realismFresh3Judges": 0.148,
+   "realismFreshGemini": 0.327,
+   "realismHeldOutGrok": 0.093,
+   "studyModelsCountingRight": "11/13"
+  },
+  "y-empty-L": {
+   "from": "(unchanged from the earlier set) assets/real-final/y-empty-L.jpg",
+   "sha256": "1a0fd9363f812d65c2d5d7a04adf580f5e464bdacda1fd866e49f44167b6403e",
+   "realismFresh3Judges": 0.047,
+   "realismFreshGemini": 0.03,
+   "realismHeldOutGrok": 0.13,
+   "studyModelsCountingRight": "11/13"
+  },
+  "y-empty-R": {
+   "from": "(unchanged from the earlier set) assets/real-final/y-empty-R.jpg",
+   "sha256": "4d8459bae0b5680d90380ad9f8d8e106e6f275cc3d69221256a00caabbc3cf66",
+   "realismFresh3Judges": 0.05,
+   "realismFreshGemini": 0.03,
+   "realismHeldOutGrok": 0.14,
+   "studyModelsCountingRight": "12/13"
+  },
+  "y-group-L": {
+   "from": "scratch/final/r6/y-group-L-1.jpg",
+   "sha256": "829933868b8ef8455f66712e4b8d48c048bca4ae5bd790c52cb8c0a0ba5d0056",
+   "realismFresh3Judges": 0.276,
+   "realismFreshGemini": 0.663,
+   "realismHeldOutGrok": 0.107,
+   "studyModelsCountingRight": "13/13"
+  },
+  "y-group-R": {
+   "from": "scratch/final/people/y-group-R-3.jpg",
+   "sha256": "c17114f1b1a643276dbb6411532f3fa7ed2b002dacee95efb143562c29e78715",
+   "realismFresh3Judges": 0.246,
+   "realismFreshGemini": 0.587,
+   "realismHeldOutGrok": 0.12,
+   "studyModelsCountingRight": "13/13"
+  },
+  "y-two-L": {
+   "from": "scratch/final/people/y-two-L-5.jpg",
+   "sha256": "e3ff48d9a102cd8ce480a308ed4ba75b6e4583a20fe4d5b70844975a11f27241",
+   "realismFresh3Judges": 0.276,
+   "realismFreshGemini": 0.673,
+   "realismHeldOutGrok": 0.127,
+   "studyModelsCountingRight": "12/13"
+  },
+  "y-two-R": {
+   "from": "scratch/final/people/y-two-R-7.jpg",
+   "sha256": "afb6af7a4f9e4a6b0ae8170f2f872b1ffd17066c372b9f70e85823926b2e8379",
+   "realismFresh3Judges": 0.066,
+   "realismFreshGemini": 0.05,
+   "realismHeldOutGrok": 0.12,
+   "studyModelsCountingRight": "13/13"
+  }
  }
 }

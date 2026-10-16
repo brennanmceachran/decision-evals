@@ -16,12 +16,13 @@ import { allJobs, designHash, type Job, type Part } from '../src/final/jobs.js';
 import { ask, CallError, type CallRecord } from '../src/final/call.js';
 import { FINAL_SUBJECTS, type Category, type FinalSubject } from '../src/final/subjects.js';
 
-const arg = (n: string) => (process.argv.includes(`--${n}`) ? process.argv[process.argv.indexOf(`--${n}`) + 1] : undefined);
+const arg = (n: string) =>
+  process.argv.includes(`--${n}`) ? process.argv[process.argv.indexOf(`--${n}`) + 1] : undefined;
 const flag = (n: string) => process.argv.includes(`--${n}`);
 const dry = flag('dry');
 const smoke = flag('smoke');
 const tag = arg('tag') ?? (smoke ? 'smoke' : 'final');
-const parts = (arg('parts')?.split(',') ?? ['text', 'image', 'dashcam']) as Part[];
+const parts = (arg('parts')?.split(',') ?? ['harm', 'text', 'image', 'dashcam']) as Part[];
 const categories = (arg('category')?.split(',') ?? ['decision', 'chat']) as Category[];
 const only = arg('only');
 const limit = arg('limit') ? Number(arg('limit')) : undefined;
@@ -36,18 +37,22 @@ const RETRIES = 6;
 const TIMEOUT_MS = 120_000;
 
 const sha = (s: string) => createHash('sha256').update(s).digest('hex');
-const subjects = FINAL_SUBJECTS.filter((s) => categories.includes(s.category)).filter((s) => !only || s.id.includes(only));
+const subjects = FINAL_SUBJECTS.filter((s) => categories.includes(s.category)).filter(
+  (s) => !only || s.id.includes(only),
+);
 const eligible = (s: FinalSubject, j: Job) => !j.vision || !!s.image;
 
 // ---------- Jobs: full design, a stratified sample, or the smoke set (one per model per part per stratum).
 const all = allJobs(parts);
 /** Strata: the grouping that must be represented in any slice. */
 const stratum = (j: Job) =>
-  j.part === 'text'
-    ? `text|${j.meta.dilemma}`
-    : j.part === 'image'
-      ? `image|${j.meta.condition}|${j.meta.design}`
-      : `dashcam|${j.meta.framing}|${j.meta.content}`;
+  j.part === 'harm'
+    ? `harm|${j.meta.scene}|${j.meta.prefix}`
+    : j.part === 'text'
+      ? `text|${j.meta.dilemma}`
+      : j.part === 'image'
+        ? `image|${j.meta.condition}|${j.meta.design}`
+        : `dashcam|${j.meta.framing}|${j.meta.content}`;
 function pick(jobs: Job[]): Job[] {
   if (smoke) {
     // One job per stratum, chosen deterministically (lowest id hash), so smoke runs are reproducible.
@@ -92,7 +97,8 @@ if (dry) {
     m.calls += callsPer(j);
     byModel.set(s.id, m);
   }
-  for (const [id, m] of byModel) console.log(`  ${id.padEnd(42)} ${String(m.jobs).padStart(6)} answers  ${String(m.calls).padStart(6)} calls`);
+  for (const [id, m] of byModel)
+    console.log(`  ${id.padEnd(42)} ${String(m.jobs).padStart(6)} answers  ${String(m.calls).padStart(6)} calls`);
   if (sample) console.log(`\nslice ${sample}: ${work.length} answers`);
   process.exit(0);
 }
@@ -142,7 +148,10 @@ async function cachedAsk(s: FinalSubject, j: Job, call: string, questions: Param
       return { rec, cached: false, attempts: attempt };
     } catch (e) {
       last = e;
-      const retryable = e instanceof CallError ? e.retryable : (e as Error).name === 'TimeoutError' || /fetch failed|ECONN|socket/i.test(String(e));
+      const retryable =
+        e instanceof CallError
+          ? e.retryable
+          : (e as Error).name === 'TimeoutError' || /fetch failed|ECONN|socket/i.test(String(e));
       if (!retryable || attempt === RETRIES) break;
       // Rate limits get a longer wait than transient errors: 5 s, 10 s, 20 s, … capped at 60 s.
       const rate = e instanceof CallError && e.status === 429;
@@ -198,7 +207,9 @@ await Promise.all(
             costUsd: main.rec.costUsd + Object.values(probes).reduce((sum, p) => sum + p.rec.costUsd, 0),
             cached: main.cached,
             attempts: main.attempts,
-            ...(j.variant ? { variant: { id: j.variant.variantId, point: j.variant.point, keyToCanonical: j.keyToCanonical } } : {}),
+            ...(j.variant
+              ? { variant: { id: j.variant.variantId, point: j.variant.point, keyToCanonical: j.keyToCanonical } }
+              : {}),
           }) + '\n',
         );
       } catch (e) {
@@ -218,15 +229,26 @@ await Promise.all(
         );
       }
       if (++done % 200 === 0 || done === work.length)
-        console.log(`${done}/${work.length} · ${errors} errors · $${spent.toFixed(4)} · ${((Date.now() - t0) / 1000).toFixed(0)}s`);
+        console.log(
+          `${done}/${work.length} · ${errors} errors · $${spent.toFixed(4)} · ${((Date.now() - t0) / 1000).toFixed(0)}s`,
+        );
     }
   }),
 );
 
 // ---------- Completeness report: expected vs received, per model and part.
-const rows = readFileSync(out, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
-const errs = readFileSync(errOut, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
-const report: Record<string, Record<string, { expected: number; answered: number; refused: number; errors: number; providers: string[] }>> = {};
+const rows = readFileSync(out, 'utf8')
+  .split('\n')
+  .filter(Boolean)
+  .map((l) => JSON.parse(l));
+const errs = readFileSync(errOut, 'utf8')
+  .split('\n')
+  .filter(Boolean)
+  .map((l) => JSON.parse(l));
+const report: Record<
+  string,
+  Record<string, { expected: number; answered: number; refused: number; errors: number; providers: string[] }>
+> = {};
 for (const [s, j] of work) {
   const m = (report[s.id] ??= {});
   const p = (m[j.part] ??= { expected: 0, answered: 0, refused: 0, errors: 0, providers: [] });
@@ -244,6 +266,9 @@ console.log(`\ndone ${done} · ${rows.length} rows · ${errs.length} errors · $
 for (const [m, ps] of Object.entries(report))
   console.log(
     `  ${m.padEnd(42)} ${Object.entries(ps)
-      .map(([p, c]) => `${p} ${c.answered}+${c.refused}r/${c.expected}${c.errors ? ` ${c.errors}err` : ''} [${c.providers.join(',')}]`)
+      .map(
+        ([p, c]) =>
+          `${p} ${c.answered}+${c.refused}r/${c.expected}${c.errors ? ` ${c.errors}err` : ''} [${c.providers.join(',')}]`,
+      )
       .join('  ')}`,
   );

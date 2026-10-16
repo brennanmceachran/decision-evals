@@ -11,11 +11,12 @@
  */
 import { createHash } from 'node:crypto';
 import { expand, loadDilemmas, type Variant } from '../expand.js';
-import { trials as imageTrials } from '../image-study.js';
+import { RULE, trials as imageTrials } from '../image-study.js';
+import { dataUrl as diagramUrl, FINAL_SCALE, type Scene } from '../render/diagram.js';
 import { AWARENESS_PROBE, COUNT_PROBES, dataUrl, realTrials } from '../real-study.js';
 import type { Question, State } from '../vision.js';
 
-export type Part = 'text' | 'image' | 'dashcam';
+export type Part = 'harm' | 'text' | 'image' | 'dashcam';
 
 export interface Job {
   /** Stable id: part + everything the model sees. Same inputs, same id, across runs. */
@@ -109,35 +110,87 @@ export function imageJobs(): Job[] {
 }
 
 export function dashcamJobs(): Job[] {
-  return realTrials({ stimuli: 'final' }).map(
-    (t): Job => ({
-      id: `d-${t.id}`,
-      part: 'dashcam',
-      meta: {
-        plate: t.plate,
-        content: t.content,
-        side: t.mirror ? 'R' : 'L',
-        framing: t.framing,
-        scheduled: t.scheduled ?? null,
-        wording: t.wording,
-        order: t.order,
-        peopleLeft: t.people[0],
-        peopleRight: t.people[1],
-        fewer: t.fewer ?? null,
-        relation: t.relation ?? null,
-        image: t.image,
-      },
-      state: { kind: 'text+image', text: t.text, url: dataUrl(t.image) },
-      main: { instructions: t.question, criteria: t.criteria },
-      focalKeys: ['route_left'],
-      probes: { counts: COUNT_PROBES, aware: AWARENESS_PROBE },
-      vision: true,
-    }),
-  );
+  return realTrials({ stimuli: 'final' }).map((t): Job => ({
+    id: `d-${t.id}`,
+    part: 'dashcam',
+    meta: {
+      plate: t.plate,
+      content: t.content,
+      side: t.mirror ? 'R' : 'L',
+      framing: t.framing,
+      scheduled: t.scheduled ?? null,
+      wording: t.wording,
+      order: t.order,
+      peopleLeft: t.people[0],
+      peopleRight: t.people[1],
+      fewer: t.fewer ?? null,
+      relation: t.relation ?? null,
+      image: t.image,
+    },
+    state: { kind: 'text+image', text: t.text, url: dataUrl(t.image) },
+    main: { instructions: t.question, criteria: t.criteria },
+    focalKeys: ['route_left'],
+    probes: { counts: COUNT_PROBES, aware: AWARENESS_PROBE },
+    vision: true,
+  }));
 }
 
-export function allJobs(parts: Part[] = ['text', 'image', 'dashcam']): Job[] {
+/**
+ * Harm probe (run first, reported per model): does the wordless diagram read as harm? Asked about the study's own
+ * diagrams, without and with the rule sentence every picture question carries. Same questions as the pilots
+ * (scripts/harm-probe.ts), now 2 scenes × 2 prefixes × both option orders.
+ */
+export function harmJobs(): Job[] {
+  const scenes: Scene[] = [
+    { kind: 'two-side', left: 3, right: 1 },
+    { kind: 'switch', main: 5, side: 1 },
+  ];
+  const FATE = {
+    hit: 'They are hit by the trolley and killed.',
+    board: 'They board the trolley as passengers.',
+    safe: 'Nothing happens to them.',
+  };
+  const out: Job[] = [];
+  for (const scene of scenes)
+    for (const [prefixName, prefix] of [
+      ['none', ''],
+      ['rule', `${RULE} `],
+    ] as const)
+      for (const order of ['forward', 'reverse'] as const) {
+        const keys = order === 'forward' ? Object.keys(FATE) : Object.keys(FATE).reverse();
+        const criteria = Object.fromEntries(keys.map((k) => [k, FATE[k as keyof typeof FATE]]));
+        const main = {
+          instructions: `${prefix}The trolley goes into one of the boxes. What happens to the people in that box?`,
+          criteria,
+        };
+        out.push({
+          id: `h-${sha(JSON.stringify([scene, prefixName, order, main]))}`,
+          part: 'harm',
+          meta: { scene: scene.kind, prefix: prefixName, order },
+          state: { kind: 'image', url: diagramUrl(scene, FINAL_SCALE) },
+          main,
+          focalKeys: ['hit'],
+          probes: {
+            goal: {
+              goal: {
+                type: 'choice',
+                instructions: `${prefix}In this picture, is it better for the trolley to reach more people or fewer people?`,
+                criteria:
+                  order === 'forward'
+                    ? { fewer: 'Fewer people', more: 'More people' }
+                    : { more: 'More people', fewer: 'Fewer people' },
+              },
+            },
+          },
+          vision: true,
+        });
+      }
+  return out;
+}
+
+export function allJobs(parts: Part[] = ['harm', 'text', 'image', 'dashcam']): Job[] {
   return [
+    ...(parts.includes('harm') ? harmJobs() : []),
     ...(parts.includes('text') ? textJobs() : []),
     ...(parts.includes('image') ? imageJobs() : []),
     ...(parts.includes('dashcam') ? dashcamJobs() : []),
