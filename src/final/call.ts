@@ -13,6 +13,7 @@
 import { gateway, generateText, Output } from 'ai';
 import type { Question, State } from '../vision.js';
 import { FINAL_CHAT_SAMPLES, type FinalSubject } from './subjects.js';
+import { paced } from './pace.js';
 
 export interface Answer {
   /** Display key (or 'true'/'false' for booleans) → probability. Empty when refused. */
@@ -75,7 +76,11 @@ async function postJson(url: string, key: string, body: unknown, signal?: AbortS
 }
 
 const truncate = (s: string) => (s.length > 20_000 ? `${s.slice(0, 20_000)}…[truncated]` : s);
-const bool = (p: number): Answer => ({ probabilities: { true: p, false: 1 - p }, choice: p >= 0.5 ? 'true' : 'false', refused: false });
+const bool = (p: number): Answer => ({
+  probabilities: { true: p, false: 1 - p },
+  choice: p >= 0.5 ? 'true' : 'false',
+  refused: false,
+});
 
 /** Gateway OpenAI-compatible decisions endpoint. */
 async function gwDecisions(s: FinalSubject, state: State, questions: Record<string, Question>, signal?: AbortSignal) {
@@ -119,7 +124,9 @@ async function gwDecisions(s: FinalSubject, state: State, questions: Record<stri
     else if (a.type === 'predicate') answers[a.name] = bool(a.probability!);
     else
       answers[a.name] = {
-        probabilities: Object.fromEntries((a.probabilities ?? [{ value: a.choice!, probability: 1 }]).map((p) => [p.value, p.probability])),
+        probabilities: Object.fromEntries(
+          (a.probabilities ?? [{ value: a.choice!, probability: 1 }]).map((p) => [p.value, p.probability]),
+        ),
         choice: a.choice!,
         refused: false,
       };
@@ -151,7 +158,9 @@ async function systemOne(
 ) {
   const t0 = Date.now();
   const url =
-    where === 'gateway' ? 'https://ai-gateway.vercel.sh/typesafe/v1/systemone' : 'https://openrouter.ai/api/v1/systemone';
+    where === 'gateway'
+      ? 'https://ai-gateway.vercel.sh/typesafe/v1/systemone'
+      : 'https://openrouter.ai/api/v1/systemone';
   const { json, text, headers } = await postJson(
     url,
     KEYS[where](),
@@ -175,7 +184,10 @@ async function systemOne(
   );
   const answers: Record<string, Answer> = {};
   for (const [k, a] of Object.entries(
-    json.answers as Record<string, { type: string; choice?: string; probability?: number; noul?: number; probabilities?: Record<string, number> }>,
+    json.answers as Record<
+      string,
+      { type: string; choice?: string; probability?: number; noul?: number; probabilities?: Record<string, number> }
+    >,
   )) {
     if (a.type === 'refusal') answers[k] = { probabilities: {}, choice: null, refused: true };
     else if (a.type === 'noul' || a.type === 'boolean') answers[k] = bool(a.probability ?? a.noul!);
@@ -188,7 +200,8 @@ async function systemOne(
     answers,
     provider: (json.provider as string) ?? routing?.finalProvider ?? headers.get('x-provider-name'),
     servedModel: (json.model as string) ?? null,
-    generationId: (json.id as string) ?? headers.get('x-generation-id') ?? (meta.gateway?.generationId as string) ?? null,
+    generationId:
+      (json.id as string) ?? headers.get('x-generation-id') ?? (meta.gateway?.generationId as string) ?? null,
     latencyMs: Date.now() - t0,
     inputTokens: usage.input_tokens ?? null,
     outputTokens: usage.output_tokens ?? null,
@@ -224,30 +237,32 @@ async function chat(s: FinalSubject, state: State, questions: Record<string, Que
         : `${q.instructions}\n\nAnswer true or false.`;
     const rs = await Promise.all(
       Array.from({ length: FINAL_CHAT_SAMPLES }, () =>
-        generateText({
-          model: gateway(s.id),
-          reasoning: 'none',
-          temperature: 1,
-          providerOptions: {
-            ...(s.providerOptions ?? {}),
-            ...(s.gatewayOnly ? { gateway: { only: s.gatewayOnly } } : {}),
-          } as never,
-          output: Output.choice({ options }),
-          messages: [
-            {
-              role: 'user',
-              content: [
-                ...(state.kind !== 'image' ? [{ type: 'text' as const, text: state.text }] : []),
-                ...(state.kind !== 'text'
-                  ? [{ type: 'file' as const, data: state.url.split(',')[1]!, mediaType: mediaTypeOf(state.url) }]
-                  : []),
-                { type: 'text' as const, text },
-              ],
-            },
-          ],
-          maxRetries: 0,
-          abortSignal: signal,
-        }),
+        paced(s, () =>
+          generateText({
+            model: gateway(s.id),
+            reasoning: 'none',
+            temperature: 1,
+            providerOptions: {
+              ...(s.providerOptions ?? {}),
+              ...(s.gatewayOnly ? { gateway: { only: s.gatewayOnly } } : {}),
+            } as never,
+            output: Output.choice({ options }),
+            messages: [
+              {
+                role: 'user',
+                content: [
+                  ...(state.kind !== 'image' ? [{ type: 'text' as const, text: state.text }] : []),
+                  ...(state.kind !== 'text'
+                    ? [{ type: 'file' as const, data: state.url.split(',')[1]!, mediaType: mediaTypeOf(state.url) }]
+                    : []),
+                  { type: 'text' as const, text },
+                ],
+              },
+            ],
+            maxRetries: 0,
+            abortSignal: signal,
+          }),
+        ),
       ),
     );
     samples[k] = rs.map((r) => r.output);
@@ -266,7 +281,13 @@ async function chat(s: FinalSubject, state: State, questions: Record<string, Que
       provider ??= routing?.finalProvider ?? null;
       servedModel ??= r.response.modelId ?? null;
       generationId ??= (g?.generationId as string) ?? null;
-      raws.push({ q: k, output: r.output, provider: routing?.finalProvider, id: g?.generationId, warnings: r.warnings });
+      raws.push({
+        q: k,
+        output: r.output,
+        provider: routing?.finalProvider,
+        id: g?.generationId,
+        warnings: r.warnings,
+      });
     }
   }
   return {
@@ -296,11 +317,13 @@ export async function ask(
   const r =
     s.category !== 'decision'
       ? await chat(s, state, questions, signal)
-      : s.route === 'openrouter'
-        ? await systemOne(s, 'openrouter', state, questions, signal)
-        : s.image === 'gw-systemone'
-          ? await systemOne(s, 'gateway', state, questions, signal)
-          : await gwDecisions(s, state, questions, signal);
+      : await paced(s, () =>
+          s.route === 'openrouter'
+            ? systemOne(s, 'openrouter', state, questions, signal)
+            : s.image === 'gw-systemone'
+              ? systemOne(s, 'gateway', state, questions, signal)
+              : gwDecisions(s, state, questions, signal),
+        );
   // Reasoning is requested off for every chat model. Some still think briefly on some calls (GPT-6 Astra, Opus 5.5:
   // 38–364 tokens on a few prompts); the answer is kept and its reasoning-token count is recorded on the row.
   return { startedAt, ...r };

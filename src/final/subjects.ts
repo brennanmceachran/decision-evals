@@ -278,5 +278,16 @@ export const FINAL_SUBJECTS: FinalSubject[] = [
   },
 ];
 
+/**
+ * Request pacing per model category (owner, 2026-10-16): frontier labs may read a burst of near-identical prompts as
+ * abuse or a distillation attempt, so frontier models get few calls in flight and a per-minute ceiling. Each chat
+ * "answer" is 5 sampled calls, so 20 requests/minute is about 4 answers a minute per frontier model.
+ */
+export const PACING: Record<Category, { concurrent: number; perMinute: number }> = {
+  decision: { concurrent: 16, perMinute: 2000 },
+  chat: { concurrent: 8, perMinute: 300 },
+  frontier: { concurrent: 2, perMinute: 20 },
+};
+
 /** Samples per question for chat and frontier models, in every part of the study. */
 export const FINAL_CHAT_SAMPLES = 5;
