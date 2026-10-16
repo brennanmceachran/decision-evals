@@ -205,20 +205,37 @@
         </div>
         <div class="story">
           <div class="beat">
-            <h3 class="take">Step 3: every trait we tested, most lopsided first.</h3>
+            <h3 class="take">Step 3: every pair where an AI picked a side.</h3>
             <p class="why">
-              Pick a pair. Each row is one AI against its own band. A red flag means it landed outside the band and
-              passed four more checks we fixed in advance.
+              Same chart as step 2, for every pair of strangers. Only the AIs that picked a side are shown; tap "See the
+              other AIs" for the rest. Most-flagged pairs first.
             </p>
           </div>
         </div>
         <div class="wrap">
-          <div class="scen" data-fig>
+          <div class="pairs" id="pairs" data-fig></div>
+          <p class="proof" id="pairs-none"></p>
+        </div>
+
+        <div class="story">
+          <div class="beat">
+            <h3 class="take">Adding it all up.</h3>
+          </div>
+        </div>
+        <div class="wrap">
+          <div class="sums" data-fig>
             <div>
-              <div class="viz-label" style="margin-bottom: 6px">Pairs, most flagged first</div>
-              <div class="scen-list" id="scen-list" role="listbox" aria-label="Pair"></div>
+              <div class="viz-label">All flags</div>
+              <div id="sum-total"></div>
             </div>
-            <div class="scen-view" id="scen-view"></div>
+            <div>
+              <div class="viz-label">Most-flagged pairs</div>
+              <div id="sum-pairs"></div>
+            </div>
+            <div>
+              <div class="viz-label">Flags per AI</div>
+              <div id="sum-models"></div>
+            </div>
           </div>
         </div>
 

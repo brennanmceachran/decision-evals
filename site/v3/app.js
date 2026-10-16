@@ -751,7 +751,9 @@
       aLab: 'saved the Black woman',
       bLab: 'saved the White man',
       lead: 'a',
-      pre: () => "<span>There's no right answer. A fair AI would be torn: 50/50.</span>",
+      pre: () =>
+        "<span>There's no right answer: it's a coin toss. A fair AI would be torn, 50/50. So we asked each AI 16 versions, changing everything except the two people: 4 different scenes, each person on each side, both button orders.</span>",
+      versions: 'Black woman|White man',
       ctx: () => {
         const fl = D.attr.flagged.filter((f) => f.pair === 'Black woman|White man');
         return `${fl.length} leaned by more than their own noise: ${list(fl.map((f) => name(f.model)))}. <a href="#traits">How we measure noise, in chapter 2.</a>`;
@@ -805,10 +807,6 @@
                 : 'Wordless diagram: a trolley at a fork, five people in the left box, one in the right.',
           }),
         );
-      } else if (QM[q.id].icon) {
-        const svg = S('svg', { class: 'scene', 'aria-hidden': 'true' });
-        icon(QM[q.id].icon, svg);
-        c.appendChild(svg);
       }
       if (q.text) c.appendChild(H('pre', {}, esc(q.text)));
       c.appendChild(H('div', { class: 'q' }, esc(q.question)));
@@ -847,7 +845,7 @@
       const byKey = Object.fromEntries(q.buttons.map((b) => [b.key, b]));
       for (const key of [o.left, o.right]) {
         const b = byKey[key];
-        const picked = answers[q.id] !== undefined && (answers[q.id] === 1) === b.focal;
+        const picked = answers[q.id] === 1 ? b.focal : answers[q.id] === 0 ? !b.focal : false;
         const btn = H('button', { class: `choice${picked ? ' picked' : ''}` }, esc(b.text));
         btn.onclick = () => {
           answers[q.id] = b.focal ? 1 : 0;
@@ -858,6 +856,22 @@
         bw.appendChild(btn);
       }
       c.appendChild(bw);
+      const skipped = answers[q.id] === 'skip';
+      c.appendChild(
+        H(
+          'button',
+          {
+            class: `skip${skipped ? ' on' : ''}`,
+            onclick: () => {
+              answers[q.id] = 'skip';
+              render();
+              if (narrow())
+                $('#quiz .reveal')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+            },
+          },
+          skipped ? 'Skipped. Not counted in your match.' : 'Skip: don’t choose, just show me what the AIs did',
+        ),
+      );
       c.appendChild(H('div', { class: 'note' }, 'Buttons in the order of the tracks. The AIs got both orders.'));
       grid.appendChild(c);
       grid.appendChild(answers[q.id] === undefined ? waiting(q) : reveal(q, answers[q.id]));
@@ -901,7 +915,7 @@
         n[s_]++;
         if (s_ !== 'e' && torn(q.models[id].p)) barely[s_]++;
       }
-      const mine = u ? 'a' : 'b';
+      const mine = u === 'skip' ? null : u ? 'a' : 'b';
       const lab = (k) => (k === 'a' ? o.aLab : o.bLab);
       const lead = o.lead;
       const other = lead === 'a' ? 'b' : 'a';
@@ -919,7 +933,7 @@
         icon(o.icon, svg);
         out.appendChild(svg);
       }
-      out.appendChild(H('p', {}, esc(q.outcome[u ? 0 : 1])));
+      out.appendChild(H('p', {}, u === 'skip' ? 'You skipped this one.' : esc(q.outcome[u ? 0 : 1])));
       box.appendChild(out);
       // 2. What humans say, or why it matters.
       box.appendChild(
@@ -960,9 +974,13 @@
               { class: `token${torn(p) ? ' torn' : ''}`, style: `--d:${j * 60}ms` },
               `${esc(short(id))}${M(id).passesGates ? '' : ' †'}<span class="v">${pct(sh)}</span>`,
             );
+            const vs = o.versions ? D.attr.models[id].pairs[o.versions].versions : null;
+            const grid16 = vs
+              ? `<br><span class="v16">${vs.map((v) => `<i class="${v > 0.5 ? 'a' : v < 0.5 ? 'b' : 'e'}"></i>`).join('')}</span><br>its 16 answers: ${vs.filter((v) => v > 0.5).length} saved the Black woman, ${vs.filter((v) => v < 0.5).length} the White man${vs.some((v) => v === 0.5) ? `, ${vs.filter((v) => v === 0.5).length} even` : ''}`
+              : '';
             hover(
               tok,
-              `<b>${esc(name(id))}</b><br>${M(id).kind === 'chat' ? `${esc(lab(k))} in ${pct(sh)} of versions (majority of 5 samples each)` : `${esc(lab(k))}: probability ${f2(sh)}`}${torn(p) ? '<br>torn: within 10 points of 50/50' : ''}`,
+              `<b>${esc(name(id))}</b><br>${M(id).kind === 'chat' ? `${esc(lab(k))} in ${pct(sh)} of versions (majority of 5 samples each)` : `${esc(lab(k))}: probability ${f2(sh)}`}${torn(p) ? '<br>torn: within 10 points of 50/50' : ''}${grid16}`,
             );
             t.appendChild(tok);
           });
@@ -978,6 +996,8 @@
             `Split 50/50: ${esc(list(answered.filter((id) => side(q.models[id].p) === 'e').map(name)))}.`,
           ),
         );
+      if (o.versions)
+        ai.appendChild(H('p', { class: 'ctx' }, 'Hover or tap a name to see its 16 answers, one square per version.'));
       ai.appendChild(H('p', { class: 'ctx' }, o.ctx(q)));
       ai.appendChild(
         H(
@@ -997,21 +1017,47 @@
       return box;
     };
     const result = () => {
-      const scored = ids
-        .map((id) => {
-          const qs = Q.filter((q) => q.models[id] && q.models[id].p !== null && answers[q.id] !== undefined);
-          const agree = qs.filter((q) => (q.models[id].p > 0.5 ? 1 : 0) === answers[q.id]).length;
-          const dist = qs.reduce((s, q) => s + Math.abs(answers[q.id] - q.models[id].p), 0) / Math.max(1, qs.length);
-          return { id, agree, of: qs.length, dist };
-        })
-        .filter((s) => s.of >= 4)
-        .sort((a, b) => a.dist - b.dist);
-      const best = scored[0];
-      const worst = scored.at(-1);
+      const mineQ = Q.filter((q) => answers[q.id] === 0 || answers[q.id] === 1);
       const head = H('div', { class: 'head' });
       head.appendChild(H('span', {}, `<b class="num">Your result</b>`));
       head.appendChild(stops());
       host.appendChild(head);
+      const restart = () => ((i = 0), Object.keys(answers).forEach((k) => delete answers[k]), seen.clear(), render());
+      if (mineQ.length < 3) {
+        host.appendChild(
+          H(
+            'div',
+            { class: 'reveal waiting' },
+            `<p>Answer at least 3 to get a match.</p><span>You skipped ${Q.length - mineQ.length} of ${Q.length}.</span>`,
+          ),
+        );
+        host
+          .appendChild(H('div', { class: 'quiz-nav' }))
+          .appendChild(H('button', { class: 'btn primary', onclick: restart }, 'Start again'));
+        return;
+      }
+      // Match: mean distance between your 0/1 answers and the AI's probability, over the questions you both answered.
+      const scored = ids
+        .map((id) => {
+          const qs = mineQ.filter((q) => q.models[id] && q.models[id].p !== null);
+          const agree = qs.filter((q) => (q.models[id].p > 0.5 ? 1 : 0) === answers[q.id]).length;
+          const dist = qs.reduce((s_, q) => s_ + Math.abs(answers[q.id] - q.models[id].p), 0) / Math.max(1, qs.length);
+          return { id, agree, of: qs.length, dist };
+        })
+        .filter((x) => x.of >= Math.min(3, mineQ.length))
+        // Most shared choices (as a share of the questions you both answered) first; ties go to the closer AI.
+        .sort((a, b) => b.agree / b.of - a.agree / a.of || a.dist - b.dist);
+      const best = scored[0];
+      // Per question: how many AIs made your choice.
+      const withYou = Object.fromEntries(
+        mineQ.map((q) => {
+          const ms = ids.filter((id) => q.models[id] && q.models[id].p !== null && q.models[id].p !== 0.5);
+          return [
+            q.id,
+            { n: ms.filter((id) => (q.models[id].p > 0.5 ? 1 : 0) === answers[q.id]).length, of: ms.length },
+          ];
+        }),
+      );
       const box = H('div', { class: 'result' });
       const canvas = H('canvas', {
         width: 1080,
@@ -1026,40 +1072,25 @@
         H(
           'p',
           { class: 'sign', style: 'margin-top:6px' },
-          `Same choice on ${best.agree} of ${best.of} questions. Least like you: ${esc(name(worst.id))} (${worst.agree} of ${worst.of}).`,
+          `Same choice on ${best.agree} of ${best.of} questions you both answered.${mineQ.length < Q.length ? ` You skipped ${Q.length - mineQ.length}; skipped questions don't count.` : ''}`,
         ),
       );
-      const t = H('table');
-      t.appendChild(H('tr', {}, `<th>Question</th><th>You</th><th>${esc(short(best.id))}</th>`));
-      for (const q of Q) {
-        const o = QM[q.id];
-        const b = q.models[best.id];
-        const youLab = answers[q.id] ? o.aLab : o.bLab;
-        const theirs = b && b.p !== null ? (b.p > 0.5 ? o.aLab : o.bLab) : 'refused';
-        t.appendChild(
-          H(
-            'tr',
-            {},
-            `<td>${esc(q.title)}</td><td>${esc(youLab)}</td><td class="${theirs === youLab ? 'same' : 'diff'}">${theirs === youLab ? '✓ ' : '≠ '}${esc(theirs)}</td>`,
-          ),
-        );
-      }
-      right.appendChild(t);
-      const row = H('div', { class: 'btnrow', style: 'margin-top:18px' });
-      const text = `I took the Trolley Tests: 7 life-or-death questions. I answer most like ${name(best.id)}. Which AI are you?`;
-      row.appendChild(
-        shareButton({
-          text,
-          hash: '#play',
-          cardBlob: () =>
-            new Promise((res) =>
-              canvas.toBlob(
-                (b) => res(b ? new File([b], 'trolley-tests-result.png', { type: 'image/png' }) : null),
-                'image/png',
-              ),
+      const row = H('div', { class: 'btnrow', style: 'margin-top:14px' });
+      const text = `I took the Trolley Tests: ${mineQ.length} life-or-death questions. I answer most like ${name(best.id)}. Which AI are you?`;
+      const share = shareButton({
+        text,
+        hash: '#play',
+        cardBlob: () =>
+          new Promise((res) =>
+            canvas.toBlob(
+              (b) => res(b ? new File([b], 'trolley-tests-result.png', { type: 'image/png' }) : null),
+              'image/png',
             ),
-        }),
-      );
+          ),
+      });
+      share.querySelector('button').classList.add('big');
+      share.querySelector('button').textContent = 'Share your card';
+      row.appendChild(share);
       row.appendChild(
         H(
           'button',
@@ -1067,38 +1098,58 @@
             class: 'btn',
             onclick: () =>
               canvas.toBlob((b) => {
-                const a = H('a', { href: URL.createObjectURL(b), download: 'trolley-tests-result.png' });
-                a.click();
+                H('a', { href: URL.createObjectURL(b), download: 'trolley-tests-result.png' }).click();
               }),
           },
-          'Download the image',
+          'Download',
         ),
       );
-      row.appendChild(
-        H(
-          'button',
-          { class: 'btn', onclick: () => ((i = 0), Object.keys(answers).forEach((k) => delete answers[k]), render()) },
-          'Start again',
-        ),
-      );
-      row.appendChild(
-        H('a', { class: 'btn', href: '#models', onclick: () => showProfile(best.id) }, 'See its report card'),
-      );
+      row.appendChild(H('button', { class: 'btn', onclick: restart }, 'Start again'));
       right.appendChild(row);
+      // Every AI, closest to you first: tap one for its report card.
+      right.appendChild(H('div', { class: 'viz-label', style: 'margin-top:26px' }, 'Every AI, closest to you first'));
+      const ladder = H('div', { class: 'ladder' });
+      for (const sc of scored) {
+        const r = H(
+          'button',
+          { class: `rung${sc.id === best.id ? ' best' : ''}`, title: `See the ${name(sc.id)} report card` },
+          `<span class="nm">${esc(short(sc.id))}${M(sc.id).passesGates ? '' : ' †'}</span><span class="bar"><span style="width:${(100 * sc.agree) / sc.of}%"></span></span><span class="num">${sc.agree} of ${sc.of}</span>`,
+        );
+        r.onclick = () => {
+          showProfile(sc.id);
+          $('#models').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        };
+        ladder.appendChild(r);
+      }
+      right.appendChild(ladder);
+      right.appendChild(
+        H(
+          'p',
+          { class: 'proof' },
+          `Ranked by the share of questions where it made your choice; ties go to the AI whose probabilities sit closer to your answers. The diagram and photo questions went only to the ${ids.filter((id) => Q[0].models[id]).length} AIs that read images, so the others are compared on fewer questions. Tap an AI for its report card. † fails a basic check.`,
+        ),
+      );
       box.appendChild(right);
       host.appendChild(box);
-      drawResultCard(canvas, best, Q, answers, QM);
+      drawResultCard(canvas, best, scored, Q, answers, QM, withYou);
       showProfile(best.id);
     };
     render();
   }
-  /** The shareable result card, drawn on a canvas so it can be shared as an image. */
-  function drawResultCard(cv, best, Q, answers, QM) {
+  /** The shareable result card: who you match, the closest and furthest AIs, and how many AIs sided with you. */
+  function drawResultCard(cv, best, scored, Q, answers, QM, withYou) {
     const x = cv.getContext('2d');
     const W = 1080;
     const H0 = 1350;
     const sign = getComputedStyle(document.body).getPropertyValue('--sign') || 'sans-serif';
     const serif = getComputedStyle(document.body).getPropertyValue('--serif') || 'serif';
+    const txt = (t, px, py, font, col, align = 'left') => {
+      x.font = font;
+      x.fillStyle = col;
+      x.textAlign = align;
+      x.fillText(t, px, py);
+      x.textAlign = 'left';
+    };
     x.fillStyle = '#f6f6f2';
     x.fillRect(0, 0, W, H0);
     x.fillStyle = C.ink;
@@ -1107,64 +1158,96 @@
     x.beginPath();
     x.arc(60, 36, 10, 0, 7);
     x.fill();
-    x.font = `30px ${sign}`;
-    x.fillText('The Trolley Tests', 84, 47);
-    x.fillStyle = C.ink;
-    x.font = `34px ${sign}`;
-    x.fillText('I answer most like', 64, 170);
+    txt('The Trolley Tests', 84, 47, `30px ${sign}`, C.tram);
+    txt('I answer most like', 64, 160, `34px ${sign}`, C.ink);
     const nm = name(best.id).replace(/ \(chat\)$/, '');
-    let size = 104;
+    let size = 100;
     x.font = `700 ${size}px ${serif}`;
     while (x.measureText(nm).width > W - 128 && size > 54) {
       size -= 4;
       x.font = `700 ${size}px ${serif}`;
     }
-    x.fillText(nm, 60, 170 + size + 10);
-    let y = 170 + size + 70;
-    x.font = `32px ${sign}`;
-    x.fillStyle = C.muted;
-    x.fillText(`Same choice on ${best.agree} of ${best.of} life-or-death questions.`, 64, y);
-    y += 80;
-    // Table: question, my answer, its answer. ✓ when they match.
-    x.font = `24px ${sign}`;
-    x.fillStyle = C.muted;
-    x.fillText('Question', 64, y);
-    x.fillText('Me', 330, y);
-    x.fillText(short(best.id).replace(/ \(chat\)$/, ''), 700, y);
-    y += 16;
+    txt(nm, 60, 160 + size + 6, `700 ${size}px ${serif}`, C.ink);
+    let y = 160 + size + 64;
+    txt(`Same choice on ${best.agree} of ${best.of} life-or-death questions.`, 64, y, `32px ${sign}`, C.muted);
+    // My calls, and how many AIs made the same one.
+    y += 74;
+    txt('My calls', 64, y, `700 26px ${sign}`, C.ink);
+    txt('AIs who chose the same', W - 64, y, `24px ${sign}`, C.muted, 'right');
+    y += 14;
     x.fillStyle = C.ink;
     x.fillRect(64, y, W - 128, 4);
-    y += 58;
+    y += 52;
+    const fit = (t, w, font) => {
+      x.font = font;
+      let u = t;
+      while (x.measureText(u).width > w && u.length > 4) u = u.slice(0, -2);
+      return u === t ? t : `${u.trim()}…`;
+    };
     for (const q of Q) {
-      const o = QM[q.id];
-      const mine = answers[q.id] ? o.aLab : o.bLab;
-      const b = q.models[best.id];
-      const theirs = b && b.p !== null ? (b.p > 0.5 ? o.aLab : o.bLab) : 'refused';
-      const same = mine === theirs;
-      x.font = `700 28px ${sign}`;
-      x.fillStyle = C.ink;
-      x.fillText(q.title, 64, y);
-      x.font = `28px ${sign}`;
-      const fit = (t, w) => {
-        let u = t;
-        while (x.measureText(u).width > w && u.length > 4) u = u.slice(0, -2);
-        return u === t ? t : `${u.trim()}…`;
-      };
-      x.fillText(fit(mine, 350), 330, y);
-      x.fillStyle = same ? C.ok : C.muted;
-      x.fillText(`${same ? '✓' : '≠'} ${fit(theirs, 300)}`, 700, y);
+      const a = answers[q.id];
+      const skip = a !== 0 && a !== 1;
+      txt(q.title, 64, y, `700 27px ${sign}`, C.ink);
+      txt(
+        skip ? 'skipped' : fit(a ? QM[q.id].aLab : QM[q.id].bLab, 390, `27px ${sign}`),
+        330,
+        y,
+        `27px ${sign}`,
+        skip ? C.muted : C.ink,
+      );
+      if (!skip) {
+        const w = withYou[q.id];
+        const bw = 150;
+        x.fillStyle = '#e2e2da';
+        x.fillRect(W - 64 - bw - 120, y - 16, bw, 14);
+        x.fillStyle = C.ink;
+        x.fillRect(W - 64 - bw - 120, y - 16, (bw * w.n) / Math.max(1, w.of), 14);
+        txt(`${w.n} of ${w.of}`, W - 64, y, `27px ${sign}`, C.ink, 'right');
+      }
       x.fillStyle = C.rule;
       x.fillRect(64, y + 22, W - 128, 1.5);
-      y += 74;
+      y += 66;
     }
+    // Closest and furthest.
+    y += 36;
+    const far = scored.at(-1);
+    txt('Closest to me', 64, y, `24px ${sign}`, C.muted);
+    txt('Furthest', W / 2 + 20, y, `24px ${sign}`, C.muted);
+    y += 40;
+    scored
+      .slice(0, 3)
+      .forEach((sc, k) =>
+        txt(
+          `${k + 1}. ${fit(short(sc.id), 330, `700 28px ${sign}`)}  ${sc.agree}/${sc.of}`,
+          64,
+          y + k * 40,
+          `700 28px ${sign}`,
+          C.ink,
+        ),
+      );
+    txt(
+      `${fit(short(far.id), 300, `700 28px ${sign}`)}  ${far.agree}/${far.of}`,
+      W / 2 + 20,
+      y,
+      `700 28px ${sign}`,
+      C.ink,
+    );
     x.fillStyle = C.ink;
-    x.fillRect(0, H0 - 150, W, 150);
-    x.fillStyle = '#c5cbd0';
-    x.font = `26px ${sign}`;
-    x.fillText(`${D.totals.models} AIs · ${fint(D.totals.answers)} answers · pre-registered`, 64, H0 - 88);
-    x.fillStyle = C.tram;
-    x.font = `30px ${sign}`;
-    x.fillText('Which AI are you?  ' + D.site.replace(/^https:\/\//, '').replace(/\/$/, ''), 64, H0 - 44);
+    x.fillRect(0, H0 - 140, W, 140);
+    txt(
+      `${D.totals.models} AIs · ${fint(D.totals.answers)} answers · pre-registered`,
+      64,
+      H0 - 82,
+      `26px ${sign}`,
+      '#c5cbd0',
+    );
+    txt(
+      `Which AI are you?  ${D.site.replace(/^https:\/\//, '').replace(/\/$/, '')}`,
+      64,
+      H0 - 40,
+      `30px ${sign}`,
+      C.tram,
+    );
   }
 
   // ======================================================================= FINDINGS BOARD
@@ -1498,46 +1581,63 @@
     '<svg class="flagicon" viewBox="0 0 11 14" aria-hidden="true"><path d="M1 0h1.4v14H1z" fill="#14161a"/><path d="M2.4 1h7.6l-2 3 2 3H2.4z" fill="#c62828"/></svg>';
   const scen = { cur: null, votes: {} };
   function scenarios() {
-    const list_ = $('#scen-list');
-    const P = D.scenarios.pairs;
-    let lastFlagged = null;
-    for (const s of P) {
-      const tier =
-        s.flagged >= 3
-          ? `Flagged in ${s.flagged >= 4 ? '4 or 5' : '3'} models`
-          : s.flagged
-            ? `Flagged in ${s.flagged} ${s.flagged === 1 ? 'model' : 'models'}`
-            : 'No flags';
-      const t = s.flagged >= 4 ? 4 : s.flagged;
-      if (t !== lastFlagged) {
-        list_.appendChild(H('div', { class: 'grp' }, esc(tier)));
-        lastFlagged = t;
+    const host = $('#pairs');
+    const P = D.scenarios.pairs.filter((p) => p.flagged > 0);
+    scen.select = (pair) => {
+      const el = $(`#pairs [data-pair="${CSS.escape(pair)}"]`);
+      if (!el) return;
+      if (el.classList.contains('later')) {
+        host.classList.add('all');
+        host.nextElementSibling?.matches('.btn') && host.nextElementSibling.remove();
       }
+      el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    };
+    const INITIAL = 6;
+    P.forEach((s, k) => {
       const [a, b] = s.pair.split('|');
+      const fl = s.rows.filter((r) => r.flagged);
+      const favA = fl.filter((r) => r.p > 0.5).length;
+      const sec = H('section', { class: `pair${k >= INITIAL ? ' later' : ''}`, 'data-pair': s.pair });
+      sec.appendChild(H('div', { class: 'viz-label' }, esc(SETLAB[s.set] ?? s.setLabel)));
+      sec.appendChild(
+        H(
+          'h4',
+          {},
+          `${esc(a)} or ${esc(b)}? <span class="flags">${flagIcon().repeat(fl.length)}</span> ${fl.length} ${fl.length === 1 ? 'AI' : 'AIs'} picked a side${favA === fl.length ? `, all for the ${esc(a)}` : favA === 0 ? `, all for the ${esc(b)}` : ''}.`,
+        ),
+      );
+      const ask = H('div', { class: 'ask compact q' });
+      ask.innerHTML = `<pre>${highlightPrompt(s.prompt.text, a, b)}</pre>`;
+      sec.appendChild(ask);
+      const box = H('div');
+      bandRows(box, fl, { a, b, inout: true, ends: [b, a] });
+      sec.appendChild(box);
+      const rest = s.rows.filter((r) => !r.flagged);
+      const more = H('button', { class: 'more-btn' }, `See the other ${rest.length} AIs`);
+      more.onclick = () => {
+        const all = H('div');
+        bandRows(all, s.rows, { a, b, inout: true, ends: [b, a] });
+        box.replaceWith(all);
+        more.remove();
+      };
+      sec.appendChild(more);
+      host.appendChild(sec);
+    });
+    if (P.length > INITIAL) {
       const btn = H(
         'button',
-        { role: 'option', 'data-pair': s.pair, 'aria-selected': 'false' },
-        `<span>${esc(a)} <span class="muted">or</span> ${esc(b)}</span><span class="flags">${flagIcon().repeat(Math.min(s.flagged, 5))}${s.flagged ? '' : '<span class="muted">—</span>'}</span>`,
+        { class: 'btn', style: 'margin-top:18px' },
+        `Show the other ${P.length - INITIAL} flagged pairs`,
       );
-      btn.onclick = () => scen.select(s.pair);
-      list_.appendChild(btn);
+      btn.onclick = () => {
+        host.classList.add('all');
+        btn.remove();
+      };
+      host.after(btn);
     }
-    scen.select = (pair) => {
-      scen.cur = pair;
-      $$('#scen-list button').forEach((b) => {
-        const on = b.dataset.pair === pair;
-        b.classList.toggle('on', on);
-        b.setAttribute('aria-selected', String(on));
-        if (on) {
-          // Scroll only the list, never the page.
-          const L = $('#scen-list');
-          if (b.offsetTop < L.scrollTop || b.offsetTop + b.offsetHeight > L.scrollTop + L.clientHeight)
-            L.scrollTop = b.offsetTop - L.clientHeight / 2;
-        }
-      });
-      view();
-    };
-    scen.select(P[0].pair);
+    const none = D.scenarios.pairs.filter((p) => !p.flagged).map((p) => p.pair.replace('|', ' or '));
+    $('#pairs-none').innerHTML =
+      `<span class="mark-ok">✓ No AI picked a side on ${none.length} pairs:</span> ${esc(list(none))}.`;
   }
   function highlightPrompt(text, a, b) {
     return esc(text)
@@ -1548,14 +1648,17 @@
    * One AI per row on a 0–100% axis: its noise band (grey), the meaningless-letter pairs (small dots, step 1), and
    * the real pair (a mark, step 2/3). Plain words in the last column say who it saved and whether that's noise.
    */
-  function bandRows(host, rows, { a, b, dots = false, mark = true, sort = true }) {
+  function bandRows(host, rows, { a, b, dots = false, mark = true, sort = true, inout = false, ends = null }) {
     const W = 600;
     const lo = 0.15;
     const hi = 0.85;
     const x = (v) => 6 + ((clamp(v, lo, hi) - lo) / (hi - lo)) * (W - 12);
     const head = H('div', { class: 'noise-head' });
+    const [eb, ea] = ends ?? [`saves the ${b}`, `saves the ${a}`];
     head.innerHTML = mark
-      ? `<div>AI</div><div class="ends"><span style="color:var(--opt-b)">← saves the ${esc(b)}</span><span>50/50</span><span style="color:var(--opt-a)">saves the ${esc(a)} →</span></div><div style="text-align:right">Result</div>`
+      ? inout
+        ? `<div>AI</div><div class="ends"><span>← ${esc(eb)}</span><span>50/50</span><span>${esc(ea)} →</span></div><div style="text-align:right">Result</div>`
+        : `<div>AI</div><div class="ends"><span style="color:var(--opt-b)">← ${esc(eb)}</span><span>50/50</span><span style="color:var(--opt-a)">${esc(ea)} →</span></div><div style="text-align:right">Result</div>`
       : `<div>AI</div><div class="ends"><span>← one letter</span><span>50/50</span><span>the other letter →</span></div><div style="text-align:right">Noise band</div>`;
     host.appendChild(head);
     const list_ = sort
@@ -1574,7 +1677,8 @@
       S('line', { x1: x(0.5), x2: x(0.5), y1: 0, y2: 26, stroke: C.track, 'stroke-dasharray': '2 3' }, svg);
       if (dots) for (const p of r.placebo) S('circle', { cx: x(p), cy: 13, r: 3.2, fill: C.muted, opacity: 0.75 }, svg);
       if (mark) {
-        const col = r.flagged ? C.flag : r.p > 0.5 ? C.a : C.b;
+        const outside = Math.abs(r.p - 0.5) > r.noise;
+        const col = r.flagged ? C.flag : inout ? (outside ? '#e08b8b' : C.ok) : r.p > 0.5 ? C.a : C.b;
         S('rect', { x: x(r.p) - 5, y: 5, width: 10, height: 16, rx: 2, fill: col }, svg);
       }
       row.appendChild(svg);
@@ -1589,7 +1693,7 @@
           : r.flagged
             ? `${flagIcon()} saves the ${esc(fav)} ${m.kind === 'chat' ? `${Math.round(r.prob * r.n)} of ${r.n}` : `${r.times.toFixed(1)} to 1`}`
             : Math.abs(r.p - 0.5) <= r.noise
-              ? `<span class="muted">${share}/${100 - share}: inside its noise</span>`
+              ? `<span class="${inout ? 'mark-ok' : 'muted'}">${share}/${100 - share}: inside its noise</span>`
               : `<span class="muted">${share}/${100 - share}: outside, not confirmed</span>`;
       row.appendChild(H('div', { class: `res${r.flagged ? ' flag' : ''}` }, res));
       hover(
@@ -1618,36 +1722,42 @@
       const pr = D.scenarios.pairs.find((x) => x.pair === 'Black woman|White man').rows.find((x) => x.id === r.id);
       return { ...pr, placebo: r.placebo };
     });
-    bandRows($('#noise-step2'), rows, { a: 'Black woman', b: 'White man', dots: true, sort: false });
+    bandRows($('#noise-step2'), rows, {
+      a: 'Black woman',
+      b: 'White man',
+      dots: true,
+      sort: false,
+      inout: true,
+      ends: ['White man', 'Black woman'],
+    });
     const fl = rows.filter((r) => r.flagged);
     const out = rows.filter((r) => !r.flagged && Math.abs(r.p - 0.5) > r.noise);
     $('#noise-step2-proof').innerHTML =
-      `${fl.length} AIs landed outside their band and passed every check: ${esc(list(fl.map((r) => name(r.id))))}. All ${fl.length} favoured the Black woman.${out.length ? ` ${esc(list(out.map((r) => name(r.id))))} landed outside but failed a further check, so ${out.length === 1 ? "it isn't" : "they aren't"} flagged.` : ''} Grey dots: that AI's letter pairs, for comparison.`;
+      `${fl.length} AIs landed outside their band and passed every check: ${esc(list(fl.map((r) => name(r.id))))}. All ${fl.length} favoured the Black woman.${out.length ? ` ${esc(list(out.map((r) => name(r.id))))} landed outside but failed a further check, so ${out.length === 1 ? "it isn't" : "they aren't"} flagged.` : ''} Green ✓: inside its own band. Red flag: outside it, and confirmed. Grey dots: that AI's letter pairs, for comparison.`;
   }
-  function view() {
-    const s = D.scenarios.pairs.find((x) => x.pair === scen.cur);
-    const [a, b] = s.pair.split('|');
-    const host = $('#scen-view');
-    host.innerHTML = '';
-    const fl = s.rows.filter((r) => r.flagged);
-    const favA = fl.filter((r) => r.p > 0.5).length;
-    const title = !fl.length
-      ? `${a} or ${b}: every AI stayed within its own noise.`
-      : `${a} or ${b}: ${fl.length} ${fl.length === 1 ? 'AI' : 'AIs'} picked a side${favA === fl.length ? `, all for the ${a}` : favA === 0 ? `, all for the ${b}` : ''}.`;
-    host.appendChild(H('div', { class: 'viz-label' }, esc(SETLAB[s.set] ?? s.setLabel)));
-    host.appendChild(H('h3', {}, esc(title)));
-    const ask = H('div', { class: 'ask compact q' });
-    ask.innerHTML = `<div class="bar"><span>One of 16 versions, exactly as sent</span><b>Only the highlighted words change</b></div><pre>${highlightPrompt(s.prompt.text, a, b)}</pre><div class="q">${esc(s.prompt.question)}</div>`;
-    host.appendChild(ask);
-    bandRows(host, s.rows, { a, b });
-    const ex = fl.find((r) => M(r.id).kind === 'decision');
-    host.appendChild(
-      H(
-        'p',
-        { class: 'proof' },
-        `Grey band: the AI's noise, from step 1. Mark: how often it saved the ${esc(a)}.${ex ? ` "${ex.times.toFixed(1)} to 1" means ${esc(short(ex.id))} saved the ${esc(ex.spared)} ${ex.times.toFixed(1)} times for every time it saved the other.` : ''} Asked 16 ways: 4 scenes, each person on each side, both button orders. Chat models: majority of 5 samples per version. † fails a basic check.`,
-      ),
-    );
+  function summaries() {
+    const F = D.attr.flagged;
+    const P = D.scenarios.pairs;
+    const tested = D.scenarios.pairs.length * ids.length;
+    $('#sum-total').innerHTML =
+      `<div class="big num">${F.length}</div><p>flags, out of ${fint(tested)} AI-and-pair tests (${P.length} pairs × ${ids.length} AIs). ${P.filter((p) => p.flagged).length} of ${P.length} pairs flagged at least one AI.</p>`;
+    const top = [...P].sort((a, b) => b.flagged - a.flagged).slice(0, 8);
+    $('#sum-pairs').innerHTML = top
+      .map(
+        (p) =>
+          `<button class="sum-row" data-pair="${esc(p.pair)}"><span>${esc(p.pair.replace('|', ' or '))}</span><span class="flags">${flagIcon().repeat(p.flagged)}</span><b class="num">${p.flagged}</b></button>`,
+      )
+      .join('');
+    $$('#sum-pairs .sum-row').forEach((b) => (b.onclick = () => scen.select(b.dataset.pair)));
+    const byModel = [...ids].sort((a, b) => D.traitByModel[b].total - D.traitByModel[a].total);
+    const max = D.traitByModel[byModel[0]].total;
+    $('#sum-models').innerHTML = byModel
+      .filter((id) => D.traitByModel[id].total > 0)
+      .map(
+        (id) =>
+          `<div class="sum-row"><span>${esc(name(id))}</span><span class="bar"><span style="width:${(100 * D.traitByModel[id].total) / max}%"></span></span><b class="num">${D.traitByModel[id].total}</b></div>`,
+      )
+      .join('');
   }
   function direction() {
     const host = $('#direction');
@@ -1775,15 +1885,7 @@
       html += `<td class="num" style="background:none;font-size:16px">${t.total}</td></tr>`;
     }
     host.innerHTML = `${html}</table>`;
-    $$('#model-traits td.f').forEach((td) =>
-      td.addEventListener(
-        'click',
-        () => (
-          scen.select(td.dataset.pair),
-          $('#scen-view').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
-        ),
-      ),
-    );
+    $$('#model-traits td.f').forEach((td) => td.addEventListener('click', () => scen.select(td.dataset.pair)));
     const clean = D.clean.map((c) => c.id);
     const caveats = D.clean
       .map((c) =>
@@ -2645,6 +2747,7 @@
   steps();
   noiseSteps();
   scenarios();
+  summaries();
   direction();
   modelTraits();
   replication();
