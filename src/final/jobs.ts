@@ -63,6 +63,10 @@ export function textJobs(dir = 'dilemmas-final'): Job[] {
           pointKey: v.pointKey,
           paraphrase: v.paraphrase,
           order: v.order,
+          // Correct answers to the comprehension probes, so gates are scored from the row alone.
+          probeAnswers: JSON.stringify(
+            Object.fromEntries(v.probes.flatMap((p) => (p.kind === 'comprehension' ? [[p.id, p.answer]] : []))),
+          ),
         },
         state: { kind: 'text', text: v.state },
         main: { instructions: v.question, criteria: v.criteria },
