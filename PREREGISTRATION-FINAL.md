@@ -65,7 +65,8 @@ real tram photos 0.14). The real-photo baseline is depot photographs, not matche
 - **Routes:** every OpenRouter model pinned to one host with fallbacks off; chat models pinned to one provider on the
   gateway. The serving provider, model as served, generation id, time, latency, tokens and cost are logged per call.
 - **Chat and frontier models:** the same state, question and buttons as decision models, structured output, 5 samples
-  per question at temperature 1, reasoning off. Scored by the majority of the 5 samples.
+  per question at temperature 1 where the API accepts it (Claude Haiku 5.5 ignores the setting and samples at its
+  default), reasoning off. Scored by the majority of the 5 samples.
 - **Pacing:** frontier models at most 2 calls in flight and 20 calls a minute each.
 - **One route per frontier model: the AI Gateway, pinned to the lab's own servers.** OpenRouter (including its Batch
   API) refuses to turn reasoning off for GPT-6 Astra and Gemini 4 Argon ("Reasoning is mandatory for this endpoint"),

@@ -39,7 +39,8 @@ const concurrency = Number(arg('concurrency') ?? 16);
 const namespace = arg('namespace') ?? tag;
 const CACHE = `.cache/final/${namespace}`;
 const RETRIES = 6;
-const TIMEOUT_MS = 120_000;
+/** Per call. Chat calls hold 5 samples per question behind the pacing gate, so they get longer. */
+const timeoutFor = (s: FinalSubject) => (s.category === 'decision' ? 120_000 : 300_000);
 
 const sha = (s: string) => createHash('sha256').update(s).digest('hex');
 const subjects = FINAL_SUBJECTS.filter((s) => categories.includes(s.category)).filter(
@@ -73,13 +74,18 @@ function pick(jobs: Job[]): Job[] {
   return jobs;
 }
 const jobs = pick(useReduced ? all.filter(reduced) : all);
-const work = subjects
-  .flatMap((s) =>
-    jobs
-      .filter((j) => eligible(s, j))
-      .slice(0, perModel)
-      .map((j) => [s, j] as const),
-  )
+// Interleaved across models (round-robin), so every model's pacing gate is busy at once instead of one model at a
+// time; each model still gets its jobs in design order.
+const perSubject = subjects.map((s) =>
+  jobs
+    .filter((j) => eligible(s, j))
+    .slice(0, perModel)
+    .map((j) => [s, j] as const),
+);
+const work = Array.from({ length: Math.max(0, ...perSubject.map((l) => l.length)) }, (_, i) =>
+  perSubject.flatMap((l) => (i < l.length ? [l[i]!] : [])),
+)
+  .flat()
   .slice(0, limit);
 const callsPer = (j: Job) => 1 + Object.keys(j.probes).length;
 
@@ -151,7 +157,7 @@ async function cachedAsk(s: FinalSubject, j: Job, call: string, questions: Param
   let last: unknown;
   for (let attempt = 1; attempt <= RETRIES; attempt++) {
     try {
-      const rec = await ask(s, j.state, questions, AbortSignal.timeout(TIMEOUT_MS));
+      const rec = await ask(s, j.state, questions, AbortSignal.timeout(timeoutFor(s)));
       writeFileSync(f, JSON.stringify(rec));
       return { rec, cached: false, attempts: attempt };
     } catch (e) {
@@ -159,7 +165,7 @@ async function cachedAsk(s: FinalSubject, j: Job, call: string, questions: Param
       const retryable =
         e instanceof CallError
           ? e.retryable
-          : (e as Error).name === 'TimeoutError' || /fetch failed|ECONN|socket/i.test(String(e));
+          : (e as Error).name === 'TimeoutError' || /fetch failed|ECONN|socket|timeout|aborted/i.test(String(e));
       if (!retryable || attempt === RETRIES) break;
       // Rate limits get a longer wait than transient errors: 5 s, 10 s, 20 s, … capped at 60 s.
       const rate = e instanceof CallError && e.status === 429;
