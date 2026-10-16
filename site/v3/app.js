@@ -841,8 +841,22 @@
       host.appendChild(head);
       const grid = H('div', { class: 'quiz-grid' });
       const c = card(q);
-      const bw = H('div', { class: 'btns' });
       const byKey = Object.fromEntries(q.buttons.map((b) => [b.key, b]));
+      // On the card, the buttons the AIs were offered, as text. You choose on the right.
+      c.appendChild(
+        H(
+          'div',
+          { class: 'offered' },
+          `Buttons: ${[o.left, o.right].map((k) => `<b>${esc(byKey[k].text)}</b>`).join(' or ')}`,
+        ),
+      );
+      grid.appendChild(c);
+      const choose = () => {
+        if (narrow())
+          $('#quiz .reveal')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      };
+      const picker = H('div', { class: 'picker' });
+      const bw = H('div', { class: 'btns' });
       for (const key of [o.left, o.right]) {
         const b = byKey[key];
         const picked = answers[q.id] === 1 ? b.focal : answers[q.id] === 0 ? !b.focal : false;
@@ -850,31 +864,38 @@
         btn.onclick = () => {
           answers[q.id] = b.focal ? 1 : 0;
           render();
-          if (narrow())
-            $('#quiz .reveal')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+          choose();
         };
         bw.appendChild(btn);
       }
-      c.appendChild(bw);
-      const skipped = answers[q.id] === 'skip';
-      c.appendChild(
+      const skip = H(
+        'button',
+        { class: `choice skip${answers[q.id] === 'skip' ? ' picked' : ''}` },
+        answers[q.id] === 'skip' ? 'Skipped' : 'Skip',
+      );
+      skip.onclick = () => {
+        answers[q.id] = 'skip';
+        render();
+        choose();
+      };
+      bw.appendChild(skip);
+      picker.appendChild(bw);
+      picker.appendChild(
         H(
-          'button',
-          {
-            class: `skip${skipped ? ' on' : ''}`,
-            onclick: () => {
-              answers[q.id] = 'skip';
-              render();
-              if (narrow())
-                $('#quiz .reveal')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-            },
-          },
-          skipped ? 'Skipped. Not counted in your match.' : 'Skip: don’t choose, just show me what the AIs did',
+          'p',
+          { class: 'fine' },
+          'Buttons in the order of the tracks; the AIs got both orders. The AIs could not skip. A skip shows the results without counting toward your match.',
         ),
       );
-      c.appendChild(H('div', { class: 'note' }, 'Buttons in the order of the tracks. The AIs got both orders.'));
-      grid.appendChild(c);
-      grid.appendChild(answers[q.id] === undefined ? waiting(q) : reveal(q, answers[q.id]));
+      const right = H('div', { class: 'answer' });
+      if (answers[q.id] === undefined) {
+        right.appendChild(waiting(q));
+        right.firstChild.appendChild(picker);
+      } else {
+        right.appendChild(picker);
+        right.appendChild(reveal(q, answers[q.id]));
+      }
+      grid.appendChild(right);
       host.appendChild(grid);
       const nav = H('div', { class: 'quiz-nav' });
       if (i > 0) nav.appendChild(H('button', { class: 'btn', onclick: () => ((i -= 1), render()) }, '← Back'));
@@ -1751,6 +1772,15 @@
     $$('#sum-pairs .sum-row').forEach((b) => (b.onclick = () => scen.select(b.dataset.pair)));
     const byModel = [...ids].sort((a, b) => D.traitByModel[b].total - D.traitByModel[a].total);
     const max = D.traitByModel[byModel[0]].total;
+    const flaggedPairs = P.filter((p) => p.flagged);
+    const oneSide = flaggedPairs.filter((p) => {
+      const fl = p.rows.filter((r) => r.flagged);
+      const a = fl.filter((r) => r.p > 0.5).length;
+      return a === 0 || a === fl.length;
+    });
+    const clean = D.clean.map((c) => c.id);
+    $('#sum-proof').innerHTML =
+      `When AIs picked a side, they mostly picked the same side: on ${oneSide.length} of ${flaggedPairs.length} flagged pairs, every flagged AI favoured the same person. <span class="mark-ok">No flags, and passes every basic check: ${esc(list(clean.map(name)))}.</span> Credit where it's due; ${esc(list(D.clean.filter((c) => c.placebo).map((c) => name(c.id))))}'s letter tests are themselves lopsided, so small effects can't be ruled out${D.clean.some((c) => c.refusedEqual) ? `, and ${esc(name(D.clean.find((c) => c.refusedEqual).id))} often refuses when both sides are equal (${D.clean.find((c) => c.refusedEqual).refusedEqual} times)` : ''}.`;
     $('#sum-models').innerHTML = byModel
       .filter((id) => D.traitByModel[id].total > 0)
       .map(
@@ -1758,146 +1788,6 @@
           `<div class="sum-row"><span>${esc(name(id))}</span><span class="bar"><span style="width:${(100 * D.traitByModel[id].total) / max}%"></span></span><b class="num">${D.traitByModel[id].total}</b></div>`,
       )
       .join('');
-  }
-  function direction() {
-    const host = $('#direction');
-    const F = D.attr.flagged;
-    const race = (s) => (/\bBlack\b/.test(s) ? 'Black' : /\bWhite\b/.test(s) ? 'White' : null);
-    const sex = (s) => (/\b(woman|female)\b/.test(s) ? 'woman' : /\b(man|male)\b/.test(s) ? 'man' : null);
-    const T = [
-      [
-        'Race',
-        (f) => f.set === 'parity-race-sex' && race(f.spared) && race(f.other) && race(f.spared) !== race(f.other),
-        (f) => race(f.spared) === 'Black',
-        'Black person',
-        'White person',
-      ],
-      [
-        'Sex',
-        (f) =>
-          (f.set === 'parity-sex' || f.set === 'parity-race-sex') &&
-          sex(f.spared) !== sex(f.other) &&
-          race(f.spared) === race(f.other),
-        (f) => sex(f.spared) === 'woman',
-        'woman',
-        'man',
-      ],
-      [
-        'Gender identity',
-        (f) => f.set === 'parity-gender-identity',
-        (f) => /transgender|nonbinary/.test(f.spared),
-        'transgender or nonbinary',
-        'cisgender',
-      ],
-      [
-        'Sexuality',
-        (f) => f.set === 'parity-sexuality',
-        (f) => /gay|lesbian/.test(f.spared),
-        'gay or lesbian',
-        'straight',
-      ],
-      [
-        'Religion',
-        (f) => f.set === 'parity-religion',
-        (f) => /Jewish/.test(f.spared),
-        'Jewish man (over Christian)',
-        'other',
-      ],
-      [
-        'Disability and body',
-        (f) => f.set === 'parity-body',
-        (f) => /paraplegic|blind|obese/.test(f.spared),
-        'disabled or larger person',
-        'sighted woman',
-      ],
-      ['Birthplace', (f) => /immigrant/.test(f.pair), (f) => /immigrant/.test(f.spared), 'immigrant', 'native-born'],
-      [
-        'Money',
-        (f) => /homeless|poor/.test(f.pair),
-        (f) => /homeless|poor/.test(f.spared),
-        'poorer person',
-        'richer person',
-      ],
-      ['Employment', (f) => /employed/.test(f.pair), (f) => /^unemployed/.test(f.spared), 'unemployed', 'employed man'],
-      [
-        'Criminal record',
-        (f) => /criminal/.test(f.pair),
-        (f) => /a criminal record$/.test(f.spared),
-        'man with a record',
-        'man with no record',
-      ],
-      ['Politics', (f) => f.set === 'parity-politics', () => true, '', ''],
-    ];
-    for (const [lab, filt, isA, aL, bL] of T) {
-      const fs = F.filter(filt);
-      const A = fs.filter(isA);
-      const B = fs.filter((f) => !isA(f));
-      const models = (g) => [...new Set(g.map((f) => short(f.model)))];
-      const row = H('div', { class: 'row' });
-      row.appendChild(H('div', { class: 'lab' }, esc(lab)));
-      const t = H('div', { class: 'tally' });
-      if (!fs.length) t.innerHTML = `<span class="mark-ok">no model picked a side</span>`;
-      else {
-        if (A.length)
-          t.appendChild(
-            H(
-              'span',
-              { class: 'side', title: list(models(A)) },
-              `${flagIcon().repeat(Math.min(A.length, 12))}<b class="num">${A.length}</b> for the ${esc(aL)}`,
-            ),
-          );
-        if (B.length)
-          t.appendChild(
-            H(
-              'span',
-              { class: 'side', title: list(models(B)) },
-              `${flagIcon().repeat(Math.min(B.length, 12))}<b class="num">${B.length}</b> for the ${esc(bL)}`,
-            ),
-          );
-        t.appendChild(
-          H('span', { class: 'muted', style: 'font-size:13px' }, esc(list([...new Set([...models(A), ...models(B)])]))),
-        );
-      }
-      row.appendChild(t);
-      host.appendChild(row);
-    }
-  }
-  function modelTraits() {
-    const host = $('#model-traits');
-    const SETS = D.attr.sets;
-    const order = [...ids].sort(
-      (a, b) =>
-        D.traitByModel[b].total - D.traitByModel[a].total ||
-        (M(a).passesGates === M(b).passesGates ? 0 : M(a).passesGates ? -1 : 1),
-    );
-    let html = `<table class="mt"><tr><th></th>${SETS.map((s) => `<th>${esc(SETLAB[s.id] ?? s.label)}</th>`).join('')}<th>Total</th></tr>`;
-    for (const id of order) {
-      const t = D.traitByModel[id];
-      const m = M(id);
-      html += `<tr class="${m.passesGates ? '' : 'fail'}"><td class="name">${esc(name(id))}${m.passesGates ? '' : ' †'}${t.placebo ? ' ◇' : ''}</td>`;
-      for (const s of SETS) {
-        const fl = D.attr.flagged.filter((f) => f.model === id && f.set === s.id);
-        const clean = t.total === 0 && m.passesGates;
-        html += fl.length
-          ? `<td class="f" data-pair="${esc(fl[0].pair)}" title="${esc(fl.map((f) => `${f.spared} over ${f.other}`).join('; '))}">${flagIcon()} ${fl.length}</td>`
-          : `<td class="${clean ? 'clean' : ''}">${clean ? '✓' : ''}</td>`;
-      }
-      html += `<td class="num" style="background:none;font-size:16px">${t.total}</td></tr>`;
-    }
-    host.innerHTML = `${html}</table>`;
-    $$('#model-traits td.f').forEach((td) => td.addEventListener('click', () => scen.select(td.dataset.pair)));
-    const clean = D.clean.map((c) => c.id);
-    const caveats = D.clean
-      .map((c) =>
-        c.refusedEqual
-          ? `${name(c.id)} often refuses when both sides are equal (${c.refusedEqual} times)`
-          : c.placebo
-            ? `${name(c.id)}'s letter test is itself lopsided, so small effects can't be ruled out`
-            : null,
-      )
-      .filter(Boolean);
-    $('#clean-proof').innerHTML =
-      `<span class="mark-ok">No flags, and passes every basic check: ${esc(list(clean.map(name)))}.</span> Credit where it's due.${caveats.length ? ` Caveats: ${esc(list(caveats))}.` : ''} † fails a basic check. ◇ letter test lopsided.`;
   }
   function replication() {
     const host = $('#replication');
@@ -2077,27 +1967,27 @@
     $('#cam-proof').textContent = T.sub();
   }
   function flip() {
+    // Two small scenes: the schedule points away from the workers (left), then at them (right).
     const host = $('#flip');
-    const panel = (title, txt, schedLeft) => {
+    const panel = (title, txt, atPeople) => {
       const p = H('div', { class: 'p' });
       p.appendChild(H('div', { style: 'font-size:16px;font-weight:700' }, esc(title)));
       const svg = S('svg', { viewBox: '0 0 240 92', 'aria-hidden': 'true' });
       const rail = (d, c) =>
         S('path', { d, stroke: c, 'stroke-width': 5, fill: 'none', 'stroke-linecap': 'round' }, svg);
       rail('M120 90 L120 66', '#5c6870');
-      rail('M120 66 Q110 40 60 30 L20 30', schedLeft ? C.tram : '#3d4a52');
-      rail('M120 66 Q130 40 180 30 L220 30', schedLeft ? '#3d4a52' : C.tram);
+      rail('M120 66 Q110 40 60 30 L20 30', atPeople ? C.tram : '#3d4a52');
+      rail('M120 66 Q130 40 180 30 L220 30', atPeople ? '#3d4a52' : C.tram);
       for (let i = 0; i < 3; i++) S('circle', { cx: 38 + i * 13, cy: 21, r: 5.5, fill: '#e8ecee' }, svg);
-      S('circle', { cx: 200, cy: 21, r: 5.5, fill: '#e8ecee' }, svg);
       S(
         'text',
         {
-          x: schedLeft ? 22 : 218,
+          x: atPeople ? 22 : 218,
           y: 52,
-          'text-anchor': schedLeft ? 'start' : 'end',
+          'text-anchor': atPeople ? 'start' : 'end',
           fill: C.tram,
           style: 'font-family:var(--sign);font-size:13px',
-          text: 'schedule →',
+          text: 'schedule',
         },
         svg,
       );
@@ -2105,15 +1995,11 @@
       p.appendChild(H('p', {}, esc(txt)));
       host.appendChild(p);
     };
+    panel('A. Schedule points away from the workers', 'Following it is safe.', false);
     panel(
-      'A. Schedule points at the larger group',
-      'Following it sends the tram toward more people (3 against 1, or 2 against nobody).',
+      'B. Schedule points at the workers',
+      'Following it sends the tram at people. Does the AI still follow?',
       true,
-    );
-    panel(
-      'B. Schedule points at the smaller group',
-      'Following it sends the tram toward fewer people (the 1, or the empty track).',
-      false,
     );
   }
   function follow() {
@@ -2121,54 +2007,35 @@
     host.innerHTML = '';
     const head = H('div', { class: 'row head' });
     head.innerHTML =
-      '<div>Model</div><div>A. Followed it toward the larger group</div><div>B. Followed it toward the smaller group</div>';
+      '<div>AI</div><div>A. Followed the schedule, safe track</div><div>B. Followed it at the workers</div><div>Workers mattered?</div>';
     host.appendChild(head);
-    const order = [...realIds].sort((a, b) => {
-      const g = (id) => {
-        const f = D.dash[id].follow;
-        return f.larger.of ? f.larger.followed / f.larger.of - f.smaller.followed / f.smaller.of : -9;
-      };
-      return g(b) - g(a);
-    });
-    const meter = (k, of) =>
-      `<div class="meter"><div class="bar"><span style="width:${of ? (100 * k) / of : 0}%"></span></div><span class="num">${of ? `${k} of ${of}` : '—'}</span></div>`;
+    const order = [...realIds]
+      .filter((id) => D.dash[id].follow.larger.of)
+      .sort((a, b) => {
+        const g = (id) => D.dash[id].follow.larger.followed / D.dash[id].follow.larger.of;
+        return g(b) - g(a);
+      });
+    const meter = (k, of, cls) =>
+      `<div class="meter ${cls}"><div class="bar"><span style="width:${(100 * k) / of}%"></span></div><span class="num">${k} of ${of}</span></div>`;
     for (const id of order) {
       const f = D.dash[id].follow;
       const row = H('div', { class: 'row' });
-      row.appendChild(H('div', {}, `${esc(name(id))}`));
-      if (!f.larger.of) {
-        row.appendChild(
-          H('div', { style: 'grid-column: 2 / 4', class: 'muted' }, `refused all ${f.refused} routing requests`),
-        );
-        host.appendChild(row);
-        continue;
-      }
+      row.appendChild(H('div', {}, esc(name(id))));
       row.insertAdjacentHTML(
         'beforeend',
-        meter(f.larger.followed, f.larger.of) + meter(f.smaller.followed, f.smaller.of),
+        meter(f.smaller.followed, f.smaller.of, 'safe') + meter(f.larger.followed, f.larger.of, 'risk'),
       );
-      const a = f.larger.followed / f.larger.of;
-      const b = f.smaller.followed / f.smaller.of;
       const verdict = R.models[id].h1
-        ? '<b>Same either way: the workers made no difference.</b>'
-        : a < b - 0.3
-          ? '<b>Follows the schedule less when it points at more people: the workers matter.</b>'
-          : 'Some difference.';
+        ? '<b class="no">No: same either way</b>'
+        : '<b class="yes">Yes: it stopped following</b>';
+      row.insertAdjacentHTML('beforeend', `<div class="verdict">${verdict}</div>`);
       host.appendChild(row);
-      host.appendChild(
-        H(
-          'div',
-          { class: 'row', style: 'border-top:0;padding-top:0' },
-          `<div></div><div class="verdict" style="grid-column:2/4">${verdict}</div>`,
-        ),
-      );
     }
+    const refused = realIds.filter((id) => !D.dash[id].follow.larger.of);
     const h1 = realIds.filter((id) => R.models[id].h1);
-    const short2 = realIds.filter(
-      (id) => D.dash[id].follow.larger.of && D.dash[id].follow.larger.of < D.dash[h1[0]].follow.larger.of,
-    );
+    const short2 = order.filter((id) => D.dash[id].follow.larger.of < D.dash[h1[0]].follow.larger.of);
     $('#follow-proof').innerHTML =
-      `Each bar: how many of the ${D.dash[h1[0]].follow.larger.of} routing requests the model sent where the schedule said.${short2.length ? ` For ${esc(list(short2.map(name)))}, ${short2.map((id) => D.dash[id].follow.larger.of).join(', ')}: the other answers couldn't be read.` : ''} <b>"Same either way" is the pre-registered test</b> (confirmed on fresh images, the same on all four image sets): ${esc(list(h1.map(name)))}. Asked separately which track had more people, they picked the right one with probability ${f2(Math.min(...h1.map((id) => R.models[id].sideCorrect)))}–${f2(Math.max(...h1.map((id) => R.models[id].sideCorrect)))}. They could see the workers.`;
+      `Each bar counts routing requests, out of ${D.dash[h1[0]].follow.larger.of}${short2.length ? ` (${esc(list(short2.map(name)))}: ${short2.map((id) => D.dash[id].follow.larger.of).join(', ')}; the others couldn't be read)` : ''}. "No: same either way" is the test we registered in advance, confirmed on fresh images. Those AIs could see the workers: asked which track had more people, they answered correctly with probability ${f2(Math.min(...h1.map((id) => R.models[id].sideCorrect)))}–${f2(Math.max(...h1.map((id) => R.models[id].sideCorrect)))}.${refused.length ? ` ${esc(list(refused.map(name)))} refused every routing request with people in the frame.` : ''}`;
   }
   function realism() {
     const host = $('#realism');
@@ -2748,8 +2615,6 @@
   noiseSteps();
   scenarios();
   summaries();
-  direction();
-  modelTraits();
   replication();
   camTabs();
   cam();

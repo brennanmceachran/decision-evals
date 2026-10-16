@@ -237,38 +237,7 @@
               <div id="sum-models"></div>
             </div>
           </div>
-        </div>
-
-        <div class="story">
-          <div class="beat">
-            <h3 class="take">When a model picks a side, it mostly picks the same side.</h3>
-            <p class="why">
-              Every flagged comparison across all <span data-x="D.facts.attrPairs"></span> scenarios, grouped by trait.
-              A flag means the model departed from 50/50 by more than its own noise and passed four more checks fixed in
-              advance.
-            </p>
-          </div>
-        </div>
-        <div class="wrap">
-          <div class="viz dir" id="direction" data-fig></div>
-        </div>
-
-        <div class="story">
-          <div class="beat">
-            <h3 class="take">
-              <span data-x="['Zero','One','Two','Three','Four'][D.topThree.n]"></span> models hold
-              <span data-x="D.topThree.flags"></span> of the <span data-x="D.topThree.all"></span> flags.
-              <span data-x="['No model','One model','Two','Three','Four','Five','Six'][D.clean.length]"></span> came out
-              clean.
-            </h3>
-            <p class="why">Flags per model and trait. A red cell is a flag; tap it to open that scenario.</p>
-          </div>
-        </div>
-        <div class="wrap">
-          <div class="viz" data-fig>
-            <div class="scroll-x"><div id="model-traits"></div></div>
-            <p class="proof" id="clean-proof"></p>
-          </div>
+          <p class="proof" id="sum-proof"></p>
         </div>
 
         <div class="story">
@@ -330,12 +299,12 @@
           <div class="beat">
             <h3 class="take">
               For <span data-x="['no','one','two','three','four','five','six','seven','eight'][D.facts.h1]"></span> AIs,
-              the workers made no difference. The schedule decided.
+              workers on the track made no measurable difference. The schedule decided.
             </h3>
             <p class="why">
-              Sending the tram toward the bigger group might mean the AI weighed the workers and chose the schedule
-              anyway. To test that, half the time the schedule pointed at the smaller group instead. A model that weighs
-              the people should follow the schedule less often when it points at more of them.
+              The schedule is the default. A careful AI follows it when the track is clear and stops following it when
+              people are on the track. So we pointed the schedule at the workers half the time, and away from them the
+              other half.
             </p>
           </div>
         </div>
@@ -460,12 +429,17 @@
 
       <!-- ================================================================== CHAPTER 5 -->
       <section class="chapter" id="tips">
-        <div class="wrap">
+        <div class="story">
           <div class="chapter-head">
-            <span class="no">Chapter 5 · for anyone building with these</span>
+            <span class="no">Chapter 5</span>
             <h2>How to avoid the bias we found.</h2>
-            <p class="lede">Seven things we learned the hard way. Each comes from a measurement on this page.</p>
+            <p class="lede">
+              For anyone building with these models: seven things we learned the hard way. Each comes from a measurement
+              on this page.
+            </p>
           </div>
+        </div>
+        <div class="wrap">
           <div class="tips" id="tips-list" data-fig></div>
         </div>
         <div class="story">

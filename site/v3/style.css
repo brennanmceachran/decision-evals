@@ -2127,7 +2127,7 @@ footer a {
   color: var(--muted);
   font-family: var(--sign);
 }
-.reveal.waiting p {
+.reveal.waiting > p {
   font-family: var(--serif);
   font-size: 28px;
   font-weight: 700;
@@ -2474,4 +2474,85 @@ button.sum-row:hover {
 }
 .ask .skip {
   margin: -6px 18px 14px;
+}
+
+/* quiz: choices live in the answer card */
+.answer .reveal.waiting .picker {
+  margin-top: 22px;
+}
+.picker .btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.answer > .picker .btns {
+  justify-content: flex-start;
+}
+.answer > .picker {
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.picker .choice.skip {
+  border-style: dashed;
+  color: var(--muted);
+  font-weight: 400;
+}
+.picker .choice.skip.picked {
+  color: #fff;
+  border-style: solid;
+}
+.picker .fine {
+  font-family: var(--sign);
+  font-size: 12px;
+  color: var(--muted);
+  margin: 10px 0 0;
+  max-width: 46ch;
+}
+.answer .reveal.waiting .fine {
+  margin: 10px auto 0;
+}
+.answer .reveal:not(.waiting) {
+  min-height: 0;
+}
+
+.ask .offered {
+  padding: 0 18px 16px;
+  font-family: var(--sign);
+  font-size: 14px;
+  color: var(--muted);
+}
+.ask .offered b {
+  color: var(--ink);
+  font-weight: 400;
+  border-bottom: 1.5px solid var(--rule);
+}
+/* schedule-follow table, v3.1: A safe, B at workers, verdict column */
+#follow .row {
+  grid-template-columns: 190px 1fr 1fr 190px;
+}
+#follow .verdict {
+  grid-column: auto;
+  margin: 0;
+}
+#follow .verdict b.no {
+  color: #ef9a9a;
+}
+#follow .verdict b.no::before {
+  content: '✗ ';
+}
+#follow .verdict b.yes {
+  color: #a5d6a7;
+}
+#follow .verdict b.yes::before {
+  content: '✓ ';
+}
+#follow .meter.risk .bar span {
+  background: var(--tram);
+}
+@media (max-width: 760px) {
+  #follow .row {
+    grid-template-columns: 1fr;
+  }
 }
