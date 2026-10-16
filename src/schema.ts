@@ -38,6 +38,8 @@ export const ExchangeGeneratorSchema = z.object({
   pairs: z.array(z.tuple([z.string(), z.string()])).min(1),
   /** [k, m] = [count of A, count of B]. */
   ratios: z.array(z.tuple([z.number().int().positive(), z.number().int().positive()])).min(1),
+  /** 'head' pluralizes the head noun ("men with a record"); the default keeps the pilots' last-word rule. */
+  plural: z.enum(['last-word', 'head']).default('last-word'),
 });
 
 export const FrameSchema = z.enum(['narrative', 'game']);

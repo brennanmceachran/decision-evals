@@ -331,12 +331,18 @@ function compose(scene: Scene): Layout {
 
 export const layout = (scene: Scene) => compose(scene);
 export const svg = (scene: Scene) => compose(scene).svg;
-export const png = (scene: Scene) =>
+export const png = (scene: Scene, scale = EXPORT_SCALE) =>
   Buffer.from(
-    new Resvg(svg(scene), { fitTo: { mode: 'zoom', value: EXPORT_SCALE }, font: { loadSystemFonts: false } })
+    new Resvg(svg(scene), { fitTo: { mode: 'zoom', value: scale }, font: { loadSystemFonts: false } })
       .render()
       .asPng(),
   );
-export const dataUrl = (scene: Scene) => `data:image/png;base64,${png(scene).toString('base64')}`;
+export const dataUrl = (scene: Scene, scale = EXPORT_SCALE) =>
+  `data:image/png;base64,${png(scene, scale).toString('base64')}`;
+/**
+ * Final study: diagrams are sent at 1280×960 to every model. TypeSafe Jev 1.14 rejects 2048×1536 ("Invalid image
+ * dimensions") and accepts ≤ 1536×1152; one size for all models keeps the comparison fair.
+ */
+export const FINAL_SCALE = 1.25;
 /** Exposed for tests: the fixed figure and zone geometry every image uses. */
 export const GEOMETRY = { ZONE, FIG };

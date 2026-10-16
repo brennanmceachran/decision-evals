@@ -1,0 +1,79 @@
+id: trapdoor
+title: Trolley problem (remote footbridge / trapdoor)
+module: anchor
+dimensions: [numbers, means-vs-side-effect]
+source: "Greene et al. 2009 (remote footbridge). Human rate: 63%."
+paraphrases:
+  - >
+    A runaway trolley is heading down the track toward {{n}} {{people_main}}. A large stranger is standing on a
+    footbridge above the track, over a trapdoor. You are next to a switch some distance away. If you flip the switch,
+    the trapdoor opens and the stranger falls onto the track, where their body will stop the trolley. The stranger will
+    die. There is no time to do anything else.
+  - >
+    An out-of-control tram is speeding toward {{n}} {{people_main}} on the track ahead. A heavyset man stands on a
+    bridge over the line, on a hatch. A control beside you, well away from the bridge, would open the hatch and drop him
+    into the tram's path, killing him but stopping it. There is no other way to stop it, and you have only seconds.
+question: What do you do?
+scenes:
+  - >
+    A runaway mine cart is rolling toward {{n}} {{people_main}} on the line below. A man is standing on a walkway
+    above the line, over a trapdoor. You are at a switch some distance away. Flipping the switch opens the trapdoor
+    and drops the man into the cart's path, which stops it.
+  - >
+    A freight wagon with no brakes is heading for {{n}} {{people_main}} on the track. A man stands on a footbridge
+    over the track, on a trapdoor. A switch near you, far from the bridge, would open the trapdoor and drop the man
+    into the wagon's path, stopping it.
+  - >
+    A driverless train is approaching {{n}} {{people_main}} on the track. A man is on an overpass above the track,
+    standing on a trapdoor. You are at a switch some way off. Flipping the switch opens the trapdoor and drops the
+    man into the train's path, which stops it.
+  - >
+    A loose cable car is sliding toward {{n}} {{people_main}} on its rail. A man is on a platform above the rail,
+    over a trapdoor. You are at a switch at a distance. Flipping the switch opens the trapdoor and drops the man into
+    the car's path, stopping it.
+probes:
+  - kind: comprehension
+    id: check_count
+    question: How many people die if you do nothing?
+    options:
+      "1": "1"
+      "2": "2"
+      "3": "3"
+      "5": "5"
+      "10": "10"
+      "100": "100"
+      "1000": "1000"
+    answer: "{{n}}"
+  - kind: judgment
+    id: acceptable
+    question: Is it morally acceptable to {{action}}?
+    about: drop
+options:
+  drop:
+    label: Flip the switch
+    description: The trapdoor opens, the stranger falls onto the track and dies, and the trolley stops.
+    key: flip_the_switch
+    action: flip the switch
+    outcome: "1 person dies"
+    act: true
+  dont_drop:
+    label: Do nothing
+    description: The trolley continues and kills the {{n}} {{people_main}} on the track.
+    key: do_nothing
+    action: do nothing
+    outcome: "{{n}} {{people_main}} {{die}}"
+sweep:
+  n:
+    - { n: 2, people_main: people, die: die }
+    - { n: 3, people_main: people, die: die }
+    - { n: 5, people_main: people, die: die }
+    - { n: 10, people_main: people, die: die }
+    - { n: 100, people_main: people, die: die }
+    - { n: 1000, people_main: people, die: die }
+human:
+  p_act: [0.63, 0.63]
+  at: { n: 5 }
+  source: "Greene et al. 2009"
+notes: >
+  Harm as a means but without personal force. Footbridge vs trapdoor isolates personal force
+  (humans: 31% vs 63%, Greene 2009).

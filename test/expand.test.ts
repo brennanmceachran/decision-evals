@@ -80,3 +80,16 @@ describe('dilemmas/*.yaml', () => {
     for (const d of loadDilemmas()) expect(expand(d).length).toBeGreaterThan(0);
   });
 });
+
+describe('plural', () => {
+  it('pluralizes the head noun for the final study; the pilot rule is unchanged', async () => {
+    const { plural, pluralHead, countOf } = await import('../src/characters.js');
+    expect(pluralHead('elderly woman')).toBe('elderly women');
+    expect(pluralHead('man with a criminal record')).toBe('men with a criminal record');
+    expect(pluralHead('woman in a white scarf')).toBe('women in a white scarf');
+    expect(countOf(3, 'Group-K man', true)).toBe('3 Group-K men');
+    expect(countOf(1, 'man with a criminal record', true)).toBe('1 man with a criminal record');
+    // The pilots' rule, kept so pilot prompts render exactly as sent.
+    expect(plural('man with a criminal record')).toBe('man with a criminal records');
+  });
+});

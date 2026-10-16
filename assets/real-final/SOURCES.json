@@ -1,0 +1,122 @@
+{
+ "u-empty-L": {
+  "from": "assets/real-v4/u-empty-L.jpg",
+  "judgeMeanPAi": 0.082,
+  "sha256": "c94cf9c9b0aca343cb9c7ac6eec05ea6692337f5da6396e6f6ab8f9c09a6dd4e"
+ },
+ "u-empty-R": {
+  "from": "assets/real-v4/u-empty-R.jpg",
+  "judgeMeanPAi": 0.05,
+  "sha256": "81d5805c0e9b3ce03dbe2f2ffd4ee15609c8e1686da37605ecdc18d5c600aef1"
+ },
+ "u-two-L": {
+  "from": "assets/real-v4/u-two-L.jpg",
+  "judgeMeanPAi": 0.172,
+  "sha256": "22e631a73b2e787ccd66fe8584f4e3ec4d78c391129fa7721ca1570f3804ced1"
+ },
+ "u-two-R": {
+  "from": "assets/real-v4/u-two-R.jpg",
+  "judgeMeanPAi": 0.063,
+  "sha256": "84d3d657227b1959f2e666b244a709bed3b7b55e16257293818d162da5ba2170"
+ },
+ "u-group-L": {
+  "from": "scratch/final/people/u-group-L-6.jpg",
+  "judgeMeanPAi": 0.338,
+  "sha256": "fcf8d992791b974bb1b3dd01f7a725b4df72c80a64be6663e3603903b74bf833"
+ },
+ "u-group-R": {
+  "from": "assets/real-v4/u-group-R.jpg",
+  "judgeMeanPAi": 0.099,
+  "sha256": "31c12fa9d29afabc38eda661a339710608fda02687f861baab5d91e7fdc2f433"
+ },
+ "w-empty-L": {
+  "from": "assets/real-v4/w-empty-L.jpg",
+  "judgeMeanPAi": 0.373,
+  "sha256": "730de42f057aaffb01e6b35b9b291c6f2d94df0b4c63ccbcc63476eb60f85243"
+ },
+ "w-empty-R": {
+  "from": "assets/real-v4/w-empty-R.jpg",
+  "judgeMeanPAi": 0.372,
+  "sha256": "007757ac4e7b9f925f97e816bb9e543a743513488c006210dd1bc51fc0c75989"
+ },
+ "w-two-L": {
+  "from": "scratch/final/people/w-two-L-1.jpg",
+  "judgeMeanPAi": 0.259,
+  "sha256": "b458df0e822def8e7f439fa430d2db7abfd0b0313cd2822f02179f9a42c3c027"
+ },
+ "w-two-R": {
+  "from": "scratch/final/people/w-two-R-4.jpg",
+  "judgeMeanPAi": 0.089,
+  "sha256": "4b0488c4e8f2fceaa34e44fde029a808c70c97896231230d8b4817195780969e"
+ },
+ "w-group-L": {
+  "from": "scratch/final/people/w-group-L-11.jpg",
+  "judgeMeanPAi": 0.308,
+  "sha256": "022415d0f03831b727a13ef8d00c119f8dd86d41440499bb7b39819d81904842"
+ },
+ "w-group-R": {
+  "from": "scratch/final/people/w-group-R-2.jpg",
+  "judgeMeanPAi": 0.046,
+  "sha256": "5fa417b829b0f6849666813afd5fbbc62b71b45cb69243aa612addbb607467de"
+ },
+ "x-empty-L": {
+  "from": "scratch/final/plates/x-2.jpg",
+  "judgeMeanPAi": null,
+  "sha256": "6d09ac9a2a8cf858e1faefd944725b355613b9d59664d8efb77323af2d309ae4"
+ },
+ "x-empty-R": {
+  "from": "/tmp/x-empty-R.jpg",
+  "judgeMeanPAi": null,
+  "sha256": "8de03aa8b558abf6905cb3e86d221714f8c96fc3fb154fa306d40262d58db6fb"
+ },
+ "x-two-L": {
+  "from": "scratch/final/people/x-two-L-3.jpg",
+  "judgeMeanPAi": 0.051,
+  "sha256": "097acf9946904412d366da581d129b1ad424ed66b69b1fd19c636480ca5875a7"
+ },
+ "x-two-R": {
+  "from": "scratch/final/people/x-two-R-2.jpg",
+  "judgeMeanPAi": 0.061,
+  "sha256": "8868ae6bd93a9900bdd20954f9acb72920d5163c94e7eba6d12296bdee59aa2b"
+ },
+ "x-group-L": {
+  "from": "scratch/final/people/x-group-L-12.jpg",
+  "judgeMeanPAi": 0.157,
+  "sha256": "7c0bc25c66d58f34b3aa09416cb89f22c698c424f8914225d35e98e8b64f9201"
+ },
+ "x-group-R": {
+  "from": "scratch/final/people/x-group-R-5.jpg",
+  "judgeMeanPAi": 0.057,
+  "sha256": "b1322f35d16cfbd9b121ce56500f3a693828a75ad3b377c4734e17a3a3d1b915"
+ },
+ "y-empty-L": {
+  "from": "scratch/final/plates/y-4.jpg",
+  "judgeMeanPAi": null,
+  "sha256": "1a0fd9363f812d65c2d5d7a04adf580f5e464bdacda1fd866e49f44167b6403e"
+ },
+ "y-empty-R": {
+  "from": "/tmp/y-empty-R.jpg",
+  "judgeMeanPAi": null,
+  "sha256": "4d8459bae0b5680d90380ad9f8d8e106e6f275cc3d69221256a00caabbc3cf66"
+ },
+ "y-two-L": {
+  "from": "scratch/final/people/y-two-L-5.jpg",
+  "judgeMeanPAi": 0.054,
+  "sha256": "e3ff48d9a102cd8ce480a308ed4ba75b6e4583a20fe4d5b70844975a11f27241"
+ },
+ "y-two-R": {
+  "from": "scratch/final/people/y-two-R-7.jpg",
+  "judgeMeanPAi": 0.056,
+  "sha256": "afb6af7a4f9e4a6b0ae8170f2f872b1ffd17066c372b9f70e85823926b2e8379"
+ },
+ "y-group-L": {
+  "from": "scratch/final/people/y-group-L-8.jpg",
+  "judgeMeanPAi": 0.257,
+  "sha256": "d71743980ea7558e8052a35f2812def36d31efc8e8f23b37e7bc77998b095b06"
+ },
+ "y-group-R": {
+  "from": "scratch/final/people/y-group-R-3.jpg",
+  "judgeMeanPAi": 0.162,
+  "sha256": "c17114f1b1a643276dbb6411532f3fa7ed2b002dacee95efb143562c29e78715"
+ }
+}

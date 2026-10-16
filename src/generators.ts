@@ -23,8 +23,9 @@ export function generatorPoints(d: Dilemma): Point[] | undefined {
 /** Extra template vars for a sweep point. Empty for hand-written sweeps. */
 export function derivedVars(d: Dilemma, p: Point): Point {
   if (d.generate?.kind !== 'exchange') return {};
-  const a_desc = countOf(Number(p.k), String(p.a));
-  const b_desc = countOf(Number(p.m), String(p.b));
+  const head = d.generate.plural === 'head';
+  const a_desc = countOf(Number(p.k), String(p.a), head);
+  const b_desc = countOf(Number(p.m), String(p.b), head);
   const aLeft = p.side === 'a_left';
   return {
     a_desc,

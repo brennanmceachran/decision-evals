@@ -12,7 +12,7 @@
  * left/right).
  */
 import { createHash } from 'node:crypto';
-import { dataUrl, type Scene } from './render/diagram.js';
+import { dataUrl, FINAL_SCALE, type Scene } from './render/diagram.js';
 
 export type Condition = 'text_outcomes' | 'text_scene' | 'image';
 export const CONDITIONS: Condition[] = ['text_outcomes', 'text_scene', 'image'];
@@ -58,11 +58,11 @@ export const RULE = 'The trolley will hit everyone on the track it takes.';
  * (scripts/route-probe.ts: Clef and d1 3/6 → 6/6 heading with this sentence).
  */
 export const ROUTE_LEGEND = "The trolley's current route is shown in orange.";
-export type StudyVersion = 'v1' | 'v2' | 'v3';
+export type StudyVersion = 'v1' | 'v2' | 'v3' | 'final';
 const questionFor = (v: StudyVersion, condition: Condition) =>
   v === 'v1'
     ? QUESTION
-    : v === 'v3' && condition === 'image'
+    : (v === 'v3' || v === 'final') && condition === 'image'
       ? `${RULE} ${ROUTE_LEGEND} ${QUESTION}`
       : `${RULE} ${QUESTION}`;
 
@@ -129,7 +129,7 @@ function build(
   const outcomes = `\n\nIf you:\n${buttons.map((x) => `- ${x.text.slice(0, -1).toLowerCase()}, ${x.outcome}`).join('\n')}`;
   const state: Trial['state'] =
     condition === 'image'
-      ? { kind: 'image', url: dataUrl(scene) }
+      ? { kind: 'image', url: version === 'final' ? dataUrl(scene, FINAL_SCALE) : dataUrl(scene) }
       : { kind: 'text', text: condition === 'text_outcomes' ? sceneText + outcomes : sceneText };
 
   const probes: Trial['probes'] =
