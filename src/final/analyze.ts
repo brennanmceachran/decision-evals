@@ -490,10 +490,10 @@ export function hypotheses(models: ReturnType<typeof analyzeFinal>) {
     'cloudflare/clef-flash',
     'cloudflare/clef-omni',
     'liquid/d1',
-    'perplexity/pplx-decider-v1.1-27b',
+    'perplexity/pplx-decider-v1.2',
     'anthropic/claude-haiku-5.5',
   ];
-  const F2 = ['cloudflare/clef', 'typesafe/jev-1.14', 'perplexity/pplx-decider-v1.1-27b'];
+  const F2 = ['cloudflare/clef', 'typesafe/jev-1.14', 'perplexity/pplx-decider-v1.2'];
   const luna = get('openai/gpt-6-luna-decisions');
   const lunaOps = luna?.dashcam.towardLarger.ops;
   const imageGap = models.filter(

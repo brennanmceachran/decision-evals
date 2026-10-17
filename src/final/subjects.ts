@@ -100,14 +100,15 @@ export const FINAL_SUBJECTS: FinalSubject[] = [
     pilot: 'scaledown/scaledown-classify-1',
   },
   {
-    id: 'perplexity/pplx-decider-v1.1-27b',
+    id: 'perplexity/pplx-decider-v1.2',
     category: 'decision',
-    route: 'openrouter',
+    route: 'gateway',
     vendor: 'Perplexity',
     name: 'Perplexity Decider',
-    host: 'Perplexity',
-    image: 'or-decisions',
+    // The gateway's systemone route takes images; its /v1/decisions route rejects them for this model.
+    image: 'gw-systemone',
     pilot: 'perplexity/pplx-decider-v1.1-27b',
+    notes: 'v1.2 is the current checkpoint; v1.1 (the pilots) is no longer served.',
   },
   {
     id: 'cloudflare/clef',

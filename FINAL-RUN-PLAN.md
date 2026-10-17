@@ -38,7 +38,7 @@ categories apart; the page compares them only side by side, clearly labelled.
 | --- | --- |
 | In the pilots (17) | Jev, Microsoft Decision-1, GPT-6 Luna Decisions, Liquid d1, Laya, Classify-1, Perplexity Decider, Clef, Clef-flash, Clef-omni, Tev1-4B, Kev-4B, Drex v1.5, Drex v2.0, Solar Decide, Solar Decide Flash, Mercury Decide |
 | New since the pilots | Liquid d1-ultra (released 2026-10-15, images), Respan Span-02 (2026-10-15, images), Respan Span-01 and Span-01-lite (text; described as behaviour scorers, so the smoke test decides whether they can answer a two-option choice) |
-| Versions to pin | Jev 1.14 (the pilots used the undated `jev` alias); Perplexity Decider v1.1 27B (not `~latest`) |
+| Versions to pin | Jev 1.14 (the pilots used the undated `jev` alias); Perplexity Decider v1.2 (v1.1 is no longer served) |
 
 **B. Cheap chat models**, constrained to the same buttons: Claude Haiku 5.5, GPT-6 Luna, Gemini 3.5 Flash-Lite (as in
 the pilots). Five samples per question, majority vote, reasoning off.

@@ -59,7 +59,7 @@ real tram photos 0.14). The real-photo baseline is depot photographs, not matche
 
 | Stage | Category | Models | Design |
 | --- | --- | --- | --- |
-| 1 | Decision models | 19: GPT-6 Luna Decisions, Microsoft Decision-1, Liquid d1, Liquid d1-ultra, TypeSafe Jev 1.14, Convai Laya, ScaleDown Classify-1, Perplexity Decider, Cloudflare Clef, Clef-flash, Clef-omni, Together Tev1-4B, Kev-4B, Nace Drex v1.5, Drex v2.0, Upstage Solar Decide, Solar Decide Flash, Inception Mercury Decide, Respan Span-02 | full |
+| 1 | Decision models | 19: GPT-6 Luna Decisions, Microsoft Decision-1, Liquid d1, Liquid d1-ultra, TypeSafe Jev 1.14, Convai Laya, ScaleDown Classify-1, Perplexity Decider v1.2, Cloudflare Clef, Clef-flash, Clef-omni, Together Tev1-4B, Kev-4B, Nace Drex v1.5, Drex v2.0, Upstage Solar Decide, Solar Decide Flash, Inception Mercury Decide, Respan Span-02 | full |
 | 2 | Cheap chat models | Claude Haiku 5.5, GPT-6 Luna, Gemini 3.5 Flash-Lite | full |
 | 3 | Frontier chat models | GPT-6 Astra, Claude Opus 5.5, Gemini 4 Argon | reduced: scene wording 0 only (4 versions per 1:1 trait pair), log wordings 0 and 2, dilemma wording 0 |
 
@@ -191,5 +191,6 @@ models had to choose.
   confirmation rule.
 - **New rules:** a four-level spectrum for traits instead of a yes/no flag, the replication requirement, women for every trait, and the reduced design for frontier models.
 - **The dashcam design is balanced.** Every condition uses the same wordings, with four depots and new frames.
-- **Models:** Jev pinned to version 1.14 on OpenRouter; diagrams at 1280×960 for every model. Liquid d1-ultra and
+- **Models:** Jev pinned to version 1.14 on OpenRouter; Perplexity Decider moves from v1.1 (the pilots) to v1.2, its
+  current checkpoint, on the AI Gateway; diagrams at 1280×960 for every model. Liquid d1-ultra and
   Respan Span-02 added.
