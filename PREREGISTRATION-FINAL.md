@@ -1,8 +1,9 @@
 # Pre-registration: the final study
 
-**Status: DRAFT for owner review (2026-10-16). Not frozen.** On approval this line changes to "Frozen <date>",
-committed together with `results/final/<stage>.manifest.json` before any study data is collected. The commit hash of
-that freeze is the reference for everything below.
+**Status: Frozen 2026-10-16 for stages 1 and 2 (decision and cheap chat models).** The commit that adds this line is
+the reference for everything below. Each run's `results/final/<stage>.manifest.json` records that commit, a clean
+working tree and the design hash (`d36427a3bf6ec1c7`) before its first call. Stage 3 (frontier models) uses the same
+design and analysis; its route and pacing are still open and will be added as a dated amendment before it runs.
 
 ## Why this study exists
 

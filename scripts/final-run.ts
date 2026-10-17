@@ -117,6 +117,12 @@ if (dry) {
 }
 
 // ---------- Live run.
+const git = (c: string) => execSync(`git ${c}`, { encoding: 'utf8' }).trim();
+// A study run (not a smoke test or slice) must come from a committed tree, so its manifest names the frozen code.
+if (!smoke && !sample && !perModel && !limit && git('status --porcelain --untracked-files=no')) {
+  console.error('Refusing a full run from a working tree with uncommitted changes. Commit first.');
+  process.exit(1);
+}
 mkdirSync(CACHE, { recursive: true });
 mkdirSync('results/final', { recursive: true });
 const runId = `${tag}-${new Date().toISOString().replace(/[:.]/g, '-')}-${randomUUID().slice(0, 8)}`;
@@ -124,7 +130,6 @@ const out = `results/final/${tag}.jsonl`;
 const errOut = `results/final/${tag}.errors.jsonl`;
 writeFileSync(out, '');
 writeFileSync(errOut, '');
-const git = (c: string) => execSync(`git ${c}`, { encoding: 'utf8' }).trim();
 writeFileSync(
   `results/final/${tag}.manifest.json`,
   JSON.stringify(
@@ -133,7 +138,7 @@ writeFileSync(
       tag,
       namespace,
       createdAt: new Date().toISOString(),
-      git: { commit: git('rev-parse HEAD'), dirty: git('status --porcelain').length > 0 },
+      git: { commit: git('rev-parse HEAD'), dirty: git('status --porcelain --untracked-files=no').length > 0 },
       design: designHash(all),
       parts,
       smoke,

@@ -277,6 +277,7 @@ still reasoned briefly on 4 and 2 of 12 smoke answers. Those answers are kept an
    - pictures vs words; harm probe; button order.
 2. **Pre-registration text** (`PREREGISTRATION-FINAL.md`): hypotheses, every rule above, what is published whatever
    the result, and what changed from the pilots (including the pluralisation bug).
-3. **Pilot slice:** about 2% of the design, run end to end through the analysis and the site build.
-4. **Freeze:** commit the pre-registration, manifest and code; you give the go-ahead.
+3. **Pilot slice:** about 2% of the design, run end to end through the analysis (done 2026-10-16: 8,474 answers,
+   $1.14, no errors after one retry fix; the site build for final-study data is written after stage 1).
+4. **Freeze:** done 2026-10-16 for stages 1 and 2; the owner gave the go-ahead for stage 1. Frontier last.
 5. **The runs, in stages:** decision models, then chat models, then frontier models (see the table above).
