@@ -284,3 +284,8 @@ still reasoned briefly on 4 and 2 of 12 smoke answers. Those answers are kept an
    - Stage 1 done 2026-10-17 from frozen commit 57254a0: 351,864 of 351,864 answers, 0 errors after the planned
      re-run, $13.52. Kev-4B's pinned host (Phala) returned 502s for about an hour (2,095 calls); those were re-run on
      the same host after it recovered, never moved to another host. Pass-1 records: `results/final/stage1-pass1/`.
+   - **Stage 1 repeat (owner-approved 2026-10-17):** a full independent second run of all 19 decision models, tag
+     `stage1-repeat`, fresh cache namespace, same frozen inputs, hosts and settings. Run 1's files are read-only, with
+     SHA-256 sums in `results/final/stage1.sha256`. Each run is analysed on its own; `scripts/final-compare-runs.ts`
+     (committed before run 2 started) compares them side by side without pooling or re-scoring. Per-run rules and
+     levels are unchanged. The comparison reports which strong leans hold in both runs and which in only one.
