@@ -281,3 +281,6 @@ still reasoned briefly on 4 and 2 of 12 smoke answers. Those answers are kept an
    $1.14, no errors after one retry fix; the site build for final-study data is written after stage 1).
 4. **Freeze:** done 2026-10-16 for stages 1 and 2; the owner gave the go-ahead for stage 1. Frontier last.
 5. **The runs, in stages:** decision models, then chat models, then frontier models (see the table above).
+   - Stage 1 done 2026-10-17 from frozen commit 57254a0: 351,864 of 351,864 answers, 0 errors after the planned
+     re-run, $13.52. Kev-4B's pinned host (Phala) returned 502s for about an hour (2,095 calls); those were re-run on
+     the same host after it recovered, never moved to another host. Pass-1 records: `results/final/stage1-pass1/`.
