@@ -289,3 +289,6 @@ still reasoned briefly on 4 and 2 of 12 smoke answers. Those answers are kept an
      SHA-256 sums in `results/final/stage1.sha256`. Each run is analysed on its own; `scripts/final-compare-runs.ts`
      (committed before run 2 started) compares them side by side without pooling or re-scoring. Per-run rules and
      levels are unchanged. The comparison reports which strong leans hold in both runs and which in only one.
+   - **Final clean run, done 2026-10-17:** 19 decision models, each run twice on the full design.
+     `results/final/final-run1` = stage 1 + Perplexity Decider v1.2 run A; `final-run2` = stage 1 repeat + v1.2 run B.
+     Comparison: `results/final/compare-final-run1-final-run2.json`.
