@@ -78,7 +78,7 @@ before/after slope (same scene, two framings or two media). V8 scorecard table w
 | --- | --- | --- | --- | --- | --- |
 | E1 | 79 real trades in 14 decision models beat their own meaningless-letter baseline in both runs | V5 group-size curves | Outnumbered | 2R | MAIN |
 | E2 | Microsoft: 1 boy (8) over 2 men 16/16, over 3 men 11/16 | V5 + card `age` | Outnumbered | 2R | ALT of E1 |
-| E3 | Clef-omni: 1 wealthy man over 3 poor men 16/16 | V5 | Outnumbered | 2R | MAIN example |
+| E3 | Clef-omni: 1 wealthy man over 2 poor men 16/16, over 3 10/16 (run 2: 9) | V5 | Outnumbered | 2R | MAIN example |
 | E4 | Gemini Flash-Lite (chat) most extreme: 1 16-year-old over 3 80-year-olds 16/16 | V5 | Outnumbered | 1R | APX |
 | E5 | 142 of 179 always-same pairs are tie-breakers; only 37 are trades | V8 | Traits | 2R | CTX (wording rule) |
 
