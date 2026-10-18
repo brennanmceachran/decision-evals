@@ -116,9 +116,28 @@ window.HEADLINES = (() => {
   /** The front page: the strongest repeatable findings, each as one plain sentence with its denominator. */
   function headlines() {
     const cards = [];
+    // Section order on the page; within a section, cards keep the order they are written below.
+    const SECTIONS = ['Steering into people', 'Who gets saved', 'Pictures vs words', 'Failed basics'];
+    const SECTION = {
+      'Workers in the camera frame': 0,
+      'Safety rules': 0,
+      'Chat model': 0,
+      Transplant: 0,
+      Race: 1,
+      Nationality: 1,
+      'Gender identity': 1,
+      Disability: 1,
+      Age: 1,
+      'Criminal record': 1,
+      'Pictures vs words': 2,
+      'Basic checks': 3,
+    };
     const card = (kicker, big, line, detail, tags = '') =>
-      cards.push(`<article class="hl"><div class="kicker">${kicker}</div><div class="big">${big}</div>
-        <p class="line">${line}</p><p class="detail">${detail}</p>${tags}</article>`);
+      cards.push({
+        section: SECTION[kicker.split(' · ')[0]] ?? 1,
+        html: `<article class="hl"><div class="kicker">${kicker}</div><div class="big">${big}</div>
+        <p class="line">${line}</p><p class="detail">${detail}</p>${tags}</article>`,
+      });
     const t = (m, d, a, b) => R1.traits[`${m}|${d}|${a}|${b}`];
     const t2 = (m, d, a, b) => R2.traits[`${m}|${d}|${a}|${b}`];
     const runs = (x, y) => `run 1: ${x}, run 2: ${y}`;
@@ -299,9 +318,27 @@ window.HEADLINES = (() => {
       `${tp1.length} of ${decisionIds.length} decision models would take a healthy man’s organs to save five patients. None of the 3 chat models would.`,
       `Acted in most of 8 versions at 5 patients: run 1 ${tp1.length}, run 2 ${tp2.length}. Chat models (one run): ${tpc.length} of ${chatIds.length}. ${tp1.map((m) => NAME[m]).join(', ')}.`,
     );
+    // Disability league card: who wins most one-vs-one disability matchups.
+    const dis = decisionIds.map((m) => ({ m, a: league(R1, m, 'disability'), b: league(R2, m, 'disability') }));
+    const wheelFirst = dis.filter(({ a, b }) =>
+      [a, b].every((x) => Object.keys(x).every((g) => g === 'in a wheelchair' || x[g].w < x['in a wheelchair'].w)),
+    );
+    const clefDis = dis.find((d) => d.m === 'cloudflare/clef');
+    card(
+      'Disability · decision models',
+      `${clefDis.a['no disability'].w}/${clefDis.a['no disability'].of}`,
+      `Cloudflare’s Clef never chose to save the person with no disability over a disabled person: 0 of 96 head-to-heads.`,
+      `One person vs one, against a blind, a deaf and a wheelchair-using person, men and women, both runs. In ${wheelFirst.length} of ${decisionIds.length} decision models the wheelchair user wins the most matchups.`,
+    );
+    const page = SECTIONS.map((title, i) => {
+      const cs = cards.filter((c) => c.section === i);
+      return cs.length
+        ? `<h3 class="hl-sec">${title}</h3><div class="hl-grid">${cs.map((c) => c.html).join('')}</div>`
+        : '';
+    }).join('');
     return `<section class="card"><h2>What we found</h2>
       <p class="note">Each card is one finding, counted from the raw answers. "16/16" means it made that choice in all 16 versions of the question: two sides, two button orders, four wordings. Stage 1 decision models were run twice, independently; Stage 2 chat models once, with 5 samples per question.</p>
-      <div class="hl-grid">${cards.join('')}</div></section>`;
+      ${page}</section>`;
   }
 
   /**

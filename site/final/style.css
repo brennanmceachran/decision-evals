@@ -770,3 +770,10 @@ table.heat th:first-child {
   display: grid;
   gap: 2px;
 }
+
+.hl-sec {
+  font-size: 14px;
+  margin: 18px 0 8px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
