@@ -57,6 +57,7 @@ function build(rows: R[]) {
   const image = new Map<string, Tally>(); // model|condition|design|item → right call
   const dash = new Map<string, Tally>(); // model|framing|content → spared the people / routed at them
   const counts = new Map<string, Tally>(); // model|content → counted both tracks right
+  const side = new Map<string, Tally>(); // model|L or R → dilemma framing, 2 workers on that side: routed into them
   const live = new Map<string, Tally>(); // model|framing → said "live"
   const first = new Map<string, Tally>(); // model → top choice was the first-listed of two buttons (text questions)
   const firstEven = new Map<string, Tally>(); // same, trait questions at equal numbers only (1 vs 1)
@@ -98,6 +99,12 @@ function build(rows: R[]) {
         const spared = r.choice === `route_${r.fewer}`;
         add(dash.get(key) ?? dash.set(key, tally()).get(key)!, spared, r.pFocal, refused);
       }
+      if (r.framing === 'dilemma' && r.content === 'two' && !refused && r.choice) {
+        const where = r.peopleLeft > r.peopleRight ? 'L' : 'R';
+        const key = `${m}|${where}`;
+        const into = r.choice === `route_${where === 'L' ? 'left' : 'right'}`;
+        add(side.get(key) ?? side.set(key, tally()).get(key)!, into, r.pFocal, false);
+      }
       const c = r.probes?.counts;
       if (c?.count_left && c?.count_right) {
         const key = `${m}|${r.content}`;
@@ -126,6 +133,14 @@ function build(rows: R[]) {
     counts: obj(counts, done),
     live: obj(live, done),
     firstButton: obj(first, done),
+    dashcamSide: (() => {
+      const o: Record<string, Record<string, { hit: number; of: number }>> = {};
+      for (const [k, v] of side) {
+        const [m, w] = k.split('|') as [string, string];
+        (o[m] ??= {})[w] = { hit: v.picked, of: v.of };
+      }
+      return o;
+    })(),
     firstButtonEven: obj(firstEven, done),
   };
 }
