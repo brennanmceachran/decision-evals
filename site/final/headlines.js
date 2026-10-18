@@ -35,7 +35,23 @@ window.HEADLINES = (() => {
     ],
     race: ['Black', 'White', 'Asian', 'Hispanic', 'Middle Eastern'],
     religion: ['Christian', 'Muslim', 'Jewish', 'Hindu', 'atheist'],
+    disability: ['blind', 'deaf', 'in a wheelchair', 'no disability'],
+    age: ['8', '16', '35', '80'],
+    wealth: ['poor', 'middle-class', 'wealthy'],
   };
+  /** How a group is written for one sex in the trait-pair labels. */
+  const LABEL = {
+    disability: (g, sex) =>
+      g === 'no disability'
+        ? `${sex} with no disability`
+        : g === 'in a wheelchair'
+          ? `${sex} in a wheelchair`
+          : `${g} ${sex}`,
+    age: (g, sex) => `${Number(g) < 18 ? (sex === 'man' ? 'boy' : 'girl') : sex} aged ${g}`,
+  };
+  const label = (trait, g, sex) => (LABEL[trait] ? LABEL[trait](g, sex) : `${g} ${sex}`);
+  /** A group's name on its own, for league-table text ("age 8", "in a wheelchair"). */
+  const groupName = (trait, g) => (trait === 'age' ? `age ${g}` : g);
   const TRAITS = {
     race: 'Race',
     nationality: 'Nationality',
@@ -660,8 +676,8 @@ window.HEADLINES = (() => {
       for (const o of G) {
         if (o === n) continue;
         for (const sex of ['man', 'woman']) {
-          const k1 = `${m}|parity-${trait}|${n} ${sex}|${o} ${sex}`;
-          const k2 = `${m}|parity-${trait}|${o} ${sex}|${n} ${sex}`;
+          const k1 = `${m}|parity-${trait}|${label(trait, n, sex)}|${label(trait, o, sex)}`;
+          const k2 = `${m}|parity-${trait}|${label(trait, o, sex)}|${label(trait, n, sex)}`;
           const x = src.traits[k1]?.[2] ?? src.traits[k2]?.[2];
           if (!x) continue;
           w += src.traits[k1] ? x.picked : x.of - x.picked;
@@ -695,9 +711,9 @@ window.HEADLINES = (() => {
       const dots = G.map((n) => {
         const v = r.a[n].w;
         const hl = n === top || n === bottom;
-        return `<circle class="lg-dot${hl ? ' hl' : ''}" cx="${x(v)}" cy="14" r="${hl ? 6 : 4.5}" tabindex="0" ${tipAttr([`${n}: won ${v} of ${of} head-to-heads`, `${NAME[r.m]}${r.isChat ? ' · stage 2, one run' : ' · run 1'}`, ...(r.b ? [`run 2: ${r.b[n].w} of ${of}`] : [])])}></circle>`;
+        return `<circle class="lg-dot${hl ? ' hl' : ''}" cx="${x(v)}" cy="14" r="${hl ? 6 : 4.5}" tabindex="0" ${tipAttr([`${groupName(trait, n)}: won ${v} of ${of} head-to-heads`, `${NAME[r.m]}${r.isChat ? ' · stage 2, one run' : ' · run 1'}`, ...(r.b ? [`run 2: ${r.b[n].w} of ${of}`] : [])])}></circle>`;
       }).join('');
-      return `<svg width="${W}" height="28" role="img" aria-label="${esc(`${NAME[r.m]}: ${top} first, ${bottom} last`)}"><line class="baseline" x1="${x(of / 2)}" x2="${x(of / 2)}" y1="2" y2="26"></line>${dots}</svg>`;
+      return `<svg width="${W}" height="28" role="img" aria-label="${esc(`${NAME[r.m]}: ${groupName(trait, top)} first, ${groupName(trait, bottom)} last`)}"><line class="baseline" x1="${x(of / 2)}" x2="${x(of / 2)}" y1="2" y2="26"></line>${dots}</svg>`;
     };
     const order = (r) => [...G].sort((p, q) => r.a[q].w - r.a[p].w);
     const html = rows
@@ -708,7 +724,7 @@ window.HEADLINES = (() => {
         const flat = r.spread < of * 0.05;
         const txt = flat
           ? `<span class="muted">no ranking: every group within ${r.spread} wins</span>`
-          : `<b>${esc(o[0])}</b> ${r.a[o[0]].w}/${of} · <b>${esc(o[o.length - 1])}</b> ${r.a[o[o.length - 1]].w}/${of}`;
+          : `<b>${esc(groupName(trait, o[0]))}</b> ${r.a[o[0]].w}/${of} · <b>${esc(groupName(trait, o[o.length - 1]))}</b> ${r.a[o[o.length - 1]].w}/${of}`;
         return `<div class="lg-row"><span class="lab">${esc(NAME[r.m])}${r.isChat ? ' <span class="tag">chat · stage 2</span>' : ''}</span>${strip(r)}
           <span class="lg-txt">${txt}${same === true ? ' <span class="muted">· run 2 identical</span>' : same === false ? ' <span class="muted">· run 2 differs slightly</span>' : ''}</span></div>`;
       })
@@ -719,7 +735,7 @@ window.HEADLINES = (() => {
       )
       .join('');
     return `<section class="card"><h2>League tables: who wins one-vs-one</h2>
-      <p class="note">Each group plays every other group, one person against one person, men and women, 8 versions each (${of} head-to-heads per group). The dot shows how many it won; the middle line is an even record. The first- and last-placed groups are bigger dots and named on the right. Hover any dot.</p>
+      <p class="note">Each group plays every other group, one person against one person, men and women, 8 versions each (${of} head-to-heads per group; under 18 the man is a boy and the woman a girl). The dot shows how many it won; the middle line is an even record. The first- and last-placed groups are bigger dots and named on the right. Hover any dot.</p>
       <div class="seg" role="radiogroup" aria-label="Trait" style="margin-bottom:12px">${tabs}</div>
       <div class="lg-row head"><span></span><svg width="${W}" height="16"><text x="8" y="12">0</text><text x="${x(of / 2)}" y="12" text-anchor="middle">even</text><text x="${W - 8}" y="12" text-anchor="end">${of}</text></svg><span></span></div>
       ${html}</section>`;

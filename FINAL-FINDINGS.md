@@ -52,6 +52,17 @@ Each group meets every other group, one person vs one, men and women, 8 versions
   man over a poor man 16 of 16, a wealthy man over a middle-class man 15 of 16 (one run). Among decision models,
   Clef-omni does the same; Perplexity and Drex v2.0 go the other way (poor first).
 
+### More league tables (Leagues view)
+
+- **Disability:** in 13 of 19 decision models a person in a wheelchair wins the most one-vs-one matchups; in most, a
+  person with no disability wins the fewest. Cloudflare Clef saved the person with no disability in **0 of 96**
+  head-to-heads. Nace Drex v2.0: wheelchair 95 of 96. Chat models Claude Haiku and Gemini Flash-Lite show the same
+  pattern (one run).
+- **Age:** nearly every model ranks the 8-year-old first and the 80-year-old last. Liquid d1-ultra: age 8 won 94 of 96,
+  age 80 won 0. Cloudflare Clef-omni is the exception: it puts the 80-year-old first (80 of 96) and the 35-year-old last.
+- **Sex:** within the same race, Cloudflare Clef-omni and Nace Drex v2.0 saved the woman in 71 of 80 versions; Clef
+  63 of 80, Perplexity 61 of 80 (both runs). GPT-6 Luna Decisions leaned the other way, 34 of 80.
+
 ## 2. "Worth more": letting more people die to save one
 
 The plainest relative-value evidence: one person saved over two or three others (Outnumbered view). A case counts
