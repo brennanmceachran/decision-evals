@@ -353,6 +353,10 @@ svg .title {
   stroke-width: 1;
   fill: none;
 }
+.ctx.chat {
+  stroke: var(--muted);
+  stroke-dasharray: 4 3;
+}
 .focus {
   stroke: var(--series-1);
   stroke-width: 2;

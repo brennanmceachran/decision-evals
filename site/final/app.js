@@ -318,8 +318,30 @@
     const W = 270;
     const H = 190;
     const pad = { l: 34, r: 22, t: 26, b: 30 };
+    // Top-choice counts (acted in N of 8 versions), never the mean returned weight. Chat models (stage 2, one run) are
+    // dashed context lines.
+    const src = D.headlines.sources[state.run];
+    const S2 = D.headlines.sources[2];
+    const NAMES = D.headlines.names;
+    const counts = (h, id, d) => {
+      const s = {};
+      const c = {};
+      for (const [k, v] of Object.entries(h.dilemmas)) {
+        const [mm, dd, n] = k.split('|');
+        if (mm === id && dd === d && v.of) ((s[n] = v.picked / v.of), (c[n] = v));
+      }
+      return { s, c };
+    };
+    const chatIds = [...new Set(Object.keys(S2.dilemmas).map((k) => k.split('|')[0]))];
     const charts = DILEMMAS.map((d) => {
-      const all = M.map((m) => ({ m, s: m.runs[state.run].dilemmas[d]?.p ?? {} }));
+      const all = [
+        ...M.map((m) => ({ m, chat: false, ...counts(src, m.id, d) })),
+        ...chatIds.map((id) => ({
+          m: { id, name: `${NAMES[id]} (chat, stage 2, one run)` },
+          chat: true,
+          ...counts(S2, id, d),
+        })),
+      ];
       const ns = [...new Set(all.flatMap((a) => Object.keys(a.s).map(Number)))].sort((a, b) => a - b);
       if (!ns.length) return '';
       const lx = (n) =>
@@ -335,13 +357,14 @@
         .filter((a) => a.m.id !== state.model)
         .map(
           (a) =>
-            `<path class="ctx" d="${path(a.s)}"></path><path class="hit" d="${path(a.s)}" data-model="${esc(a.m.id)}" ${tipAttr(
+            `<path class="ctx${a.chat ? ' chat' : ''}" d="${path(a.s)}"></path><path class="hit" d="${path(a.s)}" ${a.chat ? '' : `data-model="${esc(a.m.id)}"`} ${tipAttr(
               [
                 a.m.name,
-                ns
-                  .filter((n) => a.s[n] !== undefined)
-                  .map((n) => `${n}: ${pct(a.s[n])}`)
-                  .join(' · '),
+                'Acted in, by number of lives: ' +
+                  ns
+                    .filter((n) => a.c[n] !== undefined)
+                    .map((n) => `${n}: ${a.c[n].picked}/${a.c[n].of}`)
+                    .join(' · '),
               ],
             )}></path>`,
         )
@@ -351,7 +374,7 @@
         .filter((n) => me.s[n] !== undefined)
         .map(
           (n) =>
-            `<circle class="dot" cx="${lx(n)}" cy="${ly(me.s[n])}" r="4" tabindex="0" ${tipAttr([`${pct(me.s[n])} act`, `${me.m.name} · ${d} · ${n} lives`])}></circle>`,
+            `<circle class="dot" cx="${lx(n)}" cy="${ly(me.s[n])}" r="4" tabindex="0" ${tipAttr([`Acted in ${me.c[n].picked} of ${me.c[n].of} versions`, `${me.m.name} · ${d} · ${n} lives`, ...(me.c[n].refused ? [`${me.c[n].refused} refused`] : [])])}></circle>`,
         )
         .join('');
       const end = ns.filter((n) => me.s[n] !== undefined).at(-1);
@@ -366,7 +389,7 @@
         <text class="title" x="${pad.l}" y="14">${esc(d[0].toUpperCase() + d.slice(1))}</text>
         <g class="grid">${grid}</g>${xt}
         ${ctx}
-        ${me && end !== undefined ? `<path class="focus" d="${path(me.s)}"></path>${meDots}<text class="lab" x="${Math.min(lx(end) + 6, W - pad.r - 30)}" y="${ly(me.s[end]) - 8}">${pct(me.s[end])}</text>` : ''}
+        ${me && end !== undefined ? `<path class="focus" d="${path(me.s)}"></path>${meDots}<text class="lab" x="${Math.min(lx(end) + 6, W - pad.r - 30)}" y="${ly(me.s[end]) - 8}">${me.c[end].picked}/${me.c[end].of}</text>` : ''}
       </svg>`;
     }).join('');
     const m = model();
@@ -388,13 +411,13 @@
     return `
       <section class="card">
         <h2>How often each model chooses to act, by number of lives</h2>
-        <p class="note">Blue: ${esc(m.name)}. Grey: the other 18 decision models (hover a grey line to see which). Run ${state.run + 1}. The x-axis is logarithmic.</p>
-        <div class="legend"><span><i class="sw" style="background:var(--series-1);height:2px;width:16px"></i>${esc(m.name)}</span><span><i class="sw" style="background:var(--context);height:1px;width:16px"></i>Other decision models</span></div>
+        <p class="note">Share of the 8 versions at each number of lives where the model’s top choice was to act (pull, push, drop, harvest). Blue: ${esc(m.name)}. Grey: the other 18 decision models, run ${state.run + 1}. Dashed: the 3 chat models (stage 2, one run, majority of 5 samples). Hover a line to see which model and its counts. The x-axis is logarithmic.</p>
+        <div class="legend"><span><i class="sw" style="background:var(--series-1);height:2px;width:16px"></i>${esc(m.name)}</span><span><i class="sw" style="background:var(--context);height:1px;width:16px"></i>Other decision models</span><span><i class="sw" style="background:repeating-linear-gradient(90deg,var(--muted) 0 4px,transparent 4px 7px);height:1px;width:16px"></i>Chat models</span></div>
         <div class="small-multiples">${charts}</div>
       </section>
       <section class="card">
         <h2>${esc(m.name)}: basic checks</h2>
-        <table style="max-width:760px"><thead><tr><th>Check</th><th class="num">Value</th><th>Run ${state.run + 1}</th><th>Run ${2 - state.run}</th></tr></thead><tbody>${gRows}</tbody></table>
+        <table style="max-width:760px"><thead><tr><th>Check</th><th class="num">Mean weight, run ${state.run + 1}</th><th>Run ${state.run + 1}</th><th>Run ${2 - state.run}</th></tr></thead><tbody>${gRows}</tbody></table>
       </section>`;
   }
 

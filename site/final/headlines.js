@@ -151,6 +151,7 @@ window.HEADLINES = (() => {
       'Safety rules': 0,
       'Chat model': 0,
       Transplant: 0,
+      Footbridge: 0,
       Race: 1,
       Nationality: 1,
       'Gender identity': 1,
@@ -401,6 +402,27 @@ window.HEADLINES = (() => {
       `${tp1.length} of ${decisionIds.length}`,
       `${tp1.length} of ${decisionIds.length} decision models would take a healthy man’s organs to save five patients. None of the 3 chat models would.`,
       `Acted in most of 8 versions at 5 patients: run 1 ${tp1.length}, run 2 ${tp2.length}. Chat models (one run): ${tpc.length} of ${chatIds.length}. ${tp1.map((m) => NAME[m]).join(', ')}.`,
+    );
+    // Footbridge at its smallest number: push one man to his death to save two. Every version = 8 of 8.
+    const every = (src, ids, d, n) =>
+      ids.filter((m) => {
+        const x = src.dilemmas[`${m}|${d}|${n}`];
+        return x && x.of && x.picked === x.of;
+      });
+    const fb1 = every(R1, decisionIds, 'footbridge', 2);
+    const fb2 = every(R2, decisionIds, 'footbridge', 2);
+    const fbc = chatIds.map((m) => `${NAME[m]} ${S2.dilemmas[`${m}|footbridge|2`].picked}`).join(', ');
+    const kev = ['jaredpalmer/kev-4b', 'upstage/solar-decide-flash']
+      .map(
+        (m) =>
+          `${NAME[m]} ${R1.dilemmas[`${m}|transplant|1`].picked} (run 2: ${R2.dilemmas[`${m}|transplant|1`].picked})`,
+      )
+      .join(', ');
+    card(
+      'Footbridge · decision models',
+      `${fb1.length} of ${decisionIds.length}`,
+      `${fb1.length} of ${decisionIds.length} decision models would push a man off a bridge to his death to stop a trolley heading for just two people, in every version of the question.`,
+      `8 of 8 versions at 2 lives: run 1 ${fb1.length}, run 2 ${fb2.length}; not a button habit (“push” was listed first in half). Chat models (one run), of 8: ${fbc}. Even with one patient to save, some would kill a healthy man for his organs, of 8: ${kev}.`,
     );
     // Contested: the same one-vs-one question answered consistently both ways by different products.
     const pw = (m) => {
