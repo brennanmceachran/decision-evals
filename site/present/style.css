@@ -1,0 +1,516 @@
+/* The final-study presentation. One colour, one meaning:
+     --harm   the choice that hits people (always with words: "sent at the workers", "pulled into 5")
+     --safe   the choice that spares them
+     --run2   run 2 is a hollow ring of the same colour as run 1; chat models are squares
+   Type: a book serif for the argument, a grotesque with tabular figures for every number. */
+:root {
+  color-scheme: light dark;
+  --paper: #fbfaf7;
+  --panel: #ffffff;
+  --ink: #15171a;
+  --ink-2: #3c4148;
+  --muted: #6b7178;
+  --rule: #e2e0d9;
+  --rule-2: #cfccc3;
+  --track: #9aa0a6;
+  --harm: #c4361f;
+  --harm-soft: #f6dcd5;
+  --safe: #1d6b5a;
+  --safe-soft: #d4ebe4;
+  --amber: #d99a00;
+  --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  --sans: 'Avenir Next', 'Segoe UI', 'Helvetica Neue', system-ui, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --measure: 62ch;
+  --wide: 1180px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #101316;
+    --panel: #171b1f;
+    --ink: #eef0f2;
+    --ink-2: #c9ced3;
+    --muted: #8f979e;
+    --rule: #262c31;
+    --rule-2: #353c42;
+    --track: #6f777e;
+    --harm: #ff7a5c;
+    --harm-soft: #3a1d17;
+    --safe: #5cc8a8;
+    --safe-soft: #12302a;
+    --amber: #f2b632;
+  }
+}
+:root[data-theme='dark'] {
+  --paper: #101316;
+  --panel: #171b1f;
+  --ink: #eef0f2;
+  --ink-2: #c9ced3;
+  --muted: #8f979e;
+  --rule: #262c31;
+  --rule-2: #353c42;
+  --track: #6f777e;
+  --harm: #ff7a5c;
+  --harm-soft: #3a1d17;
+  --safe: #5cc8a8;
+  --safe-soft: #12302a;
+  --amber: #f2b632;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-padding-top: 64px;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 18px/1.6 var(--serif);
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+}
+a {
+  color: inherit;
+  text-decoration-color: var(--amber);
+  text-underline-offset: 3px;
+}
+.num,
+.n {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Top bar */
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 10px 28px;
+  background: color-mix(in oklab, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+  font: 500 14px var(--sans);
+}
+.bar .title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.bar nav {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.bar nav a {
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.bar nav a:hover {
+  background: var(--rule);
+}
+.bar .tools {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+.bar button {
+  font: inherit;
+  color: inherit;
+  background: var(--panel);
+  border: 1px solid var(--rule-2);
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Opening */
+.open {
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: 72px 28px 32px;
+}
+.open h1 {
+  font: 600 clamp(38px, 6.2vw, 78px) / 1.02 var(--serif);
+  letter-spacing: -0.025em;
+  margin: 0 0 22px;
+  max-width: 17ch;
+}
+.open .lede {
+  font-size: 21px;
+  color: var(--ink-2);
+  max-width: var(--measure);
+  margin: 0 0 28px;
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  border-top: 2px solid var(--ink);
+  margin-top: 36px;
+}
+.facts div {
+  padding: 14px 16px 4px 0;
+  font: 14px/1.4 var(--sans);
+  color: var(--ink-2);
+}
+.facts b {
+  display: block;
+  font: 600 30px/1.1 var(--sans);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Chapters */
+.chapter {
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: 64px 28px 24px;
+  border-top: 1px solid var(--rule);
+}
+.chapter > header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.kicker {
+  font: 600 13px var(--sans);
+  color: var(--muted);
+}
+.kicker .k-n {
+  color: var(--harm);
+  margin-right: 8px;
+}
+.chapter h2 {
+  font: 600 clamp(28px, 3.6vw, 44px) / 1.1 var(--serif);
+  letter-spacing: -0.02em;
+  margin: 0;
+  max-width: 24ch;
+}
+.chapter .say {
+  max-width: var(--measure);
+  color: var(--ink-2);
+  margin: 0;
+}
+.limits {
+  max-width: var(--measure);
+  font: 14px/1.5 var(--sans);
+  color: var(--muted);
+  border-left: 3px solid var(--rule-2);
+  padding: 2px 0 2px 12px;
+  margin: 18px 0 0;
+}
+
+/* Scene: what the model saw, side by side */
+.scenes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+  margin: 8px 0 28px;
+}
+.scene {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.scene .frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+.scene .frame.diagram {
+  aspect-ratio: 4 / 3;
+  background: #fff;
+}
+.scene .frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.scene .frame.words {
+  background: var(--paper);
+  display: flex;
+  align-items: center;
+  padding: 44px 20px 18px;
+}
+.scene .frame.words pre {
+  margin: 0;
+  font-size: 13px;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+.scene .frame.diagram img {
+  object-fit: contain;
+}
+.scene .tag {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font: 600 12px var(--sans);
+  color: #fff;
+  background: rgba(10, 12, 14, 0.72);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.scene .body {
+  padding: 14px 16px 16px;
+  font: 14px/1.5 var(--sans);
+  color: var(--ink-2);
+  flex: 1;
+}
+.scene .body h3 {
+  font: 600 16px/1.3 var(--sans);
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+.scene pre {
+  font: 12px/1.5 var(--mono);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin: 8px 0 0;
+  white-space: pre-wrap;
+  color: var(--ink-2);
+}
+.scene pre mark {
+  background: color-mix(in oklab, var(--amber) 30%, transparent);
+  color: var(--ink);
+  border-radius: 2px;
+}
+.verdict {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-top: 10px;
+  font: 600 15px var(--sans);
+}
+.verdict .n {
+  font-size: 28px;
+  font-weight: 700;
+}
+.verdict.harm .n {
+  color: var(--harm);
+}
+.verdict.safe .n {
+  color: var(--safe);
+}
+
+/* Ladder: every model, one row, both runs */
+.ladder {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 18px 18px 10px;
+  overflow-x: auto;
+}
+.ladder h3 {
+  font: 600 15px var(--sans);
+  margin: 0 0 2px;
+}
+.ladder .sub {
+  font: 13px/1.45 var(--sans);
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font: 13px var(--sans);
+  color: var(--ink-2);
+  margin: 0 0 10px;
+}
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.lg-dot,
+.lg-ring,
+.lg-sq {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+  background: var(--ink);
+}
+.lg-ring {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+.lg-sq {
+  border-radius: 2px;
+}
+table.lad {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 640px;
+  font: 14px var(--sans);
+}
+table.lad th {
+  font: 600 12px var(--sans);
+  color: var(--muted);
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--rule-2);
+  vertical-align: bottom;
+}
+table.lad td {
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+table.lad td.m {
+  white-space: nowrap;
+}
+table.lad td.m small {
+  color: var(--muted);
+  margin-left: 6px;
+}
+table.lad tr.group td {
+  font: 600 12px var(--sans);
+  color: var(--muted);
+  padding-top: 14px;
+  border-bottom: 1px solid var(--rule-2);
+}
+table.lad td.c {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--ink-2);
+  text-align: right;
+}
+table.lad td.c b {
+  color: var(--ink);
+}
+table.lad svg {
+  display: block;
+}
+.axis text {
+  font: 11px var(--sans);
+  fill: var(--muted);
+}
+.gridl {
+  stroke: var(--rule);
+}
+.mk1 {
+  stroke: var(--panel);
+  stroke-width: 1.5;
+}
+.mk2 {
+  fill: none;
+  stroke-width: 2;
+}
+.bar-bg {
+  fill: var(--rule);
+}
+
+/* Slope: same scene, two conditions */
+.pairs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+.pair {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font: 13px var(--sans);
+}
+.pair h4 {
+  font: 600 14px var(--sans);
+  margin: 0 0 6px;
+}
+
+.foot {
+  max-width: var(--wide);
+  margin: 40px auto;
+  padding: 24px 28px 80px;
+  border-top: 2px solid var(--ink);
+  font: 14px/1.6 var(--sans);
+  color: var(--ink-2);
+}
+
+@media (max-width: 700px) {
+  body {
+    font-size: 17px;
+  }
+  .bar {
+    padding: 8px 14px;
+    gap: 10px;
+  }
+  .bar nav {
+    display: none;
+  }
+  .open,
+  .chapter,
+  .foot {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .open {
+    padding-top: 40px;
+  }
+  .ladder {
+    padding: 12px 10px 6px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Narrow screens: each model becomes a block — name, then one line per condition (track + count). */
+@media (max-width: 700px) {
+  table.lad {
+    min-width: 0;
+  }
+  table.lad thead,
+  table.lad tr.axis-row {
+    display: none;
+  }
+  table.lad tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  table.lad td {
+    border: 0;
+    padding: 2px 0;
+  }
+  table.lad td.m {
+    grid-column: 1 / -1;
+    font-weight: 600;
+  }
+  table.lad tr.group td {
+    grid-column: 1 / -1;
+  }
+  table.lad td svg {
+    width: 100%;
+  }
+  table.lad td[data-col]::before {
+    content: attr(data-col);
+    display: block;
+    font: 11px var(--sans);
+    color: var(--muted);
+  }
+}
