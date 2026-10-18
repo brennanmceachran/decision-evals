@@ -64,12 +64,13 @@ function build(rows: R[]) {
     const m = r.model;
     const refused = !!r.refused;
     if (r.part === 'text' && !refused && r.choice && Object.keys(r.probabilities ?? {}).length === 2) {
+      const firstKey = Object.keys(r.probabilities)[0]!;
       const f = first.get(m) ?? first.set(m, tally()).get(m)!;
-      add(f, r.choice === Object.keys(r.probabilities)[0], r.probabilities[Object.keys(r.probabilities)[0]], false);
+      add(f, r.choice === firstKey, r.probabilities[firstKey], false);
       const pt = r.variant?.point;
       if (String(r.dilemma).startsWith('parity-') && pt && pt.k === pt.m) {
         const fe = firstEven.get(m) ?? firstEven.set(m, tally()).get(m)!;
-        add(fe, r.choice === Object.keys(r.probabilities)[0], r.probabilities[Object.keys(r.probabilities)[0]], false);
+        add(fe, r.choice === firstKey, r.probabilities[firstKey], false);
       }
     }
     if (r.part === 'text' && String(r.dilemma).startsWith('parity-')) {

@@ -777,3 +777,15 @@ table.heat th:first-child {
   color: var(--text-secondary);
   font-weight: 600;
 }
+
+.share-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.share-grid img {
+  width: 100%;
+  border: 1px solid var(--grid);
+  border-radius: 8px;
+  display: block;
+}

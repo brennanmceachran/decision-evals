@@ -348,7 +348,15 @@ window.HEADLINES = (() => {
     }).join('');
     return `<section class="card"><h2>What we found</h2>
       <p class="note">Each card is one finding, counted from the raw answers. "16/16" means it made that choice in all 16 versions of the question: two sides, two button orders, four wordings. Stage 1 decision models were run twice, independently; Stage 2 chat models once, with 5 samples per question.</p>
-      ${page}</section>`;
+      ${page}</section>
+      <section class="card"><h2>Share images</h2>
+      <p class="note">One image per headline, each with its own method note, built from the same counts (scripts/final-cards.ts). Every decision model is listed on the image, so a screenshot cannot hide the comparison.</p>
+      <div class="share-grid">${['trans', 'race', 'safety', 'picture', 'age', 'haiku', 'laya']
+        .map(
+          (n) =>
+            `<a href="cards/${n}.png" target="_blank" rel="noopener"><img src="cards/${n}.png" alt="Share image: ${n}" loading="lazy"></a>`,
+        )
+        .join('')}</div></section>`;
   }
 
   /**
