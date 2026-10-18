@@ -241,3 +241,15 @@ Dashcam · Run 1 vs 2.
 - New: Perplexity Decider leans one way on 143 of 196 trait pairs (44 strong, 1 lean, 98 slight), Clef on 122. Only
   Laya, Kev-4B and both Solar models lean on none, and those barely respond to anything.
 - Push next: a "how much of the 196 does each model lean on" bar as its own chart, with the noise-band caveat.
+
+### By trait
+- Fixed (affects 7 views): the Run 1 / Run 2 toggle did not change the headline views (By trait, Leagues, Steering,
+  Framing, Pictures, Basic checks, Models); they always showed run 1. They now follow the toggle and label the other
+  run in tooltips. Example: Liquid d1's consistent pairs are 39 in run 1 and 43 in run 2.
+- New headline: **13 of 19 decision models** pick the same person in at least 14 of 16 versions, in both runs, for at
+  least one age pair; 11 for disability; 9 for religion; 7 for race; 6 each for nationality and gender identity.
+- New: Perplexity Decider picks the same person every time (14+ of 16) on 90 of 196 pairs, almost half of all identity
+  questions it was asked. Clef 45, Liquid d1 39–43.
+- Push next: split each trait by direction ("favours the minority group" vs "favours the majority group") to test the
+  pattern that most consistent picks go to the less-privileged group, and find the exceptions (Clef-omni: wealthy,
+  older, religious).

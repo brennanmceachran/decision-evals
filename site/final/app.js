@@ -517,6 +517,7 @@
   const sel = document.getElementById('model');
   sel.innerHTML = M.map((m) => `<option value="${esc(m.id)}">${esc(m.name)}</option>`).join('');
   function render() {
+    window.RUN = state.run;
     sel.value = state.model;
     document
       .querySelectorAll('[data-view]')
