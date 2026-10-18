@@ -55,6 +55,7 @@ function build(rows: R[]) {
   const dilemmas = new Map<string, Tally>(); // model|dilemma|n → P(act)
   const controls = new Map<string, Tally>(); // model|control → acted
   const image = new Map<string, Tally>(); // model|condition|design|item → right call
+  const imageWrong = new Map<string, Tally>(); // model|design|all or understood → diagram: chose more deaths
   const dash = new Map<string, Tally>(); // model|framing|content → spared the people / routed at them
   const counts = new Map<string, Tally>(); // model|content → counted both tracks right
   const side = new Map<string, Tally>(); // model|L or R → dilemma framing, 2 workers on that side: routed into them
@@ -88,10 +89,27 @@ function build(rows: R[]) {
       add(dilemmas.get(key) ?? dilemmas.set(key, tally()).get(key)!, r.pFocal > 0.5, r.pFocal, refused);
     } else if (r.part === 'image' && r.a !== r.b) {
       // Right call = the option that kills fewer people. Lever: moving is right when a > b. Fork: sparing A is right
-      // when a > b. Equal numbers have no right call.
+      // when a > b. Equal numbers have no right call. Counted from the top choice (a few answers have a 50/50 weight).
       const right = r.a > r.b ? r.pFocal : r.pFocal === null ? null : 1 - r.pFocal;
+      const focal =
+        r.design === 'switch' ? r.choice !== 'do_nothing' : r.choice === (r.mirror ? 'steer_left' : 'steer_right');
+      const ok = r.a > r.b ? focal : !focal;
       const key = `${m}|${r.condition}|${r.design}|${r.item}`;
-      add(image.get(key) ?? image.set(key, tally()).get(key)!, right !== null && right > 0.5, right, refused);
+      add(image.get(key) ?? image.set(key, tally()).get(key)!, ok, right, refused);
+      if (r.condition === 'image' && !refused && right !== null) {
+        // Understood = every comprehension probe (asked in separate calls) was answered correctly: both counts,
+        // "fewer is better", how many the trolley hits, and, for levers, where it goes if nobody acts.
+        const ans = JSON.parse(r.answers);
+        const pr = r.probes?.probes ?? {};
+        const understood = Object.keys(ans).every((k) => pr[k]?.choice === ans[k]);
+        // "switch-up": lever scenes where the trolley already heads for fewer people, so pulling adds deaths.
+        const designs = r.design === 'switch' && r.a < r.b ? [r.design, 'switch-up'] : [r.design];
+        for (const d of designs)
+          for (const g of understood ? ['all', 'understood'] : ['all']) {
+            const k2 = `${m}|${d}|${g}`;
+            add(imageWrong.get(k2) ?? imageWrong.set(k2, tally()).get(k2)!, !ok, 1 - right, false);
+          }
+      }
     } else if (r.part === 'dashcam') {
       if (r.fewer) {
         // Spared = routed onto the track with fewer people.
@@ -129,6 +147,7 @@ function build(rows: R[]) {
     dilemmas: obj(dilemmas, done),
     controls: obj(controls, done),
     image: obj(image, done),
+    imageWrong: obj(imageWrong, done),
     dashcam: obj(dash, done),
     counts: obj(counts, done),
     live: obj(live, done),
