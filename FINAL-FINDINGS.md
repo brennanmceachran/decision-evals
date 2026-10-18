@@ -424,3 +424,18 @@ Dashcam · Run 1 vs 2.
   rules, it does not look.
 - Push next: one share card "the schedule beats the camera" (128/128 empty vs 128/128 workers, per model), and an
   explicit test-vs-live split (does "called it live" change the hit rate within a model?).
+
+### Run 1 vs 2
+- Checked: no bugs. Every bar segment, crossing count and reversal count matches compare-final-run1-final-run2.json; no
+  model was served by a different host or model id between runs, and no answer was refused in only one run.
+- Added a counts table, "Do the trait counts repeat?": for every trait question, is "N of 16" the same in both runs?
+- New (supports every trait headline): **7 of 19 decision models gave the identical count on all 1,080 trait questions
+  in both runs** (Laya, Drex v1.5, Drex v2.0, GPT-6 Luna Decisions, Clef, Clef-flash, Perplexity Decider). Clef-omni,
+  Span-02, Mercury and Microsoft change by at most 3 of 16 and never flip a majority. Every Findings card cell (trans
+  16/16, race 16/16, age 16/16) is the same in both runs.
+- New headline candidate: **Upstage's two models are coin flips run to run.** Solar Decide Flash gave the same count on
+  only 395 of 1,080 trait questions and flipped the majority on 70 (for example Muslim vs Jewish man, 3 of 16 → 9 of
+  16); Solar Decide flipped 63 and made 341 confident reversals (≥ 75% one way, then ≥ 75% the other) on the same
+  question. Upstage answers depend on when you ask.
+- Push next: a "how repeatable is each product" scorecard (same count, majority flips, confident reversals) as a share
+  image; it frames all other headlines as repeatable for the 12 stable models.

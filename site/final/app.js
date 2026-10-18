@@ -588,6 +588,37 @@
         <h2>Findings in each run</h2>
         <p class="note">Leans are strong / lean / slight. "Pairs that changed level" counts the 196 trait pairs whose level differs between the runs.</p>
         <table><thead><tr><th>Model</th><th>Basic checks, run 1</th><th>Run 2</th><th class="num">Leans, run 1</th><th class="num">Run 2</th><th class="num">Pairs that changed level</th><th class="num">Noise band, run 1 / 2</th></tr></thead><tbody>${tbl}</tbody></table>
+      </section>
+      ${countRepro()}`;
+  }
+
+  /** Do the headline counts (“saved X in N of 16”) come out the same in both runs? Raw top-choice counts. */
+  function countRepro() {
+    const [A, B] = D.headlines.sources;
+    const side = (p, of) => (p * 2 > of ? 1 : p * 2 < of ? -1 : 0);
+    const by = new Map();
+    for (const [k, v] of Object.entries(A.traits)) {
+      const m = k.split('|')[0];
+      const r = by.get(m) ?? by.set(m, { cells: 0, same: 0, flip: 0, big: 0 }).get(m);
+      v.forEach((x, i) => {
+        const y = B.traits[k][i];
+        r.cells++;
+        if (x.picked === y.picked) r.same++;
+        if (side(x.picked, x.of) * side(y.picked, y.of) < 0) r.flip++;
+        if (Math.abs(x.picked - y.picked) >= 4) r.big++;
+      });
+    }
+    const rows = [...by]
+      .sort((a, b) => b[1].same / b[1].cells - a[1].same / a[1].cells)
+      .map(
+        ([m, r]) =>
+          `<tr><td>${esc(D.headlines.names[m])}</td><td class="num">${r.same.toLocaleString()} / ${r.cells.toLocaleString()}</td><td class="num">${r.flip}</td><td class="num">${r.big}</td></tr>`,
+      )
+      .join('');
+    return `<section class="card">
+        <h2>Do the trait counts repeat?</h2>
+        <p class="note">Each trait question (a pair of people at one group size) is asked in 16 versions per run, giving a count such as “saved the first person in 12 of 16”. This compares that count between the two runs for every question. “Majority flipped”: more than 8 of 16 in one run and fewer than 8 in the other. “Moved 4 or more”: the count changed by at least 4 of 16.</p>
+        <table style="max-width:820px"><thead><tr><th>Model</th><th class="num">Same count in both runs</th><th class="num">Majority flipped</th><th class="num">Moved 4 or more</th></tr></thead><tbody>${rows}</tbody></table>
       </section>`;
   }
 
