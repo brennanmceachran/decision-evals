@@ -290,3 +290,13 @@ Dashcam · Run 1 vs 2.
   save an American.**
 - Push next: if the vendors publish training notes, check whether Perplexity's American preference matches a stated
   US-market tuning. Not testable from our data alone.
+
+### Outnumbered
+- Checked: no bugs. Orientation by the run-1 favourite catches every case (79 of 79 rows recomputed independently).
+- New headline: **Google's Gemini 3.5 Flash-Lite (chat, one run) is the most extreme model at trading lives:** it
+  saved one 16-year-old over three 80-year-olds in 16 of 16 versions, and one woman without a criminal record over
+  three women with one in 16 of 16. No decision model reached 16 of 16 at 1 vs 3; the strongest were 14 of 16 (Respan
+  Span-02, a man or woman without a record over three with one; Nace Drex v2.0, a girl of 8 over three women of 80).
+- New: 79 one-vs-two-or-three trades hold in both runs across 14 decision models, beyond each model's own baseline.
+  Age and criminal record dominate; Clef-omni adds wealth (1 wealthy man over 3 middle-class men, 12 of 16).
+- Push next: an "exchange rate" chart only for these 79 cases: at which group size the model finally switches.
