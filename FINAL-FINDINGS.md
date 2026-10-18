@@ -312,3 +312,15 @@ Dashcam · Run 1 vs 2.
 - New: the "pro-underdog" pattern has clear exceptions that most models share: wealthy over middle-class (7–0),
   no criminal record over a record (9–0).
 - Push next: an "agreement map" headline image — one row per pair, 19 dots — for the press kit.
+
+### Traits
+- Fixed: the tooltips led with a fitted "relative value" (1 A = N B), which the raw choices often do not support. They
+  now lead with counts: "chose the Black man in 14 of 16 versions", then what happened against two people, then the
+  model's own weight. The noise band is now in percentage points, not "±0.07 around 0.50".
+- Fixed: plural forms in the new tooltips ("two White men", not "two White mans").
+- New finding (context for every identity headline): of the 179 one-vs-one pairs where a decision model chose the same
+  person in all 16 versions in both runs, **142 are tie-breakers** (against two of the other group it saves the two)
+  and **37 are real trades** (it still saves the one in at least 9 of 16). Perplexity Decider: 49 tie-breakers, 2
+  trades. Clef-omni is the opposite: 10 trades, 6 tie-breakers.
+- Headline wording rule this implies: "chose X every time when the two were otherwise equal" is right for most pairs;
+  "would let two die to save one X" only for the 37 trades (Outnumbered page).

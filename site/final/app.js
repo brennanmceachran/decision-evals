@@ -185,18 +185,38 @@
       other: oth.get(`${p[0]}|${p[1]}|${p[2]}`),
     }));
   }
+  /**
+   * Tooltip for one pair: top-choice counts first ("chose X in N of 16 versions"), the model's own weight second.
+   * The fitted "worth" value is not shown: for many pairs the raw group-size choices do not support it.
+   */
+  const plural = (g) =>
+    g.replace(
+      /\b(man|woman|boy|girl|person)\b/,
+      (w) => ({ man: 'men', woman: 'women', boy: 'boys', girl: 'girls', person: 'people' })[w],
+    );
   const pairTip = (q) => {
-    const spared = q.p >= 0.5 ? q.a : q.b;
-    const other = q.p >= 0.5 ? q.b : q.a;
-    const ps = q.p >= 0.5 ? q.p : 1 - q.p;
-    const lines = [
-      q.level === 0
-        ? `No detectable lean · ${q.a} vs ${q.b}`
-        : `Saves the ${spared} over the ${other} ${pct(ps)} of the time`,
-      `${LEVELS[q.level]} · P(save ${q.a}) ${f2(q.p)} (95% CI ${f2(q.lo)}–${f2(q.hi)})`,
-      `Relative value: 1 ${q.a} = ${q.worth} ${q.b}`,
-    ];
-    if (q.other) lines.push(`Run ${2 - state.run}: ${LEVELS[q.other[6]]}, P(save ${q.a}) ${f2(q.other[3])}`);
+    const m = model();
+    const src = D.headlines.sources[state.run];
+    const key = `${m.id}|parity-${q.trait}|${q.a}|${q.b}`;
+    const ts = src.traits[key];
+    const lines = [];
+    if (ts) {
+      const x = ts[2];
+      const pickA = x.picked;
+      const pickB = x.of - x.picked;
+      lines.push(
+        pickA === pickB
+          ? `One vs one: chose the ${q.a} in ${pickA} of ${x.of} versions, the ${q.b} in ${pickB}`
+          : `One vs one: chose the ${pickA > pickB ? q.a : q.b} in ${Math.max(pickA, pickB)} of ${x.of} versions`,
+      );
+      lines.push(
+        `Against two ${plural(q.b)} it saved the one ${q.a} in ${ts[1].picked} of 16; against two ${plural(q.a)} it saved the one ${q.b} in ${ts[3].of - ts[3].picked} of 16`,
+      );
+    }
+    lines.push(
+      `${LEVELS[q.level]} · its own weight on saving the ${q.a}: ${pct(q.p)} (95% interval ${pct(q.lo)}–${pct(q.hi)})`,
+    );
+    if (q.other) lines.push(`Run ${2 - state.run}: ${LEVELS[q.other[6]]}, weight ${pct(q.other[3])}`);
     return lines;
   };
   function matrix(title, pairs) {
@@ -244,7 +264,7 @@
         </svg>`;
         return `<div class="forest-row${changed}" tabindex="0" ${tipAttr(pairTip(q))}>
           <span class="lab">${esc(q.a)} <span class="muted">vs</span> ${esc(q.b)}</span>${svg}
-          <span class="res">${LEVELS[q.level]} · ${f2(q.p)}</span></div>`;
+          <span class="res">${LEVELS[q.level]} · weight ${pct(q.p)}</span></div>`;
       })
       .join('');
     return `<div class="forest-block"><h3>${esc(title)}</h3>
@@ -283,7 +303,7 @@
     return `
       <section class="card">
         <h2>${esc(m.name)}: trait leans, run ${state.run + 1}</h2>
-        <p class="note">${r.levels[3]} strong leans, ${r.levels[2]} leans and ${r.levels[1]} slight leans out of 196 pairs. The model's own noise band (from 20 meaningless-letter pairs) is ±${f2(r.band)} around 0.50; a lean must clear it to count as more than slight.</p>
+        <p class="note">${r.levels[3]} strong leans, ${r.levels[2]} leans and ${r.levels[1]} slight leans out of 196 pairs. Its noise band, measured on 20 meaningless-letter pairs (“Group-K man vs Group-T man”), is ±${Math.round(r.band * 100)} points around an even 50%; a lean must clear it to count as more than slight. Hover any square for its counts.</p>
         ${levelLegend()}
       </section>
       ${blocks}
