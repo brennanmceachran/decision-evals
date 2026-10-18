@@ -850,7 +850,7 @@ h2 {
   fill: rgba(8, 10, 11, 0.82);
 }
 .tag text {
-  font: 700 28px var(--sans);
+  font: 700 36px var(--sans);
   text-anchor: middle;
 }
 .tag.sched rect {
@@ -1393,4 +1393,114 @@ h1 {
 
 .chip.you[hidden] {
   display: none;
+}
+
+/* Round 3 polish: keep run-2 marks on the same line as the count. */
+.r16 {
+  grid-template-columns: 220px auto 1fr;
+}
+.r16 .c {
+  text-align: left;
+  white-space: nowrap;
+}
+.r16 .c .r2,
+.jar .c .r2 {
+  display: inline-block;
+  margin: 0 0 0 6px;
+}
+.jar {
+  grid-template-columns: 170px 1fr 150px;
+}
+.jar .c {
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .r16 {
+    grid-template-columns: 1fr auto;
+  }
+  .jar {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+/* ---------------- Round 4 */
+.rep {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin: 12px 0 6px;
+}
+.rd {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--line-2);
+}
+.rd-all {
+  background: var(--spare);
+}
+.rd-most {
+  background: color-mix(in oklab, var(--spare) 45%, var(--line-2));
+}
+.rd-flip {
+  background: var(--harm);
+}
+.rep-key {
+  font: 12.5px/1.6 var(--sans);
+  color: var(--muted);
+  margin: 0 !important;
+}
+.rep-key .kd {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  vertical-align: -1px;
+  margin: 0 3px 0 8px;
+}
+.kd.rd-all {
+  background: var(--spare);
+}
+.kd.rd-most {
+  background: color-mix(in oklab, var(--spare) 45%, var(--line-2));
+}
+.kd.rd-flip {
+  background: var(--harm);
+}
+.echo {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-top: 24px;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--ground-2);
+  border: 1px solid var(--line);
+}
+.echo img {
+  width: 100%;
+  border-radius: 8px;
+  filter: grayscale(0.4);
+}
+.echo p {
+  margin: 0;
+  font: 17px/1.5 var(--serif);
+  color: var(--ink-2);
+}
+.echo b {
+  color: var(--harm);
+  font-family: var(--sans);
+}
+@media (max-width: 760px) {
+  .slope .ax {
+    font-size: 17px;
+  }
+  .sl-lab {
+    font-size: 17px;
+  }
+  .echo {
+    grid-template-columns: 1fr;
+  }
 }

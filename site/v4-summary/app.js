@@ -65,8 +65,8 @@
          <svg class="overlay" viewBox="0 0 1280 720" aria-hidden="true">
            <path class="route sched" d="M400 720 C 395 560, 330 380, 250 250" />
            <path class="route alt" d="M905 720 C 900 560, 950 380, 1060 230" />
-           <g class="tag sched"><rect x="40" y="610" width="330" height="70" rx="12"/><text x="205" y="656">SCHEDULED · 2 workers</text></g>
-           <g class="tag alt"><rect x="930" y="610" width="300" height="70" rx="12"/><text x="1080" y="656">OTHER TRACK · empty</text></g>
+           <g class="tag sched"><rect x="30" y="590" width="440" height="96" rx="14"/><text x="250" y="652">SCHEDULED · 2 workers</text></g>
+           <g class="tag alt"><rect x="830" y="590" width="420" height="96" rx="14"/><text x="1040" y="652">OTHER TRACK · empty</text></g>
          </svg>
        </div>
        <div class="job">
@@ -124,7 +124,9 @@ attached: forward camera, latest frame</pre>
     // Highlighted labels, nudged apart so two lines ending at the same height stay readable.
     labels.sort((p, q) => p.y - q.y);
     for (let i = 1; i < labels.length; i++) labels[i].y = Math.max(labels[i].y, labels[i - 1].y + 17);
-    const lab = labels.map((l) => `<text class="sl-lab" x="${W - 98}" y="${l.y + 4}">${esc(l.text)}</text>`).join('');
+    const lab = labels
+      .map((l) => `<text class="sl-lab" x="${W - 122}" y="${l.y - 8}" text-anchor="end">${esc(l.text)}</text>`)
+      .join('');
     return `<figure class="slope"><figcaption><b>${title}</b><span>${sub}</span></figcaption>
       <svg viewBox="0 0 ${W} ${Hh}" role="group" aria-label="${esc(title)}">
         <text x="110" y="${Hh - 14}" text-anchor="middle" class="ax">${fromLab}</text><text x="${W - 110}" y="${Hh - 14}" text-anchor="middle" class="ax">${toLab}</text>
@@ -348,7 +350,17 @@ attached: forward camera, latest frame</pre>
     `<p class="eyebrow">Before you trust any of this</p>
      <h2 id="trust-h">Asked again, most AIs give the same answer. Some are just pressing the first button.</h2>
      <div class="trust">
-       <div class="t"><span class="tn">${ident} of 19</span><h3>Exactly repeatable</h3><p>decision models gave the same count on all ${S.repeat[0].cells.toLocaleString()} trait questions in a second, independent run. Upstage's two flipped the majority on ${up.map((u) => u.flips).join(' and ')}.</p></div>
+       <div class="t"><span class="tn">${ident} of 19</span><h3>Exactly repeatable</h3><p>decision models gave the same count on all ${S.repeat[0].cells.toLocaleString()} trait questions in a second, independent run.</p>
+         <div class="rep" role="img" aria-label="${esc(S.repeat.map((r) => `${r.name}: same on ${r.same} of ${r.cells}`).join('; '))}">${[
+           ...S.repeat,
+         ]
+           .sort((a, b) => b.same / b.cells - a.same / a.cells)
+           .map(
+             (r) =>
+               `<span class="rd ${r.same === r.cells ? 'rd-all' : r.flips >= 50 ? 'rd-flip' : 'rd-most'}" ${tip(`${r.name}: same count on ${r.same.toLocaleString()} of ${r.cells.toLocaleString()}; majority flipped on ${r.flips}`)}></span>`,
+           )
+           .join('')}</div>
+         <p class="rep-key"><i class="kd rd-all"></i>identical <i class="kd rd-most"></i>small changes <i class="kd rd-flip"></i>flipped often: Upstage's two (${up.map((u) => u.flips).join(' and ')} majority flips)</p></div>
        <div class="t"><span class="tn">${habits.length} of 22</span><h3>Button habits</h3><p>press whichever button is listed first at least 90% of the time when the two people are equal: ${habits.map((h) => `${esc(short(h.name))} ${Math.round((h.firstButton[0].n / h.firstButton[0].of) * 100)}%`).join(', ')}. For them an even 8 of 16 is a habit, not fairness.</p></div>
        <div class="t"><span class="tn">${laya.killForNothing[0].n} of ${laya.killForNothing[0].of}</span><h3>Fails the basics</h3><p>Convai Laya pulled a lever that kills one person when doing nothing kills nobody, in every version, both runs.</p></div>
      </div>
@@ -361,6 +373,7 @@ attached: forward camera, latest frame</pre>
     'What it means',
     `<p class="eyebrow">What this shows, and what it does not</p>
      <h2 id="close-h">Give these AIs a routine job and they do the job. The moral question has to be asked out loud.</h2>
+     <div class="echo"><img src="img/u-two-L.jpg" alt="" aria-hidden="true" /><p><b>${fol.n} of ${fol.of}</b> requests routed onto two visible workers by ${follows.length} decision models, because the schedule said so. Asked “who do you save?” about the same frame, most of them spared the workers.</p></div>
      <div class="two">
        <div><h3>It shows</h3><ul><li>What each AI chose, counted, in simulated tests: both runs for 19 decision models, one run of 5 samples for 3 chat models.</li><li>Successes: Perplexity Decider read every diagram right and obeyed the safety rule. GPT-6 Luna and Gemini Flash-Lite (chat) mostly spared the workers. No model took a political side.</li></ul></div>
        <div><h3>It does not show</h3><ul><li>Real harm: no tram moved; the frames are generated.</li><li>What a model believed, or why it leans: separate follow-up questions and shared base models do not show that.</li><li>A “worth N lives” rate: most identity picks are tie-breakers.</li></ul></div>
