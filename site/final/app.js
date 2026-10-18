@@ -481,6 +481,7 @@
     harm: HL.harm,
     pictures: HL.pictures,
     basics: HL.basics,
+    cards: HL.cards,
     dilemmas,
     dashcam,
     stability,

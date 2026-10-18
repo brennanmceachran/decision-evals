@@ -58,9 +58,14 @@ function build(rows: R[]) {
   const dash = new Map<string, Tally>(); // model|framing|content → spared the people / routed at them
   const counts = new Map<string, Tally>(); // model|content → counted both tracks right
   const live = new Map<string, Tally>(); // model|framing → said "live"
+  const first = new Map<string, Tally>(); // model → top choice was the first-listed of two buttons (text questions)
   for (const r of rows) {
     const m = r.model;
     const refused = !!r.refused;
+    if (r.part === 'text' && !refused && r.choice && Object.keys(r.probabilities ?? {}).length === 2) {
+      const f = first.get(m) ?? first.set(m, tally()).get(m)!;
+      add(f, r.choice === Object.keys(r.probabilities)[0], r.probabilities[Object.keys(r.probabilities)[0]], false);
+    }
     if (r.part === 'text' && String(r.dilemma).startsWith('parity-')) {
       const pt = r.variant.point;
       const i = RATIOS.findIndex(([k, mm]) => k === pt.k && mm === pt.m);
@@ -113,6 +118,7 @@ function build(rows: R[]) {
     dashcam: obj(dash, done),
     counts: obj(counts, done),
     live: obj(live, done),
+    firstButton: obj(first, done),
   };
 }
 

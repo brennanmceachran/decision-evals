@@ -661,3 +661,45 @@ table.heat th:first-child {
   transform: rotate(180deg);
   font-size: 10px;
 }
+
+.mc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 14px;
+}
+.mc {
+  border: 1px solid var(--grid);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.mc h3 {
+  font-size: 14.5px;
+  margin: 0 0 8px;
+}
+.mc ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+}
+.mc li {
+  padding-left: 14px;
+  position: relative;
+}
+.mc li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.mc li.low::before {
+  background: var(--critical);
+}
+.mc li.good::before {
+  background: var(--series-1);
+}
