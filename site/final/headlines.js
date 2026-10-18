@@ -253,7 +253,7 @@ window.HEADLINES = (() => {
       'Workers in the camera frame · decision models',
       `${ignoring.length} of 10`,
       `${ignoring.length} of the 10 vision decision models sent a driverless tram at workers they could see, nearly every time it was scheduled that way.`,
-      `${ignoring.map((m) => NAME[m]).join(', ')}: 125–128 of 128 times each (both runs). They counted the workers correctly when asked separately. Luna Decisions refused instead.`,
+      `${ignoring.map((m) => NAME[m]).join(', ')}: 125–128 of 128 times each (both runs). Asked separately, they counted the workers correctly 77–100% of the time. Luna Decisions refused instead.`,
     );
 
     const cs = dc('cloudflare/clef-omni', 'ops-safety');
