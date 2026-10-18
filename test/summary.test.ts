@@ -45,10 +45,10 @@ describe.skipIf(!existsSync(HJ))('v4 summary data matches the raw counts', () =>
 
   it('tie-breaker counts are recomputed from the raw 16-version tallies', () => {
     expect(d.always).toEqual({ pairs: 179, trades: 37 });
-    expect(d.tieBreak.curves[0]!.map((c) => c.n)).toEqual(
+    expect(d.tieBreak.curves[0]!.map((c: { n: number }) => c.n)).toEqual(
       R1.traits['perplexity/pplx-decider-v1.2|parity-race|Black woman|White woman'].map((t: any) => t.picked),
     );
-    expect(d.tieBreak.curves[1]!.map((c) => c.n)).toEqual(
+    expect(d.tieBreak.curves[1]!.map((c: { n: number }) => c.n)).toEqual(
       R2.traits['perplexity/pplx-decider-v1.2|parity-race|Black woman|White woman'].map((t: any) => t.picked),
     );
   });

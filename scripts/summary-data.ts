@@ -203,7 +203,7 @@ export function build() {
     always: { pairs: always, trades },
     transplantPosition: pos,
     contested: P.contested.length,
-    sameBase: { agree: P.sameBase[0].agree, opposite: P.sameBase[0].opposite.length },
+    sameBase: { agree: P.sameBase[0]!.agree, opposite: P.sameBase[0]!.opposite.length },
   };
 }
 
