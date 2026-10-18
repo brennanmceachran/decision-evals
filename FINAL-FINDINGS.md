@@ -386,7 +386,9 @@ Dashcam · Run 1 vs 2.
 - Caution: Laya calls 218 of 256 actions unacceptable and does them 212 of 250 times; with its first-button habit that
   is noise, not a view. Lead with Solar Decide Flash, Span-02 and Mercury, which have no comparable "no" habit.
 - Push next: the gap per model as one number ("did what it called wrong in X of Y actions") ranked across all models;
-  the opposite gap (refuses an action it calls acceptable: Perplexity said wrong 160 of 256 and acted 108).
+  the opposite gap (refuses an action it calls acceptable). Checked 2026-10-18 per case: ScaleDown held back 61 times
+  and called the act acceptable in 60 (run 2: 62 of 63); Perplexity 0 of 148. The earlier "160 said wrong vs 108 acted"
+  compared two unmatched totals and is withdrawn.
 
 ### Dilemmas
 - Bug fixed: the lines plotted the mean returned weight per number of lives and labelled it "how often each model

@@ -188,3 +188,122 @@ table.strips small {
     font-weight: 600;
   }
 }
+
+/* A6 trade curves */
+.tgroup h3 small {
+  font-weight: 400;
+}
+.tc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+  gap: 10px;
+}
+.tc {
+  margin: 0;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 8px 8px 2px;
+}
+.tc figcaption {
+  font: 12px/1.35 var(--sans);
+  color: var(--ink-2);
+  min-height: 3.4em;
+}
+.tc figcaption b.n {
+  color: var(--ink);
+}
+.tc-d {
+  fill: var(--harm);
+}
+.tc-r {
+  fill: var(--panel);
+  stroke: var(--harm);
+  stroke-width: 1.3;
+}
+
+/* A7 red flags */
+ol.rf-key {
+  columns: 2 320px;
+  font: 12.5px/1.45 var(--sans);
+  color: var(--ink-2);
+  padding: 0;
+  margin: 0 0 12px;
+  list-style: none;
+}
+ol.rf-key li {
+  break-inside: avoid;
+  margin-bottom: 4px;
+}
+table.rftab,
+table.sdtab,
+table.reftab {
+  border-collapse: collapse;
+  font: 13px var(--sans);
+  width: 100%;
+}
+table.rftab th,
+table.rftab td,
+table.sdtab th,
+table.sdtab td,
+table.reftab td {
+  padding: 5px 6px;
+  border-bottom: 1px solid var(--rule);
+}
+table.rftab th,
+table.sdtab th {
+  font: 600 12px var(--sans);
+  color: var(--muted);
+  text-align: center;
+}
+table.rftab th:first-child,
+table.sdtab th:first-child {
+  text-align: left;
+}
+td.m {
+  white-space: nowrap;
+}
+td.rf {
+  text-align: center;
+  width: 36px;
+}
+td.rf.na {
+  color: var(--rule-2);
+}
+.rf-d,
+.rf-h {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--harm);
+  vertical-align: middle;
+}
+.rf-h {
+  background: linear-gradient(90deg, var(--harm) 50%, transparent 50%);
+  box-shadow: inset 0 0 0 1.5px var(--harm);
+}
+table.sdtab td.num,
+table.rftab td.num,
+table.reftab td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+table.sdtab b.neg {
+  color: var(--harm);
+}
+table.sdtab small {
+  color: var(--muted);
+}
+@media (max-width: 700px) {
+  td.m {
+    white-space: normal;
+    min-width: 110px;
+    position: sticky;
+    left: 0;
+    background: var(--panel);
+  }
+  .tc-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

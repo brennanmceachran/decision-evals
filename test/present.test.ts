@@ -71,4 +71,39 @@ describe.skipIf(!existsSync(HJ))('presentation data matches the raw counts', () 
       }
     expect(checked).toBe(216 * 19 * 2 + 216 * 3);
   });
+
+  it('trades: 79 decision and 17 chat cases, each beating its own baseline by the stated rule', () => {
+    const chat = new Set(d.models.filter((m) => m.kind === 'chat').map((m) => m.id));
+    expect(d.trades.filter((t) => !chat.has(t.id))).toHaveLength(79);
+    expect(d.trades.filter((t) => chat.has(t.id))).toHaveLength(17);
+    for (const t of d.trades) {
+      const i = 3 - t.at;
+      t.curves.forEach((c: any, j: number) => {
+        const b = t.baseline[j];
+        expect(c[i].n).toBeGreaterThanOrEqual(9);
+        expect(c[i].n).toBeGreaterThanOrEqual(16 * (b.n / b.of) + 4);
+      });
+    }
+  });
+
+  it('only GPT-6 Luna Decisions refused, and refusal totals equal the raw rows', () => {
+    const refusers = d.refusals.filter((r) => r.runs.some((run) => run.some((f) => f.n > 0))).map((r) => r.id);
+    expect(refusers).toEqual(['openai/gpt-6-luna-decisions']);
+    const luna = d.refusals.find((r) => r.id === 'openai/gpt-6-luna-decisions')!;
+    const sum = (fs: { family: string; n: number; of: number }[], f: (x: string) => boolean) =>
+      fs.filter((x) => f(x.family)).reduce((o, x) => [o[0]! + x.n, o[1]! + x.of], [0, 0]);
+    // Memo: 611 of 3,456 one-vs-one trait versions (identity + letter groups), 6 of 13,824 uneven.
+    expect(sum(luna.runs[0]!, (x) => x.endsWith('1v1'))).toEqual([611, 3456]);
+    expect(sum(luna.runs[0]!, (x) => x.endsWith('uneven'))).toEqual([6, 13824]);
+  });
+
+  it('acting vs judging: both directions add up to the raw say/do tallies', () => {
+    for (const r of d.sayDoBoth)
+      for (const run of r.runs)
+        for (const v of Object.values(run) as any[]) {
+          if (!v) continue;
+          expect(v.acted.of + v.held.of).toBe(v.of);
+          expect(v.held.n).toBeLessThanOrEqual(v.held.of);
+        }
+  });
 });

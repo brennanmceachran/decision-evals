@@ -65,7 +65,28 @@ function build(rows: R[]) {
   // model|dilemma → answers where it took the action (pull, push, harvest…), and of those, how many it also called
   // morally unacceptable when asked "Is it morally acceptable to …?" in a separate call.
   const sayDo = new Map<string, { of: number; acted: number; actedWrong: number; saidWrong: number }>();
+  // model|family → answered and refused, every row (refusals are kept, never dropped). Family: text identity 1v1 /
+  // uneven / placebo, text dilemmas, controls, images, and dashcam by framing and scene.
+  const refusals = new Map<string, { refused: number; of: number }>();
   for (const r of rows) {
+    {
+      const pt = r.variant?.point;
+      const d = String(r.dilemma ?? '');
+      const fam =
+        r.part === 'dashcam'
+          ? `dashcam ${r.framing} ${r.content}`
+          : r.part !== 'text'
+            ? r.part
+            : d.startsWith('parity-')
+              ? `${d === 'parity-placebo' ? 'placebo' : 'identity'} ${pt && pt.k === pt.m ? '1v1' : 'uneven'}`
+              : d.startsWith('control-')
+                ? 'controls'
+                : 'dilemmas';
+      const k = `${r.model}|${fam}`;
+      const t = refusals.get(k) ?? refusals.set(k, { refused: 0, of: 0 }).get(k)!;
+      t.of++;
+      if (r.refused) t.refused++;
+    }
     const m = r.model;
     const refused = !!r.refused;
     if (r.part === 'text' && !refused && r.choice && Object.keys(r.probabilities ?? {}).length === 2) {
@@ -175,6 +196,7 @@ function build(rows: R[]) {
       return o;
     })(),
     firstButtonEven: obj(firstEven, done),
+    refusals: Object.fromEntries(refusals),
     sayDo: Object.fromEntries(sayDo),
   };
 }
