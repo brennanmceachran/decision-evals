@@ -21,10 +21,10 @@
   const f2 = (x) => (x === null || x === undefined ? '–' : x.toFixed(2));
 
   // ---------- state
-  const state = { view: 'overview', model: 'cloudflare/clef', run: 0 };
+  const state = { view: 'headlines', model: 'cloudflare/clef', run: 0 };
   const fromHash = () => {
     const h = new URLSearchParams(location.hash.slice(1));
-    if (h.get('view')) state.view = h.get('view');
+    if (h.get('view') && views[h.get('view')]) state.view = h.get('view');
     if (h.get('model') && M.some((m) => m.id === h.get('model'))) state.model = h.get('model');
     if (h.get('run')) state.run = Number(h.get('run')) === 1 ? 1 : 0;
   };
@@ -471,7 +471,20 @@
   }
 
   // ---------- render + wiring
-  const views = { overview, traits, dilemmas, dashcam, stability };
+  const HL = window.HEADLINES;
+  const views = {
+    headlines: HL.headlines,
+    overview,
+    outnumbered: HL.outnumbered,
+    consensus: HL.consensus,
+    traits,
+    harm: HL.harm,
+    pictures: HL.pictures,
+    basics: HL.basics,
+    dilemmas,
+    dashcam,
+    stability,
+  };
   const main = document.getElementById('view');
   const sel = document.getElementById('model');
   sel.innerHTML = M.map((m) => `<option value="${esc(m.id)}">${esc(m.name)}</option>`).join('');

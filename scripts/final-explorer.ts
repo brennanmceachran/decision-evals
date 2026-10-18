@@ -71,8 +71,21 @@ const models = runs[0].models.map((m0: M) => {
   };
 });
 
+// Raw top-choice tallies (scripts/final-headlines.ts) for the headline views. Stage 2 rides along, labelled as its own
+// stage; it is never merged into the Stage 1 runs.
+const H = read('results/final/headlines.json');
+const s2 = read('results/final/stage2.analysis.json');
 const data = {
   built: 'scripts/final-explorer.ts',
+  headlines: H,
+  stage2: s2.models.map((m: M) => ({
+    id: m.model,
+    name: m.name,
+    passesGates: m.passesGates,
+    gates: Object.fromEntries(Object.entries(m.gates).map(([k, v]: M) => [k.split('_')[0], [r3(v.value), v.pass]])),
+    levels: [0, 1, 2, 3].map((l) => m.traits.pairs.filter((p: M) => LEVEL[p.level] === l).length),
+    band: r3(m.traits.band),
+  })),
   runs: runs.map((a: M, i: number) => ({ label: `Run ${i + 1}`, source: a.source })),
   hypotheses: Object.fromEntries(
     Object.entries(cmp.hypotheses).map(([k, v]: M) => [k.split('_')[0], [v.run1.holds, v.run2.holds]]),

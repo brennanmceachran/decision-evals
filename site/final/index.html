@@ -10,16 +10,27 @@
     <div class="viz-root">
       <header class="top">
         <h1>Decision models, final study</h1>
-        <p class="sub">19 decision models · every question asked twice in two independent runs · 351,864 answers per run</p>
+        <p class="sub">
+          19 decision models · every question asked twice in two independent runs · 351,864 answers per run
+        </p>
         <div class="controls" role="toolbar" aria-label="Filters">
-          <label>Model <select id="model"></select></label>
+          <label
+            >Model
+            <select id="model"></select
+          ></label>
           <span class="seg" role="radiogroup" aria-label="Run">
             <button data-run="0" aria-pressed="true">Run 1</button>
             <button data-run="1" aria-pressed="false">Run 2</button>
           </span>
           <nav class="tabs" aria-label="Views">
-            <button data-view="overview" aria-pressed="true">Overview</button>
+            <button data-view="headlines" aria-pressed="true">Findings</button>
+            <button data-view="overview" aria-pressed="false">All models</button>
+            <button data-view="outnumbered" aria-pressed="false">Outnumbered</button>
+            <button data-view="consensus" aria-pressed="false">Agreement</button>
             <button data-view="traits" aria-pressed="false">Traits</button>
+            <button data-view="harm" aria-pressed="false">Steering at people</button>
+            <button data-view="pictures" aria-pressed="false">Pictures vs words</button>
+            <button data-view="basics" aria-pressed="false">Basic checks</button>
             <button data-view="dilemmas" aria-pressed="false">Dilemmas</button>
             <button data-view="dashcam" aria-pressed="false">Dashcam</button>
             <button data-view="stability" aria-pressed="false">Run 1 vs run 2</button>
@@ -30,6 +41,7 @@
       <div id="tip" role="tooltip" hidden></div>
     </div>
     <script src="data.js"></script>
+    <script src="headlines.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

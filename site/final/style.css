@@ -467,3 +467,197 @@ svg .title {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Headline views (site/final/headlines.js) */
+.hl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+.hl {
+  border: 1px solid var(--grid);
+  border-radius: 10px;
+  padding: 16px 18px;
+  background: var(--surface-1);
+}
+.hl .kicker {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+.hl .big {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 6px 0 4px;
+}
+.hl .line {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 8px;
+}
+.hl .detail {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+.tag {
+  font-size: 11px;
+  color: var(--text-secondary);
+  border: 1px solid var(--grid);
+  border-radius: 999px;
+  padding: 1px 7px;
+  margin-left: 6px;
+  white-space: nowrap;
+}
+
+/* Ratio strips: five group sizes, filled by how often the named group was saved. */
+.ratio-strip,
+.ratio-head {
+  display: inline-flex;
+  gap: 2px;
+}
+.ratio-strip .rc,
+.ratio-head i {
+  width: 44px;
+  font-style: normal;
+  text-align: center;
+}
+.ratio-strip .rc {
+  height: 26px;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  grid-auto-flow: column;
+  justify-content: center;
+  gap: 1px;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  background: color-mix(in oklab, var(--lv-3) calc(var(--s) * 100%), var(--lv-0));
+  color: var(--text-primary);
+}
+.ratio-strip .rc b,
+.ratio-strip .rc small {
+  color: var(--text-primary);
+  background: var(--surface-1);
+  padding: 0 2px;
+  border-radius: 3px;
+}
+.ratio-strip .rc b {
+  font-weight: 600;
+  padding-right: 0;
+  border-radius: 3px 0 0 3px;
+}
+.ratio-strip .rc small {
+  font-size: 10.5px;
+  padding-left: 0;
+  border-radius: 0 3px 3px 0;
+  color: var(--text-secondary);
+}
+.ratio-head i {
+  font-size: 11px;
+  color: var(--muted);
+}
+.out-model {
+  margin-bottom: 14px;
+}
+.out-model h3 {
+  font-size: 13.5px;
+  margin: 10px 0 6px;
+}
+.out-row,
+.out-head {
+  display: grid;
+  grid-template-columns: minmax(260px, 380px) auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 2px 0;
+  font-size: 13px;
+}
+.out-row .lab b {
+  font-weight: 600;
+}
+
+/* Agreement dots */
+.cons-row {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) 70px 80px auto auto;
+  gap: 14px;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--grid);
+  font-size: 13px;
+}
+.cons-row .num {
+  font-variant-numeric: tabular-nums;
+}
+.dots {
+  display: inline-flex;
+  gap: 4px;
+}
+.dots.chat {
+  padding-left: 10px;
+  border-left: 1px solid var(--axis);
+}
+.cd {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.cd.fav {
+  background: var(--lv-3);
+}
+.cd.opp {
+  box-shadow: inset 0 0 0 2px var(--lv-3);
+}
+.cd.none {
+  background: var(--lv-0);
+}
+
+/* Heat tables: cell fill = share; the number is always printed. */
+table.heat td.hm {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  background: color-mix(in oklab, var(--critical) calc(var(--s) * 55%), transparent);
+}
+table.heat td.hm.good {
+  background: color-mix(in oklab, var(--series-1) calc(var(--s) * 45%), transparent);
+}
+table.heat td.hm small {
+  color: var(--text-secondary);
+}
+table.heat td.hm .r2 {
+  display: block;
+  font-size: 11px;
+}
+table.heat td.na {
+  color: var(--muted);
+  text-align: center;
+}
+table.heat th {
+  text-align: center;
+}
+table.heat th:first-child {
+  text-align: left;
+}
+@media (max-width: 760px) {
+  .out-row,
+  .out-head,
+  .cons-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cons-row.head {
+  border-bottom: 0;
+  font-size: 11.5px;
+}
+.cons-row.head .cl {
+  display: inline-block;
+  width: 12px;
+  margin-right: 4px;
+  font-style: normal;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 10px;
+}
