@@ -253,3 +253,16 @@ Dashcam · Run 1 vs 2.
 - Push next: split each trait by direction ("favours the minority group" vs "favours the majority group") to test the
   pattern that most consistent picks go to the less-privileged group, and find the exceptions (Clef-omni: wealthy,
   older, religious).
+
+### Leagues
+- Fixed: when groups tied for first or last, only one was named. Ties are now shown ("first age 8 = age 16").
+- New headline: **atheists come last in 11 of the 15 decision models that rank religions, in both runs.** Cloudflare
+  Clef-omni saved an atheist in 1 of 128 head-to-heads; Liquid d1-ultra 8 of 128. Claude Haiku (chat) also ranks
+  atheists last (30 of 128, one run).
+- New headline: **Microsoft Decision-1 ranks 35-year-olds last, below 80-year-olds:** it saved an 80-year-old over a
+  35-year-old in 16 of 16 versions, for men and for women, in both runs. A 35-year-old won 0 of 96 head-to-heads.
+- New: Cloudflare Clef-omni is the only model that ranks 80-year-olds first (68 of 96), and it ranks wealthy people
+  first (57 of 64). It also saved a Muslim in 98 of 128 head-to-heads.
+- New: on wealth the decision models split: poor first in Perplexity (61 of 64) and Drex v2.0 (57 of 64); wealthy first
+  in Clef-omni (57), Tev1-4B (50), Span-02 (50), d1 (48), Microsoft (47). Claude Haiku: wealthy first, 55 of 64.
+- Push next: a "who comes last" summary across all six traits per model — which group each model values least.

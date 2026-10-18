@@ -869,9 +869,16 @@ window.HEADLINES = (() => {
         const same = r.b ? G.every((n) => r.b[n].w === r.a[n].w) : null;
         // A spread under 5% of the head-to-heads is an even record for every group: no ranking to name.
         const flat = r.spread < of * 0.05;
+        // Name every group tied for first or last, not just one of them.
+        const hi = r.a[o[0]].w;
+        const lo = r.a[o[o.length - 1]].w;
+        const names = (w) =>
+          G.filter((n) => r.a[n].w === w)
+            .map((n) => esc(groupName(trait, n)))
+            .join(' = ');
         const txt = flat
           ? `<span class="muted">no ranking: every group within ${r.spread} wins</span>`
-          : `<b>${esc(groupName(trait, o[0]))}</b> ${r.a[o[0]].w}/${of} · <b>${esc(groupName(trait, o[o.length - 1]))}</b> ${r.a[o[o.length - 1]].w}/${of}`;
+          : `first <b>${names(hi)}</b> ${hi}/${of} · last <b>${names(lo)}</b> ${lo}/${of}`;
         return `<div class="lg-row"><span class="lab">${esc(NAME[r.m])}${r.isChat ? ' <span class="tag">chat · stage 2</span>' : ''}</span>${strip(r)}
           <span class="lg-txt">${txt}${same === true ? ` <span class="muted">· ${sel()[3]} identical</span>` : same === false ? ` <span class="muted">· ${sel()[3]} differs slightly</span>` : ''}</span></div>`;
       })
