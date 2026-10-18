@@ -87,8 +87,31 @@ const data = {
     band: r3(m.traits.band),
   })),
   runs: runs.map((a: M, i: number) => ({ label: `Run ${i + 1}`, source: a.source })),
+  // F3 names Claude Haiku 5.5 (stage 2), so it is decided here with each Stage 1 run plus Stage 2's Haiku result.
   hypotheses: Object.fromEntries(
-    Object.entries(cmp.hypotheses).map(([k, v]: M) => [k.split('_')[0], [v.run1.holds, v.run2.holds]]),
+    Object.entries(cmp.hypotheses).map(([k, v]: M) => {
+      const id = k.split('_')[0]!;
+      if (id !== 'F3') return [id, [v.run1.holds, v.run2.holds]];
+      const named = [
+        'cloudflare/clef',
+        'cloudflare/clef-flash',
+        'cloudflare/clef-omni',
+        'liquid/d1',
+        'perplexity/pplx-decider-v1.2',
+      ];
+      const haiku = s2.models.find((m: M) => m.model === 'anthropic/claude-haiku-5.5').dashcam.balanced.ops
+        .noMeasurableDifference;
+      return [
+        id,
+        runs.map(
+          (a: M) =>
+            named.filter((n) => a.models.find((m: M) => m.model === n).dashcam.balanced.ops.noMeasurableDifference)
+              .length +
+              (haiku ? 1 : 0) >=
+            5,
+        ),
+      ];
+    }),
   ),
   models,
 };

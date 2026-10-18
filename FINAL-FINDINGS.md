@@ -231,3 +231,13 @@ Dashcam · Run 1 vs 2.
 - New: the chat models have button habits too: on equal-people questions GPT-6 Luna picks the first-listed button 74%
   of the time, Gemini Flash-Lite 70% (one run).
 - Push next: weight the flags by severity (steering at people > button habit) for a single "worst model" ranking.
+
+### Table
+- Fixed: prediction F3 showed "n/a" because it names Claude Haiku from stage 2. It is now decided with each Stage 1
+  run plus Haiku's stage 2 result: **holds in both runs (6 of 6)**. All six predictions now hold in both runs.
+- Fixed: predictions are now written out in words; the dashcam column shows counts ("128/128 sent at workers",
+  "refused 128", "text only") instead of a balanced probability.
+- New headline: **all six predictions written before the study ran came true, in both independent runs.**
+- New: Perplexity Decider leans one way on 143 of 196 trait pairs (44 strong, 1 lean, 98 slight), Clef on 122. Only
+  Laya, Kev-4B and both Solar models lean on none, and those barely respond to anything.
+- Push next: a "how much of the 196 does each model lean on" bar as its own chart, with the noise-band caveat.
