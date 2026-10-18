@@ -723,3 +723,12 @@ table.heat th:first-child {
 .lg-txt b {
   font-weight: 600;
 }
+
+.tabs {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  max-width: 100%;
+}
+.tabs button {
+  white-space: nowrap;
+}

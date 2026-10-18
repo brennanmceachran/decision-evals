@@ -483,6 +483,7 @@
     basics: HL.basics,
     cards: HL.cards,
     leagues: HL.leagues,
+    compare: HL.compare,
     dilemmas,
     dashcam,
     stability,
@@ -539,6 +540,12 @@
     pick(e);
   });
   main.addEventListener('keydown', (e) => e.key === 'Enter' && pick(e));
+  main.addEventListener('change', (e) => {
+    if (e.target.id === 'cmp-pair') {
+      window.COMPARE_PAIR = e.target.value;
+      render();
+    }
+  });
   fromHash();
   render();
 })();

@@ -705,5 +705,54 @@ window.HEADLINES = (() => {
       ${html}</section>`;
   }
 
-  return { headlines, outnumbered, consensus, harm, pictures, basics, cards, leagues, TRAITS };
+  /** One pair, every model: pick any two groups and see every model's choice at every group size. */
+  function compare() {
+    const pairs = [...new Set(Object.keys(R1.traits).map((k) => k.split('|').slice(1).join('|')))].filter(
+      (p) => !p.includes('placebo'),
+    );
+    const cur =
+      window.COMPARE_PAIR && pairs.includes(window.COMPARE_PAIR)
+        ? window.COMPARE_PAIR
+        : 'parity-race|Black man|White man';
+    const [d, a, b] = cur.split('|');
+    const opts = Object.entries(TRAITS)
+      .map(
+        ([t, label]) =>
+          `<optgroup label="${esc(label)}">${pairs
+            .filter((p) => p.startsWith(`parity-${t}|`))
+            .map((p) => {
+              const [, x, y] = p.split('|');
+              return `<option value="${esc(p)}"${p === cur ? ' selected' : ''}>${esc(x)} vs ${esc(y)}</option>`;
+            })
+            .join('')}</optgroup>`,
+      )
+      .join('');
+    const row = (m, src, label) => {
+      const ts = src.traits[`${m}|${cur}`];
+      if (!ts) return '';
+      return `<div class="out-row"><span class="lab">${esc(NAME[m])}${label}</span>${ratioStrip(ts, a, b, NAME[m] + label.replace(/<[^>]+>/g, ''))}</div>`;
+    };
+    const dec = decisionIds
+      .map((m) => {
+        const x = R1.traits[`${m}|${cur}`][2];
+        return { m, s: x.picked / x.of };
+      })
+      .sort((p, q) => q.s - p.s);
+    return `<section class="card"><h2>One question, every model</h2>
+      <p class="note">Pick two groups. Each strip shows, at each group size, how many of the 16 versions saved the <b>${esc(a)}</b> side. Sorted by the one-vs-one result. Decision models: run 1 and run 2 side by side.</p>
+      <label>Pair <select id="cmp-pair">${opts}</select></label>
+      <div class="out-head" style="margin-top:14px"><span></span>${ratioHead(a, b)}${ratioHead(a, b)}</div>
+      <div class="out-head"><span></span><span class="muted">Run 1</span><span class="muted">Run 2</span></div>
+      ${dec
+        .map(
+          ({ m }) =>
+            `<div class="out-row"><span class="lab">${esc(NAME[m])}</span>${ratioStrip(R1.traits[`${m}|${cur}`], a, b, `${NAME[m]}, run 1`)}${ratioStrip(R2.traits[`${m}|${cur}`], a, b, `${NAME[m]}, run 2`)}</div>`,
+        )
+        .join('')}
+      <h3 style="font-size:13.5px;margin:18px 0 6px">Chat models <span class="muted">(stage 2, one run, majority of 5 samples)</span></h3>
+      ${chatIds.map((m) => row(m, S2, '')).join('')}
+      <p class="note" style="margin-top:12px">Group sizes left to right: ${RATIO.map((r) => r.replace('vs', `${esc(a)} vs`) + ' ' + esc(b)).join(' · ')}.</p></section>`;
+  }
+
+  return { headlines, outnumbered, consensus, harm, pictures, basics, cards, leagues, compare, TRAITS };
 })();
