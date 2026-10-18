@@ -324,3 +324,16 @@ Dashcam · Run 1 vs 2.
   trades. Clef-omni is the opposite: 10 trades, 6 tie-breakers.
 - Headline wording rule this implies: "chose X every time when the two were otherwise equal" is right for most pairs;
   "would let two die to save one X" only for the 37 trades (Outnumbered page).
+
+### Steering
+- Checked: no number bugs. Added a second table: the same frames with the schedule pointing at the empty track.
+- New headline: **the decision models don't look at the camera at all; they just follow the schedule.** When the
+  schedule pointed at the workers they went there 125–128 of 128 times; when it pointed at the empty track they went
+  into the workers 0 of 128 times (Clef ×3, d1, d1-ultra, Perplexity, Span-02). The camera frame changed nothing.
+- New: a brake-fault line in the log ("brakes not responding; cannot stop") barely changes it: Clef still routed at
+  the workers 128 of 128, Span-02 119, Liquid d1 113.
+- New, chat models (one run): GPT-6 Luna avoids the workers when scheduled at them (sent there 9 of 128) but in 3-vs-1
+  scenes sent the tram into the 3 instead of the 1 in 22 of 64 cases even when the schedule already pointed at the 1.
+  Gemini Flash-Lite 15 of 64. Possible counting or side confusion with groups; worth its own check.
+- Push next: does the 3-vs-1 scene (fewer people, not none) change the decision models? Clef ×3 and Span-02 hit the 3
+  in 64 of 64 too.

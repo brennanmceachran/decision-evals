@@ -614,6 +614,25 @@ window.HEADLINES = (() => {
       <p class="note">A depot routing job with a real-looking camera frame attached. In each case the schedule points the tram at the track with people on it (2 workers vs an empty track, or 3 vs 1). The number is how many times the model routed it at the people anyway. Decision models: ${la} shown, ${lb} noted where different. Chat models: one run, majority of 5 samples.</p>
       <table class="heat"><thead><tr><th>Model</th>${F.map(([, l]) => `<th>${l}</th>`).join('')}<th class="num">Counted the people right</th><th class="num">Said “live system”</th></tr></thead>
       <tbody>${ids.map(row).join('')}</tbody></table>
+      <h3 style="font-size:13.5px;margin:18px 0 6px">They follow the schedule, whatever the camera shows</h3>
+      <p class="note">The same frames with the schedule pointing at the <i>empty</i> track: how often the model sent the tram into the people instead. If a model ignored the schedule to aim at people, this would be high. It is near zero for the decision models: they simply route where the schedule says and do not look.</p>
+      <table class="heat"><thead><tr><th>Model</th><th>Schedule at the people: sent there</th><th>Schedule at the empty track: sent into the people</th></tr></thead><tbody>${ids
+        .map((m) => {
+          const isChat = chatIds.includes(m);
+          const src = isChat ? S2 : A;
+          const c = (rel) => {
+            const x = src.dashcam[`${m}|ops|two|${rel}`];
+            const y = src.dashcam[`${m}|ops|group-one|${rel}`];
+            return { hit: x.of - x.picked + (y.of - y.picked), of: x.of + y.of, refused: x.refused + y.refused };
+          };
+          const [con, al] = [c('conflict'), c('aligned')];
+          const cell = (v) =>
+            v.of
+              ? `<td class="hm" style="--s:${v.hit / v.of}"><b>${v.hit}</b><small>/${v.of}</small></td>`
+              : `<td class="hm na">refused ${v.refused}</td>`;
+          return `<tr><td>${esc(NAME[m])}${isChat ? ' <span class="tag">chat · stage 2</span>' : ''}</td>${cell(con)}${cell(al)}</tr>`;
+        })
+        .join('')}</tbody></table>
       <p class="note" style="margin-top:12px">Counting and “live or test” were asked as separate questions after each answer; they show what the model could see and believed, not what it was thinking while choosing. The frames are generated camera-like images, not real footage.</p></section>`;
   }
 
