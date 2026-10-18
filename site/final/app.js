@@ -485,6 +485,7 @@
     leagues: HL.leagues,
     compare: HL.compare,
     siblings: HL.siblings,
+    versus: HL.versus,
     dilemmas,
     dashcam,
     stability,
