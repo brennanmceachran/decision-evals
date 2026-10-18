@@ -660,6 +660,8 @@ table.heat th:first-child {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   font-size: 10px;
+  height: 52px;
+  text-align: left;
 }
 
 .mc-grid {

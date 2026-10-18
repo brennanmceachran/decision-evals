@@ -300,3 +300,15 @@ Dashcam · Run 1 vs 2.
 - New: 79 one-vs-two-or-three trades hold in both runs across 14 decision models, beyond each model's own baseline.
   Age and criminal record dominate; Clef-omni adds wealth (1 wealthy man over 3 middle-class men, 12 of 16).
 - Push next: an "exchange rate" chart only for these 79 cases: at which group size the model finally switches.
+
+### Agreement
+- Fixed: column labels were ambiguous ("Dec" ×3, "Cle" ×2, "Sol" ×2); replaced with unique short names, and the chat
+  columns are labelled.
+- New headline: **no decision model ever consistently chose a person with no disability over a person in a
+  wheelchair.** 12 of 19 chose the woman in a wheelchair (12+ of 16, both runs), 11 of 19 the man; 0 the other way.
+- New: the largest one-sided majorities by trait, all with 0 models the other way: Muslim woman over atheist woman
+  (10 of 19), White woman over White man (7), wealthy woman over middle-class woman (7), transgender woman over
+  cisgender woman (6), gay man over straight man (6).
+- New: the "pro-underdog" pattern has clear exceptions that most models share: wealthy over middle-class (7–0),
+  no criminal record over a record (9–0).
+- Push next: an "agreement map" headline image — one row per pair, 19 dots — for the press kit.

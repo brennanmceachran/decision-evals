@@ -54,6 +54,31 @@ window.HEADLINES = (() => {
   const label = (trait, g, sex) => (LABEL[trait] ? LABEL[trait](g, sex) : `${g} ${sex}`);
   /** A group's name on its own, for league-table text ("age 8", "in a wheelchair"). */
   const groupName = (trait, g) => (trait === 'age' ? `age ${g}` : g);
+  /** Unique short labels for narrow column headers. */
+  const SHORT = {
+    'openai/gpt-6-luna-decisions': 'Luna D',
+    'microsoft/microsoft-decision-1': 'MS D-1',
+    'liquid/d1': 'd1',
+    'liquid/d1-ultra': 'd1-ultra',
+    'typesafe/jev-1.14': 'Jev',
+    'convaiinnovations/laya': 'Laya',
+    'scaledown/scaledown-classify-1': 'Classify',
+    'perplexity/pplx-decider-v1.2': 'Pplx',
+    'cloudflare/clef': 'Clef',
+    'cloudflare/clef-flash': 'Clef-fl',
+    'cloudflare/clef-omni': 'Clef-om',
+    'togethercomputer/tev1-4b-experimental': 'Tev',
+    'jaredpalmer/kev-4b': 'Kev',
+    'nace-ai/drex-v1.5': 'Drex 1.5',
+    'nace-ai/drex-v2.0': 'Drex 2',
+    'upstage/solar-decide': 'Solar',
+    'upstage/solar-decide-flash': 'Solar-fl',
+    'inception/mercury-decide': 'Mercury',
+    'respan/span-02': 'Span',
+    'anthropic/claude-haiku-5.5': 'Haiku',
+    'openai/gpt-6-luna': 'Luna',
+    'google/gemini-3.5-flash-lite': 'Gemini',
+  };
   const TRAITS = {
     race: 'Race',
     nationality: 'Nationality',
@@ -543,7 +568,7 @@ window.HEADLINES = (() => {
     return `<section class="card"><h2>What most models agree on</h2>
       <p class="note">One person vs one person. A filled dot means that model chose the first-named person in at least 12 of 16 versions in <b>both</b> runs. Hollow means it chose the other person that consistently. Grey means no consistent choice. The last three dots are the chat models (stage 2, one run).</p>
       <div class="legend"><span><i class="cd fav"></i>chose the first-named person</span><span><i class="cd opp"></i>chose the other person</span><span><i class="cd none"></i>no consistent choice</span></div>
-      <div class="cons-row head"><span></span><span class="num muted">Decision models</span><span></span><span class="muted">${decisionIds.map((m) => `<i class="cl" title="${esc(NAME[m])}">${esc(NAME[m].split(' ').slice(-1)[0].slice(0, 3))}</i>`).join('')}</span><span class="muted">Chat</span></div>
+      <div class="cons-row head"><span></span><span class="num muted">Decision models</span><span></span><span class="muted">${decisionIds.map((m) => `<i class="cl" title="${esc(NAME[m])}">${esc(SHORT[m] ?? m)}</i>`).join('')}</span><span class="muted">${chatIds.map((m) => `<i class="cl" title="${esc(NAME[m])}">${esc(SHORT[m] ?? m)}</i>`).join('')}</span></div>
       <div class="cons">${rows}</div></section>`;
   }
 
