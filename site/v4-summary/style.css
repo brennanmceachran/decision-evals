@@ -1643,3 +1643,233 @@ h1 {
 .echo b.s {
   color: var(--spare);
 }
+
+/* ---------------- Round 6: reader calls, grouped findings, lives strip */
+.yourcall {
+  margin-top: 18px;
+}
+.yourcall .ask {
+  margin-top: 0;
+}
+.call-note {
+  font: 15px/1.5 var(--sans);
+  color: var(--ink-2);
+  margin: 10px 0 0;
+  min-height: 1.5em;
+}
+.call-note b {
+  color: var(--ink);
+}
+.paper .call-note {
+  color: var(--paper-ink-2);
+}
+.paper .call-note b {
+  color: var(--paper-ink);
+}
+.paper .btns button {
+  color: var(--paper-ink);
+  background: #fff;
+  border-color: #b9b4a8;
+}
+.paper .btns button[aria-pressed='true'] {
+  border-color: #8a4f00;
+  background: #fbefd9;
+}
+.pv figure > .yourcall {
+  padding: 14px 16px 0;
+  margin-top: 0;
+}
+.fbx {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 28px;
+  margin-top: 22px;
+  align-items: start;
+}
+.fb-q .deck {
+  margin-top: 0;
+}
+.fb-groups,
+.sd-groups {
+  display: grid;
+  gap: 10px;
+}
+.g {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  column-gap: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--ground-2);
+  border: 1px solid var(--line);
+}
+.g .gn {
+  grid-row: span 2;
+  font: 800 44px/1 var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+.g.harm .gn,
+.g.harm h3 {
+  color: var(--harm);
+}
+.g.mid .gn,
+.g.mid h3 {
+  color: #f08c5a;
+}
+.g.spare .gn,
+.g.spare h3 {
+  color: #6aa5ee;
+}
+.g h3 {
+  margin: 2px 0 6px;
+  font: 700 15px/1.3 var(--sans);
+}
+.g p,
+.g-chat {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font: 14px var(--sans);
+  color: var(--ink-2);
+  align-items: baseline;
+}
+.g-chat {
+  padding: 2px 4px;
+}
+.nm {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  color: var(--ink);
+  font: 600 13.5px var(--sans);
+}
+.nm.chat {
+  border-style: dashed;
+}
+.nm .cn {
+  font-weight: 500;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.nm small {
+  flex-basis: 100%;
+  font: 500 11.5px var(--sans);
+  color: var(--amber);
+}
+.nm .r2 {
+  margin-left: 2px;
+}
+.lives {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+.lives li {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 10px 4px;
+  border-radius: 10px;
+  background: var(--panel);
+  font: 13px var(--sans);
+  color: var(--ink-2);
+}
+.lives li b {
+  font: 800 30px/1 var(--sans);
+  color: var(--harm);
+  font-variant-numeric: tabular-nums;
+}
+.lives li.now {
+  box-shadow: inset 0 0 0 1.5px var(--harm);
+}
+.sd {
+  align-items: start;
+}
+.sd-h {
+  margin: 0 0 2px;
+  font: 600 14px/1.45 var(--sans);
+  color: var(--ink-2);
+}
+.v8.drex {
+  display: flex;
+  margin: 12px 0 6px;
+}
+.v8.drex i {
+  width: 26px;
+  height: 26px;
+}
+.v8key {
+  display: block;
+  font: 12.5px var(--sans);
+  color: var(--ink-2);
+}
+.v8key i {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  margin: 0 4px 0 0;
+  vertical-align: -1px;
+}
+.v8key i + i,
+.v8key i:nth-of-type(2) {
+  margin-left: 10px;
+}
+.v8key i.w {
+  background: var(--harm);
+}
+.v8key i.a {
+  background: #6b7780;
+}
+@media (max-width: 760px) {
+  .fbx {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .lives {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .g {
+    grid-template-columns: 44px minmax(0, 1fr);
+    padding: 10px 12px;
+  }
+  .g .gn {
+    font-size: 34px;
+  }
+  h2 {
+    font-size: 27px;
+  }
+}
+.sd {
+  grid-template-areas: 'seq groups' 'note groups';
+  grid-template-rows: auto 1fr;
+}
+.sd .seq {
+  grid-area: seq;
+}
+.sd .sd-left-note {
+  grid-area: note;
+}
+.sd .sd-groups {
+  grid-area: groups;
+}
+.sd-left-note .note {
+  margin-top: 4px;
+}
+.nm:has(small) {
+  border-radius: 10px;
+}
+@media (max-width: 760px) {
+  .sd {
+    grid-template-areas: 'seq' 'groups' 'note';
+    grid-template-rows: auto;
+  }
+}
