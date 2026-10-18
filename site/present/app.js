@@ -338,8 +338,108 @@ If you:
     `Run 2: ${fbAll(1)} models pushed in all 8 versions at two lives. “Push” was listed first in half the versions, so this is not a first-button habit. With a single patient to save, Kev-4B and Upstage Solar Decide Flash still chose to kill the healthy man in most or half of the versions.`,
   );
 
+  // ---------------------------------------------------------------- 7. Who gets saved: league strips
+  /**
+   * One row per model: every group placed on a 0–100% line by its share of one-vs-one wins, first and last named.
+   * Spread under 5% of the head-to-heads = no ranking (named as such, never hidden).
+   */
+  function leagueStrips(trait, focus) {
+    const G = P.groups[trait];
+    const rows = P.leagues[trait];
+    const W = 360;
+    const x = (v) => 10 + v * (W - 20);
+    const spread = (r) => Math.max(...r.map((g) => g.n)) - Math.min(...r.map((g) => g.n));
+    const ordered = [...rows].sort((a, b) => isChat(a.id) - isChat(b.id) || spread(b.runs[0]) - spread(a.runs[0]));
+    const name = (g) => (trait === 'age' ? `age ${g}` : g);
+    const html = ordered
+      .map((r) => {
+        const run = r.runs[0];
+        const of = run[0].of;
+        const flat = spread(run) < of * 0.05;
+        const hi = Math.max(...run.map((g) => g.n));
+        const lo = Math.min(...run.map((g) => g.n));
+        const tops = run.filter((g) => g.n === hi).map((g) => name(g.group));
+        const lasts = run.filter((g) => g.n === lo).map((g) => name(g.group));
+        const same = r.runs[1] && r.runs[1].every((g, i) => g.n === run[i].n);
+        const dots = run
+          .map((g) => {
+            const v = g.n / g.of;
+            const f = focus?.includes(g.group);
+            const end = !flat && (g.n === hi || g.n === lo);
+            const r2 = r.runs[1]?.find((h) => h.group === g.group);
+            return `<g><title>${esc(`${name(g.group)}: won ${g.n} of ${g.of} head-to-heads${isChat(r.id) ? ' (one run)' : r2 ? `; run 2: ${r2.n}` : ''}`)}</title>
+              ${isChat(r.id) ? `<rect x="${x(v) - 5}" y="9" width="10" height="10" rx="2" class="lgd${f ? ' f' : ''}${end ? ' e' : ''}"></rect>` : `<circle cx="${x(v)}" cy="14" r="${end ? 6.5 : 5}" class="lgd${f ? ' f' : ''}${end ? ' e' : ''}"></circle>`}</g>`;
+          })
+          .join('');
+        const text = flat
+          ? '<span class="muted">no ranking: every group within 5%</span>'
+          : `<b>${esc(tops.join(' = '))}</b> first ${hi}/${of} · <b>${esc(lasts.join(' = '))}</b> last ${lo}/${of}`;
+        return `<tr><td class="m">${esc(M[r.id].name)} <small>${isChat(r.id) ? 'chat, one run' : same ? 'both runs' : 'run 1'}</small></td>
+          <td><svg width="${W}" height="28" viewBox="0 0 ${W} 28" role="img" aria-label="${esc(`${M[r.id].name}: ${flat ? 'no ranking' : `${tops.join(', ')} first, ${lasts.join(', ')} last`}`)}">
+          <line x1="${x(0)}" x2="${x(1)}" y1="14" y2="14" class="gridl" stroke-width="2"></line><line x1="${x(0.5)}" x2="${x(0.5)}" y1="5" y2="23" class="gridl"></line>${dots}</svg></td>
+          <td class="lt">${text}</td></tr>`;
+      })
+      .join('');
+    return `<table class="lad league"><thead><tr><th>Model</th><th>Share of one-vs-one wins, each group (0% ← → 100%)</th><th>First and last</th></tr></thead><tbody>${html}</tbody></table>`;
+  }
+  const lg = (t, id, r = 0) => P.leagues[t].find((x) => x.id === id).runs[r];
+  const firstLast = (t, ids, top, bottom) =>
+    ids.filter((id) =>
+      [0, 1].every((r) => {
+        const run = lg(t, id, r);
+        const hi = Math.max(...run.map((g) => g.n));
+        const lo = Math.min(...run.map((g) => g.n));
+        return (
+          run.find((g) => g.group === top).n === hi &&
+          run.find((g) => g.group === bottom).n === lo &&
+          hi - lo >= run[0].of * 0.05
+        );
+      }),
+    );
+  const decIds = P.models.filter((m) => m.kind === 'decision').map((m) => m.id);
+  const blackFirst = firstLast('race', decIds, 'Black', 'White');
+  const px = lg('race', 'perplexity/pplx-decider-v1.2');
+  const tabs = [
+    ['race', 'Race', ['Black', 'White']],
+    ['nationality', 'Nationality', ['American']],
+    ['disability', 'Disability', ['no disability']],
+    ['religion', 'Religion', ['atheist']],
+    ['age', 'Age', ['80', '35']],
+    ['wealth', 'Wealth', ['poor', 'wealthy']],
+  ];
+  chapter(
+    'identity',
+    '07',
+    'Who gets saved',
+    `${blackFirst.length} of 19 decision models rank Black people first and White people last, in both runs.`,
+    `Two people, one track each, identical except one trait: “1 Black woman” or “1 White woman”. Every group met every other group, men and women, in 16 versions of each matchup. A group’s score is how many of those head-to-heads it won. Perplexity Decider saved the Black person in ${px[0].n} of ${px[0].of} and the White person in ${px[1].n} of ${px[1].of}.`,
+    `<div class="ladder"><div class="tabs" role="tablist">${tabs
+      .map(([t, l], i) => `<button role="tab" aria-selected="${i === 0}" data-league="${t}">${l}</button>`)
+      .join('')}</div>
+      <p class="sub" id="league-sub"></p>
+      <div class="legend"><span><i class="lg-dot" style="background:var(--harm)"></i>Group named in the headline</span><span><i class="lg-dot" style="background:var(--ink-2);width:13px;height:13px"></i>First or last</span><span><i class="lg-dot" style="background:var(--track)"></i>Other groups</span><span><i class="lg-sq" style="background:var(--track)"></i>Chat model, one run</span><span>Hover a dot for its count and run 2</span></div>
+      <div id="league-body"></div></div>`,
+    'A first place often comes from tie-breaking: when the two people are otherwise equal, the model keeps choosing the same group. It does not mean the model would trade lives. Of 179 pairs where a model chose the same person in all 16 versions in both runs, 142 flip when the other side has two people. The few models that do trade lives are in chapter 09.',
+  );
+
   // ---------------------------------------------------------------- render
   document.getElementById('chapters').innerHTML = CH.map((c) => c.html).join('');
+  const LSUB = {
+    race: 'Black, White, Asian, Hispanic, Middle Eastern: 128 head-to-heads per group.',
+    nationality: '11 nationalities: 320 head-to-heads per group. Americans highlighted.',
+    disability: 'Blind, deaf, in a wheelchair, no disability: 96 head-to-heads per group.',
+    religion: 'Christian, Muslim, Jewish, Hindu, atheist: 128 head-to-heads per group.',
+    age: 'Ages 8, 16, 35, 80: 96 head-to-heads per group.',
+    wealth: 'Poor, middle-class, wealthy: 64 head-to-heads per group.',
+  };
+  const FOCUS = Object.fromEntries(tabs.map(([t, , f]) => [t, f]));
+  const showLeague = (t) => {
+    document.getElementById('league-body').innerHTML = leagueStrips(t, FOCUS[t]);
+    document.getElementById('league-sub').textContent = LSUB[t];
+    document
+      .querySelectorAll('[data-league]')
+      .forEach((b) => b.setAttribute('aria-selected', String(b.dataset.league === t)));
+  };
   document.getElementById('toc').innerHTML = CH.map((c) => `<a href="#${c.id}">${esc(c.kicker)}</a>`).join('');
   const dec = P.models.filter((m) => m.kind === 'decision').length;
   const chat = P.models.filter((m) => m.kind === 'chat').length;
@@ -353,6 +453,11 @@ If you:
     .join('');
   document.getElementById('foot').innerHTML =
     `Built from <code>${esc(P.source)}</code> by <code>${esc(P.built)}</code>. Counts are the model’s top choice. Decision models answered every question in two independent runs (filled dot = run 1, ring = run 2); chat models answered once, each answer the majority of 5 samples (square). Full explorer: <a href="../final/index.html">site/final</a>.`;
+
+  document
+    .querySelectorAll('[data-league]')
+    .forEach((b) => b.addEventListener('click', () => showLeague(b.dataset.league)));
+  showLeague(new URLSearchParams(location.search).get('league') ?? 'race');
 
   // Theme switch: follows the system until chosen.
   const btn = document.getElementById('theme');

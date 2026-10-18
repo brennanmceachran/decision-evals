@@ -558,3 +558,46 @@ table.step tr.last td {
     min-width: 120px;
   }
 }
+
+/* League strips */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0 0 10px;
+}
+.tabs button {
+  font: 600 13px var(--sans);
+  color: var(--ink-2);
+  background: none;
+  border: 1px solid var(--rule-2);
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.tabs button[aria-selected='true'] {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.lgd {
+  fill: var(--track);
+  stroke: var(--panel);
+  stroke-width: 1.5;
+}
+.lgd.e {
+  fill: var(--ink-2);
+}
+.lgd.f {
+  fill: var(--harm);
+}
+table.league td.lt {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+table.league td.lt b {
+  color: var(--ink);
+}
+.muted {
+  color: var(--muted);
+}

@@ -182,6 +182,66 @@ const repeat = DECISION.map((m) => {
   return { id: m, cells, same, flips, moved4 };
 });
 
+/** League tables: each group meets every other group one vs one (men and women), 16 versions each. Wins of all. */
+const GROUPS: Record<string, string[]> = {
+  race: ['Black', 'White', 'Asian', 'Hispanic', 'Middle Eastern'],
+  nationality: [
+    'American',
+    'British',
+    'German',
+    'French',
+    'Italian',
+    'Japanese',
+    'Chinese',
+    'Indian',
+    'Pakistani',
+    'Brazilian',
+    'Nigerian',
+  ],
+  religion: ['Christian', 'Muslim', 'Jewish', 'Hindu', 'atheist'],
+  disability: ['blind', 'deaf', 'in a wheelchair', 'no disability'],
+  age: ['8', '16', '35', '80'],
+  wealth: ['poor', 'middle-class', 'wealthy'],
+};
+const label = (trait: string, g: string, sex: string) =>
+  trait === 'disability'
+    ? g === 'no disability'
+      ? `${sex} with no disability`
+      : g === 'in a wheelchair'
+        ? `${sex} in a wheelchair`
+        : `${g} ${sex}`
+    : trait === 'age'
+      ? `${Number(g) < 18 ? (sex === 'man' ? 'boy' : 'girl') : sex} aged ${g}`
+      : `${g} ${sex}`;
+function league(src: any, m: string, trait: string) {
+  const G = GROUPS[trait]!;
+  return G.map((g) => {
+    let n = 0;
+    let of = 0;
+    for (const o of G) {
+      if (o === g) continue;
+      for (const sex of ['man', 'woman']) {
+        const k1 = `${m}|parity-${trait}|${label(trait, g, sex)}|${label(trait, o, sex)}`;
+        const k2 = `${m}|parity-${trait}|${label(trait, o, sex)}|${label(trait, g, sex)}`;
+        const x = src.traits[k1]?.[2] ?? src.traits[k2]?.[2];
+        if (!x) continue;
+        n += src.traits[k1] ? x.picked : x.of - x.picked;
+        of += x.of;
+      }
+    }
+    return { group: g, n, of };
+  });
+}
+const leagues = Object.fromEntries(
+  Object.keys(GROUPS).map((t) => [
+    t,
+    [...DECISION, ...CHAT].map((m) => ({
+      id: m,
+      runs: (CHAT.includes(m) ? [S2] : [R1, R2]).map((s) => league(s, m, t)),
+    })),
+  ]),
+);
+
 export function build() {
   return {
     built: 'scripts/present-data.ts',
@@ -194,6 +254,8 @@ export function build() {
     dilemmas,
     checks,
     repeat,
+    groups: GROUPS,
+    leagues,
   };
 }
 export const dataModule = (d = build()) =>
