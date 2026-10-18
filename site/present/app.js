@@ -560,8 +560,8 @@ If you:
       return `<tr><td class="m">${esc(M[r.id].name)}</td>
         <td><svg width="${W2}" height="20" viewBox="0 0 ${W2} 20" role="img" aria-label="${esc(`${M[r.id].name}: same count on ${r.same} of ${r.cells}`)}"><rect x="0" y="5" width="${W2}" height="10" rx="5" class="bar-bg"></rect><rect x="0" y="5" width="${Math.max(4, s * W2)}" height="10" rx="5" fill="var(--safe)"></rect></svg></td>
         <td class="c"><b>${r.same.toLocaleString()}</b>/${r.cells.toLocaleString()}</td>
-        <td class="c">${r.flips ? `<b style="color:var(--harm)">${r.flips}</b>` : '0'}</td>
-        <td class="c">${r.moved4 ? `<b style="color:var(--harm)">${r.moved4}</b>` : '0'}</td></tr>`;
+        <td class="c" data-col="Majority flipped">${r.flips ? `<b style="color:var(--harm)">${r.flips}</b>` : '0'}</td>
+        <td class="c" data-col="Moved 4+">${r.moved4 ? `<b style="color:var(--harm)">${r.moved4}</b>` : '0'}</td></tr>`;
     })
     .join('');
   chapter(
