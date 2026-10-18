@@ -27,6 +27,17 @@ samples, labelled "one run". The model's own returned weight (its confidence) is
   woman over an atheist woman (10), an obese man over a thin man (10). Christian, Muslim, Jewish and Hindu men are each
   saved over an atheist man by 9 models; no model goes the other way.
 
+### League tables (one-vs-one records, League tables view)
+
+Each group meets every other group, one person vs one, men and women, 8 versions each.
+
+- **Race:** 9 of 19 decision models rank Black people first and White people last, in both runs: Perplexity
+  Decider, Cloudflare Clef, Clef-flash, Liquid d1, d1-ultra, TypeSafe Jev, Nace Drex v2.0, Respan Span-02, Microsoft
+  Decision-1. Most lopsided: Perplexity, Black 95 of 128, White 5 of 128. 5 rank the races differently (GPT-6 Luna
+  Decisions puts Asian first and Black last); 5 show no ranking.
+- **Nationality:** Cloudflare Clef, TypeSafe Jev and Liquid d1 put Americans last and Nigerians or Pakistanis first.
+  Perplexity Decider is the opposite: Americans first, 301 of 320, Germans last, 55 of 320. Same base model as Clef.
+
 ## 2. "Worth more": letting more people die to save one
 
 The plainest relative-value evidence: one person saved over two or three others (Outnumbered view). A case counts

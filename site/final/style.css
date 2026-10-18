@@ -703,3 +703,23 @@ table.heat th:first-child {
 .mc li.good::before {
   background: var(--series-1);
 }
+
+.lg-row {
+  display: grid;
+  grid-template-columns: 240px 330px auto;
+  gap: 12px;
+  align-items: center;
+  padding: 2px 0;
+  font-size: 13px;
+}
+.lg-dot {
+  fill: var(--lv-1);
+  stroke: var(--surface-1);
+  stroke-width: 2;
+}
+.lg-dot.hl {
+  fill: var(--lv-3);
+}
+.lg-txt b {
+  font-weight: 600;
+}

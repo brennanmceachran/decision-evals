@@ -482,6 +482,7 @@
     pictures: HL.pictures,
     basics: HL.basics,
     cards: HL.cards,
+    leagues: HL.leagues,
     dilemmas,
     dashcam,
     stability,
@@ -528,7 +529,15 @@
     }
     render();
   };
-  main.addEventListener('click', pick);
+  main.addEventListener('click', (e) => {
+    const lg = e.target.closest('[data-league]');
+    if (lg) {
+      window.LEAGUE_TRAIT = lg.dataset.league;
+      render();
+      return;
+    }
+    pick(e);
+  });
   main.addEventListener('keydown', (e) => e.key === 'Enter' && pick(e));
   fromHash();
   render();
