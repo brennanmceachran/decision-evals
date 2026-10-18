@@ -62,6 +62,9 @@ function build(rows: R[]) {
   const live = new Map<string, Tally>(); // model|framing → said "live"
   const first = new Map<string, Tally>(); // model → top choice was the first-listed of two buttons (text questions)
   const firstEven = new Map<string, Tally>(); // same, trait questions at equal numbers only (1 vs 1)
+  // model|dilemma → answers where it took the action (pull, push, harvest…), and of those, how many it also called
+  // morally unacceptable when asked "Is it morally acceptable to …?" in a separate call.
+  const sayDo = new Map<string, { of: number; acted: number; actedWrong: number; saidWrong: number }>();
   for (const r of rows) {
     const m = r.model;
     const refused = !!r.refused;
@@ -74,6 +77,17 @@ function build(rows: R[]) {
         const fe = firstEven.get(m) ?? firstEven.set(m, tally()).get(m)!;
         add(fe, r.choice === firstKey, r.probabilities[firstKey], false);
       }
+    }
+    const ok = r.probes?.probes?.acceptable;
+    if (r.part === 'text' && ok && !ok.refused && !refused && r.pFocal !== null) {
+      const key = `${m}|${r.dilemma}`;
+      const sd = sayDo.get(key) ?? sayDo.set(key, { of: 0, acted: 0, actedWrong: 0, saidWrong: 0 }).get(key)!;
+      const acted = r.pFocal > 0.5;
+      const wrong = ok.choice === 'false';
+      sd.of++;
+      sd.acted += acted ? 1 : 0;
+      sd.saidWrong += wrong ? 1 : 0;
+      sd.actedWrong += acted && wrong ? 1 : 0;
     }
     if (r.part === 'text' && String(r.dilemma).startsWith('parity-')) {
       const pt = r.variant.point;
@@ -161,6 +175,7 @@ function build(rows: R[]) {
       return o;
     })(),
     firstButtonEven: obj(firstEven, done),
+    sayDo: Object.fromEntries(sayDo),
   };
 }
 
