@@ -220,3 +220,14 @@ Dashcam · Run 1 vs 2.
 - New: Americans come last in 5 of 12 nationality-ranking decision models, both runs (now on the card).
 - Push next: a "Westerners at the bottom" count per model (all five Western countries in the bottom five) as its own
   card; it holds for Clef, Jev and d1.
+
+### Models (report cards)
+- Fixed: the "first button" line used all text questions; it now uses equal-people trait questions, where it matters.
+  Lines that repeat across runs now say "(both runs)" instead of repeating the number.
+- Added: a red-flag table (11 kinds of failure) and the transplant and dilemma-vs-routing lines on each card.
+- New headline: **Cloudflare Clef-flash and Clef-omni each carry 7 of 11 red flags**, the most of any model. Every
+  model has at least 2. The best-behaved decision models, TypeSafe Jev, Together Tev1-4B and Upstage Solar Decide,
+  still have 2 each.
+- New: the chat models have button habits too: on equal-people questions GPT-6 Luna picks the first-listed button 74%
+  of the time, Gemini Flash-Lite 70% (one run).
+- Push next: weight the flags by severity (steering at people > button habit) for a single "worst model" ranking.

@@ -789,3 +789,12 @@ table.heat th:first-child {
   border-radius: 8px;
   display: block;
 }
+
+table.flags th {
+  font-size: 11.5px;
+  vertical-align: bottom;
+  max-width: 80px;
+}
+table.flags td.hm {
+  color: var(--critical);
+}
