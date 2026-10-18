@@ -863,3 +863,73 @@ ol.sum-list a:focus-visible .sum-t {
     display: none;
   }
 }
+
+/* Value tooltip (tip.js): same element for hover, keyboard focus and tap. */
+.vtip {
+  position: fixed;
+  z-index: 40;
+  max-width: 300px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--paper);
+  font: 13px/1.4 var(--sans);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+}
+.pt {
+  cursor: pointer;
+  outline: none;
+}
+.pt .hit {
+  fill: transparent;
+}
+.pt:focus-visible .hit,
+.pt:hover .hit {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 2.5;
+}
+details.nums {
+  margin-top: 8px;
+  font: 12.5px var(--sans);
+}
+details.nums summary {
+  cursor: pointer;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+table.numtab {
+  border-collapse: collapse;
+  margin-top: 6px;
+  font: 12.5px var(--sans);
+}
+table.numtab th,
+table.numtab td {
+  padding: 3px 6px;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+}
+table.numtab .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+table.numtab small {
+  color: var(--muted);
+}
+
+.tc-r,
+.cv-r,
+.cv-l,
+.cv-l2,
+.cv-base {
+  pointer-events: none;
+}
+.cv details.nums table.numtab {
+  width: 100%;
+}
+.cv details.nums .sub {
+  font: 12px/1.4 var(--sans);
+  color: var(--muted);
+  margin: 4px 0 0;
+}

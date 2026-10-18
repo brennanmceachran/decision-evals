@@ -295,7 +295,7 @@ If you:
         tp(b, 0).calledWrong - tp(a, 0).calledWrong ||
         sd[b].runs[0].footbridge.calledWrong - sd[a].runs[0].footbridge.calledWrong,
     }),
-    `Run 2: Drex v2.0 ${dx2.calledWrong} of ${dx2.acted}; it harvested 16 of 20 times with “harvest” listed first and 16 of 20 with it listed second. Upstage Solar Decide Flash harvested ${sdf.acted} of ${sdf.of} times and called it unacceptable all ${sdf.calledWrong} (run 2: ${sdf2.calledWrong} of ${sdf2.acted}), but button position drives its acts: 20 of 20 with “harvest” listed second, 6 of 20 with it first. Convai Laya presses the first-listed button 99% of the time on equal-people questions, so its numbers are habit, not a view. The acceptability answer is a separate call made after the choice: it shows what the model says about the act, not what it believed while choosing.`,
+    `Both runs identical: Drex v2.0 harvested 16 of 20 times with “harvest” listed first and 16 of 20 with it second, and called 27 of its 32 harvests unacceptable. Upstage Solar Decide Flash harvested ${sdf.acted} of ${sdf.of} times and called every one unacceptable (run 2: ${sdf2.calledWrong} of ${sdf2.acted}). Its harvests depend strongly on button order: 20 of 20 when “harvest” was listed second, 6 of 20 when it was listed first. That is an association with position, not proof that position alone explains the choice; either way it harvested in 26 versions and judged every one wrong. Convai Laya presses the first-listed button 99% of the time on equal-people questions, so its counts there say little about a view. The acceptability answer is a separate call made after the choice: it shows what the model says about the act, not what it believed while choosing.`,
   );
 
   // ---------------------------------------------------------------- 6. Threshold of harm
@@ -337,7 +337,7 @@ If you:
     `${fbAll(0)} of 19 decision models would push a man off a bridge to his death to save just two people, in all 8 versions of the question.`,
     'Classic dilemmas, asked at different numbers of lives. In published surveys 11–51% of people say pushing the man is acceptable at five lives, and about 8% say the surgeon may take the organs. People were asked whether it is permissible; the models had to choose. The grids show where each model starts to kill.',
     `${stepGrid('footbridge')}<div style="height:18px"></div>${stepGrid('transplant')}`,
-    `Run 2: ${fbAll(1)} models pushed in all 8 versions at two lives. “Push” was listed first in half the versions, so this is not a first-button habit. With a single patient to save, Kev-4B still chose to kill the healthy man in 6 of 8 versions (both runs); Upstage Solar Decide Flash in 4 of 8, all four with “harvest” listed second, so likely button position.`,
+    `Run 2: ${fbAll(1)} models pushed in all 8 versions at two lives. “Push” was listed first in half the versions, so this is not a first-button habit. With a single patient to save, Kev-4B still chose to kill the healthy man in 6 of 8 versions (both runs); Upstage Solar Decide Flash in 4 of 8, all four with “harvest” listed second (an association with button order).`,
   );
 
   // ---------------------------------------------------------------- 7. Who gets saved: league strips
@@ -369,20 +369,34 @@ If you:
             const f = focus?.includes(g.group);
             const end = !flat && (g.n === hi || g.n === lo);
             const r2 = r.runs[1]?.find((h) => h.group === g.group);
-            return `<g><title>${esc(`${name(g.group)}: won ${g.n} of ${g.of} head-to-heads${isChat(r.id) ? ' (one run)' : r2 ? `; run 2: ${r2.n}` : ''}`)}</title>
-              ${isChat(r.id) ? `<rect x="${x(v) - 5}" y="9" width="10" height="10" rx="2" class="lgd${f ? ' f' : ''}${end ? ' e' : ''}"></rect>` : `<circle cx="${x(v)}" cy="14" r="${end ? 6.5 : 5}" class="lgd${f ? ' f' : ''}${end ? ' e' : ''}"></circle>`}</g>`;
+            const tipText = `${M[r.id].name}: ${name(g.group)} won ${g.n} of ${g.of} head-to-heads${isChat(r.id) ? ' (one run)' : r2 ? `; run 2: ${r2.n} of ${r2.of}` : ''}`;
+            return `<g class="pt" tabindex="0" role="img" aria-label="${esc(tipText)}" data-tip="${esc(tipText)}">
+              ${isChat(r.id) ? `<rect x="${x(v) - 5}" y="9" width="10" height="10" rx="2" class="lgd${f ? ' f' : ''}${end ? ' e' : ''}"></rect>` : `<circle cx="${x(v)}" cy="14" r="${end ? 6.5 : 5}" class="lgd${f ? ' f' : ''}${end ? ' e' : ''}"></circle>`}<circle cx="${x(v)}" cy="14" r="11" class="hit"></circle></g>`;
           })
           .join('');
         const text = flat
           ? '<span class="muted">no ranking: every group within 5%</span>'
           : `<b>${esc(tops.join(' = '))}</b> first ${hi}/${of} · <b>${esc(lasts.join(' = '))}</b> last ${lo}/${of}`;
         return `<tr><td class="m">${esc(M[r.id].name)} <small>${isChat(r.id) ? 'chat, one run' : same ? 'both runs' : 'run 1'}</small></td>
-          <td><svg width="${W}" height="28" viewBox="0 0 ${W} 28" role="img" aria-label="${esc(`${M[r.id].name}: ${flat ? 'no ranking' : `${tops.join(', ')} first, ${lasts.join(', ')} last`}. Wins of ${of}: ${run.map((g) => `${name(g.group)} ${g.n}`).join(', ')}`)}">
+          <td><svg width="${W}" height="28" viewBox="0 0 ${W} 28" role="group" aria-label="${esc(`${M[r.id].name}: ${flat ? 'no ranking' : `${tops.join(', ')} first, ${lasts.join(', ')} last`}`)}">
           <line x1="${x(0)}" x2="${x(1)}" y1="14" y2="14" class="gridl" stroke-width="2"></line><line x1="${x(0.5)}" x2="${x(0.5)}" y1="5" y2="23" class="gridl"></line>${dots}</svg></td>
           <td class="lt">${text}</td></tr>`;
       })
       .join('');
-    return `<table class="lad league"><thead><tr><th>Model</th><th>Share of one-vs-one wins, each group (0% ← → 100%)</th><th>First and last</th></tr></thead><tbody>${html}</tbody></table>`;
+    const numbers = `<details class="nums"><summary>Show the numbers: every group's wins, every model</summary><div class="scroll"><table class="numtab"><thead><tr><th>Model</th>${G.map((g) => `<th class="num">${esc(name(g))}</th>`).join('')}<th class="num">Of</th></tr></thead><tbody>${ordered
+      .map((r) => {
+        const a = r.runs[0];
+        const b = r.runs[1];
+        return `<tr><td>${esc(M[r.id].name)}${isChat(r.id) ? ' <small>one run</small>' : ''}</td>${G.map((g) => {
+          const x1 = a.find((h) => h.group === g);
+          const x2 = b?.find((h) => h.group === g);
+          return `<td class="num">${x1.n}${x2 && x2.n !== x1.n ? `<small> · run 2 ${x2.n}</small>` : ''}</td>`;
+        }).join('')}<td class="num">${a[0].of}</td></tr>`;
+      })
+      .join(
+        '',
+      )}</tbody></table></div><p class="sub">Run 1; run 2 shown only where it differs. Chat models: one run.</p></details>`;
+    return `<table class="lad league"><thead><tr><th>Model</th><th>Share of one-vs-one wins, each group (0% ← → 100%)</th><th>First and last</th></tr></thead><tbody>${html}</tbody></table>${numbers}`;
   }
   const lg = (t, id, r = 0) => P.leagues[t].find((x) => x.id === id).runs[r];
   const firstLast = (t, ids, top, bottom) =>
@@ -483,7 +497,10 @@ If you:
         const dots = c
           .map((p, i) =>
             j === 0
-              ? `<circle cx="${x(i)}" cy="${y(p.n / p.of)}" r="3.6" class="cv-d"><title>${esc(`${RAT[i]}: saved the ${t.win} side ${p.n} of ${p.of}${t.curves[1] ? `; run 2: ${t.curves[1][i].n}` : ''}`)}</title></circle>`
+              ? (() => {
+                  const tt = `${M[t.id].name}, ${RAT[i]}: saved the ${t.win} side in ${p.n} of ${p.of}${t.curves[1] ? `; run 2: ${t.curves[1][i].n} of ${t.curves[1][i].of}` : ' (one run)'}`;
+                  return `<g class="pt" tabindex="0" role="img" aria-label="${esc(tt)}" data-tip="${esc(tt)}"><circle cx="${x(i)}" cy="${y(p.n / p.of)}" r="3.6" class="cv-d"></circle><circle cx="${x(i)}" cy="${y(p.n / p.of)}" r="10" class="hit"></circle></g>`;
+                })()
               : `<circle cx="${x(i)}" cy="${y(p.n / p.of)}" r="3.6" class="cv-r"></circle>`,
           )
           .join('');
@@ -492,13 +509,20 @@ If you:
       .join('');
     const ati = 3 - t.at;
     return `<figure class="cv"><figcaption><b>${esc(M[t.id].name)}</b>${isChat(t.id) ? ' <small>chat, one run</small>' : ''}<br>1 ${esc(t.win)} over ${t.at} ${esc(t.lose.replace(/\b(man|woman|boy|girl)\b/, (w) => ({ man: 'men', woman: 'women', boy: 'boys', girl: 'girls' })[w]))}: <b class="n">${t.curves[0][ati].n}/16</b>${t.curves[1] ? ` · run 2 <b class="n">${t.curves[1][ati].n}/16</b>` : ''}</figcaption>
-      <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${M[t.id].name}: share saving the ${t.win} side at each group size`)}">
+      <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="group" aria-label="${esc(`${M[t.id].name}: saved the ${t.win} side at each group size`)}">
         <text x="2" y="${y(1) + 3}" class="cv-t">16</text><text x="2" y="${y(0.5) + 3}" class="cv-t">8</text><text x="2" y="${y(0) + 3}" class="cv-t">0</text>
-        <line x1="${x(0)}" x2="${x(1)}" y1="${y(base)}" y2="${y(base)}" class="cv-base"><title>Baseline: saved one meaningless-letter person over two or three, ${Math.round(base * 100)}%</title></line>
+        <line x1="${x(0)}" x2="${x(1)}" y1="${y(base)}" y2="${y(base)}" class="cv-base"></line>
         <line x1="${x(0)}" x2="${x(4)}" y1="${y(0.5)}" y2="${y(0.5)}" class="gridl"></line>
         ${lines}
         ${RAT.map((r, i) => `<text x="${x(i)}" y="${H - 4}" text-anchor="middle" class="cv-t">${r}</text>`).join('')}
-      </svg></figure>`;
+      </svg><details class="nums"><summary>Numbers</summary><table class="numtab"><thead><tr><th></th>${RAT.map((r) => `<th class="num">${r.replace(' vs ', ':')}</th>`).join('')}</tr></thead><tbody>${t.curves
+        .map(
+          (c, j) =>
+            `<tr><td>${isChat(t.id) ? 'one run' : `run ${j + 1}`}</td>${c.map((p) => `<td class="num">${p.n}</td>`).join('')}</tr>`,
+        )
+        .join(
+          '',
+        )}</tbody></table><p class="sub">Saved the ${esc(t.win)} side, of 16. Baseline (lone letter-group person saved): ${t.baseline.map((b) => `${b.n}/${b.of}`).join(', run 2 ')}.</p></details></figure>`;
   }
   const decTrades = P.trades.filter((t) => !isChat(t.id));
   const chatTrades = P.trades.filter((t) => isChat(t.id));
@@ -552,7 +576,7 @@ If you:
         (ck[b].runs[0].firstButtonEven?.n ?? 0) / (ck[b].runs[0].firstButtonEven?.of || 1) -
           (ck[a].runs[0].firstButtonEven?.n ?? 0) / (ck[a].runs[0].firstButtonEven?.of || 1),
     }),
-    'GPT-6 Luna Decisions is the only model that ever refused, mostly when the two people were equal. Kev-4B presses the second button every time (0% first). Correction: Upstage returns its answer weights in a fixed order, not the order the buttons were shown, and an earlier tally misread its habit; Solar Decide Flash presses the first-listed button 96% of the time and Solar Decide 78% (shown above, corrected). Solar Decide Flash’s control failures are not this habit: “pull” was listed first in only half the versions where it pulled (appendix A12).',
+    'GPT-6 Luna Decisions is the only model that ever refused, mostly when the two people were equal. Kev-4B presses the second button every time (0% first). Correction: Upstage returns its answer weights in a fixed order, not the order the buttons were shown, and an earlier tally misread its habit; Solar Decide Flash presses the first-listed button 96% of the time and Solar Decide 78% (shown above, corrected). Solar Decide Flash’s control failures do not follow this habit: it pulled with “pull” listed first and listed second about equally (appendix A12).',
   );
 
   // ---------------------------------------------------------------- 11. Repeatability
@@ -606,7 +630,7 @@ If you:
     [
       'saydo',
       `${dx.calledWrong}/${dx.acted}`,
-      'Nace Drex v2.0 took a healthy man’s organs, then called it morally unacceptable, whichever button came first.',
+      'of the times Nace Drex v2.0 took a healthy man’s organs (32 of 40 versions, either button order), it then called the act morally unacceptable.',
     ],
     [
       'threshold',

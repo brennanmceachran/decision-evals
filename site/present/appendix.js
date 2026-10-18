@@ -271,23 +271,32 @@
       .map((c, j) =>
         c
           .map((p, i) =>
-            isChat(t.id)
-              ? `<rect x="${x(i) - 3}" y="${y(p.n / p.of) - 3}" width="6" height="6" rx="1" class="tc-d"></rect>`
-              : j === 0
-                ? `<circle cx="${x(i)}" cy="${y(p.n / p.of)}" r="3" class="tc-d"></circle>`
-                : `<circle cx="${x(i)}" cy="${y(p.n / p.of)}" r="3" class="tc-r"></circle>`,
+            j === 0
+              ? (() => {
+                  const tt = `${M[t.id].name}, ${RAT[i]}: saved the ${t.win} side in ${p.n} of ${p.of}${t.curves[1] ? `; run 2: ${t.curves[1][i].n} of ${t.curves[1][i].of}` : ' (one run)'}`;
+                  const mark = isChat(t.id)
+                    ? `<rect x="${x(i) - 3}" y="${y(p.n / p.of) - 3}" width="6" height="6" rx="1" class="tc-d"></rect>`
+                    : `<circle cx="${x(i)}" cy="${y(p.n / p.of)}" r="3" class="tc-d"></circle>`;
+                  return `<g class="pt" tabindex="0" role="img" aria-label="${esc(tt)}" data-tip="${esc(tt)}">${mark}<circle cx="${x(i)}" cy="${y(p.n / p.of)}" r="9" class="hit"></circle></g>`;
+                })()
+              : `<circle cx="${x(i)}" cy="${y(p.n / p.of)}" r="3" class="tc-r"></circle>`,
           )
           .join(''),
       )
       .join('');
     const counts = t.curves.map((c) => c.map((p) => p.n).join(' · '));
     return `<figure class="tc"><figcaption>1 ${esc(t.win)} over ${t.at} ${esc(plural(t.lose))}<br><b class="n">${t.curves[0][ati].n}/16</b>${t.curves[1] ? ` · run 2 <b class="n">${t.curves[1][ati].n}/16</b>` : ' <small>one run</small>'}</figcaption>
-      <svg viewBox="0 0 ${W} ${Hh}" width="100%" role="img" aria-label="${esc(`Saved the ${t.win} side at 1:3, 1:2, 1:1, 2:1, 3:1: run 1 ${counts[0]}${counts[1] ? `; run 2 ${counts[1]}` : ''}`)}">
+      <svg viewBox="0 0 ${W} ${Hh}" width="100%" role="group" aria-label="${esc(`Saved the ${t.win} side at 1:3, 1:2, 1:1, 2:1, 3:1: run 1 ${counts[0]}${counts[1] ? `; run 2 ${counts[1]}` : ''}`)}">
         <line x1="${x(0)}" x2="${x(4)}" y1="${y(0.5)}" y2="${y(0.5)}" class="gridl"></line>
         <line x1="${x(0)}" x2="${x(1)}" y1="${y(base)}" y2="${y(base)}" class="cv-base"></line>
         ${t.curves.map((c, j) => `<path d="${path(c)}" class="${j ? 'cv-l2' : 'cv-l'}"></path>`).join('')}${pts}
         ${RAT.map((r, i) => `<text x="${x(i)}" y="${Hh - 2}" text-anchor="middle" class="cv-t">${r}</text>`).join('')}
-      </svg></figure>`;
+      </svg><details class="nums"><summary>Numbers</summary><table class="numtab"><tbody>${t.curves
+        .map(
+          (c, j) =>
+            `<tr><td>${isChat(t.id) ? 'one run' : `run ${j + 1}`}</td><td class="num">${c.map((p) => p.n).join(' · ')}</td></tr>`,
+        )
+        .join('')}</tbody></table><p class="sub">of 16, at ${RAT.join(', ')}</p></details></figure>`;
   }
   const tByModel = {};
   for (const t of P.trades) (tByModel[t.id] ??= []).push(t);
@@ -573,7 +582,7 @@
     `Two questions with one right answer, asked 8 ways each. Below: every version for each model that ever pulled the lever. Upstage Solar Decide Flash pulled in ${sdf.runs[0].filter((v) => v.pulled).length} of 16 control versions (run 2: ${sdf.runs[1].filter((v) => v.pulled).length}), with the “pull” button listed first in only half of them, and called pulling acceptable in none.`,
     `<div class="legend"><span><span class="cv-v on"><i>1</i></span> pulled, “pull” listed first</span><span><span class="cv-v on"><i>2</i></span> pulled, “pull” listed second</span><span><span class="cv-v"><i>1</i></span> did nothing</span><span>Hover a square for the wording, the count check and the acceptability answer.</span></div>
      ${CV.map(cvTable).join('')}`,
-    `The other ${IDS.length - CV.length} models never pulled on either control question in any run. Correction made while building this section: Upstage returns its answer weights in a fixed order rather than the order the buttons were shown, so an earlier tally misread its first-button rate. On equal-people questions Solar Decide Flash actually presses the first-listed button 96% of the time and Solar Decide 78%; both now carry the button-habit flag (A7). Its control failures above are not a button habit: “pull” was first in only half the versions it pulled.`,
+    `The other ${IDS.length - CV.length} models never pulled on either control question in any run. Correction made while building this section: Upstage returns its answer weights in a fixed order rather than the order the buttons were shown, so an earlier tally misread its first-button rate. On equal-people questions Solar Decide Flash actually presses the first-listed button 96% of the time and Solar Decide 78%; both now carry the button-habit flag (A7). Its control failures above do not follow that habit: it pulled with “pull” listed first and second about equally.`,
   );
 
   // ------------------------------------------------------------ A13. Full race and nationality grids
