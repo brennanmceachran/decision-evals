@@ -269,9 +269,44 @@ function contested() {
 }
 
 /** Same base model: pairs where both products chose a side in at least 12 of 16, both runs; agree vs opposite. */
+// Lineage: each model's Hugging Face or vendor model card (as in the explorer's Same base view). Shows what products
+// built on one base do, not why.
 const BASES: { base: string; ids: string[] }[] = [
   { base: 'Qwen3.8-27B', ids: ['cloudflare/clef', 'perplexity/pplx-decider-v1.2'] },
 ];
+const FAMILIES: { base: string; ids: string[] }[] = [
+  { base: 'Alibaba Qwen3.8-27B', ids: ['cloudflare/clef', 'perplexity/pplx-decider-v1.2'] },
+  { base: 'Alibaba Qwen3.5-9B', ids: ['cloudflare/clef-flash', 'microsoft/microsoft-decision-1', 'nace-ai/drex-v1.5'] },
+  { base: 'Alibaba Qwen3.5-4B', ids: ['togethercomputer/tev1-4b-experimental', 'jaredpalmer/kev-4b'] },
+];
+/** Every pairing inside a family: consistent sides (12+ of 16, both runs), same vs opposite, and the opposite pairs. */
+function families() {
+  const keys = [...new Set(Object.keys(R1.traits).map((k) => k.split('|').slice(1).join('|')))].filter(
+    (k) => !k.includes('placebo'),
+  );
+  const side = (m: string, k: string) => {
+    const x = [R1.traits[`${m}|${k}`][2], R2.traits[`${m}|${k}`][2]];
+    if (x.every((t: any) => t.picked >= 12)) return 1;
+    if (x.every((t: any) => t.of - t.picked >= 12)) return -1;
+    return 0;
+  };
+  const cnt = (m: string, k: string) =>
+    [R1, R2].map((s) => ({ n: s.traits[`${m}|${k}`][2].picked, of: s.traits[`${m}|${k}`][2].of }));
+  return FAMILIES.map(({ base, ids }) => ({
+    base,
+    ids,
+    consistent: Object.fromEntries(ids.map((m) => [m, keys.filter((k) => side(m, k)).length])),
+    pairs: ids.flatMap((x, i) =>
+      ids.slice(i + 1).map((y) => {
+        const same = keys.filter((k) => side(x, k) && side(x, k) === side(y, k)).length;
+        const opposite = keys
+          .filter((k) => side(x, k) && side(y, k) && side(x, k) !== side(y, k))
+          .map((k) => ({ key: k, x: cnt(x, k), y: cnt(y, k) }));
+        return { x, y, same, opposite };
+      }),
+    ),
+  }));
+}
 function sameBase() {
   return BASES.map(({ base, ids: [p, q] }) => {
     const pick = (m: string, k: string) => {
@@ -504,6 +539,54 @@ const refusals = [...DECISION, ...CHAT].map((m) => ({
   ),
 }));
 
+/**
+ * Control questions version by version, for the models that ever acted on one (read from the raw rows): wording,
+ * button order, top choice, whether the "pull" button was listed first, the count check, and the acceptability answer.
+ * Weight is kept as the model's returned weight on "pull", labelled as such, never as a frequency.
+ */
+function controlVersions() {
+  const ids = [...DECISION, ...CHAT].filter((m) =>
+    [R1, R2, S2].some((s) =>
+      ['control-kill-for-nothing', 'control-kill-five-save-one'].some((c) => s.controls[`${m}|${c}`]?.picked > 0),
+    ),
+  );
+  const files = [
+    ['results/final/final-run1.jsonl', 0],
+    ['results/final/final-run2.jsonl', 1],
+    ['results/final/stage2.jsonl', 0],
+  ] as const;
+  const out: Record<string, any[][]> = Object.fromEntries(ids.map((m) => [m, [[], []]]));
+  for (const [f, run] of files) {
+    for (const line of readFileSync(f, 'utf8').split('\n')) {
+      if (!line.includes('"control-')) continue;
+      const r = JSON.parse(line);
+      if (!ids.includes(r.model) || r.part !== 'text' || !String(r.dilemma).startsWith('control-')) continue;
+      const pr = r.probes?.probes ?? {};
+      const ans = JSON.parse(r.probeAnswers ?? '{}');
+      out[r.model]![run]!.push({
+        control: r.dilemma.replace('control-', ''),
+        wording: r.paraphrase,
+        // Display order lives in keyToCanonical (src/permute.ts); Upstage returns probabilities in a fixed order.
+        pullFirst: Object.keys(r.variant?.keyToCanonical ?? r.probabilities)[0] === 'move_lever_right',
+        pulled: r.choice === 'move_lever_right',
+        refused: !!r.refused,
+        countRight: pr.check_count ? pr.check_count.choice === ans.check_count : null,
+        calledAcceptable: pr.acceptable ? pr.acceptable.choice === 'true' : null,
+        weightPull: r.probabilities?.move_lever_right ?? null,
+      });
+    }
+  }
+  return ids.map((m) => ({
+    id: m,
+    runs: (CHAT.includes(m) ? out[m]!.slice(0, 1) : out[m]!).map((rs) =>
+      rs.sort(
+        (a, b) =>
+          a.control.localeCompare(b.control) || a.wording - b.wording || Number(b.pullFirst) - Number(a.pullFirst),
+      ),
+    ),
+  }));
+}
+
 export function build() {
   return {
     built: 'scripts/present-data.ts',
@@ -522,6 +605,8 @@ export function build() {
     sameBase: sameBase(),
     trades: trades(),
     pairs: pairs(),
+    families: families(),
+    controlVersions: controlVersions(),
     redFlags: redFlags(),
     sayDoBoth,
     refusals,

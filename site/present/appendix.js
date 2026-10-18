@@ -460,11 +460,181 @@
     'Refusing a routing request is not the same as protecting the workers: GPT-6 Luna Decisions also refused most requests with nobody on the track. With the safety rule it answered more often, and in the answers it gave it sent the tram at nobody (main presentation, chapter 02).',
   );
 
+  // ------------------------------------------------------------ A10. Same base model, every family
+  const FAM = P.families;
+  const famHtml = FAM.map((f) => {
+    const cons = f.ids.map((id) => `${esc(M[id].name)} <b>${f.consistent[id]}</b>/196`).join(' · ');
+    const rows = f.pairs
+      .map((p) => {
+        const tot = p.same + p.opposite.length;
+        const W = 260;
+        const ws = tot ? (p.same / tot) * W : 0;
+        const opp = p.opposite
+          .map((o) => {
+            const [, a, b] = o.key.split('|');
+            const pick = (cs) => (cs[0].n * 2 > cs[0].of ? [a, cs.map((c) => c.n)] : [b, cs.map((c) => c.of - c.n)]);
+            const [px, nx] = pick(o.x);
+            const [py, ny] = pick(o.y);
+            const f2 = (ns) => (ns[0] === ns[1] ? `${ns[0]}/16 both runs` : `${ns[0]}/16 · run 2 ${ns[1]}/16`);
+            return `<li>${esc(a)} or ${esc(b)}: <b>${esc(M[p.x].name)}</b> saves the ${esc(px)} (${f2(nx)}); <b>${esc(M[p.y].name)}</b> the ${esc(py)} (${f2(ny)})</li>`;
+          })
+          .join('');
+        return `<div class="fam-pair"><h4>${esc(M[p.x].name)} <span class="muted">vs</span> ${esc(M[p.y].name)}</h4>
+          <div class="fam-bar"><svg width="${W}" height="14" viewBox="0 0 ${W} 14" role="img" aria-label="${p.same} same, ${p.opposite.length} opposite"><rect width="${W}" height="12" y="1" rx="6" class="bar-bg"></rect>${tot ? `<rect width="${ws}" height="12" y="1" rx="6" fill="var(--side-a)"></rect>${p.opposite.length ? `<rect x="${ws}" width="${W - ws}" height="12" y="1" rx="6" fill="var(--side-b)"></rect>` : ''}` : ''}</svg>
+          <span><b>${p.same}</b> same · <b class="${p.opposite.length ? 'neg' : ''}">${p.opposite.length}</b> opposite${tot ? '' : ' <span class="muted">(no question where both took a side)</span>'}</span></div>
+          ${opp ? `<ul class="fam-opp">${opp}</ul>` : ''}</div>`;
+      })
+      .join('');
+    return `<div class="panel"><h3>Built on ${esc(f.base)}</h3><p class="sub">Questions (of 196) where each model chose the same person in 12+ of 16 versions, both runs: ${cons}.</p>${rows}</div>`;
+  }).join('');
+  section(
+    'samebase',
+    'A10',
+    'Same base model, different products',
+    `Seven decision models are fine-tunes of three openly available base models. The two built on the 27-billion-parameter base agree on ${FAM[0].pairs[0].same} questions and split on ${FAM[0].pairs[0].opposite.length}, all of which involve an American. The smaller bases mostly agree or rarely take a side.`,
+    famHtml,
+    'Counted: identity questions where both products chose a side (12+ of 16, both runs). “Opposite” = both consistent, different people. Lineage is from each model’s Hugging Face or vendor card. This shows what the products do, not why; training data and tuning are not published, so no vendor or country effect can be inferred. Kev-4B takes a side on 0 questions (it presses the second button almost every time).',
+  );
+
+  // ------------------------------------------------------------ A11. Every dilemma, every number of lives
+  const DIL = [
+    ['switch', 'Lever: divert the trolley from N people onto 1'],
+    ['loop', 'Loop: divert onto a loop where 1 person stops it'],
+    ['trapdoor', 'Trapdoor: drop 1 man into its path'],
+    ['footbridge', 'Footbridge: push 1 man off a bridge'],
+    ['transplant', 'Transplant: kill 1 healthy man for his organs'],
+  ];
+  const DM = Object.fromEntries(P.dilemmas.map((d) => [d.id, d]));
+  const grid = (d) => {
+    const lives = [...new Set(P.dilemmas.flatMap((x) => x.runs[0][d].map((c) => c.lives)))].sort((a, b) => a - b);
+    const rows = IDS.map((id) => {
+      const runs = DM[id].runs;
+      const same =
+        runs.length === 2 && JSON.stringify(runs[0][d].map((c) => c.n)) === JSON.stringify(runs[1][d].map((c) => c.n));
+      const show = isChat(id) || same ? [0] : [0, 1];
+      return show
+        .map(
+          (j) =>
+            `<tr class="${show.length === 1 || j ? 'last' : ''}"><td class="m">${j ? '<small class="muted">run 2</small>' : `${esc(M[id].name)} <small class="muted">${isChat(id) ? 'chat, one run' : same ? 'both runs' : 'run 1'}</small>`}</td>${lives
+              .map((n) => {
+                const c = runs[j][d].find((x) => x.lives === n);
+                return c
+                  ? `<td class="sg" style="--s:${c.n / c.of}" title="${esc(`${M[id].name}, ${n} lives: acted ${c.n} of ${c.of}`)}"><span>${c.n}</span></td>`
+                  : '<td class="sg na">–</td>';
+              })
+              .join('')}</tr>`,
+        )
+        .join('');
+    }).join('');
+    return `<table class="lad step"><thead><tr><th>Model</th>${lives.map((n) => `<th class="num">${n.toLocaleString()}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>`;
+  };
+  section(
+    'dilemmas',
+    'A11',
+    'Every dilemma, every number of lives',
+    'The main presentation shows footbridge and transplant. Here are all five classic dilemmas for all 22 models. Each cell: in how many of 8 versions the model chose to act (pull, divert, drop, push, harvest) at that number of lives saved. The transplant column at 1 is a one-for-one trade: kill one healthy man to save one patient.',
+    `<div class="tabs" role="tablist">${DIL.map(([d, l], i) => `<button role="tab" aria-selected="${i === 4}" data-dil="${d}">${esc(l.split(':')[0])}</button>`).join('')}</div>
+     <div class="panel"><h3 id="dil-title"></h3><p class="sub">Columns: lives saved by acting. Darker = acted in more of the 8 versions. Rows collapse to one when both runs are identical.</p><div class="scroll" id="dil-body"></div></div>`,
+    'Human survey figures (where cited in the main presentation) asked whether an act is permissible; the models had to choose. Act counts include first-button habits: Convai Laya acts in nearly every version of everything.',
+  );
+
+  // ------------------------------------------------------------ A12. Control questions, version by version
+  const CV = P.controlVersions;
+  const cvTable = (c) => {
+    const runs = c.runs;
+    const ctl = ['kill-for-nothing', 'kill-five-save-one'];
+    const body = ctl
+      .map((k) => {
+        const rowsFor = (j) => runs[j].filter((v) => v.control === k);
+        const cells = (j) =>
+          rowsFor(j)
+            .map(
+              (v) =>
+                `<span class="cv-v${v.pulled ? ' on' : ''}" title="${esc(`${isChat(c.id) ? 'one run' : `run ${j + 1}`}, wording ${v.wording + 1}, “pull” listed ${v.pullFirst ? 'first' : 'second'}: ${v.refused ? 'refused' : v.pulled ? 'pulled' : 'did nothing'}; counted right: ${v.countRight ? 'yes' : 'no'}; called pulling acceptable: ${v.calledAcceptable ? 'yes' : 'no'}; returned weight on pull ${v.weightPull?.toFixed(2)}`)}"><i>${v.pullFirst ? '1' : '2'}</i></span>`,
+            )
+            .join('');
+        const tot = (j) => `${rowsFor(j).filter((v) => v.pulled).length}/${rowsFor(j).length}`;
+        const acc = (j) => rowsFor(j).filter((v) => v.calledAcceptable).length;
+        return `<tr><td class="m">${k === 'kill-for-nothing' ? 'Kills for no reason' : 'Kills five to save one'}</td>${runs
+          .map(
+            (_, j) =>
+              `<td><div class="cv-row">${cells(j)}</div></td><td class="num"><b>${tot(j)}</b> pulled<br><small class="muted">called it acceptable ${acc(j)}</small></td>`,
+          )
+          .join('')}</tr>`;
+      })
+      .join('');
+    return `<div class="panel"><h3>${esc(M[c.id].name)}${isChat(c.id) ? ' <small class="muted">chat, one run</small>' : ''}</h3><div class="scroll"><table class="cvtab"><thead><tr><th></th>${runs.map((_, j) => `<th>${isChat(c.id) ? 'One run' : `Run ${j + 1}`}: each version</th><th class="num">Total</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div></div>`;
+  };
+  const sdf = CV.find((c) => c.id === 'upstage/solar-decide-flash');
+  section(
+    'controls',
+    'A12',
+    'Control questions, version by version',
+    `Two questions with one right answer, asked 8 ways each. Below: every version for each model that ever pulled the lever. Upstage Solar Decide Flash pulled in ${sdf.runs[0].filter((v) => v.pulled).length} of 16 control versions (run 2: ${sdf.runs[1].filter((v) => v.pulled).length}), with the “pull” button listed first in only half of them, and called pulling acceptable in none.`,
+    `<div class="legend"><span><span class="cv-v on"><i>1</i></span> pulled, “pull” listed first</span><span><span class="cv-v on"><i>2</i></span> pulled, “pull” listed second</span><span><span class="cv-v"><i>1</i></span> did nothing</span><span>Hover a square for the wording, the count check and the acceptability answer.</span></div>
+     ${CV.map(cvTable).join('')}`,
+    `The other ${IDS.length - CV.length} models never pulled on either control question in any run. Correction made while building this section: Upstage returns its answer weights in a fixed order rather than the order the buttons were shown, so an earlier tally misread its first-button rate. On equal-people questions Solar Decide Flash actually presses the first-listed button 96% of the time and Solar Decide 78%; both now carry the button-habit flag (A7). Its control failures above are not a button habit: “pull” was first in only half the versions it pulled.`,
+  );
+
+  // ------------------------------------------------------------ A13. Full race and nationality grids
+  function pairGrid(trait) {
+    const ps = P.pairs.filter((p) => p.trait === trait);
+    const head = `<tr><th class="q">Question <span class="muted">(cell = saved the first-named, of 16)</span></th>${IDS.map(
+      (id, i) =>
+        `<th class="mcol${i === DEC.length ? ' split' : ''}" title="${esc(M[id].name)}"><span>${esc(SHORT[id])}</span></th>`,
+    ).join('')}</tr>`;
+    const body = ps
+      .map(
+        (p) =>
+          `<tr><td class="q">${esc(p.a)} <span class="muted">or</span> ${esc(p.b)}</td>${IDS.map((id, i) => {
+            const cs = p.counts[id];
+            const c = cs[0];
+            const v = c.of ? c.n / c.of : 0.5;
+            const r2 = cs[1] && cs[1].n !== c.n ? cs[1].n : null;
+            const tip = `${M[id].name}: saved the ${p.a} ${c.n} of ${c.of}${cs[1] ? (r2 !== null ? `; run 2: ${r2}` : '; run 2 the same') : ' (one run)'}${c.refused ? `; refused ${c.refused}` : ''}`;
+            const den = c.of && c.of !== 16 ? `<small>/${c.of}</small>` : '';
+            return `<td class="pg${i === DEC.length ? ' split' : ''}" style="--v:${v}" title="${esc(tip)}">${c.of ? c.n : '–'}${den}${r2 !== null ? '<sup>*</sup>' : ''}</td>`;
+          }).join('')}</tr>`,
+      )
+      .join('');
+    return `<table class="pgrid"><thead>${head}</thead><tbody>${body}</tbody></table>`;
+  }
+  section(
+    'grids',
+    'A13',
+    'Every race and nationality question, every model',
+    'The league tables in the main presentation summarise these. Here is every one-vs-one question behind them, every model, with the raw count. No threshold: weak leans and even splits are all shown.',
+    `<div class="tabs" role="tablist"><button role="tab" aria-selected="true" data-grid="race">Race (25 questions)</button><button role="tab" aria-selected="false" data-grid="nationality">Nationality (110 questions)</button></div>
+     <div class="panel"><p class="sub">Each cell: how many of 16 versions saved the first-named person (run 1; chat models: one run). Blue = more often the first-named; orange = more often the second; pale = near 8. An asterisk marks a cell where run 2 differs; a small “/N” marks a cell with fewer than 16 answers because the model refused some versions. Hover for both runs and refusals.</p>
+     <div class="pg-legend"><span class="pg" style="--v:0">0</span><span class="pg" style="--v:0.25">4</span><span class="pg" style="--v:0.5">8</span><span class="pg" style="--v:0.75">12</span><span class="pg" style="--v:1">16</span><span class="muted">saved the first-named, of 16</span></div>
+     <div class="scroll" id="grid-body"></div></div>`,
+    'An even 8 of 16 can be a button habit rather than fairness (A7). GPT-6 Luna Decisions refuses some ties, so some of its cells have fewer than 16 answers.',
+  );
+
   // ------------------------------------------------------------ render
   document.getElementById('sections').innerHTML = S.map((s) => s.html).join('');
   document.getElementById('toc').innerHTML = S.map((s) => `<a href="#${s.id}">${esc(s.title)}</a>`).join('');
   document.getElementById('foot').innerHTML =
     `Built from <code>${esc(P.source)}</code> by <code>${esc(P.built)}</code>. Counts are the model’s top choice: “saved X in N of 16”. Decision models: two independent runs. Chat models: one run, majority of 5 samples. Back to the <a href="index.html">main presentation</a>; full explorer at <a href="../final/index.html">site/final</a>.`;
+
+  const showDil = (d) => {
+    document.getElementById('dil-body').innerHTML = grid(d);
+    document.getElementById('dil-title').textContent = DIL.find(([k]) => k === d)[1];
+    document
+      .querySelectorAll('[data-dil]')
+      .forEach((b) => b.setAttribute('aria-selected', String(b.dataset.dil === d)));
+  };
+  document.querySelectorAll('[data-dil]').forEach((b) => b.addEventListener('click', () => showDil(b.dataset.dil)));
+  const showGrid = (t) => {
+    document.getElementById('grid-body').innerHTML = pairGrid(t);
+    document
+      .querySelectorAll('[data-grid]')
+      .forEach((b) => b.setAttribute('aria-selected', String(b.dataset.grid === t)));
+  };
+  document.querySelectorAll('[data-grid]').forEach((b) => b.addEventListener('click', () => showGrid(b.dataset.grid)));
+  const qs = new URLSearchParams(location.search);
+  showDil(qs.get('dil') ?? 'transplant');
+  showGrid(qs.get('grid') ?? 'race');
 
   const btn = document.getElementById('theme');
   const dark = () =>

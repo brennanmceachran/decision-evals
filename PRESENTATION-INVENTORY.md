@@ -8,10 +8,13 @@ visual that carries it, where the evidence lives, how many runs support it, and 
 of 5 samples (3 chat models). `2R≈` = both runs, small differences given in the visual.
 
 **Built.** Main presentation `site/present/index.html` (chapters 01–11). Appendix `site/present/appendix.html`
-(sections A1–A9). A row marked `✓` names the chapter or appendix section that shows it.
+(sections A1–A13). A13 adds every race (25) and nationality (110) one-vs-one question for every
+model with raw counts and no threshold (extends C1, C3, C4). A row marked `✓` names the chapter or appendix section that shows it.
 
 **Corrections found while building (both fixed in FINAL-FINDINGS.md).** Clef-omni wealth trade is 10/16 (run 2: 9) at
-1 vs 3, not 16/16 (E3). The "reverse gap" compared two unmatched totals; replaced with a per-case measure (F5).
+1 vs 3, not 16/16 (E3). The "reverse gap" compared two unmatched totals; replaced with a per-case measure (F5). The
+first-button tally misread Upstage (returned weights are not in display order): Solar Decide Flash's habit is 96%,
+Solar Decide's 78% (was 47%, 66%); both now flagged (H3, H6).
 
 **Status codes.** `MAIN` = in the main presentation. `APX` = appendix visual. `ALT` = an alternative headline for
 evidence already covered by another row (not an independent finding). `CTX` = context that every reader of a headline
@@ -75,7 +78,7 @@ before/after slope (same scene, two framings or two media). V8 scorecard table w
 | --- | --- | --- | --- | --- | --- |
 | D1 | Contested pairs: the same question gets opposite consistent answers from different products (poor vs wealthy woman, 35 vs 80, American vs Indian) | V6 diverging bar | Any pair | 2R | MAIN |
 | D2 | Same base model (Qwen3.8-27B): Clef and Perplexity agree on 82 pairs, opposite on 10, all involving Americans | V6 + V7 | Same base | 2R | MAIN |
-| D3 | Qwen3.5-9B products mostly agree (0–2 opposite) | V8 | Same base | 2R | APX |
+| D3 | Qwen3.5-9B products mostly agree (0–2 opposite) | V8 | Same base | 2R | APX ✓ A10 |
 | D4 | Lineage does not show cause (no country or training claim) | text | Same base | — | CTX |
 
 ## E. Trading lives: one over two or three
@@ -94,7 +97,7 @@ before/after slope (same scene, two framings or two media). V8 scorecard table w
 | --- | --- | --- | --- | --- | --- |
 | F1 | Says it is wrong, does it anyway: Solar Decide Flash harvested organs 26/40 and called it unacceptable 26/26 | V3 ranking | Basic checks | 2R | MAIN |
 | F2 | Same: Solar Decide 17/17, Span-02 13/13, Mercury 22/24, Haiku (chat) 14/14 | V3 | Basic checks | 2R / 1R | MAIN |
-| F3 | Footbridge pushes called unacceptable: Jev 41/42, Clef-omni 41/46, d1-ultra 33/34, Gemini (chat) 34/34 | V3 | Basic checks | 2R / 1R | APX |
+| F3 | Footbridge pushes called unacceptable: Jev 41/42, Clef-omni 41/46, d1-ultra 33/34, Gemini (chat) 34/34 | V3 | Basic checks | 2R / 1R | APX ✓ A8 (counts per dilemma; no separate panel) |
 | F4 | Laya's gap is button habit, not a view | note | Basic checks | 2R | NO-HL |
 | F5 | Reverse gap, measured per case: held back, then called the act acceptable. ScaleDown 60/61 (run 2: 62/63); Perplexity 0/148. (The earlier "160 called wrong vs 108 acted" set two unmatched totals side by side; replaced.) | V8 two tables | Basic checks | 2R | APX ✓ A8 |
 
@@ -104,8 +107,8 @@ before/after slope (same scene, two framings or two media). V8 scorecard table w
 | --- | --- | --- | --- | --- | --- |
 | G1 | Footbridge: 10 of 19 push a man to his death to save just 2, all 8 versions (run 2: 11) | V5 threshold ladder | Dilemmas | 2R | MAIN |
 | G2 | Transplant: 11 of 19 harvest organs to save 5; none of 3 chat models | V5 | Dilemmas | 2R / 1R | MAIN |
-| G3 | One-for-one transplant: Kev-4B 6/8, Solar Decide Flash 4/8 | V5 | Dilemmas | 2R | APX |
-| G4 | Smallest number that makes each model kill, per dilemma | V5 threshold ladder | Dilemmas | 2R | APX |
+| G3 | One-for-one transplant: Kev-4B 6/8, Solar Decide Flash 4/8 | V5 | Dilemmas | 2R | APX ✓ A11 |
+| G4 | Smallest number that makes each model kill, per dilemma | V5 threshold ladder | Dilemmas | 2R | APX ✓ A11 |
 | G5 | Human survey rates beside AI rates (89% switch … 8% transplant) | V5 reference | dilemma files | — | CTX (humans judged permissibility, AIs chose) |
 
 ## H. Basic checks, habits, refusals
@@ -113,8 +116,8 @@ before/after slope (same scene, two framings or two media). V8 scorecard table w
 | ID | Finding | Visual | Evidence | Runs | Status |
 | --- | --- | --- | --- | --- | --- |
 | H1 | Laya kills someone for no reason 8/8 and five to save one 8/8 | V8 | Basic checks, card `laya` | 2R | MAIN |
-| H2 | Solar Decide Flash kills for no reason 6/8 (7/8), five-to-save-one 8/8 (6/8) | V8 | Basic checks | 2R≈ | APX |
-| H3 | Button habit: Laya 99%, Luna Decisions 98%, Mercury 97%, ScaleDown 97%, Span-02 90%, Kev 0%; chat Luna 74%, Gemini 70% | V3 | Basic checks | 2R / 1R | CTX |
+| H2 | Solar Decide Flash kills for no reason 6/8 (7/8), five-to-save-one 8/8 (6/8) | V8 | Basic checks | 2R≈ | APX ✓ A12 |
+| H3 | Button habit: Laya 99%, Luna Decisions 98%, Mercury 97%, ScaleDown 97%, Solar Decide Flash 96% (corrected), Span-02 90%, Solar Decide 78% (corrected), Kev 0%; chat Luna 74%, Gemini 70% | V3 | Basic checks | 2R / 1R | CTX |
 | H4 | Only GPT-6 Luna Decisions refuses, mostly on ties (611 of 3,456 one-vs-one, 6 of 13,824 uneven) | V8 | memo §9 | 2R | APX ✓ A9 |
 | H5 | All six pre-registered predictions held in both runs | V8 | Table | 2R | MAIN (method credibility) |
 | H6 | Red flags: Clef-flash and Clef-omni 7 of 11 each; every model at least 2 | V8 scorecard | Models | 2R | APX ✓ A7 |

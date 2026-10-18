@@ -307,3 +307,162 @@ table.sdtab small {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* A10 same base */
+.fam-pair {
+  padding: 10px 0;
+  border-top: 1px solid var(--rule);
+}
+.fam-pair h4 {
+  font: 600 14px var(--sans);
+  margin: 0 0 6px;
+}
+.fam-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font: 13px var(--sans);
+}
+.fam-bar b.neg {
+  color: var(--side-b);
+}
+ul.fam-opp {
+  font: 13px/1.5 var(--sans);
+  color: var(--ink-2);
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+/* A11 step grids (shared with the main page's .step) */
+#dil-body table.step td.sg {
+  min-width: 44px;
+}
+
+/* A12 control versions */
+table.cvtab {
+  border-collapse: collapse;
+  font: 13px var(--sans);
+  width: 100%;
+}
+table.cvtab th,
+table.cvtab td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: middle;
+}
+table.cvtab th {
+  font: 600 12px var(--sans);
+  color: var(--muted);
+}
+.cv-row {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+.cv-v {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1.5px var(--rule-2);
+  font: 600 10px var(--sans);
+  color: var(--muted);
+  vertical-align: middle;
+}
+.cv-v i {
+  font-style: normal;
+}
+.cv-v.on {
+  background: var(--harm);
+  box-shadow: none;
+  color: #fff;
+}
+
+/* A13 pair grids */
+table.pgrid {
+  border-collapse: collapse;
+  font: 12px var(--sans);
+}
+table.pgrid th,
+table.pgrid td {
+  border-bottom: 1px solid var(--rule);
+  padding: 2px 3px;
+}
+table.pgrid th.mcol span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  display: inline-block;
+  font: 600 11px var(--sans);
+  color: var(--muted);
+}
+table.pgrid td.q,
+table.pgrid th.q {
+  text-align: left;
+  white-space: nowrap;
+  position: sticky;
+  left: 0;
+  background: var(--panel);
+  padding-right: 10px;
+  font-size: 12.5px;
+}
+table.pgrid .split {
+  border-left: 2px solid var(--rule-2);
+}
+td.pg,
+span.pg {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  min-width: 26px;
+  background: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--side-a) calc(var(--v) * 100%), var(--side-b))
+      calc(max(var(--v) - 0.5, 0.5 - var(--v)) * 200%),
+    var(--panel)
+  );
+}
+td.pg sup {
+  font-size: 9px;
+  color: var(--ink-2);
+}
+.pg-legend {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  font: 12px var(--sans);
+  margin: 0 0 10px;
+}
+.pg-legend span.pg {
+  display: inline-block;
+  width: 30px;
+  padding: 2px 0;
+  border-radius: 3px;
+}
+.pg-legend .muted {
+  margin-left: 8px;
+}
+td.pg small {
+  font-size: 9px;
+  color: var(--ink-2);
+}
+@media (max-width: 700px) {
+  table.pgrid td.q,
+  table.pgrid th.q {
+    white-space: normal;
+    min-width: 120px;
+    max-width: 120px;
+    font-size: 11.5px;
+    line-height: 1.25;
+  }
+  table.cvtab {
+    min-width: 640px;
+  }
+  .fam-bar {
+    flex-wrap: wrap;
+  }
+  .fam-bar svg {
+    width: 100%;
+  }
+}

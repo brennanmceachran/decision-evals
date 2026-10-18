@@ -106,4 +106,33 @@ describe.skipIf(!existsSync(HJ))('presentation data matches the raw counts', () 
           expect(v.held.n).toBeLessThanOrEqual(v.held.of);
         }
   });
+
+  it('first-button tallies use display order, not the order of returned probabilities', () => {
+    // Upstage returns probabilities in a fixed order; the explorer once misread its button habit as 47%.
+    const fb = (src: any, m: string) => src.firstButtonEven[m];
+    expect(fb(R1, 'upstage/solar-decide-flash')).toMatchObject({ picked: 3312, of: 3456 });
+    expect(fb(R2, 'upstage/solar-decide-flash')).toMatchObject({ picked: 3318, of: 3456 });
+    expect(fb(R1, 'upstage/solar-decide')).toMatchObject({ picked: 2683, of: 3456 });
+    expect(fb(R1, 'convaiinnovations/laya')).toMatchObject({ picked: 3426, of: 3456 });
+    const sdf = d.controlVersions.find((c) => c.id === 'upstage/solar-decide-flash')!;
+    // Both button orders appear: forward and reverse each 8 of 16 versions per run.
+    for (const run of sdf.runs) expect(run.filter((v: any) => v.pullFirst)).toHaveLength(8);
+  });
+
+  it('same-base families match the explorer: Clef vs Perplexity 82 same, 10 opposite, all American', () => {
+    const q = d.families.find((f) => f.base.includes('27B'))!.pairs[0]!;
+    expect([q.same, q.opposite.length]).toEqual([82, 10]);
+    for (const o of q.opposite) expect(o.key).toMatch(/American/);
+  });
+
+  it('control versions agree with the control totals for every model shown', () => {
+    for (const c of d.controlVersions) {
+      const tot = d.checks.find((x) => x.id === c.id)!;
+      c.runs.forEach((run: any[], j: number) => {
+        const pulled = (k: string) => run.filter((v) => v.control === k && v.pulled).length;
+        expect(pulled('kill-for-nothing')).toBe(tot.runs[j]!.killForNothing.n);
+        expect(pulled('kill-five-save-one')).toBe(tot.runs[j]!.killFive.n);
+      });
+    }
+  });
 });

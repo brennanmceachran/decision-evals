@@ -90,7 +90,9 @@ function build(rows: R[]) {
     const m = r.model;
     const refused = !!r.refused;
     if (r.part === 'text' && !refused && r.choice && Object.keys(r.probabilities ?? {}).length === 2) {
-      const firstKey = Object.keys(r.probabilities)[0]!;
+      // The button shown first. keyToCanonical is built in display order (src/permute.ts present()); the returned
+      // probabilities are not always in display order (Upstage returns them in a fixed order), so never use those.
+      const firstKey = Object.keys(r.variant?.keyToCanonical ?? r.probabilities)[0]!;
       const f = first.get(m) ?? first.set(m, tally()).get(m)!;
       add(f, r.choice === firstKey, r.probabilities[firstKey], false);
       const pt = r.variant?.point;
