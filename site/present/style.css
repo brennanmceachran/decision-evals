@@ -479,38 +479,82 @@ table.lad svg {
 
 /* Narrow screens: each model becomes a block — name, then one line per condition (track + count). */
 @media (max-width: 700px) {
-  table.lad {
+  table.lad:not(.step) {
     min-width: 0;
   }
-  table.lad thead,
-  table.lad tr.axis-row {
+  table.lad:not(.step) thead,
+  table.lad:not(.step) tr.axis-row {
     display: none;
   }
-  table.lad tr {
+  table.lad:not(.step) tr {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     column-gap: 10px;
     padding: 8px 0;
     border-bottom: 1px solid var(--rule);
   }
-  table.lad td {
+  table.lad:not(.step) td {
     border: 0;
     padding: 2px 0;
   }
-  table.lad td.m {
+  table.lad:not(.step) td.m {
     grid-column: 1 / -1;
     font-weight: 600;
   }
-  table.lad tr.group td {
+  table.lad:not(.step) tr.group td {
     grid-column: 1 / -1;
   }
-  table.lad td svg {
+  table.lad:not(.step) td svg {
     width: 100%;
   }
-  table.lad td[data-col]::before {
+  table.lad:not(.step) td[data-col]::before {
     content: attr(data-col);
     display: block;
     font: 11px var(--sans);
     color: var(--muted);
+  }
+}
+
+/* Step grid: acted in N of 8 by number of lives */
+table.step td.sg {
+  text-align: center;
+  font: 600 13px var(--sans);
+  font-variant-numeric: tabular-nums;
+  background: color-mix(in oklab, var(--harm) calc(var(--s) * 85%), var(--panel));
+  color: var(--ink);
+  border: 2px solid var(--panel);
+  border-radius: 6px;
+  min-width: 52px;
+}
+table.step td.sg span {
+  background: color-mix(in oklab, var(--panel) 80%, transparent);
+  padding: 0 4px;
+  border-radius: 3px;
+}
+table.step td.sg.na {
+  background: none;
+  color: var(--muted);
+}
+table.step th.num {
+  text-align: center;
+}
+table.step tr td {
+  border-bottom: 0;
+}
+table.step tr.last td {
+  border-bottom: 1px solid var(--rule);
+}
+
+@media (max-width: 700px) {
+  table.lad.step {
+    min-width: 600px;
+  }
+  table.lad.step td.m {
+    position: sticky;
+    left: 0;
+    background: var(--panel);
+    z-index: 1;
+    white-space: normal;
+    min-width: 120px;
   }
 }
