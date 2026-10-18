@@ -55,4 +55,20 @@ describe.skipIf(!existsSync(HJ))('presentation data matches the raw counts', () 
     };
     walk(d);
   });
+
+  it('every identity pair count equals the raw 1-vs-1 tally, for every model and run', () => {
+    const S2 = H.sources[2];
+    let checked = 0;
+    for (const p of d.pairs)
+      for (const [m, cs] of Object.entries(p.counts)) {
+        const srcs = cs.length === 2 ? [R1, R2] : [S2];
+        cs.forEach((c, j) => {
+          const raw = srcs[j].traits[`${m}|parity-${p.trait}|${p.a}|${p.b}`][2];
+          expect(c.n).toBe(raw.picked);
+          expect(c.of).toBe(raw.of);
+          checked++;
+        });
+      }
+    expect(checked).toBe(216 * 19 * 2 + 216 * 3);
+  });
 });

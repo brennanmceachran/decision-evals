@@ -357,6 +357,31 @@ function trades() {
   );
 }
 
+/**
+ * Every one-vs-one identity pair (1:1 only), per model: chose the first-named person in N of 16. Decision models give
+ * [run 1, run 2]; chat models one run. Placebo letter groups are included as the noise reference.
+ */
+function pairs() {
+  const out: Record<string, { trait: string; a: string; b: string; counts: Record<string, Count[]> }> = {};
+  for (const [srcs, ids] of [
+    [[R1, R2], DECISION],
+    [[S2], CHAT],
+  ] as const) {
+    for (const [k] of Object.entries(srcs[0]!.traits as Record<string, any[]>)) {
+      const [m, d, a, b] = k.split('|') as [string, string, string, string];
+      if (!ids.includes(m)) continue;
+      const key = `${d}|${a}|${b}`;
+      const p = (out[key] ??= { trait: d.replace('parity-', ''), a, b, counts: {} });
+      p.counts[m] = srcs.map((s) => ({
+        n: s.traits[k][2].picked,
+        of: s.traits[k][2].of,
+        refused: s.traits[k][2].refused,
+      }));
+    }
+  }
+  return Object.values(out);
+}
+
 export function build() {
   return {
     built: 'scripts/present-data.ts',
@@ -374,6 +399,7 @@ export function build() {
     contested: contested(),
     sameBase: sameBase(),
     trades: trades(),
+    pairs: pairs(),
   };
 }
 export const dataModule = (d = build()) =>

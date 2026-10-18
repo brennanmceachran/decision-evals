@@ -7,6 +7,9 @@ visual that carries it, where the evidence lives, how many runs support it, and 
 **Run support codes.** `2R` = both Stage 1 runs (19 decision models). `1R` = Stage 2, one run, each answer the majority
 of 5 samples (3 chat models). `2R≈` = both runs, small differences given in the visual.
 
+**Built.** Main presentation `site/present/index.html` (chapters 01–11). Appendix `site/present/appendix.html`
+(sections A1–A5). A row marked `✓` names the chapter or appendix section that shows it.
+
 **Status codes.** `MAIN` = in the main presentation. `APX` = appendix visual. `ALT` = an alternative headline for
 evidence already covered by another row (not an independent finding). `CTX` = context that every reader of a headline
 needs. `NO-HL` = shown, not headlined, with the reason.
@@ -51,17 +54,17 @@ before/after slope (same scene, two framings or two media). V8 scorecard table w
 | C2 | Perplexity saves a Black woman over a White woman 16/16; Jev Black man 15/16 | V2 grid | Findings card `race` | 2R | ALT of C1 |
 | C3 | Nationality: Americans last in 5 of 12 ranking models; Clef/Jev/d1 put all 5 Western countries bottom | V4 | Leagues | 2R | MAIN |
 | C4 | Perplexity the opposite: Americans first 301/320 | V4 | Leagues | 2R | MAIN (paired with C3) |
-| C5 | Gender identity: 6 decision models save a trans man over a cis man, none the other way; Clef 16/16 | V2 + V3 | Any pair, card `trans` | 2R | APX |
-| C6 | Sexuality: 4 save gay over straight, none the other way | V3 | Any pair | 2R | APX |
+| C5 | Gender identity: 6 decision models save a trans man over a cis man, none the other way; Clef 16/16 | V2 + V3 | Any pair, card `trans` | 2R | APX ✓ A2 |
+| C6 | Sexuality: 4 save gay over straight, none the other way | V3 | Any pair | 2R | APX ✓ A3 |
 | C7 | Disability: no decision model ever chose the non-disabled person over a wheelchair user; Clef 0/96 | V4 + V3 | Agreement, Leagues | 2R | MAIN |
 | C8 | Age: nearly all put age 8 first, 80 last; Microsoft puts 35-year-olds last (0/96); Clef-omni 80-year-olds first | V4 | Leagues | 2R | APX |
 | C9 | Religion: atheists last in 11 of 15 ranking models; Clef-omni saved an atheist 1/128 | V4 | Leagues | 2R | APX |
 | C10 | Wealth: split. Poor first in Perplexity 61/64, Drex v2.0; wealthy first in Clef-omni 57/64 + Haiku (chat) | V4 + V6 | Leagues, Any pair | 2R / 1R | APX |
-| C11 | Sex: within race, Clef-omni and Drex v2.0 saved the woman 71/80 | V3 | Leagues | 2R | APX |
-| C12 | Criminal record: 5 decision models + Gemini save the person without a record | V3 | Any pair | 2R / 1R | APX |
-| C13 | Body: 6 save an obese man over a thin man, none the other way | V3 | Any pair | 2R | APX |
-| C14 | Politics: no model consistently picks a party | V3 | Any pair | 2R | APX (null result) |
-| C15 | Agreement map: largest one-sided majorities (Muslim woman over atheist woman 10–0, wheelchair 12–0) | V8 agreement grid | Agreement | 2R | APX |
+| C11 | Sex: within race, Clef-omni and Drex v2.0 saved the woman 71/80 | V3 | Leagues | 2R | APX ✓ A5 |
+| C12 | Criminal record: 5 decision models + Gemini save the person without a record | V3 | Any pair | 2R / 1R | APX ✓ A4 |
+| C13 | Body: 6 save an obese man over a thin man, none the other way | V3 | Any pair | 2R | APX ✓ A4 |
+| C14 | Politics: no model consistently picks a party | V3 | Any pair | 2R | APX ✓ A4 (null result) |
+| C15 | Agreement map: largest one-sided majorities (Muslim woman over atheist woman 10–0, wheelchair 12–0) | V8 agreement grid | Agreement | 2R | APX ✓ A1 |
 
 ## D. Disagreement between products
 

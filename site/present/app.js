@@ -605,7 +605,7 @@ If you:
     .map(([n, t]) => `<div><b>${n}</b>${t}</div>`)
     .join('');
   document.getElementById('foot').innerHTML =
-    `Built from <code>${esc(P.source)}</code> by <code>${esc(P.built)}</code>. Counts are the model’s top choice. Decision models answered every question in two independent runs (filled dot = run 1, ring = run 2); chat models answered once, each answer the majority of 5 samples (square). Full explorer: <a href="../final/index.html">site/final</a>.`;
+    `Built from <code>${esc(P.source)}</code> by <code>${esc(P.built)}</code>. Counts are the model’s top choice. Decision models answered every question in two independent runs (filled dot = run 1, ring = run 2); chat models answered once, each answer the majority of 5 samples (square). Every identity question in full: <a href="appendix.html">appendix</a>. Full explorer: <a href="../final/index.html">site/final</a>.`;
 
   document
     .querySelectorAll('[data-league]')

@@ -1,0 +1,190 @@
+/* Appendix-only marks. Two-sided agreement uses blue (first-named side) and orange (second-named side); both pass
+   the CVD validator on light (#2563a8, #b4531f) and dark (#4f8fd6, #d9703c) surfaces, and every dot also has words. */
+:root {
+  --side-a: #2563a8;
+  --side-b: #b4531f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --side-a: #4f8fd6;
+    --side-b: #d9703c;
+  }
+}
+:root[data-theme='dark'] {
+  --side-a: #4f8fd6;
+  --side-b: #d9703c;
+}
+.bar a.title {
+  text-decoration: none;
+}
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 18px 18px 12px;
+  margin-bottom: 18px;
+}
+.panel h3 {
+  font: 600 15px var(--sans);
+  margin: 0 0 2px;
+}
+.panel .sub {
+  font: 13px/1.45 var(--sans);
+  color: var(--muted);
+  margin: 0 0 12px;
+  max-width: 90ch;
+}
+.scroll {
+  overflow-x: auto;
+}
+
+/* Agreement map */
+table.amap {
+  border-collapse: collapse;
+  font: 13px var(--sans);
+}
+table.amap th,
+table.amap td {
+  padding: 3px 4px;
+  border-bottom: 1px solid var(--rule);
+}
+table.amap th {
+  font: 600 11px var(--sans);
+  color: var(--muted);
+  vertical-align: bottom;
+}
+table.amap th.mcol span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  display: inline-block;
+}
+table.amap td.q,
+table.amap th.q {
+  text-align: left;
+  white-space: nowrap;
+  padding-right: 12px;
+  position: sticky;
+  left: 0;
+  background: var(--panel);
+}
+table.amap td.num,
+table.amap th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  padding: 3px 8px;
+}
+table.amap b.neg {
+  color: var(--side-b);
+}
+table.amap .split {
+  border-left: 2px solid var(--rule-2);
+}
+td.dot {
+  text-align: center;
+}
+.am {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--rule-2);
+  vertical-align: middle;
+}
+.am.y {
+  background: var(--side-a);
+  box-shadow: none;
+}
+.am.n {
+  background: var(--side-b);
+  box-shadow: none;
+}
+.am.chat {
+  border-radius: 2px;
+}
+
+/* 16-version strips */
+table.strips {
+  border-collapse: collapse;
+  font: 13px var(--sans);
+  width: 100%;
+}
+table.strips td {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+table.strips td.m {
+  width: 1%;
+}
+.strip {
+  display: inline-flex;
+  gap: 2px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+.strip i {
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--rule);
+}
+.strip i.on {
+  background: var(--side-a);
+}
+.strip.chat i {
+  border-radius: 1px;
+}
+table.strips b.n {
+  font: 600 13px var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+table.strips small {
+  color: var(--muted);
+}
+.legend .am {
+  margin-right: 2px;
+}
+@media (max-width: 700px) {
+  .panel {
+    padding: 12px 10px 8px;
+  }
+  .strip i {
+    width: 6px;
+    height: 12px;
+  }
+  table.strips td.m {
+    white-space: normal;
+    min-width: 96px;
+  }
+}
+@media (max-width: 700px) {
+  table.amap td.q,
+  table.amap th.q {
+    white-space: normal;
+    min-width: 128px;
+    max-width: 128px;
+    font-size: 12px;
+    line-height: 1.3;
+  }
+  table.amap th.num,
+  table.amap td.num {
+    padding: 3px 4px;
+  }
+  table.strips tr {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-bottom: 1px solid var(--rule);
+    padding: 4px 0;
+  }
+  table.strips td {
+    border: 0;
+    padding: 2px 0;
+  }
+  table.strips td.m {
+    width: auto;
+    font-weight: 600;
+  }
+}

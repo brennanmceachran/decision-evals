@@ -735,3 +735,12 @@ table.rep td svg {
   width: 100%;
   max-width: 420px;
 }
+
+.bar .applink {
+  align-self: center;
+  padding: 5px 10px;
+  border: 1px solid var(--rule-2);
+  border-radius: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+}
