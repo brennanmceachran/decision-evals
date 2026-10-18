@@ -484,6 +484,7 @@
     cards: HL.cards,
     leagues: HL.leagues,
     compare: HL.compare,
+    siblings: HL.siblings,
     dilemmas,
     dashcam,
     stability,

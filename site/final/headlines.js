@@ -754,5 +754,57 @@ window.HEADLINES = (() => {
       <p class="note" style="margin-top:12px">Group sizes left to right: ${RATIO.map((r) => r.replace('vs', `${esc(a)} vs`) + ' ' + esc(b)).join(' · ')}.</p></section>`;
   }
 
-  return { headlines, outnumbered, consensus, harm, pictures, basics, cards, leagues, compare, TRAITS };
+  /** Same base model, different products: where two fine-tunes of one checkpoint choose opposite people. */
+  const FAMILIES = [
+    { base: 'Alibaba Qwen3.8-27B', ids: ['cloudflare/clef', 'perplexity/pplx-decider-v1.2'] },
+    {
+      base: 'Alibaba Qwen3.5-9B',
+      ids: ['cloudflare/clef-flash', 'microsoft/microsoft-decision-1', 'nace-ai/drex-v1.5'],
+    },
+    { base: 'Alibaba Qwen3.5-4B', ids: ['togethercomputer/tev1-4b-experimental', 'jaredpalmer/kev-4b'] },
+  ];
+  function siblings() {
+    const pairs = [...new Set(Object.keys(R1.traits).map((k) => k.split('|').slice(1).join('|')))].filter(
+      (p) => !p.includes('placebo'),
+    );
+    const side = (m, p) => {
+      const x = [R1.traits[`${m}|${p}`][2], R2.traits[`${m}|${p}`][2]];
+      if (x.every((t) => t.picked >= 12)) return 'A';
+      if (x.every((t) => t.of - t.picked >= 12)) return 'B';
+      return null;
+    };
+    const blocks = FAMILIES.map(({ base, ids }) => {
+      const combos = [];
+      for (let i = 0; i < ids.length; i++)
+        for (let j = i + 1; j < ids.length; j++) {
+          const [x, y] = [ids[i], ids[j]];
+          const same = pairs.filter((p) => side(x, p) && side(x, p) === side(y, p));
+          const opp = pairs.filter((p) => side(x, p) && side(y, p) && side(x, p) !== side(y, p));
+          combos.push({ x, y, same, opp });
+        }
+      const rows = combos
+        .map(({ x, y, same, opp }) => {
+          const list = opp
+            .map((p) => {
+              const [, a, b] = p.split('|');
+              const pick = (m) => (side(m, p) === 'A' ? a : b);
+              const cx = R1.traits[`${x}|${p}`][2];
+              const cy = R1.traits[`${y}|${p}`][2];
+              const n = (m, c) => (side(m, p) === 'A' ? c.picked : c.of - c.picked);
+              return `<li><b>${esc(NAME[x])}</b> saves the ${esc(pick(x))} (${n(x, cx)}/16); <b>${esc(NAME[y])}</b> saves the ${esc(pick(y))} (${n(y, cy)}/16)</li>`;
+            })
+            .join('');
+          return `<div class="sib"><h3>${esc(NAME[x])} vs ${esc(NAME[y])}</h3>
+            <p class="sib-n"><span><b>${same.length}</b> pairs where both chose the same person</span><span><b>${opp.length}</b> pairs where they chose opposite people</span></p>
+            ${list ? `<ul>${list}</ul>` : ''}</div>`;
+        })
+        .join('');
+      return `<div class="fam"><h3 class="fam-base">Built on ${esc(base)}</h3>${rows}</div>`;
+    }).join('');
+    return `<section class="card"><h2>Same base model, different products</h2>
+      <p class="note">Several decision models are fine-tunes of the same openly available base model (sources: each model's Hugging Face card or the vendor's model card). Counted here: one-vs-one trait pairs where a model chose the same person in at least 12 of 16 versions in both runs. "Opposite" means both models were that consistent but chose different people. This shows what the products do, not why: training differences are not published.</p>
+      ${blocks}</section>`;
+  }
+
+  return { headlines, outnumbered, consensus, harm, pictures, basics, cards, leagues, compare, siblings, TRAITS };
 })();
