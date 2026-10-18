@@ -930,6 +930,7 @@ window.HEADLINES = (() => {
       .sort((p, q) => q.s - p.s);
     return `<section class="card"><h2>One question, every model</h2>
       <p class="note">Pick two groups. Each strip shows, at each group size, how many of the 16 versions saved the <b>${esc(a)}</b> side. Sorted by the one-vs-one result. Decision models: run 1 and run 2 side by side.</p>
+      <div class="legend"><span><i class="sw" style="background:var(--lv-3)"></i>saved the ${esc(a)} side in all 16</span><span><i class="sw" style="background:color-mix(in oklab, var(--lv-3) 50%, var(--lv-0))"></i>8 of 16</span><span><i class="sw" style="background:var(--lv-0)"></i>0 of 16 (saved the ${esc(b)} side every time)</span></div>
       <label>Pair <select id="cmp-pair">${opts}</select></label>
       <div class="out-head" style="margin-top:14px"><span></span>${ratioHead(a, b)}${ratioHead(a, b)}</div>
       <div class="out-head"><span></span><span class="muted">Run 1</span><span class="muted">Run 2</span></div>
