@@ -286,7 +286,9 @@ export const FINAL_SUBJECTS: FinalSubject[] = [
  */
 export const PACING: Record<Category, { concurrent: number; perMinute: number }> = {
   decision: { concurrent: 16, perMinute: 2000 },
-  chat: { concurrent: 8, perMinute: 300 },
+  // Stage 2 (owner, 2026-10-17): finish within 8 h. 212,180 requests per model (42,436 questions × 5 samples);
+  // 500/min ≈ 7.1 h. Measured single-sample latency 1–2.5 s, so 32 in flight per model sustains it.
+  chat: { concurrent: 32, perMinute: 500 },
   frontier: { concurrent: 2, perMinute: 20 },
 };
 
