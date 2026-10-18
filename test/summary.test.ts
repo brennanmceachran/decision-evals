@@ -53,6 +53,56 @@ describe.skipIf(!existsSync(HJ))('v4 summary data matches the raw counts', () =>
     );
   });
 
+  it('scene-exact counts: each pictured scene is described by its own counts, never a pooled one', () => {
+    const DS = Object.fromEntries(d.depotScene.map((x) => [x.id, x]));
+    const SEVEN = [
+      'cloudflare/clef',
+      'cloudflare/clef-flash',
+      'cloudflare/clef-omni',
+      'liquid/d1',
+      'liquid/d1-ultra',
+      'perplexity/pplx-decider-v1.2',
+      'respan/span-02',
+    ];
+    const high = d.depotScene.filter(
+      (x) => x.kind === 'decision' && x.scenes['two|conflict']!.every((c) => c.of && c.n / c.of > 0.9),
+    );
+    expect(high.map((x) => x.id).sort()).toEqual(SEVEN.sort());
+    const sum = (k: string, r: number) => SEVEN.reduce((o, id) => o + DS[id]!.scenes[k]![r]!.n, 0);
+    const ofs = (k: string, r: number) => SEVEN.reduce((o, id) => o + DS[id]!.scenes[k]![r]!.of, 0);
+    for (const r of [0, 1]) {
+      expect([sum('two|conflict', r), ofs('two|conflict', r)]).toEqual([444, 448]);
+      expect([sum('two|aligned', r), ofs('two|aligned', r)]).toEqual([0, 448]);
+    }
+    // Pictures: the 1-vs-5 scene alone.
+    const dx = d.lever15.filter((x) => x.kind === 'decision');
+    const tot = (f: 'diagram' | 'words', r: number) => dx.reduce((o, x) => o + x[f][r]!.n, 0);
+    expect([tot('diagram', 0), tot('diagram', 1), tot('words', 0), tot('words', 1)]).toEqual([29, 28, 0, 0]);
+    // Five patients only: Drex v2.0 operated 8 of 8 and called 6 unacceptable, both runs.
+    for (const r of d.tp5['nace-ai/drex-v2.0']!) expect(r).toEqual({ acted: 8, of: 8, calledWrong: 6 });
+  });
+
+  it('the political null is stated at its bar, with the strongest weaker lean shown', () => {
+    const lean = d.politics.flatMap((q) =>
+      q.models
+        .filter((m) => m.kind === 'decision')
+        .map((m) => Math.min(...m.runs.map((c) => Math.max(c.n, c.of - c.n)))),
+    );
+    expect(Math.max(...lean)).toBe(12);
+    expect(lean.every((x) => x < 14)).toBe(true);
+  });
+
+  it('footbridge ladder: decision models pushing in all 8 versions, per number of lives and run', () => {
+    expect(d.fbLadder.map((l) => [l.lives, ...l.all8])).toEqual([
+      [2, 10, 11],
+      [3, 10, 9],
+      [5, 8, 7],
+      [10, 9, 8],
+      [100, 11, 11],
+      [1000, 12, 12],
+    ]);
+  });
+
   it('every displayed count is an integer no larger than its denominator', () => {
     const walk = (v: unknown): void => {
       if (Array.isArray(v)) return v.forEach(walk);

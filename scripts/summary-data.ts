@@ -54,7 +54,7 @@ export function build() {
         id,
         name: name[id],
         kind: kind[id],
-        runs: cs.map((c: any) => ({ n: c.n, of: c.of })),
+        runs: cs.map((c: any) => ({ n: c.n, of: c.of, refused: c.refused ?? 0 })),
       })),
     };
   });
@@ -165,6 +165,96 @@ export function build() {
     }
   });
 
+  // ---------------- Scene-exact counts (review round 5): never let a pooled count describe a single pictured scene.
+  const VIS_DEC = P.camera.filter((c: any) => kind[c.id] === 'decision').map((c: any) => c.id);
+  const VIS_ALL = P.camera.map((c: any) => c.id);
+  const srcFor = (m: string) => (kind[m] === 'chat' ? [raw.sources[2]] : [raw.sources[0], raw.sources[1]]);
+  // Lever diagram/words, the pictured 1 vs 5 scene only: pulled the lever into the 5, of 4 versions per model.
+  const lever15 = VIS_ALL.map((m: string) => ({
+    id: m,
+    name: name[m],
+    kind: kind[m],
+    diagram: srcFor(m).map((s: any) => {
+      const v = s.image[`${m}|image|switch|switch:1v5`];
+      return { n: v.of - v.picked, of: v.of };
+    }),
+    words: srcFor(m).map((s: any) => {
+      const v = s.image[`${m}|text_outcomes|switch|switch:1v5`];
+      return { n: v.of - v.picked, of: v.of };
+    }),
+  }));
+  // Depot, per scene: two workers vs an empty track ("two"), three vs one ("group-one"); schedule at the people
+  // ("conflict") or away ("aligned"). n = routed at the people (or at the larger group).
+  const depotScene = VIS_ALL.map((m: string) => ({
+    id: m,
+    name: name[m],
+    kind: kind[m],
+    scenes: Object.fromEntries(
+      ['two', 'group-one'].flatMap((sc) =>
+        ['conflict', 'aligned'].map((rel) => [
+          `${sc}|${rel}`,
+          srcFor(m).map((s: any) => {
+            const v = s.dashcam[`${m}|ops|${sc}|${rel}`];
+            return { n: v.of - v.picked, of: v.of, refused: v.refused };
+          }),
+        ]),
+      ),
+    ),
+    safetyTwo: srcFor(m).map((s: any) => {
+      const v = s.dashcam[`${m}|ops-safety|two|conflict`];
+      return { n: v.of - v.picked, of: v.of, refused: v.refused };
+    }),
+    dilemmaTwo: srcFor(m).map((s: any) => {
+      const v = s.dashcam[`${m}|dilemma|two|none`];
+      return { n: v.picked, of: v.of, refused: v.refused };
+    }),
+  }));
+  // Transplant at exactly five patients, from the raw rows: operated, then called it unacceptable (separate call).
+  const tp5: Record<string, { acted: number; of: number; calledWrong: number }[]> = {};
+  ['results/final/final-run1.jsonl', 'results/final/final-run2.jsonl', 'results/final/stage2.jsonl'].forEach(
+    (f, run) => {
+      for (const line of readFileSync(f, 'utf8').split('\n')) {
+        if (!line.includes('"transplant"')) continue;
+        const r = JSON.parse(line);
+        if (r.dilemma !== 'transplant' || r.part !== 'text' || r.refused || r.pFocal === null) continue;
+        if (Number(r.variant?.point?.n) !== 5) continue;
+        const slot = ((tp5[r.model] ??= [])[run === 2 ? 0 : run] ??= { acted: 0, of: 0, calledWrong: 0 });
+        slot.of++;
+        if (r.pFocal > 0.5) {
+          slot.acted++;
+          if (r.probes?.probes?.acceptable?.choice === 'false') slot.calledWrong++;
+        }
+      }
+    },
+  );
+  // Political pair: strongest side per model, both runs (no model reaches 14 of 16; weaker leans are kept visible).
+  const politics = ['Republican man|Democrat man', 'Republican woman|Democrat woman'].map((k) => {
+    const [a, b] = k.split('|');
+    return {
+      a,
+      b,
+      models: P.models.map((mm) => ({
+        id: mm.id,
+        name: mm.name,
+        kind: mm.kind,
+        runs: srcFor(mm.id).map((s: any) => {
+          const t = s.traits[`${mm.id}|parity-other|${k}`][2];
+          return { n: t.picked, of: t.of };
+        }),
+      })),
+    };
+  });
+  // Footbridge across all numbers of lives: decision models that pushed in all 8 versions, per run.
+  const fbLadder = [2, 3, 5, 10, 100, 1000].map((n) => ({
+    lives: n,
+    all8: [0, 1].map(
+      (r) =>
+        P.dilemmas.filter(
+          (d: any) => kind[d.id] === 'decision' && d.runs[r].footbridge.find((x: any) => x.lives === n)?.n === 8,
+        ).length,
+    ),
+  }));
+
   return {
     built: 'scripts/summary-data.ts (via scripts/present-data.ts)',
     source: P.source,
@@ -199,6 +289,12 @@ export function build() {
       curves: t.curves,
     })),
     tieBreak,
+    lever15,
+    depotScene,
+    tp5,
+    politics,
+    fbLadder,
+    visionDecisionIds: VIS_DEC,
     counted,
     always: { pairs: always, trades },
     transplantPosition: pos,
