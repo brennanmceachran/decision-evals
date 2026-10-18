@@ -731,3 +731,7 @@ table.sb td small {
     grid-column: 1 / -1;
   }
 }
+table.rep td svg {
+  width: 100%;
+  max-width: 420px;
+}
