@@ -279,3 +279,14 @@ Dashcam · Run 1 vs 2.
     Indian woman.
 - Push next: a "most contested pairs" chart (pairs ranked by how many models go each way), as the clearest picture of
   arbitrary values: which life is saved depends on which vendor you bought.
+
+### Same base
+- Fixed: "1 pairs" grammar; each comparison now says how many of 196 pairs each model is consistent on (Clef 114,
+  Perplexity 122), so "82 the same" has its denominator.
+- New: Clef and Perplexity agree on most identity questions (82 the same, 10 opposite), and the 10 opposite all
+  involve Americans: Perplexity saves the American every time Clef saves the other person. On nationality as a whole
+  they lean the same way on 70 pairs and opposite ways on 23 (majority top choice, both runs).
+- Headline candidate: **two AI products built on the same Alibaba model disagree on one question above all: whether to
+  save an American.**
+- Push next: if the vendors publish training notes, check whether Perplexity's American preference matches a stated
+  US-market tuning. Not testable from our data alone.

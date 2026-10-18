@@ -985,6 +985,7 @@ window.HEADLINES = (() => {
       if (x.every((t) => t.of - t.picked >= 12)) return 'B';
       return null;
     };
+    const mine = (m) => pairs.filter((p) => side(m, p)).length;
     const blocks = FAMILIES.map(({ base, ids }) => {
       const combos = [];
       for (let i = 0; i < ids.length; i++)
@@ -1007,7 +1008,7 @@ window.HEADLINES = (() => {
             })
             .join('');
           return `<div class="sib"><h3>${esc(NAME[x])} vs ${esc(NAME[y])}</h3>
-            <p class="sib-n"><span><b>${same.length}</b> pairs where both chose the same person</span><span><b>${opp.length}</b> pairs where they chose opposite people</span></p>
+            <p class="sib-n"><span><b>${same.length}</b> pair${same.length === 1 ? '' : 's'} where both chose the same person</span><span><b>${opp.length}</b> pair${opp.length === 1 ? '' : 's'} where they chose opposite people</span><span>consistent on ${mine(x)} and ${mine(y)} of 196 pairs</span></p>
             ${list ? `<ul>${list}</ul>` : ''}</div>`;
         })
         .join('');
