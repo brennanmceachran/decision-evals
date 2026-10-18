@@ -57,7 +57,9 @@
   const inBand = (d, lo, hi) => two(d).every((c) => c.n / c.of > lo && c.n / c.of <= hi);
   const railHigh = S.depot.filter((d) => two(d)[0].of && inBand(d, 0.9, 1));
   const railLow = S.depot.filter((d) => two(d)[0].of && inBand(d, -1, 0.25));
-  const railMid = S.depot.filter((d) => two(d)[0].of && !railHigh.includes(d) && !railLow.includes(d));
+  const railMid = S.depot.filter((d) => two(d)[0].of && two(d).some((c) => c.n / c.of > 0.25 && c.n / c.of <= 0.9));
+  if (S.depot.some((d) => two(d)[0].of && [railHigh, railMid, railLow].filter((r) => r.includes(d)).length !== 1))
+    throw new Error('depot bands do not partition the models; relabel the rails');
   const spareDec = railLow.filter((d) => d.kind === 'decision');
   const spareChat = railLow.filter((d) => d.kind === 'chat');
   const chatAll = S.depot.filter((d) => d.kind === 'chat');
@@ -99,9 +101,9 @@ attached: forward camera, latest frame</pre>
        </div>
      </div>
      <div class="verdict" id="verdict">
-       <div class="rail harm" data-side="left"><h2 class="rail-h">Sent the tram onto the two workers<small>in more than 90% of the 64 requests</small></h2><div class="chips"><span class="chip you" hidden>You</span>${railHigh.map(chip).join('')}</div></div>
-       ${railMid.length ? `<div class="rail mid"><h2 class="rail-h">Somewhere in between<small>onto the workers in 26–90% of requests</small></h2><div class="chips">${railMid.map(chip).join('')}</div></div>` : ''}
-       <div class="rail spare" data-side="right"><h2 class="rail-h">Mostly sent it to the empty track<small>onto the workers in 25% or fewer</small></h2><div class="chips"><span class="chip you" hidden>You</span>${railLow.map(chip).join('')}</div></div>
+       <div class="rail harm" data-side="left"><h2 class="rail-h">Sent the tram onto the two workers<small>in more than 90% of the 64 requests, in each run</small></h2><div class="chips"><span class="chip you" hidden>You</span>${railHigh.map(chip).join('')}</div></div>
+       ${railMid.length ? `<div class="rail mid"><h2 class="rail-h">Somewhere in between<small>onto the workers in 26–90% of requests in at least one run</small></h2><div class="chips">${railMid.map(chip).join('')}</div></div>` : ''}
+       <div class="rail spare" data-side="right"><h2 class="rail-h">Mostly sent it to the empty track<small>onto the workers in 25% or fewer, in each run</small></h2><div class="chips"><span class="chip you" hidden>You</span>${railLow.map(chip).join('')}</div></div>
        <div class="rail none"><h2 class="rail-h">Refused every request</h2><div class="chips">${refused.map((d) => `<span class="chip" ${tip(`${d.name}: refused all ${two(d)[0].refused} requests in this scene (same in both runs)`)}>${esc(short(d.name))}<span class="n">refused ${two(d)[0].refused}</span></span>`).join('')}</div></div>
        <p class="key"><b>How to read a chip:</b> requests where it sent the tram onto the two workers, of 64 (this scene only; both tracks and wordings varied). <span class="k solid"></span>decision model, two independent runs: run 1 shown, <span class="r2">r2</span> marks a different run-2 count <span class="k dashed"></span>chat model for comparison, one run, each answer the majority of 5 samples</p>
      </div>
@@ -346,6 +348,8 @@ attached: forward camera, latest frame</pre>
   const fbSome = fbDec
     .filter((m) => !fbAlways.includes(m) && !fbNever.includes(m))
     .sort((a, b) => b.at2[0].n - a.at2[0].n);
+  if (fbSome.some((m) => !m.at2.some((c) => c.n > 0 && c.n < c.of)))
+    throw new Error('footbridge "some versions" group holds a model with no partial run; relabel it');
   const fbName = (m) =>
     `<span class="nm${m.kind === 'chat' ? ' chat' : ''}" ${tip(`${m.name}: pushed in ${m.at2[0].n} of ${m.at2[0].of} versions at two lives (${runs(m.at2)})`)}>${esc(short(m.name))}${m.kind === 'decision' && (fbAlways.includes(m) || fbNever.includes(m)) ? '' : ` <span class="cn">${m.at2[0].n}/${m.at2[0].of}</span>${r2(m.at2)}`}</span>`;
   const tp = S.transplant.filter((m) => m.kind === 'decision' && m.at5.every((c) => c.n * 2 > c.of)).length;
@@ -379,8 +383,8 @@ attached: forward camera, latest frame</pre>
        </div>
        <div class="fb-groups">
          <div class="g harm"><span class="gn">${fbAlways.length}</span><h3>Pushed in all 8 versions, both runs</h3><p>${fbAlways.map(fbName).join('')}</p></div>
-         <div class="g mid"><span class="gn">${fbSome.length}</span><h3>Pushed in some versions</h3><p>${fbSome.map(fbName).join('')}</p></div>
-         <div class="g spare"><span class="gn">${fbNever.length}</span><h3>Never pushed</h3><p>${fbNever.map(fbName).join('')}</p></div>
+         <div class="g mid"><span class="gn">${fbSome.length}</span><h3>Pushed in some versions, not all, in at least one run</h3><p>${fbSome.map(fbName).join('')}</p></div>
+         <div class="g spare"><span class="gn">${fbNever.length}</span><h3>Never pushed, both runs</h3><p>${fbNever.map(fbName).join('')}</p></div>
          <p class="g-chat">Chat models, one run: ${fbChat.map(fbName).join('')}</p>
        </div>
      </div>
@@ -432,9 +436,9 @@ attached: forward camera, latest frame</pre>
        <div class="sd-left-note"><p class="note">The second answer is a separate call made after the choice. It shows what the model says about the act, not what it believed while choosing. Across all five patient numbers we asked (1, 2, 5, 10 and 100), Drex v2.0 operated in ${all40.acted} of ${all40.of} versions (${S.transplantPosition['nace-ai/drex-v2.0'][0].first.n} of ${S.transplantPosition['nace-ai/drex-v2.0'][0].first.of} with “operate” listed first, ${S.transplantPosition['nace-ai/drex-v2.0'][0].second.n} of ${S.transplantPosition['nace-ai/drex-v2.0'][0].second.of} second) and called ${all40.calledWrong} of those ${all40.acted} unacceptable. Solar Decide Flash, at five patients, operated in ${sf5[0].acted} of ${sf5[0].of}; across all patient numbers its choices track button order (${S.transplantPosition['upstage/solar-decide-flash'][0].second.n} of ${S.transplantPosition['upstage/solar-decide-flash'][0].second.of} with “operate” second, ${S.transplantPosition['upstage/solar-decide-flash'][0].first.n} of ${S.transplantPosition['upstage/solar-decide-flash'][0].first.of} first): an association, and the harmful choices still happened.</p></div>
        <div class="sd-groups">
          <p class="sd-h">It is not alone. Every decision AI at five patients, both runs (count: called it unacceptable, of times it operated):</p>
-         <div class="g harm"><span class="gn">${saidWrong.length}</span><h3>Operated, then called it unacceptable more than half the time</h3><p>${saidWrong.sort(byWrong).map(sdName).join('')}</p></div>
-         <div class="g mid"><span class="gn">${saidOk.length}</span><h3>Operated, then called it unacceptable half the time or less</h3><p>${saidOk.sort(byWrong).map(sdName).join('')}</p></div>
-         <div class="g spare"><span class="gn">${neverOp.length}</span><h3>Never operated</h3><p>${neverOp.map(sdName).join('')}</p></div>
+         <div class="g harm"><span class="gn">${saidWrong.length}</span><h3>Operated, then called it unacceptable more than half the time, both runs</h3><p>${saidWrong.sort(byWrong).map(sdName).join('')}</p></div>
+         <div class="g mid"><span class="gn">${saidOk.length}</span><h3>Operated, then called it unacceptable half the time or less, both runs</h3><p>${saidOk.sort(byWrong).map(sdName).join('')}</p></div>
+         <div class="g spare"><span class="gn">${neverOp.length}</span><h3>Never operated, both runs</h3><p>${neverOp.map(sdName).join('')}</p></div>
          ${t5Mixed.length ? `<p class="g-chat">Differs between runs: ${t5Mixed.map(sdName).join('')}</p>` : ''}
          <p class="g-chat">Chat models, one run: ${t5Chat.map(sdName).join('')}</p>
        </div>
@@ -453,7 +457,7 @@ attached: forward camera, latest frame</pre>
     'trust',
     'Can you trust it?',
     `<p class="eyebrow">Before you trust any of this</p>
-     <h2 id="trust-h">Asked again, ${ident} of 19 decision AIs gave the identical count on every question. ${habits.length} of 22 pressed the first-listed button in 90% or more of even choices.</h2>
+     <h2 id="trust-h">Asked again, ${ident} of 19 decision AIs gave identical counts on all ${S.repeat[0].cells.toLocaleString()} trait questions. ${habits.length} of 22 had a first-button habit.</h2>
      <div class="trust">
        <div class="t"><span class="tn">${ident} of 19</span><h3>Exactly repeatable</h3><p>decision models gave the same count on all ${S.repeat[0].cells.toLocaleString()} trait questions in a second, independent run.</p>
          <div class="rep" role="img" aria-label="${esc(S.repeat.map((r) => `${r.name}: same on ${r.same} of ${r.cells}`).join('; '))}">${[
@@ -517,13 +521,13 @@ attached: forward camera, latest frame</pre>
       });
       note.innerHTML =
         side === 'left'
-          ? `You followed the schedule, onto the two workers. <b>${follows.length} of ${dec.length}</b> decision models did the same in more than 90% of their requests in this scene.`
-          : `You sent the tram to the empty track. ${spareDec.length ? `${spareDec.length} of ${dec.length} decision models (${spareDec.map((d) => `<b>${esc(short(d.name))}</b>`).join(' and ')}) did that in at least three quarters of their requests` : `No decision model did that in at least three quarters of its requests`}; ${railMid
+          ? `You followed the schedule, onto the two workers. <b>${follows.length} of ${dec.length}</b> decision models did the same in more than 90% of their requests in this scene, in both runs.`
+          : `You sent the tram to the empty track. ${spareDec.length ? `${spareDec.length} of ${dec.length} decision models (${spareDec.map((d) => `<b>${esc(short(d.name))}</b>`).join(' and ')}) did that in at least three quarters of their requests in both runs` : `No decision model did that in at least three quarters of its requests in both runs`}; ${railMid
               .filter((d) => d.kind === 'decision')
               .map((d) => esc(short(d.name)))
               .join(
                 ' and ',
-              )} split, and ${refused.length} refused. ${spareChat.length} of ${chatAll.length} chat models chose the empty track nearly every time.`;
+              )} were in between in at least one run, and ${refused.length} refused. ${spareChat.length} of ${chatAll.length} chat models chose the empty track nearly every time.`;
     }),
   );
   document.querySelectorAll('[data-call]').forEach((box) => {
