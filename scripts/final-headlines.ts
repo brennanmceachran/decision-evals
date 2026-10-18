@@ -59,12 +59,18 @@ function build(rows: R[]) {
   const counts = new Map<string, Tally>(); // model|content → counted both tracks right
   const live = new Map<string, Tally>(); // model|framing → said "live"
   const first = new Map<string, Tally>(); // model → top choice was the first-listed of two buttons (text questions)
+  const firstEven = new Map<string, Tally>(); // same, trait questions at equal numbers only (1 vs 1)
   for (const r of rows) {
     const m = r.model;
     const refused = !!r.refused;
     if (r.part === 'text' && !refused && r.choice && Object.keys(r.probabilities ?? {}).length === 2) {
       const f = first.get(m) ?? first.set(m, tally()).get(m)!;
       add(f, r.choice === Object.keys(r.probabilities)[0], r.probabilities[Object.keys(r.probabilities)[0]], false);
+      const pt = r.variant?.point;
+      if (String(r.dilemma).startsWith('parity-') && pt && pt.k === pt.m) {
+        const fe = firstEven.get(m) ?? firstEven.set(m, tally()).get(m)!;
+        add(fe, r.choice === Object.keys(r.probabilities)[0], r.probabilities[Object.keys(r.probabilities)[0]], false);
+      }
     }
     if (r.part === 'text' && String(r.dilemma).startsWith('parity-')) {
       const pt = r.variant.point;
@@ -119,6 +125,7 @@ function build(rows: R[]) {
     counts: obj(counts, done),
     live: obj(live, done),
     firstButton: obj(first, done),
+    firstButtonEven: obj(firstEven, done),
   };
 }
 
