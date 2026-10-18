@@ -339,7 +339,7 @@
         const j = r.joint[k];
         if (k in r.joint) {
           if (!j) return '<td class="rf na" title="not applicable">–</td>';
-          return `<td class="rf${j.on ? ' on' : ''}" title="${esc(`${M[id].name}: ${k}: ${j.why}`)}">${j.on ? '<i class="rf-d"></i>' : ''}</td>`;
+          return `<td class="rf${j.on ? ' on' : ''}" title="${esc(`${M[id].name}: ${k}: ${j.why}`)}">${j.on ? '<i class="rf-d"></i>' : ''}<span class="sr">${j.on ? 'yes' : 'no'}</span></td>`;
         }
         const vs = r.runs.map((x) => x[k]);
         if (vs.every((v) => !v)) return '<td class="rf na" title="not applicable (text-only model)">–</td>';
@@ -352,7 +352,7 @@
           : on.some(Boolean)
             ? `<i class="rf-h" title="run ${on[0] ? 1 : 2} only"></i>`
             : '';
-        return `<td class="rf${on.some(Boolean) ? ' on' : ''}" title="${esc(tip)}">${mark}</td>`;
+        return `<td class="rf${on.some(Boolean) ? ' on' : ''}" title="${esc(tip)}">${mark}<span class="sr">${on.every(Boolean) ? 'yes' : on.some(Boolean) ? `run ${on[0] ? 1 : 2} only` : 'no'}</span></td>`;
       }).join('');
       const n1 = flagCount(r, 0);
       const n2 = r.runs[1] ? flagCount(r, 1) : null;
@@ -533,8 +533,8 @@
     'A11',
     'Every dilemma, every number of lives',
     'The main presentation shows footbridge and transplant. Here are all five classic dilemmas for all 22 models. Each cell: in how many of 8 versions the model chose to act (pull, divert, drop, push, harvest) at that number of lives saved. The transplant column at 1 is a one-for-one trade: kill one healthy man to save one patient.',
-    `<div class="tabs" role="tablist">${DIL.map(([d, l], i) => `<button role="tab" aria-selected="${i === 4}" data-dil="${d}">${esc(l.split(':')[0])}</button>`).join('')}</div>
-     <div class="panel"><h3 id="dil-title"></h3><p class="sub">Columns: lives saved by acting. Darker = acted in more of the 8 versions. Rows collapse to one when both runs are identical.</p><div class="scroll" id="dil-body"></div></div>`,
+    `<div class="tabs" role="tablist">${DIL.map(([d, l], i) => `<button role="tab" aria-selected="${i === 4}" aria-controls="dil-body" data-dil="${d}">${esc(l.split(':')[0])}</button>`).join('')}</div>
+     <div class="panel"><h3 id="dil-title"></h3><p class="sub">Columns: lives saved by acting. Darker = acted in more of the 8 versions. Rows collapse to one when both runs are identical.</p><div class="scroll" id="dil-body" role="tabpanel" aria-live="polite"></div></div>`,
     'Human survey figures (where cited in the main presentation) asked whether an act is permissible; the models had to choose. Act counts include first-button habits: Convai Laya acts in nearly every version of everything.',
   );
 
@@ -550,7 +550,7 @@
           rowsFor(j)
             .map(
               (v) =>
-                `<span class="cv-v${v.pulled ? ' on' : ''}" title="${esc(`${isChat(c.id) ? 'one run' : `run ${j + 1}`}, wording ${v.wording + 1}, “pull” listed ${v.pullFirst ? 'first' : 'second'}: ${v.refused ? 'refused' : v.pulled ? 'pulled' : 'did nothing'}; counted right: ${v.countRight ? 'yes' : 'no'}; called pulling acceptable: ${v.calledAcceptable ? 'yes' : 'no'}; returned weight on pull ${v.weightPull?.toFixed(2)}`)}"><i>${v.pullFirst ? '1' : '2'}</i></span>`,
+                `<span class="cv-v${v.pulled ? ' on' : ''}" role="img" aria-label="${esc(`wording ${v.wording + 1}, pull listed ${v.pullFirst ? 'first' : 'second'}: ${v.refused ? 'refused' : v.pulled ? 'pulled' : 'did nothing'}`)}" title="${esc(`${isChat(c.id) ? 'one run' : `run ${j + 1}`}, wording ${v.wording + 1}, “pull” listed ${v.pullFirst ? 'first' : 'second'}: ${v.refused ? 'refused' : v.pulled ? 'pulled' : 'did nothing'}; counted right: ${v.countRight ? 'yes' : 'no'}; called pulling acceptable: ${v.calledAcceptable ? 'yes' : 'no'}; returned weight on pull ${v.weightPull?.toFixed(2)}`)}"><i>${v.pullFirst ? '1' : '2'}</i></span>`,
             )
             .join('');
         const tot = (j) => `${rowsFor(j).filter((v) => v.pulled).length}/${rowsFor(j).length}`;
@@ -593,7 +593,7 @@
             const r2 = cs[1] && cs[1].n !== c.n ? cs[1].n : null;
             const tip = `${M[id].name}: saved the ${p.a} ${c.n} of ${c.of}${cs[1] ? (r2 !== null ? `; run 2: ${r2}` : '; run 2 the same') : ' (one run)'}${c.refused ? `; refused ${c.refused}` : ''}`;
             const den = c.of && c.of !== 16 ? `<small>/${c.of}</small>` : '';
-            return `<td class="pg${i === DEC.length ? ' split' : ''}" style="--v:${v}" title="${esc(tip)}">${c.of ? c.n : '–'}${den}${r2 !== null ? '<sup>*</sup>' : ''}</td>`;
+            return `<td class="pg${i === DEC.length ? ' split' : ''}" style="--v:${v}" title="${esc(tip)}">${c.of ? c.n : '–'}${den}${r2 !== null ? `<sup aria-hidden="true">*</sup><span class="sr"> (run 2: ${r2})</span>` : ''}</td>`;
           }).join('')}</tr>`,
       )
       .join('');
@@ -604,16 +604,33 @@
     'A13',
     'Every race and nationality question, every model',
     'The league tables in the main presentation summarise these. Here is every one-vs-one question behind them, every model, with the raw count. No threshold: weak leans and even splits are all shown.',
-    `<div class="tabs" role="tablist"><button role="tab" aria-selected="true" data-grid="race">Race (25 questions)</button><button role="tab" aria-selected="false" data-grid="nationality">Nationality (110 questions)</button></div>
+    `<div class="tabs" role="tablist"><button role="tab" aria-selected="true" aria-controls="grid-body" data-grid="race">Race (25 questions)</button><button role="tab" aria-selected="false" aria-controls="grid-body" data-grid="nationality">Nationality (110 questions)</button></div>
      <div class="panel"><p class="sub">Each cell: how many of 16 versions saved the first-named person (run 1; chat models: one run). Blue = more often the first-named; orange = more often the second; pale = near 8. An asterisk marks a cell where run 2 differs; a small “/N” marks a cell with fewer than 16 answers because the model refused some versions. Hover for both runs and refusals.</p>
      <div class="pg-legend"><span class="pg" style="--v:0">0</span><span class="pg" style="--v:0.25">4</span><span class="pg" style="--v:0.5">8</span><span class="pg" style="--v:0.75">12</span><span class="pg" style="--v:1">16</span><span class="muted">saved the first-named, of 16</span></div>
-     <div class="scroll" id="grid-body"></div></div>`,
+     <div class="scroll" id="grid-body" role="tabpanel"></div></div>`,
     'An even 8 of 16 can be a button habit rather than fairness (A7). GPT-6 Luna Decisions refuses some ties, so some of its cells have fewer than 16 answers.',
   );
 
   // ------------------------------------------------------------ render
   document.getElementById('sections').innerHTML = S.map((s) => s.html).join('');
-  document.getElementById('toc').innerHTML = S.map((s) => `<a href="#${s.id}">${esc(s.title)}</a>`).join('');
+  const NAV = {
+    agreement: 'Agreement',
+    gender: 'Gender identity',
+    sexuality: 'Sexuality',
+    record: 'Record, body, politics',
+    sex: 'Women vs men',
+    trades: 'Trades',
+    flags: 'Red flags',
+    saydo: 'Acting vs judging',
+    refusals: 'Refusals',
+    samebase: 'Same base',
+    dilemmas: 'Dilemmas',
+    controls: 'Controls',
+    grids: 'Race and nationality',
+  };
+  document.getElementById('toc').innerHTML = S.map(
+    (s, i) => `<a href="#${s.id}"><span class="nav-n">A${i + 1}</span> ${esc(NAV[s.id] ?? s.title)}</a>`,
+  ).join('');
   document.getElementById('foot').innerHTML =
     `Built from <code>${esc(P.source)}</code> by <code>${esc(P.built)}</code>. Counts are the model’s top choice: “saved X in N of 16”. Decision models: two independent runs. Chat models: one run, majority of 5 samples. Back to the <a href="index.html">main presentation</a>; full explorer at <a href="../final/index.html">site/final</a>.`;
 

@@ -744,3 +744,122 @@ table.rep td svg {
   text-decoration: none;
   white-space: nowrap;
 }
+
+/* Opening summary */
+.summary {
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: 8px 28px 40px;
+}
+.summary h2 {
+  font: 600 clamp(24px, 3vw, 32px) / 1.15 var(--serif);
+  margin: 0 0 8px;
+}
+.summary .say {
+  max-width: var(--measure);
+  color: var(--ink-2);
+  margin: 0 0 18px;
+}
+ol.sum-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0 28px;
+  border-top: 2px solid var(--ink);
+}
+ol.sum-list li {
+  border-bottom: 1px solid var(--rule);
+}
+ol.sum-list a {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 2px 14px;
+  padding: 12px 0;
+  text-decoration: none;
+  color: inherit;
+}
+ol.sum-list a:hover .sum-t,
+ol.sum-list a:focus-visible .sum-t {
+  text-decoration: underline;
+  text-decoration-color: var(--amber);
+}
+.sum-n {
+  font: 700 22px/1.15 var(--sans);
+  color: var(--harm);
+  grid-row: span 2;
+}
+.sum-t {
+  font: 15px/1.45 var(--sans);
+}
+.sum-k {
+  font: 600 12px var(--sans);
+  color: var(--muted);
+}
+
+/* Closing limits */
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+  font: 15px/1.55 var(--sans);
+}
+.two-col h3 {
+  font: 600 16px var(--sans);
+  margin: 0 0 6px;
+}
+.two-col ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--ink-2);
+}
+.two-col li {
+  margin-bottom: 6px;
+}
+@media (max-width: 700px) {
+  .summary {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  ol.sum-list a {
+    grid-template-columns: 78px 1fr;
+  }
+  .sum-n {
+    font-size: 18px;
+  }
+}
+
+/* Navigation: scrolls sideways with a visible fade and thin scrollbar so no section is silently cut off. */
+.bar nav {
+  scrollbar-width: thin;
+  mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+  padding-right: 32px;
+}
+.bar nav a:focus-visible {
+  outline-offset: -2px;
+}
+.nav-n {
+  color: var(--harm);
+  font-weight: 700;
+}
+.scroll,
+.ladder {
+  position: relative;
+}
+.sr {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+@media (max-width: 1100px) {
+  .bar .title {
+    display: none;
+  }
+}

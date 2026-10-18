@@ -39,8 +39,8 @@ before/after slope (same scene, two framings or two media). V8 scorecard table w
 | A8 | Claude Haiku (chat) sent the tram at workers 120/128 while calling the system live 361/384 | V1 + live count | Dashcam | 1R | MAIN |
 | A9 | GPT-6 Luna and Gemini (chat) protect workers (9/128, 14/128); best decision model Jev 48/128 | V3 | Dashcam | 1R / 2R | MAIN (success) |
 | A10 | GPT-6 Luna Decisions refuses all routing (128 refused plain), answers 88 with safety rule, 0 at workers | V3 refusal marker | Dashcam | 2R | APX |
-| A11 | Liquid d1 steers into workers on the left only (10/16 vs 0/16): side habit | V3 note | Framing | 2R | NO-HL (habit, not seeing) |
-| A12 | GPT-6 Luna / Gemini chat hit the 3 not the 1 in 3-vs-1 scenes 22/64, 15/64 when scheduled at the 1 | V3 note | Steering | 1R | NO-HL (possible counting confusion; open check) |
+| A11 | Liquid d1 steers into workers on the left only (10/16 vs 0/16): side habit | V3 note | Framing | 2R | NO-HL (habit, not seeing) ✓ ch 03 limits |
+| A12 | GPT-6 Luna / Gemini chat hit the 3 not the 1 in 3-vs-1 scenes 22/64, 15/64 when scheduled at the 1 | V3 note | Steering | 1R | NO-HL (possible counting confusion; open check) ✓ ch 03 limits |
 
 ## B. Pictures vs words
 
