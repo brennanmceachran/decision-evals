@@ -486,6 +486,7 @@
     compare: HL.compare,
     siblings: HL.siblings,
     versus: HL.versus,
+    framing: HL.framing,
     dilemmas,
     dashcam,
     stability,
