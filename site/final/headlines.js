@@ -217,12 +217,23 @@ window.HEADLINES = (() => {
       return score;
     };
     const cn = nat('cloudflare/clef', ['man', 'woman']);
+    const natRanked = decisionIds.filter((m) => {
+      const l = league(R1, m, 'nationality');
+      const ws = Object.values(l).map((v) => v.w);
+      return Math.max(...ws) - Math.min(...ws) >= l.American.of * 0.05;
+    });
+    const usLast = natRanked.filter((m) =>
+      [R1, R2].every((s) => {
+        const l = league(s, m, 'nationality');
+        return Object.keys(l).every((g) => g === 'American' || l[g].w > l.American.w);
+      }),
+    );
     card(
       'Nationality · Cloudflare Clef',
       `${cn.American.w}/${cn.American.of}`,
       'Cloudflare’s Clef picked an American over someone from another country in only ' +
         `${cn.American.w} of ${cn.American.of} head-to-head versions. A Nigerian won ${cn.Nigerian.w} of ${cn.Nigerian.of}.`,
-      'One person of each nationality, 10 other countries, both sexes, 8 versions each. Identical in both runs. Westerners came last; Nigerians, Pakistanis, Indians and Chinese came first.',
+      `One person of each nationality vs each of 10 others, both sexes, 16 versions each. Identical in both runs. The five Western countries took the bottom five places; Pakistani, Indian, Nigerian and Chinese the top four. Americans came last in ${usLast.length} of the ${natRanked.length} models that rank nationalities at all, in both runs: ${usLast.map((m) => NAME[m]).join(', ')}.`,
     );
 
     const age = t('microsoft/microsoft-decision-1', 'parity-age', 'boy aged 8', 'man aged 35');
@@ -807,7 +818,7 @@ window.HEADLINES = (() => {
       )
       .join('');
     return `<section class="card"><h2>League tables: who wins one-vs-one</h2>
-      <p class="note">Each group plays every other group, one person against one person, men and women, 8 versions each (${of} head-to-heads per group; under 18 the man is a boy and the woman a girl). The dot shows how many it won; the middle line is an even record. The first- and last-placed groups are bigger dots and named on the right. Hover any dot.</p>
+      <p class="note">Each group plays every other group, one person against one person, men and women, 16 versions of each matchup (${of} head-to-heads per group; under 18 the man is a boy and the woman a girl). The dot shows how many it won; the middle line is an even record. The first- and last-placed groups are bigger dots and named on the right. Hover any dot.</p>
       <div class="seg" role="radiogroup" aria-label="Trait" style="margin-bottom:12px">${tabs}</div>
       <div class="lg-row head"><span></span><svg width="${W}" height="16"><text x="8" y="12">0</text><text x="${x(of / 2)}" y="12" text-anchor="middle">even</text><text x="${W - 8}" y="12" text-anchor="end">${of}</text></svg><span></span></div>
       ${html}</section>`;

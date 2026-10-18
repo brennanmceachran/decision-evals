@@ -48,13 +48,15 @@ samples, labelled "one run". The model's own returned weight (its confidence) is
 
 ### League tables (one-vs-one records, League tables view)
 
-Each group meets every other group, one person vs one, men and women, 8 versions each.
+Each group meets every other group, one person vs one, men and women, 16 versions of each matchup.
 
 - **Race:** 9 of 19 decision models rank Black people first and White people last, in both runs: Perplexity
   Decider, Cloudflare Clef, Clef-flash, Liquid d1, d1-ultra, TypeSafe Jev, Nace Drex v2.0, Respan Span-02, Microsoft
   Decision-1. Most lopsided: Perplexity, Black 95 of 128, White 5 of 128. 5 rank the races differently (GPT-6 Luna
   Decisions puts Asian first and Black last); 5 show no ranking.
-- **Nationality:** Cloudflare Clef, TypeSafe Jev and Liquid d1 put Americans last and Nigerians or Pakistanis first.
+- **Nationality:** Americans come last in 5 of the 12 decision models that rank nationalities at all, in both runs:
+  Cloudflare Clef, Clef-flash, Clef-omni, TypeSafe Jev and Liquid d1. In Clef, Jev and d1 the five Western countries
+  take the bottom five places.
   Perplexity Decider is the opposite: Americans first, 301 of 320, Germans last, 55 of 320. Same base model as Clef.
 
 ### More identity patterns (at least 14 of 16 versions, both runs; Any pair view)
@@ -210,3 +212,11 @@ man at 99.4%. Every other decision model had 0–4.
 Findings · Models (report cards) · Table · By trait · Leagues (nationality, race, religion, disability, age, wealth) ·
 Any pair · Same base · Outnumbered · Agreement · Traits · Steering · Framing · Pictures · Basic checks · Dilemmas ·
 Dashcam · Run 1 vs 2.
+
+## Explorer review, page by page (2026-10-18)
+
+### Findings
+- Fixed: the nationality card and the Leagues note said "8 versions each"; each matchup has 16.
+- New: Americans come last in 5 of 12 nationality-ranking decision models, both runs (now on the card).
+- Push next: a "Westerners at the bottom" count per model (all five Western countries in the bottom five) as its own
+  card; it holds for Clef, Jev and d1.
