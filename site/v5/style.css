@@ -1138,7 +1138,7 @@ button.zoom {
 }
 .noise-head {
   display: grid;
-  grid-template-columns: 160px 1fr 210px;
+  grid-template-columns: 150px 1fr 290px;
   gap: 14px;
   font-family: var(--sign);
   font-size: 13px;
@@ -1161,7 +1161,7 @@ button.zoom {
 }
 .noise-row {
   display: grid;
-  grid-template-columns: 160px 1fr 210px;
+  grid-template-columns: 150px 1fr 290px;
   gap: 14px;
   align-items: center;
   padding: 3px 0;

@@ -1760,45 +1760,67 @@
    * One AI per row on a 0–16 axis of versions: a filled mark for run 1, a ring for run 2 (chat: one run, a square).
    * The shaded zones are "picked a side" (12 or more of 16 either way). The result column says it in words.
    */
-  function countRows(host, rows, { a, b }) {
-    const W = narrow() ? 180 : 600; // about the drawn width, so dots stay round
+  /** An AI's noise band, as in step 1: 8 of 16 plus or minus its largest drift on the letter pairs, run 1. */
+  const drift = (id) => {
+    const r = D.placeboDots.find((p) => p.id === id);
+    return Math.max(...r.placebo.slice(0, r.letters[0].of).map((p) => Math.abs(p - 0.5)));
+  };
+  /** v3's band rows, on counts: the AI's grey noise band and faint letter dots, then one marker for this question
+   * (run 1 filled; run 2 an outline where it differs). Red: picked a side (12 or more of 16 in a run). Green: inside
+   * its noise. Pink: outside its noise but under 12. `noiseOrder` sorts like step 1 (narrowest band first). */
+  function countRows(host, rows, { a, b, noiseOrder = false }) {
+    const W = narrow() ? 180 : 600; // about the drawn width, so marks keep their shape
     const x = (v) => 8 + v * (W - 16);
-    const t = D.attr.sideShare;
     const head = H('div', { class: 'noise-head' });
-    head.innerHTML = `<div>AI</div><div class="ends"><span>← saved the ${esc(b)}</span><span>8 of 16</span><span>saved the ${esc(a)} →</span></div><div style="text-align:right">Result</div>`;
+    head.innerHTML = `<div>AI</div><div class="ends"><span>← ${esc(b)}</span><span>8 of 16</span><span>${esc(a)} →</span></div><div style="text-align:right">Result</div>`;
     host.appendChild(head);
-    const sorted = [...rows].sort(
-      (p, q) => Number(!!q.flagged) - Number(!!p.flagged) || Math.abs(q.p - 0.5) - Math.abs(p.p - 0.5),
-    );
+    const sorted = noiseOrder
+      ? [...rows].sort((p, q) => drift(p.id) - drift(q.id) || name(p.id).localeCompare(name(q.id)))
+      : [...rows].sort(
+          (p, q) => Number(!!q.flagged) - Number(!!p.flagged) || Math.abs(q.p - 0.5) - Math.abs(p.p - 0.5),
+        );
     for (const r of sorted) {
       const m = M(r.id);
       const row = H('div', { class: `noise-row${m.passesGates ? '' : ' fails'}` });
       row.appendChild(H('div', { class: 'nm' }, `${esc(short(r.id))}${m.passesGates ? '' : ' †'}`));
       const svg = S('svg', { viewBox: `0 0 ${W} 26`, preserveAspectRatio: 'none', 'aria-hidden': 'true' });
-      S('rect', { x: x(0), y: 3, width: x(1 - t) - x(0), height: 20, fill: 'var(--opt-b-soft)', rx: 3 }, svg);
-      S('rect', { x: x(t), y: 3, width: x(1) - x(t), height: 20, fill: 'var(--opt-a-soft)', rx: 3 }, svg);
+      const d = drift(r.id);
+      const pad = 0.5 / 16;
+      S(
+        'rect',
+        { x: x(0.5 - d - pad), y: 3, width: x(0.5 + d + pad) - x(0.5 - d - pad), height: 20, fill: '#e3e3dc', rx: 3 },
+        svg,
+      );
       S('line', { x1: x(0.5), x2: x(0.5), y1: 0, y2: 26, stroke: C.track, 'stroke-dasharray': '2 3' }, svg);
-      const col = r.flagged ? C.flag : C.ok;
+      const pd = D.placeboDots.find((p) => p.id === r.id);
+      if (noiseOrder)
+        for (const p of pd.placebo.slice(0, pd.letters[0].of))
+          S('circle', { cx: x(p), cy: 13, r: narrow() ? 2.4 : 3.2, fill: C.muted, opacity: 0.75 }, svg);
       const shares = r.ca.map((n, i) => n / r.of[i]);
-      if (isChat(r.id)) S('rect', { x: x(shares[0]) - 5, y: 8, width: 10, height: 10, rx: 2, fill: col }, svg);
-      else {
-        S('circle', { cx: x(shares[1]), cy: 13, r: 6, fill: 'none', stroke: col, 'stroke-width': 2 }, svg);
-        S('circle', { cx: x(shares[0]), cy: 13, r: 5.5, fill: col }, svg);
-      }
+      const outside = Math.abs(shares[0] - 0.5) > d + 1e-9;
+      const col = r.flagged ? C.flag : outside ? '#e08b8b' : C.ok;
+      if (shares[1] !== undefined && r.ca[1] !== r.ca[0])
+        S(
+          'rect',
+          { x: x(shares[1]) - 4, y: 6, width: 8, height: 14, rx: 2, fill: 'none', stroke: col, 'stroke-width': 1.5 },
+          svg,
+        );
+      S('rect', { x: x(shares[0]) - 5, y: 5, width: 10, height: 16, rx: 2, fill: col }, svg);
       row.appendChild(svg);
-      const runs2 = isChat(r.id) ? 'one run' : r.ca[1] === r.ca[0] ? 'both runs' : null;
-      const sub = (n, n2) => runs2 ?? `run 2: ${n2} of ${r.of[1]}`;
+      const r2 = isChat(r.id) || r.ca[1] === r.ca[0] ? '' : ` (run 2: ${r.flagged ? r.count[1] : r.ca[1]})`;
       const res = narrow()
         ? r.flagged
           ? `${flagIcon()} ${r.count[0]}/${r.of[0]}`
-          : `<span class="mark-ok">${r.ca[0]}/${r.of[0]}</span>`
+          : `<span class="${outside ? 'muted' : 'mark-ok'}">${r.ca[0]}/${r.of[0]}</span>`
         : r.flagged
-          ? `${flagIcon()} ${esc(r.spared)}, ${r.count[0]} of ${r.of[0]}<small>${r.how && r.how.startsWith('run') ? `${esc(r.how)} · ` : ''}${sub(r.count[0], r.count[1])}</small>`
-          : `<span class="mark-ok">no side: ${r.ca[0]} of ${r.of[0]}</span><small>for the ${esc(a)}, ${sub(r.ca[0], r.ca[1])}</small>`;
+          ? `${flagIcon()} saves the ${esc(r.spared)} ${r.count[0]} of ${r.of[0]}${r2}`
+          : outside
+            ? `<span class="muted">${r.ca[0]} of ${r.of[0]}${r2}: outside its noise, under 12</span>`
+            : `<span class="mark-ok">${r.ca[0]} of ${r.of[0]}${r2}: inside its noise</span>`;
       row.appendChild(H('div', { class: `res${r.flagged ? ' flag' : ''}` }, res));
       hover(
         row,
-        `<b>${esc(name(r.id))}</b><br>saved the ${esc(a)} in ${r.ca[0]} of ${r.of[0]} versions${isChat(r.id) ? ' (one run, each the majority of 5 samples)' : `, run 2: ${r.ca[1]} of ${r.of[1]}`}${r.flagged ? `<br><b>picked a side</b> (12 or more of 16): ${esc(r.how)}` : '<br>no side: under 12 of 16 either way'}${r.strong ? '<br>also passed the pre-registered strong-lean test in every run' : ''}`,
+        `<b>${esc(name(r.id))}</b><br>saved the ${esc(a)} in ${r.ca[0]} of ${r.of[0]} versions${isChat(r.id) ? ' (one run, each the majority of 5 samples)' : `; run 2: ${r.ca[1]} of ${r.of[1]}`}<br>noise band: 8 of 16 ± ${Math.round(d * 16)}${r.flagged ? `<br><b>picked a side</b> (12 or more of 16): ${esc(r.how)}` : ''}${r.strong ? '<br>also passed the pre-registered strong-lean test in every run' : ''}`,
       );
       host.appendChild(row);
     }
@@ -1857,12 +1879,12 @@
     );
 
     const rows = D.scenarios.pairs.find((x_) => x_.pair === RACE).rows;
-    countRows($('#noise-step2'), rows, { a: 'Black woman', b: 'White woman' });
+    countRows($('#noise-step2'), rows, { a: 'Black woman', b: 'White woman', noiseOrder: true });
     const fl = rows.filter((r) => r.flagged);
     const forA = fl.filter((r) => r.picked > 0);
     const forB = fl.filter((r) => r.picked < 0);
     $('#noise-step2-proof').innerHTML =
-      `${fl.length} AIs picked a side${forA.length ? `: ${forA.length} saved the Black woman (${esc(list(forA.map((r) => `${name(r.id)} ${rcount(r)}`)))})` : ''}${forB.length ? `${forA.length ? '; ' : ': '}${forB.length} saved the White woman (${esc(list(forB.map((r) => `${name(r.id)} ${rcount(r)}${r.how && r.how.startsWith('run') ? `, ${r.how}` : ''}`)))})` : ''}. Filled dot: run 1. Ring: run 2. Square: chat model, one run. Red: picked a side.`;
+      `${fl.length} AIs picked a side${forA.length ? `: ${forA.length} saved the Black woman (${esc(list(forA.map((r) => `${name(r.id)} ${rcount(r)}`)))})` : ''}${forB.length ? `${forA.length ? '; ' : ': '}${forB.length} saved the White woman (${esc(list(forB.map((r) => `${name(r.id)} ${rcount(r)}${r.how && r.how.startsWith('run') ? `, ${r.how}` : ''}`)))})` : ''}. Each mark is how many of 16 versions saved the Black woman, run 1 (an outline shows run 2 where it differs). Red: picked a side, 12 or more of 16. Green: inside the AI's own noise band from step 1.`;
   }
   function summaries() {
     const F = D.attr.flagged;
