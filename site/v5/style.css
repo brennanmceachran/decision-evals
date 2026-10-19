@@ -2792,3 +2792,52 @@ table.pred td {
 table.pred td a {
   color: inherit;
 }
+
+/* ---------- chapter 2: the wall (every AI x every question) */
+.wide-wrap {
+  max-width: 1320px;
+}
+#wall .legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 10px;
+  font-family: var(--sign);
+  font-size: 13px;
+  color: var(--muted);
+}
+#wall .legend i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  vertical-align: -1px;
+}
+
+/* ---------- chapter 3: every request, every AI */
+.hit-row {
+  display: grid;
+  grid-template-columns: 170px auto 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--sign);
+  font-size: 15px;
+  color: var(--night-ink);
+}
+.hit-row .res {
+  text-align: right;
+  color: var(--night-muted);
+}
+.hit-row .res b {
+  color: #ef4b3f;
+  font-size: 17px;
+}
+@media (max-width: 640px) {
+  .hit-row {
+    grid-template-columns: 70px auto 1fr;
+    gap: 6px;
+    font-size: 12px;
+  }
+}

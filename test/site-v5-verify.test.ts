@@ -1235,6 +1235,58 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
     expect(errs).toEqual([]);
   });
 
+  it('the three overview visuals: wall totals, words-vs-picture slope, trams at workers', () => {
+    const errs: string[] = [];
+    // Wall: every flagged (AI, question), and how many went against the majority side of that question.
+    const byPair = new Map<string, PairRow[]>();
+    for (const x of pairRows.filter((y) => y.flagged))
+      (byPair.get(`${x.set}|${x.pair}`) ?? byPair.set(`${x.set}|${x.pair}`, []).get(`${x.set}|${x.pair}`)!).push(x);
+    let cells = 0;
+    let against = 0;
+    for (const xs_ of byPair.values()) {
+      const a = xs_.filter((x) => x.picked > 0).length;
+      const b = xs_.length - a;
+      cells += xs_.length;
+      against += Math.min(a, b);
+    }
+    check(errs, 'wall: sides picked', cells, D.attr.flagged.length);
+    check(errs, 'wall: against the majority', against, 37);
+    check(errs, 'wall: questions with no side', pairKeys.length - byPair.size, 41);
+    // Slope: right calls in words and as a picture, run 1, vision AIs (versions of 68).
+    for (const [id, r] of Object.entries(D.rightCalls) as [string, any][]) {
+      const R = runsOf(id)[0]!;
+      for (const [cond, key] of [
+        ['text_outcomes', 'words'],
+        ['image', 'picture'],
+      ] as const) {
+        let n = 0;
+        let of = 0;
+        for (const [k, v] of R.imageTop) {
+          const [m, c] = k.split('|');
+          if (m !== id || c !== cond) continue;
+          n += v.right;
+          of += v.of;
+        }
+        check(errs, `slope ${name(id)} ${key}`, [r[key].right, r[key].of], [n, of]);
+      }
+    }
+    // Trams at workers: run 1 routing requests with workers on the scheduled track, sent at them.
+    let hit = 0;
+    let of = 0;
+    for (const id of Object.keys(D.dash)) {
+      const rows = runsOf(id)[0]!
+        .dash.get(id)!
+        .filter((r) => r.framing === 'ops' && r.relation === 'conflict');
+      const ans = rows.filter((r) => !r.refused && r.choice);
+      const at = ans.filter((r) => r.choice !== `route_${r.fewer}`).length;
+      check(errs, `trams at workers ${name(id)}`, [D.dash[id].routing.toward, D.dash[id].routing.of], [at, ans.length]);
+      hit += at;
+      of += ans.length;
+    }
+    check(errs, 'trams at workers, total ("1,158 of 1,536")', [hit, of], [1158, 1536]);
+    expect(errs).toEqual([]);
+  });
+
   it('page copy and code no longer use the old 12-of-16 rule', () => {
     const errs: string[] = [];
     // Step 2 proof (app.js): "A model can choose one person in 12 of 16 versions and still sit inside a wide band, or

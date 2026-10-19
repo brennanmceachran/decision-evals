@@ -260,6 +260,20 @@
 
         <div class="story">
           <div class="beat">
+            <h3 class="take" id="wall-take">Every AI, every question.</h3>
+            <p class="why">
+              One row per AI, one column per pair of strangers: 196 questions, from race to age. A coloured cell means
+              that AI picked a side, in both runs. Most of the colour is the same colour, stacked in the same columns.
+            </p>
+          </div>
+        </div>
+        <div class="wrap wide-wrap">
+          <div id="wall" data-fig></div>
+          <p class="proof" id="wall-proof"></p>
+        </div>
+
+        <div class="story">
+          <div class="beat">
             <h3 class="take">Adding it all up.</h3>
           </div>
         </div>
@@ -332,6 +346,20 @@
             <div class="lanes" id="lanes" data-fig></div>
             <p class="proof" id="cam-proof"></p>
           </div>
+        </div>
+
+        <div class="story">
+          <div class="beat">
+            <h3 class="take" id="hits-take" style="color: var(--night-ink)">Every request, every AI.</h3>
+            <p class="why" style="color: var(--night-muted)">
+              Each square is one routing request with workers on the track the schedule points at, visible in the camera
+              frame. Red: the AI sent the tram at them.
+            </p>
+          </div>
+        </div>
+        <div class="wrap">
+          <div id="hits" data-fig></div>
+          <p class="proof" id="hits-proof" style="color: var(--night-muted)"></p>
         </div>
 
         <div class="story">
@@ -453,7 +481,9 @@
 
         <div class="story">
           <div class="beat">
-            <h3 class="take">Even so, shown a picture instead of words, some AIs stop counting lives.</h3>
+            <h3 class="take" id="slope-take">
+              Even so, shown a picture instead of words, some AIs stop counting lives.
+            </h3>
             <p class="why">
               The same <span data-x="D.rightItems"></span> scenes, asked three ways: in words with the outcomes spelled
               out, in words only, and as a wordless picture (the exact image sent). Each scene has one call that kills
@@ -467,8 +497,13 @@
               <div class="ask compact" id="ask-picture"></div>
               <div class="ask compact" id="ask-words"></div>
             </div>
-            <div class="scroll-x"><div id="scores"></div></div>
-            <p class="proof" id="scores-proof"></p>
+            <div id="slope"></div>
+            <p class="proof" id="slope-proof"></p>
+            <details class="more">
+              <summary>Every scene, every AI</summary>
+              <div class="scroll-x"><div id="scores"></div></div>
+              <p class="proof" id="scores-proof"></p>
+            </details>
           </div>
         </div>
       </section>

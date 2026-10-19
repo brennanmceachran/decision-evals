@@ -2134,6 +2134,148 @@
     });
     draw(0);
   }
+  // ======================================================================= CHAPTER 2: the wall
+  /** Every AI × every identity question in one picture. Columns grouped by trait (labelled), sorted inside each trait
+   * by how many AIs picked a side, and oriented so the side most AIs picked is always "first" (teal). Teal: the AI
+   * picked the majority's side; purple: the opposite side; pink: one run only. Rows: AIs, most sides first. */
+  function wall() {
+    const host = $('#wall');
+    const P = D.scenarios.pairs;
+    const order = D.attr.setOrder;
+    const sideOf = (r) => (r.flagged ? r.picked : 0);
+    // Orient each column: +1 = the side most AIs picked.
+    const cols = order.flatMap((set) =>
+      P.filter((p) => p.set === set)
+        .map((p) => {
+          const fa = p.rows.filter((r) => r.flagged && r.picked > 0).length;
+          const fb = p.rows.filter((r) => r.flagged && r.picked < 0).length;
+          const dir = fa >= fb ? 1 : -1;
+          const [a, b] = p.pair.split('|');
+          return {
+            p,
+            dir,
+            n: fa + fb,
+            maj: Math.max(fa, fb),
+            min: Math.min(fa, fb),
+            win: dir > 0 ? a : b,
+            lose: dir > 0 ? b : a,
+          };
+        })
+        .sort((x, y) => y.maj - x.maj || y.n - x.n),
+    );
+    const rows = [...ids].sort(
+      (a, b) => D.traitByModel[b].total - D.traitByModel[a].total || name(a).localeCompare(name(b)),
+    );
+    // On phones the grid keeps a readable size and scrolls sideways.
+    const cw = narrow() ? 3.2 : 4;
+    const gap = narrow() ? 5 : 6;
+    const rh = narrow() ? 13 : 14;
+    const lab = narrow() ? 92 : 150;
+    const top = 50;
+    let x = lab;
+    const xs = [];
+    let prev = null;
+    const groups = [];
+    for (const c of cols) {
+      if (prev !== c.p.set) {
+        if (prev) x += gap;
+        groups.push({ set: c.p.set, x0: x });
+        prev = c.p.set;
+      }
+      xs.push(x);
+      x += cw;
+      groups.at(-1).x1 = x;
+    }
+    const W = x + 4;
+    const Ht = top + rows.length * rh + 6;
+    const svg = S('svg', {
+      viewBox: `0 0 ${W} ${Ht}`,
+      width: '100%',
+      style: narrow() ? `width:${W}px;max-width:none;display:block` : `max-width:${W * 1.25}px;display:block`,
+      role: 'img',
+      'aria-label': 'Every AI and every identity question: where each AI picked a side',
+    });
+    for (const g of groups) {
+      S('rect', { x: g.x0, y: top - 4, width: g.x1 - g.x0, height: rows.length * rh + 4, fill: 'var(--paper-2)' }, svg);
+      // Short labels so the narrow traits are named too; tilted where the group is narrow.
+      const SHORT = { 'parity-gender-identity': 'Trans', 'parity-sexuality': 'Gay', 'parity-other': 'Record, body' };
+      const narrowG = g.x1 - g.x0 < 40;
+      const t = S(
+        'text',
+        {
+          x: g.x0,
+          y: top - 8,
+          'font-size': narrow() ? 7 : 10,
+          'font-family': 'var(--sign)',
+          fill: C.muted,
+          transform: narrowG ? `rotate(-35 ${g.x0} ${top - 8})` : '',
+        },
+        svg,
+      );
+      t.textContent = SHORT[g.set] ?? D.attr.setLabel?.[g.set] ?? g.set;
+    }
+    rows.forEach((id, ri) => {
+      const y = top + ri * rh;
+      const t = S(
+        'text',
+        {
+          x: lab - 6,
+          y: y + rh * 0.72,
+          'text-anchor': 'end',
+          'font-size': narrow() ? 7.5 : 11,
+          'font-family': 'var(--sign)',
+          fill: C.ink,
+        },
+        svg,
+      );
+      t.textContent = short(id);
+      cols.forEach((c, ci) => {
+        const r = c.p.rows.find((q) => q.id === id);
+        const s = sideOf(r);
+        if (!s) return;
+        const one = r.how && r.how.startsWith('run');
+        const fill = s === c.dir ? (one ? '#9fd3c9' : C.a) : one ? '#d9c4ea' : C.b;
+        S('rect', { x: xs[ci], y: y + 1, width: cw - (narrow() ? 0.3 : 0.6), height: rh - 2, fill }, svg);
+      });
+    });
+    // One hover for the whole grid: find the cell under the pointer.
+    const pt = svg.createSVGPoint();
+    const at = (e) => {
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+      const q = pt.matrixTransform(svg.getScreenCTM().inverse());
+      const ri = Math.floor((q.y - top) / rh);
+      const ci = xs.findIndex((v) => q.x >= v && q.x < v + cw);
+      return ri >= 0 && ri < rows.length && ci >= 0 ? { id: rows[ri], c: cols[ci] } : null;
+    };
+    const show = (e) => {
+      const h = at(e);
+      if (!h) return tipEl.classList.remove('on');
+      const r = h.c.p.rows.find((q) => q.id === h.id);
+      tipEl.innerHTML = `<b>${esc(name(h.id))}</b><br>${esc(h.c.p.pair.replace('|', ' or '))}<br>${r.flagged ? `picked the ${esc(r.spared)}: ${r.count[0]} of ${r.of[0]} (${esc(r.how)})` : `no side: ${Math.max(r.ca[0], r.of[0] - r.ca[0])} of ${r.of[0]}`}<br><span class="muted">${h.c.maj} AIs picked the ${esc(h.c.win)}${h.c.min ? `, ${h.c.min} the ${esc(h.c.lose)}` : ''}</span>`;
+      tipEl.classList.add('on');
+      tipEl.style.left = `${Math.min(e.clientX + 14, innerWidth - tipEl.offsetWidth - 10)}px`;
+      tipEl.style.top = `${Math.min(e.clientY + 14, innerHeight - tipEl.offsetHeight - 10)}px`;
+    };
+    svg.addEventListener('mousemove', show);
+    svg.addEventListener('click', show);
+    svg.addEventListener('mouseleave', () => tipEl.classList.remove('on'));
+    host.innerHTML = '';
+    const sc = H('div', { class: 'scroll-x' });
+    sc.appendChild(svg);
+    host.appendChild(sc);
+    const key = H('div', { class: 'legend' });
+    key.innerHTML = `<span><i style="background:${C.a}"></i>picked the side most AIs picked</span><span><i style="background:${C.b}"></i>picked the opposite side</span><span><i style="background:#9fd3c9"></i><i style="background:#d9c4ea"></i>one run only</span>`;
+    host.appendChild(key);
+    // Headline numbers.
+    const cells = cols.reduce((a, c) => a + c.maj + c.min, 0);
+    const against = cols.reduce((a, c) => a + c.min, 0);
+    const empty = cols.filter((c) => !c.n).length;
+    const top3 = [...cols].sort((p, q) => q.maj - p.maj).slice(0, 3);
+    $('#wall-take').textContent = `${cells} sides picked. ${cells - against} of them the same side as most other AIs.`;
+    $('#wall-proof').innerHTML =
+      `Columns sorted within each trait by how many AIs picked a side; each column turned so the side most AIs chose is teal. Purple cells are AIs that went against the others: ${against} of ${cells}. ${empty} of ${cols.length} questions had no AI pick a side. The most agreed: ${esc(list(top3.map((c) => `${c.win} over ${c.lose} (${c.maj} AIs${c.min ? `, ${c.min} the other way` : ', none the other way'})`)))}. Hover a cell for the counts.`;
+  }
   function summaries() {
     const F = D.attr.flagged;
     const P = D.scenarios.pairs;
@@ -2586,6 +2728,178 @@
     $('#scores').innerHTML = `${html}</table>`;
     $('#scores-proof').innerHTML =
       `Each mark is one scene, asked 4 ways (2 layouts × 2 button orders): the number is how many of the 4 made the call that kills fewer people (green), the rest made the call that kills more (red). Totals are versions, of ${D.rightItems * 4}. Decision models: run 1, run 2 shown where it differs. Chat models: one run, each version the majority of 5 samples. Some scenes are built so that moving the lever kills more. Asked separately about the diagrams (counts and route), the models answered correctly ${Math.round(Math.min(...Object.values(D.image.models).map((m) => m.perception)) * 100)}–${Math.round(Math.max(...Object.values(D.image.models).map((m) => m.perception)) * 100)}% of the time. Only vision models took part. ‡ still didn't read the diagram as harm after the sentence, so its picture answers may not mean what they seem.`;
+  }
+
+  /** Words vs picture as a slope: every vision AI, right calls (of 68 versions) in words with outcomes on the left,
+   * as a wordless picture on the right. Lines that fall hard are red; labels on the right. Run 1 (run 2 in tooltip). */
+  function slope() {
+    const host = $('#slope');
+    const ids_ = Object.keys(D.rightCalls);
+    const W = narrow() ? 340 : 760;
+    const Ht = narrow() ? 380 : 440;
+    const xL = narrow() ? 70 : 170;
+    const xR = W - (narrow() ? 120 : 250);
+    const y0 = 30;
+    const y1 = Ht - 30;
+    const of = D.rightCalls[ids_[0]].words.of;
+    const y = (n) => y1 - (n / of) * (y1 - y0);
+    const svg = S('svg', {
+      viewBox: `0 0 ${W} ${Ht}`,
+      width: '100%',
+      style: `max-width:${W}px;display:block;margin:0 auto`,
+      role: 'img',
+      'aria-label': 'Right calls in words versus from a picture, every vision AI',
+    });
+    for (const [x, t] of [
+      [xL, 'In words'],
+      [xR, 'As a picture'],
+    ]) {
+      S('line', { x1: x, x2: x, y1: y0 - 6, y2: y1 + 6, stroke: C.rule ?? '#ccc', 'stroke-width': 1 }, svg);
+      const tx = S(
+        'text',
+        {
+          x,
+          y: y0 - 14,
+          'text-anchor': 'middle',
+          'font-size': narrow() ? 11 : 13,
+          'font-family': 'var(--sign)',
+          'font-weight': 700,
+          fill: C.ink,
+        },
+        svg,
+      );
+      tx.textContent = t;
+    }
+    for (const v of [0, Math.round(of / 2), of]) {
+      const tx = S(
+        'text',
+        { x: xL - 10, y: y(v) + 4, 'text-anchor': 'end', 'font-size': 10, 'font-family': 'var(--sign)', fill: C.muted },
+        svg,
+      );
+      tx.textContent = `${v}/${of}`;
+      S('line', { x1: xL, x2: xR, y1: y(v), y2: y(v), stroke: '#e3e3dc', 'stroke-dasharray': '2 4' }, svg);
+    }
+    const rows = ids_
+      .map((id) => ({
+        id,
+        w: D.rightCalls[id].words.right,
+        p: D.rightCalls[id].picture.right,
+        r2: D.rightCalls[id].run2?.picture.right,
+      }))
+      .sort((a, b) => a.p - b.p);
+    // Right-hand labels, pushed apart so they don't overlap.
+    const minGap = narrow() ? 11 : 13;
+    const ly = rows.map((r) => y(r.p));
+    for (let i = 1; i < ly.length; i++) if (ly[i - 1] - ly[i] < minGap) ly[i] = ly[i - 1] - minGap;
+    for (let i = ly.length - 2; i >= 0; i--) if (ly[i] > y1 + 4) ly[i] = y1 + 4;
+    rows.forEach((r, i) => {
+      const drop = r.w - r.p;
+      const bad = drop >= of * 0.25;
+      const col = bad ? C.flag : drop > 0 ? '#e08b8b' : C.ok;
+      const g = S('g', {}, svg);
+      S(
+        'line',
+        {
+          x1: xL,
+          x2: xR,
+          y1: y(r.w),
+          y2: y(r.p),
+          stroke: col,
+          'stroke-width': bad ? 2.5 : 1.5,
+          opacity: bad ? 1 : 0.8,
+        },
+        g,
+      );
+      S('circle', { cx: xL, cy: y(r.w), r: 3.5, fill: col }, g);
+      S('circle', { cx: xR, cy: y(r.p), r: bad ? 5 : 3.5, fill: col }, g);
+      S('line', { x1: xR + 6, x2: xR + 14, y1: y(r.p), y2: ly[i], stroke: '#ccc' }, g);
+      const tx = S(
+        'text',
+        {
+          x: xR + 18,
+          y: ly[i] + 4,
+          'font-size': narrow() ? 10 : 12,
+          'font-family': 'var(--sign)',
+          'font-weight': bad ? 700 : 400,
+          fill: bad ? C.flag : C.ink,
+        },
+        g,
+      );
+      tx.textContent = `${short(r.id)} ${r.p}/${of}`;
+      hover(
+        g,
+        `<b>${esc(name(r.id))}</b><br>in words, outcomes spelled out: ${r.w} of ${of} versions made the call that kills fewer<br>as a wordless picture: ${r.p} of ${of}${r.r2 !== undefined && r.r2 !== r.p ? ` (run 2: ${r.r2})` : ''}${isChat(r.id) ? '<br>chat model, one run' : ''}`,
+      );
+    });
+    host.innerHTML = '';
+    host.appendChild(svg);
+    const worst = rows[0];
+    const fell = rows.filter((r) => r.w - r.p >= of * 0.25);
+    $('#slope-take').textContent =
+      `The same scenes, as a picture: ${worst.p} of ${of} right calls for ${short(worst.id)}. In words: ${worst.w} of ${of}.`;
+    $('#slope-proof').innerHTML =
+      `Each line is one vision AI: on the left, how many of ${of} versions (${D.rightItems} scenes, 4 ways each) made the call that kills fewer people when the scene was written out; on the right, the same scenes as a wordless diagram (run 1; hover for run 2). Every AI is near perfect in words. ${fell.length} lose a quarter or more of their right calls as a picture (red): ${esc(list(fell.map((r) => `${short(r.id)} ${r.w}→${r.p}`)))}. Asked separately about the diagrams, they counted the people and named the route correctly most of the time.`;
+  }
+
+  /** Dashcam: 128 squares per vision AI, run 1. Red = a routing request with workers on the scheduled track that it
+   * sent at them; teal = steered away; grey outline = refused. Rows sorted by how many it sent at the workers. */
+  function hits() {
+    const host = $('#hits');
+    const ids_ = Object.keys(D.dash);
+    const rows = ids_
+      .map((id) => ({ id, d: D.dash[id].routing, r: D.dash[id].routing.refused }))
+      .sort((a, b) => b.d.toward - a.d.toward || a.r - b.r);
+    const per = narrow() ? 32 : 64; // squares per line
+    const sz = narrow() ? 5 : 7;
+    const gp = 1.5;
+    host.innerHTML = '';
+    for (const r of rows) {
+      const total = r.d.toward + r.d.away + r.d.refused;
+      const row = H('div', { class: 'hit-row' });
+      row.appendChild(H('div', { class: 'nm' }, esc(short(r.id))));
+      const lines = Math.ceil(total / per);
+      const W = per * (sz + gp);
+      const Ht = lines * (sz + gp);
+      const svg = S('svg', { viewBox: `0 0 ${W} ${Ht}`, width: W, height: Ht, 'aria-hidden': 'true' });
+      for (let k = 0; k < total; k++) {
+        const x = (k % per) * (sz + gp);
+        const y = Math.floor(k / per) * (sz + gp);
+        const kind = k < r.d.toward ? 'hit' : k < r.d.toward + r.d.away ? 'away' : 'ref';
+        if (kind === 'ref')
+          S(
+            'rect',
+            {
+              x: x + 0.5,
+              y: y + 0.5,
+              width: sz - 1,
+              height: sz - 1,
+              fill: 'none',
+              stroke: '#5a6670',
+              'stroke-width': 1,
+            },
+            svg,
+          );
+        else S('rect', { x, y, width: sz, height: sz, rx: 1, fill: kind === 'hit' ? '#ef4b3f' : '#2bb3a0' }, svg);
+      }
+      row.appendChild(svg);
+      row.appendChild(
+        H('div', { class: 'res' }, r.d.of ? `<b>${r.d.toward}</b> of ${r.d.of}` : `refused all ${r.d.refused}`),
+      );
+      const d2 = D.dash2[r.id]?.routing;
+      hover(
+        row,
+        `<b>${esc(name(r.id))}</b><br>sent the tram at the workers in ${r.d.toward} of ${r.d.of} answered routing requests${r.d.refused ? `; refused ${r.d.refused}` : ''} (run 1${d2 ? `; run 2: ${d2.toward} of ${d2.of}` : ', one run'})`,
+      );
+      host.appendChild(row);
+    }
+    const all = rows.filter((r) => r.d.of && r.d.toward === r.d.of);
+    const most = rows.filter((r) => r.d.of && r.d.toward / r.d.of >= 0.9);
+    const hitsN = rows.reduce((a, r) => a + r.d.toward, 0);
+    const ofN = rows.reduce((a, r) => a + r.d.of, 0);
+    $('#hits-take').textContent =
+      `${fint(hitsN)} of ${fint(ofN)} trams sent at workers the AI could see. ${(W_[all.length] ?? String(all.length)).replace(/^./, (c) => c.toUpperCase())} AIs did it every single time.`;
+    $('#hits-proof').innerHTML =
+      `Run 1: 128 requests per AI (16 camera frames with workers on the scheduled track, 4 log wordings, 2 button orders; 2 workers against an empty track and 3 against 1, pooled). Red: routed onto the workers. Teal: steered away. Outline: refused. ${most.length} of ${rows.length} vision AIs sent it at the workers in 90% or more. Asked separately, the same AIs counted the people on each track correctly most of the time; called a dilemma instead, on the same frames, most steered away (above).`;
   }
 
   // ======================================================================= CHAPTER 5
@@ -3113,10 +3427,12 @@
   scenarios();
   league();
   worth();
+  wall();
   summaries();
   replication();
   camTabs();
   cam();
+  hits();
   flip();
   follow();
   realism();
@@ -3125,6 +3441,7 @@
   checks();
   fixflow();
   pictureVsWords();
+  slope();
   tips();
   order();
   hosts();
