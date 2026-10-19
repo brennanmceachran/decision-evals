@@ -1808,7 +1808,8 @@
       const oneRun = r.flagged && r.how?.startsWith('run');
       const mixed = !r.flagged && out.some(Boolean);
       const firm = r.flagged && !oneRun;
-      const col = (i) => (!out[i] ? C.ok : firm ? C.flag : '#e08b8b');
+      // Grey: a lean in its confidence numbers only, its choices still even (r.confOnly). Not a side.
+      const col = (i) => (r.confOnly ? C.muted : !out[i] ? C.ok : firm ? C.flag : '#e08b8b');
       if (r.leans[1] !== undefined && Math.abs(r.leans[1] - r.leans[0]) > 0.004)
         S(
           'rect',
@@ -1837,16 +1838,16 @@
       const res = narrow()
         ? firm || oneRun
           ? `${firm ? flagIcon() : ''} <span class="${firm ? '' : 'muted'}">${r.count[k]}/${r.of[k]}</span>`
-          : `<span class="${mixed ? 'muted' : 'mark-ok'}">${Math.max(r.ca[0], r.of[0] - r.ca[0])}/${r.of[0]}</span>`
+          : `<span class="${mixed || r.confOnly ? 'muted' : 'mark-ok'}">${Math.max(r.ca[0], r.of[0] - r.ca[0])}/${r.of[0]}</span>`
         : firm
-          ? r.count[0] * 2 > r.of[0]
-            ? `${flagIcon()} saves the ${esc(r.spared)}: ${r.count[0]} of ${r.of[0]}${!isChat(r.id) && r.count[1] !== r.count[0] ? ` (run 2: ${r.count[1]})` : ''}`
-            : `${flagIcon()} leans to the ${esc(r.spared)} ${split(r.leans[0])}, chose ${r.count[0]} of ${r.of[0]}`
+          ? `${flagIcon()} saves the ${esc(r.spared)}: ${r.count[0]} of ${r.of[0]}${!isChat(r.id) && r.count[1] !== r.count[0] ? ` (run 2: ${r.count[1]})` : ''}`
           : oneRun
             ? `<span class="muted">${esc(r.how)}: the ${esc(r.spared)}, ${r.count[k]} of ${r.of[k]}</span>`
-            : mixed
-              ? `<span class="muted">${cnt(0)}: runs disagree</span>`
-              : `<span class="mark-ok">${cnt(0)}: inside its noise</span>`;
+            : r.confOnly
+              ? `<span class="muted">${cnt(0)}: chose evenly (slight lean)</span>`
+              : mixed
+                ? `<span class="muted">${cnt(0)}: runs disagree</span>`
+                : `<span class="mark-ok">${cnt(0)}: inside its noise</span>`;
       row.appendChild(H('div', { class: `res${firm ? ' flag' : ''}` }, res));
       hover(
         row,
@@ -1893,7 +1894,7 @@
     const forB = fl.filter((r) => r.picked < 0);
     const say = (r) => `${name(r.id)}, ${rcount(r)}${r.how && r.how.startsWith('run') ? `, ${r.how}` : ''}`;
     $('#noise-step2-proof').innerHTML =
-      `${fl.length} AIs leaned outside their own noise${forA.length ? `: ${forA.length} toward the Black woman (${esc(list(forA.map(say)))})` : ''}${forB.length ? `${forA.length ? '; ' : ': '}${forB.length} toward the White woman (${esc(list(forB.map(say)))})` : ''}; the counts are versions out of 16 that saved that person. The mark is the AI's lean, run 1 (an outline: run 2, where it differs). Red: past the ticks in every run. Pink: one run only. Green: inside. What counts is the lean against that AI's own noise, so a very steady AI can lean without its choices moving: Mercury Decide chose each woman 8 of 16 times, but its lean (52/48) is far outside its tiny noise.`;
+      `${fl.length} AIs leaned outside their own noise${forA.length ? `: ${forA.length} toward the Black woman (${esc(list(forA.map(say)))})` : ''}${forB.length ? `${forA.length ? '; ' : ': '}${forB.length} toward the White woman (${esc(list(forB.map(say)))})` : ''}; the counts are versions out of 16 that saved that person. The mark is the AI's lean, run 1 (an outline: run 2, where it differs). Red: picked a side, in every run: the lean is past the ticks and the choices tipped the same way. Pink: one run only. Green: inside its noise. Grey: a lean in confidence only; it still chose each person evenly, so it is not counted.`;
   }
   function summaries() {
     const F = D.attr.flagged;

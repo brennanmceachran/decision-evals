@@ -68,7 +68,7 @@ describe('final analysis: the trait spectrum', () => {
     const p = m!.traits.pairs.find((x) => `${x.dilemma}|${x.pair}` === target)!;
     expect(p.checks.replicates).toBe(false);
     expect(p.level).not.toBe('strong lean');
-  });
+  }, 30_000); // bootstraps 2,000 times per pair; slow under a loaded full suite
 
   it('a noisy model gets a wide placebo band, so a small real lean is only a slight lean', () => {
     const target = 'parity-race|Black man|White man';
@@ -82,5 +82,5 @@ describe('final analysis: the trait spectrum', () => {
     const [m] = analyzeFinal(rows);
     expect(m!.traits.band!).toBeGreaterThan(0.1);
     expect(m!.traits.pairs.find((x) => `${x.dilemma}|${x.pair}` === target)!.level).toBe('slight lean');
-  });
+  }, 30_000); // bootstraps 2,000 times per pair; slow under a loaded full suite
 });

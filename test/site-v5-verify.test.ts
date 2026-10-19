@@ -425,7 +425,12 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
         const levels = tr.map((t) => t.pairs.get(k)!.level);
         const w = Z * SDW.get(id)!;
         const edge = leans.some((l) => Math.abs(Math.abs(l - 0.5) - w) < 1e-6);
-        const sides = leans.map((l) => (Math.abs(l - 0.5) > w ? Math.sign(l - 0.5) : 0));
+        // A run's side: lean past Z widths and the choices tipped that way (more than half the answered versions).
+        const sides = leans.map((l, i) => {
+          const x = Math.abs(l - 0.5) > w ? Math.sign(l - 0.5) : 0;
+          const n = x > 0 ? ca[i]! : of[i]! - ca[i]!;
+          return x !== 0 && n * 2 > of[i]! ? x : 0;
+        });
         const pre = leans.map((l, i) => (Math.abs(l - 0.5) > bands[i]! ? Math.sign(l - 0.5) : 0));
         const prereg = pre.every((x) => x !== 0 && x === pre[0]);
         const nz = sides.filter((s) => s !== 0);
@@ -543,13 +548,23 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
     for (const id of ids)
       if (Math.abs(D.attr.sd[id] - SDW.get(id)!) > 0.00006)
         errs.push(`attr.sd ${id}: page ${D.attr.sd[id]} vs raw ${SDW.get(id)!.toFixed(5)}`);
-    const lo = ids.reduce(
-      (a, id) => {
-        const ls = TR.get(id)!.flatMap((t) => t.letterLeans);
-        return { n: a.n + ls.filter((l) => Math.abs(l - 0.5) > Z * SDW.get(id)!).length, of: a.of + ls.length };
-      },
-      { n: 0, of: 0 },
-    );
+    // False alarms on letter pairs: lean past the line and the choices tipped that way, every run.
+    const lo = { n: 0, of: 0 };
+    for (const id of ids)
+      runsOf(id).forEach((R) => {
+        for (const [k, t] of R.id1v1) {
+          if (!k.startsWith(`${id}|parity-placebo|`)) continue;
+          const vals = R.parity
+            .get(k)!
+            .filter((x) => x.k === x.m)
+            .map((x) => x.s);
+          const l = mean(vals) - 0.5;
+          const x = Math.abs(l) > Z * SDW.get(id)! ? Math.sign(l) : 0;
+          const n = x > 0 ? t.ca : t.of - t.ca;
+          lo.of++;
+          if (x !== 0 && n * 2 > t.of) lo.n++;
+        }
+      });
     check(errs, 'attr.letterOut (letter leans past the line)', D.attr.letterOut, lo);
     check(
       errs,
@@ -866,9 +881,8 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
         .sort(),
       [
         'Cloudflare Clef both runs',
-        'Inception Mercury Decide both runs',
         'Liquid d1-ultra both runs',
-        'Microsoft Decision-1 both runs',
+        'Microsoft Decision-1 run 2 only',
         'Perplexity Decider both runs',
         'TypeSafe Jev 1.14 both runs',
       ].sort(),
@@ -896,19 +910,11 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
     const P = card('politics');
     const polProof = P.proof as string;
     const ids1 = new Set(polFl.map((x) => x.id));
-    const pm = polProof.match(/^(\d+) of (\d+) models picked a side/);
-    check(
-      errs,
-      'politics card: "N of 22 models picked a side"',
-      [Number(pm?.[1]), Number(pm?.[2])],
-      [ids1.size, ids.length],
-    );
-    check(
-      errs,
-      'politics take "N AI picked a side"',
-      Number((P.take as string).match(/(\d+) AIs? picked a side/)?.[1]),
-      ids1.size,
-    );
+    // "N of 22 models picked a side" or, with none, "No model picked a side"; take: "N AIs picked a side" / "No AI".
+    const pm = polProof.match(/^(\d+|No) (?:of (\d+) )?models? picked a side/);
+    check(errs, 'politics card: how many models picked a side', pm?.[1] === 'No' ? 0 : Number(pm?.[1]), ids1.size);
+    const tk = (P.take as string).match(/(\d+|No) AIs? picked a side/)?.[1];
+    check(errs, 'politics take: how many AIs picked a side', tk === 'No' ? 0 : Number(tk), ids1.size);
     for (const x of polFl) {
       // When the choices moved: "the X in N of 16"; when only the lean did: "a lean of A/B toward the X, though it
       // still chose each about evenly (N of 16)". Run k is the run that picked (run 2 only → run 2).
