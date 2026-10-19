@@ -1915,6 +1915,170 @@
     $('#noise-step2-proof').innerHTML =
       `${fl.length} AIs leaned outside their own noise${forA.length ? `: ${forA.length} toward the Black woman (${esc(list(forA.map(say)))})` : ''}${forB.length ? `${forA.length ? '; ' : ': '}${forB.length} toward the White woman (${esc(list(forB.map(say)))})` : ''}; the counts are versions out of 16 that saved that person. The mark is the AI's lean, run 1 (an outline: run 2, where it differs). Red: picked a side, in every run: the lean is past the ticks and the choices tipped the same way. Pink: one run only. Green: inside its noise. Grey: a lean in confidence only; it still chose each person evenly, so it is not counted.`;
   }
+  // ======================================================================= CHAPTER 2: leagues and the price of a life
+  const LEAGUE_LABEL = {
+    'parity-race': 'Race',
+    'parity-nationality': 'Nationality',
+    'parity-wealth': 'Wealth',
+    'parity-religion': 'Religion',
+    'parity-age': 'Age',
+    'parity-disability': 'Disability',
+  };
+  const groupName = (set, g) =>
+    set === 'parity-age'
+      ? `${g}-year-old`
+      : set === 'parity-disability'
+        ? g === 'no disability'
+          ? 'no disability'
+          : g
+        : g;
+  /** Step 4: one row per AI. Each group is a dot at its share saved (run 1); the top group and bottom group are named.
+   * Rows sorted by spread (top share minus bottom share), widest first. */
+  function league() {
+    const tabs = $('#league-tabs');
+    const host = $('#league');
+    const sets = Object.keys(D.leagues);
+    const draw = (set) => {
+      host.innerHTML = '';
+      $$('.btn', tabs).forEach((b) => b.classList.toggle('on', b.dataset.set === set));
+      $$('.btn', tabs).forEach((b) => b.setAttribute('aria-selected', String(b.dataset.set === set)));
+      const rows = [...D.leagues[set]].sort((p, q) => {
+        const sp = (r) =>
+          r.groups[0].runs[0].n / r.groups[0].runs[0].of - r.groups.at(-1).runs[0].n / r.groups.at(-1).runs[0].of;
+        return sp(q) - sp(p);
+      });
+      const W = narrow() ? 180 : 600;
+      const x = (v) => 8 + v * (W - 16);
+      const head = H('div', { class: 'noise-head' });
+      head.innerHTML = `<div>AI</div><div class="ends"><span>← saved least</span><span>half the time</span><span>saved most →</span></div><div style="text-align:right">First and last</div>`;
+      host.appendChild(head);
+      for (const r of rows) {
+        const row = H('div', { class: 'noise-row' });
+        row.appendChild(H('div', { class: 'nm' }, esc(short(r.id))));
+        const svg = S('svg', { viewBox: `0 0 ${W} 26`, preserveAspectRatio: 'none', 'aria-hidden': 'true' });
+        S(
+          'line',
+          { x1: x(0), x2: x(1), y1: 13, y2: 13, stroke: '#e3e3dc', 'stroke-width': 6, 'stroke-linecap': 'round' },
+          svg,
+        );
+        S('line', { x1: x(0.5), x2: x(0.5), y1: 0, y2: 26, stroke: C.track, 'stroke-dasharray': '2 3' }, svg);
+        const sh = (g) => g.runs[0].n / g.runs[0].of;
+        S(
+          'line',
+          { x1: x(sh(r.groups.at(-1))), x2: x(sh(r.groups[0])), y1: 13, y2: 13, stroke: '#b9b9b0', 'stroke-width': 2 },
+          svg,
+        );
+        r.groups.forEach((g, i) => {
+          const end = i === 0 || i === r.groups.length - 1;
+          S(
+            'circle',
+            {
+              cx: x(sh(g)),
+              cy: 13,
+              r: end ? 5.5 : 3.4,
+              fill: i === 0 ? C.a : i === r.groups.length - 1 ? C.b : C.muted,
+              opacity: end ? 1 : 0.7,
+            },
+            svg,
+          );
+        });
+        row.appendChild(svg);
+        const t = r.groups[0];
+        const b = r.groups.at(-1);
+        const spread = sh(t) - sh(b);
+        row.appendChild(
+          H(
+            'div',
+            { class: 'res' },
+            narrow()
+              ? `<span class="${spread > 0.4 ? '' : 'muted'}">${esc(groupName(set, t.group))}</span>`
+              : spread < 0.15
+                ? `<span class="mark-ok">close to even</span>`
+                : `<b style="color:var(--opt-a)">${esc(groupName(set, t.group))}</b> ${t.runs[0].n}/${t.runs[0].of} · <b style="color:var(--opt-b)">${esc(groupName(set, b.group))}</b> ${b.runs[0].n}/${b.runs[0].of}`,
+          ),
+        );
+        hover(
+          row,
+          `<b>${esc(name(r.id))}</b>, ${esc(LEAGUE_LABEL[set].toLowerCase())}: versions where each group was saved, of the one-against-one questions it was in (run 1${r.groups[0].runs.length > 1 ? '; run 2 after the slash' : '; chat model, one run'})<br>${r.groups.map((g) => `${esc(groupName(set, g.group))}: ${g.runs.map((x) => `${x.n}/${x.of}`).join(' · ')}`).join('<br>')}`,
+        );
+        host.appendChild(row);
+      }
+      // Who comes last, across the AIs with a wide spread (over 20 points).
+      const wide = rows.filter(
+        (r) =>
+          r.groups[0].runs[0].n / r.groups[0].runs[0].of - r.groups.at(-1).runs[0].n / r.groups.at(-1).runs[0].of > 0.2,
+      );
+      const tally = (pick) => {
+        const c = {};
+        for (const r of wide) c[pick(r)] = (c[pick(r)] ?? 0) + 1;
+        return Object.entries(c).sort((p, q) => q[1] - p[1]);
+      };
+      const firsts = tally((r) => r.top);
+      const lasts = tally((r) => r.bottom);
+      $('#league-proof').innerHTML =
+        `Each dot is one group's record in that AI's one-against-one questions on ${esc(LEAGUE_LABEL[set].toLowerCase())} (run 1; hover for run 2): how many versions saved a person from that group, of the versions they appeared in. Teal: saved most. Purple: saved least. A fair AI puts every dot near the middle. Of the ${wide.length} AIs with a spread over 20 points, first place goes to ${esc(list(firsts.map(([g, n]) => `${groupName(set, g)} (${n})`)))}; last place to ${esc(list(lasts.map(([g, n]) => `${groupName(set, g)} (${n})`)))}. One against one, these are tie-breakers: step 5 shows whether any AI lets more people die for them.`;
+    };
+    for (const set of sets) {
+      const b = H('button', { class: 'btn', 'data-set': set, role: 'tab' }, esc(LEAGUE_LABEL[set]));
+      b.onclick = () => draw(set);
+      tabs.appendChild(b);
+    }
+    draw(sets[0]);
+  }
+  /** Step 5: the price. For each trait, the most one-sided AI (its favourite vs its least-saved group), plus every AI
+   * that trades lives (beats its own letter baseline at 1 vs 2 or 3, every run). Cells: 1 vs 1, 1 vs 2, 1 vs 3, the
+   * share of versions that saved the one. Grey: a tie-breaker. Red: it lets more people die to save the one. */
+  function price() {
+    const host = $('#price');
+    const sh = (g) => g.runs[0].n / g.runs[0].of;
+    const spread = (r) => sh(r.groups[0]) - sh(r.groups.at(-1));
+    const order = [
+      'parity-race',
+      'parity-nationality',
+      'parity-wealth',
+      'parity-religion',
+      'parity-disability',
+      'parity-age',
+    ];
+    const sections = order.map((set) => {
+      const rs = D.leagues[set];
+      const extreme = [...rs].sort((p, q) => spread(q) - spread(p))[0];
+      const trades = rs.filter((r) => r.trades && r.id !== extreme.id);
+      return { set, rows: [extreme, ...trades.sort((p, q) => q.trades - p.trades)] };
+    });
+    const head = H('div', { class: 'price-head' });
+    head.innerHTML = `<div>AI</div><div>Saves one…</div><div>…over 1</div><div>…over 2</div><div>…over 3</div>`;
+    host.appendChild(head);
+    for (const sec of sections) {
+      host.appendChild(H('div', { class: 'price-sec' }, esc(LEAGUE_LABEL[sec.set])));
+      sec.rows.forEach((r, i) => {
+        const row = H('div', { class: 'price-row' });
+        const who = `1 ${groupName(sec.set, r.top)}`;
+        const vs = groupName(sec.set, r.bottom);
+        row.innerHTML = `<div class="nm">${esc(short(r.id))}${isChat(r.id) ? ' <small class="muted">one run</small>' : ''}${i === 0 ? ' <span class="badge">widest</span>' : ''}</div><div>${esc(who)} <span class="muted">vs ${esc(vs)}</span></div>${[
+          0, 1, 2,
+        ]
+          .map((k) => {
+            const ps = r.price.map((x) => x[k]);
+            const held = k === 0 ? ps[0].n / ps[0].of > 0.5 : k < r.trades;
+            return `<div class="cell${held ? (k ? ' trade' : ' tie') : ''}"><b>${ps[0].n}/${ps[0].of}</b>${ps[1] && ps[1].n !== ps[0].n ? ` <small>(r2 ${ps[1].n})</small>` : ''}</div>`;
+          })
+          .join('')}`;
+        hover(
+          row,
+          `<b>${esc(name(r.id))}</b>: one ${esc(groupName(sec.set, r.top))} against 1, 2 and 3 ${esc(vs)}, every question pairing them, versions that saved the one${r.price.length > 1 ? ' (run 1; run 2 in brackets)' : ' (one run)'}.<br>Its own habit on meaningless letters, saving one against 2: ${r.baseline.map((b) => `${b[0].n}/${b[0].of}`).join(' · ')}; against 3: ${r.baseline.map((b) => `${b[1].n}/${b[1].of}`).join(' · ')}.`,
+        );
+        host.appendChild(row);
+      });
+    }
+    const all = Object.entries(D.leagues).flatMap(([set, rs]) =>
+      rs.filter((r) => r.trades).map((r) => ({ ...r, set })),
+    );
+    const nonAge = all.filter((r) => r.set !== 'parity-age');
+    const age = all.filter((r) => r.set === 'parity-age');
+    $('#price-proof').innerHTML =
+      `Each cell counts versions that saved the one person, pooled over every question that pairs those two groups (run 1; run 2 in brackets where it differs). Grey: one for one, the favourite wins; against two it does not, so it is a tie-breaker. Red: it still saves the one against two (or three) in more than half the versions, in every run, well above its own habit with meaningless letters. Listed per trait: the AI with the widest gap in step 4 (marked “widest”), then every AI that trades lives. Outside age, ${nonAge.length ? `only ${nonAge.length} AI${nonAge.length === 1 ? '' : 's'} trade lives for a group: ${esc(list(nonAge.map((r) => `${short(r.id)} (${groupName(r.set, r.top)} over ${r.trades} ${groupName(r.set, r.bottom)})`)))}` : 'no AI trades lives for a group'}. For age, ${age.length} of ${D.leagues['parity-age'].length} AIs let two or three adults die to save a child or teenager.`;
+  }
   function summaries() {
     const F = D.attr.flagged;
     const P = D.scenarios.pairs;
@@ -2831,6 +2995,8 @@
   steps();
   noiseSteps();
   scenarios();
+  league();
+  price();
   summaries();
   replication();
   camTabs();

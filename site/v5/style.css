@@ -2649,3 +2649,70 @@ button.sum-row:hover {
   color: var(--muted);
   margin-left: 4px;
 }
+
+/* ---------- chapter 2, step 5: the price of a life */
+.price-head,
+.price-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 92px 92px 92px;
+  gap: 10px;
+  align-items: center;
+  font-family: var(--sign);
+}
+.price-head {
+  font-size: 13px;
+  color: var(--muted);
+  border-bottom: 3px solid var(--ink);
+  padding-bottom: 6px;
+  margin-top: 26px;
+}
+.price-row {
+  font-size: 15px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.price-row .cell {
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 4px;
+  background: var(--paper-2);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.price-row .cell.tie {
+  background: #e3e3dc;
+  color: var(--ink);
+}
+.price-row .cell.trade {
+  background: var(--flag);
+  color: #fff;
+}
+.price-row .cell small {
+  font-size: 11px;
+  opacity: 0.8;
+}
+@media (max-width: 640px) {
+  .price-head,
+  .price-row {
+    grid-template-columns: 82px 1fr 46px 46px 46px;
+    gap: 4px;
+    font-size: 12px;
+  }
+}
+.price-sec {
+  font-family: var(--sign);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--muted);
+  padding: 14px 0 4px;
+  border-bottom: 1px solid var(--rule);
+}
+.price-row .badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0 4px;
+  vertical-align: 2px;
+}
