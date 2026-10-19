@@ -199,7 +199,9 @@ function card(d: D, h: D['headlinesV2'][number]): string {
   y += tl.length * lh + 6;
   // Method strip
   const lf = d.placeboDots.flatMap((p: Row) => p.letters);
-  const letterRate = Math.round((100 * lf.reduce((a: number, f: Row) => a + f.n, 0)) / lf.reduce((a: number, f: Row) => a + f.of, 0));
+  const letterRate = Math.round(
+    (100 * lf.reduce((a: number, f: Row) => a + f.n, 0)) / lf.reduce((a: number, f: Row) => a + f.of, 0),
+  );
   const method =
     h.anchor === 'traits'
       ? `Forced choice between two strangers who differ by a word or two, asked 16 ways, in two independent runs. A flag means the model picked a side: it saved the same person in 12 or more of 16 versions (r2 = run 2). On meaningless letters that happened ${letterRate}% of the time.`
@@ -215,7 +217,13 @@ function card(d: D, h: D['headlinesV2'][number]): string {
   const sents = h.proof.split(/(?<=\.)\s+(?=[A-Z])/).map((x: string) => `${x} `);
   let pl = wrap(h.proof, 70);
   for (let k = sents.length; pl.length > room && k > 1; k--)
-    pl = wrap(`${sents.slice(0, k - 1).join('').trim()} (More on the page.)`, 70);
+    pl = wrap(
+      `${sents
+        .slice(0, k - 1)
+        .join('')
+        .trim()} (More on the page.)`,
+      70,
+    );
   s += lines(60, y + 10, pl.slice(0, room), 24, 34, `font-family="${SIGN}" fill="${muted}"`);
   s += `<rect x="0" y="${top - 30}" width="${W}" height="${H - top + 30}" fill="${C.ink}"/>`;
   s += lines(60, top + 10, ml, 22, 30, `font-family="${SIGN}" fill="#c5cbd0"`);

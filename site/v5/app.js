@@ -1829,8 +1829,18 @@
         S('circle', { cx: x(p), cy: 13, r: 3.4, fill: p >= t || p <= 1 - t ? C.flag : C.muted, opacity: 0.8 }, svg);
       row.appendChild(svg);
       const f = r.letters;
-      const txt = isChat(r.id) ? `${f[0].n} of ${f[0].of}` : f[0].n === f[1].n ? `${f[0].n} of ${f[0].of}, both runs` : `${f[0].n} of ${f[0].of} (run 2: ${f[1].n})`;
-      row.appendChild(H('div', { class: 'res' }, `<span class="${f.some((z) => z.n) ? '' : 'mark-ok'}">${narrow() ? `${f[0].n}/${f[0].of}` : txt}</span>`));
+      const txt = isChat(r.id)
+        ? `${f[0].n} of ${f[0].of}`
+        : f[0].n === f[1].n
+          ? `${f[0].n} of ${f[0].of}, both runs`
+          : `${f[0].n} of ${f[0].of} (run 2: ${f[1].n})`;
+      row.appendChild(
+        H(
+          'div',
+          { class: 'res' },
+          `<span class="${f.some((z) => z.n) ? '' : 'mark-ok'}">${narrow() ? `${f[0].n}/${f[0].of}` : txt}</span>`,
+        ),
+      );
       hover(
         row,
         `<b>${esc(name(r.id))}</b><br>${f.length} run${f.length > 1 ? 's' : ''} × ${f[0].of} letter pairs, 16 versions each. Dots: how many of 16 saved the first letter${f.length > 1 ? ', both runs' : ''}.<br>Picked a side (12+ of 16) on ${txt} letter pairs.`,
@@ -1905,7 +1915,12 @@
       const pts = D.raceOverTime[id];
       const row = H('div', { class: 'noise-row' });
       row.appendChild(H('div', { class: 'nm' }, esc(narrow() ? short(id) : name(id))));
-      const svg = S('svg', { viewBox: `0 0 ${W} 40`, preserveAspectRatio: 'none', 'aria-hidden': 'true', style: 'height:40px' });
+      const svg = S('svg', {
+        viewBox: `0 0 ${W} 40`,
+        preserveAspectRatio: 'none',
+        'aria-hidden': 'true',
+        style: 'height:40px',
+      });
       S('rect', { x: x(0), y: 2, width: x(1 - t) - x(0), height: 36, fill: 'var(--opt-b-soft)', rx: 3 }, svg);
       S('rect', { x: x(t), y: 2, width: x(1) - x(t), height: 36, fill: 'var(--opt-a-soft)', rx: 3 }, svg);
       S('line', { x1: x(0.5), x2: x(0.5), y1: 0, y2: 40, stroke: C.track, 'stroke-dasharray': '2 3' }, svg);
@@ -1917,7 +1932,9 @@
         H(
           'div',
           { class: 'res stack' },
-          pts.map((p, k) => `<span>${p.side ? flagIcon() : ''}<small>run ${k + 1}</small> ${p.n}/${p.of}</span>`).join(''),
+          pts
+            .map((p, k) => `<span>${p.side ? flagIcon() : ''}<small>run ${k + 1}</small> ${p.n}/${p.of}</span>`)
+            .join(''),
         ),
       );
       hover(
@@ -2144,7 +2161,7 @@
     const h1 = realIds.filter((id) => R.models[id].h1);
     const full = D.dashDesign.perCondition;
     const short2 = order.filter((id) => D.dash[id].follow.larger.of < full);
-    const cr = (id) => Math.round(R.models[id].countsCorrect * 100);
+    const cr = (id) => Math.round((100 * R.models[id].counted.n) / R.models[id].counted.of);
     $('#follow-proof').innerHTML =
       `Each bar counts routing requests, out of ${full}, run 1, both scenes pooled (2 workers vs nobody, 3 vs 1)${short2.length ? ` (${esc(list(short2.map(name)))}: ${short2.map((id) => D.dash[id].follow.larger.of).join(', ')}; the rest were refused)` : ''}. "No: same either way" is the test we registered in advance, and it held in every run. Asked separately to count the people on each track, those AIs counted both tracks right in ${Math.min(...h1.map(cr))}–${Math.max(...h1.map(cr))}% of answers.${refused.length ? ` ${esc(list(refused.map(name)))} refused every routing request with people in the frame.` : ''}`;
   }
