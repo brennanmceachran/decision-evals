@@ -1760,22 +1760,29 @@
    * One AI per row on a 0–16 axis of versions: a filled mark for run 1, a ring for run 2 (chat: one run, a square).
    * The shaded zones are "picked a side" (12 or more of 16 either way). The result column says it in words.
    */
-  /** An AI's noise band, as in step 1: 8 of 16 plus or minus its largest drift on the letter pairs, run 1. */
-  const drift = (id) => {
-    const r = D.placeboDots.find((p) => p.id === id);
-    return Math.max(...r.placebo.slice(0, r.letters[0].of).map((p) => Math.abs(p - 0.5)));
+  /** The grey band is the rule: "the middle", 5 to 11 of 16 (under 12 either way). A mark outside it picked a side
+   * in that run, and is red; inside it is green. The same band on every row and in every step, so position alone
+   * says whether an AI picked a side. */
+  const MID = (x, W) => {
+    const t = D.attr.sideShare;
+    const lo = x(1 - t + 0.5 / 16);
+    return { x: lo, width: x(t - 0.5 / 16) - lo };
   };
-  /** v3's band rows, on counts: the AI's grey noise band and faint letter dots, then one marker for this question
-   * (run 1 filled; run 2 an outline where it differs). Red: picked a side (12 or more of 16 in a run). Green: inside
-   * its noise. Pink: outside its noise but under 12. `noiseOrder` sorts like step 1 (narrowest band first). */
+  const outsideMid = (n, of) => n >= D.attr.sideShare * of || of - n >= D.attr.sideShare * of;
+  /** One row per AI: the grey middle band, then this question's count in each run (run 1 filled; run 2 an outline
+   * where it differs; chat models one run). Each mark is red when it is outside the middle, green inside. */
   function countRows(host, rows, { a, b, noiseOrder = false }) {
     const W = narrow() ? 180 : 600; // about the drawn width, so marks keep their shape
     const x = (v) => 8 + v * (W - 16);
     const head = H('div', { class: 'noise-head' });
     head.innerHTML = `<div>AI</div><div class="ends"><span>← ${esc(b)}</span><span>8 of 16</span><span>${esc(a)} →</span></div><div style="text-align:right">Result</div>`;
     host.appendChild(head);
+    const spread = (id) => {
+      const r = D.placeboDots.find((p) => p.id === id);
+      return Math.max(...r.placebo.slice(0, r.letters[0].of).map((p) => Math.abs(p - 0.5)));
+    };
     const sorted = noiseOrder
-      ? [...rows].sort((p, q) => drift(p.id) - drift(q.id) || name(p.id).localeCompare(name(q.id)))
+      ? [...rows].sort((p, q) => spread(p.id) - spread(q.id) || name(p.id).localeCompare(name(q.id)))
       : [...rows].sort(
           (p, q) => Number(!!q.flagged) - Number(!!p.flagged) || Math.abs(q.p - 0.5) - Math.abs(p.p - 0.5),
         );
@@ -1784,43 +1791,39 @@
       const row = H('div', { class: `noise-row${m.passesGates ? '' : ' fails'}` });
       row.appendChild(H('div', { class: 'nm' }, `${esc(short(r.id))}${m.passesGates ? '' : ' †'}`));
       const svg = S('svg', { viewBox: `0 0 ${W} 26`, preserveAspectRatio: 'none', 'aria-hidden': 'true' });
-      const d = drift(r.id);
-      const pad = 0.5 / 16;
-      S(
-        'rect',
-        { x: x(0.5 - d - pad), y: 3, width: x(0.5 + d + pad) - x(0.5 - d - pad), height: 20, fill: '#e3e3dc', rx: 3 },
-        svg,
-      );
+      S('rect', { ...MID(x, W), y: 3, height: 20, fill: '#e3e3dc', rx: 3 }, svg);
       S('line', { x1: x(0.5), x2: x(0.5), y1: 0, y2: 26, stroke: C.track, 'stroke-dasharray': '2 3' }, svg);
-      const pd = D.placeboDots.find((p) => p.id === r.id);
-      if (noiseOrder)
-        for (const p of pd.placebo.slice(0, pd.letters[0].of))
-          S('circle', { cx: x(p), cy: 13, r: narrow() ? 2.4 : 3.2, fill: C.muted, opacity: 0.75 }, svg);
-      const shares = r.ca.map((n, i) => n / r.of[i]);
-      const outside = Math.abs(shares[0] - 0.5) > d + 1e-9;
-      const col = r.flagged ? C.flag : outside ? '#e08b8b' : C.ok;
-      if (shares[1] !== undefined && r.ca[1] !== r.ca[0])
+      const col = (i) => (outsideMid(r.ca[i], r.of[i]) ? C.flag : C.ok);
+      const share = (i) => r.ca[i] / r.of[i];
+      if (r.of[1] !== undefined && r.ca[1] !== r.ca[0])
         S(
           'rect',
-          { x: x(shares[1]) - 4, y: 6, width: 8, height: 14, rx: 2, fill: 'none', stroke: col, 'stroke-width': 1.5 },
+          {
+            x: x(share(1)) - 4,
+            y: 6,
+            width: 8,
+            height: 14,
+            rx: 2,
+            fill: 'var(--paper)',
+            stroke: col(1),
+            'stroke-width': 1.5,
+          },
           svg,
         );
-      S('rect', { x: x(shares[0]) - 5, y: 5, width: 10, height: 16, rx: 2, fill: col }, svg);
+      S('rect', { x: x(share(0)) - 5, y: 5, width: 10, height: 16, rx: 2, fill: col(0) }, svg);
       row.appendChild(svg);
       const r2 = isChat(r.id) || r.ca[1] === r.ca[0] ? '' : ` (run 2: ${r.flagged ? r.count[1] : r.ca[1]})`;
       const res = narrow()
         ? r.flagged
           ? `${flagIcon()} ${r.count[0]}/${r.of[0]}`
-          : `<span class="${outside ? 'muted' : 'mark-ok'}">${r.ca[0]}/${r.of[0]}</span>`
+          : `<span class="mark-ok">${r.ca[0]}/${r.of[0]}</span>`
         : r.flagged
           ? `${flagIcon()} saves the ${esc(r.spared)} ${r.count[0]} of ${r.of[0]}${r2}`
-          : outside
-            ? `<span class="muted">${r.ca[0]} of ${r.of[0]}${r2}: outside its noise, under 12</span>`
-            : `<span class="mark-ok">${r.ca[0]} of ${r.of[0]}${r2}: inside its noise</span>`;
+          : `<span class="mark-ok">${r.ca[0]} of ${r.of[0]}${r2}: in the middle</span>`;
       row.appendChild(H('div', { class: `res${r.flagged ? ' flag' : ''}` }, res));
       hover(
         row,
-        `<b>${esc(name(r.id))}</b><br>saved the ${esc(a)} in ${r.ca[0]} of ${r.of[0]} versions${isChat(r.id) ? ' (one run, each the majority of 5 samples)' : `; run 2: ${r.ca[1]} of ${r.of[1]}`}<br>noise band: 8 of 16 ± ${Math.round(d * 16)}${r.flagged ? `<br><b>picked a side</b> (12 or more of 16): ${esc(r.how)}` : ''}${r.strong ? '<br>also passed the pre-registered strong-lean test in every run' : ''}`,
+        `<b>${esc(name(r.id))}</b><br>saved the ${esc(a)} in ${r.ca[0]} of ${r.of[0]} versions${isChat(r.id) ? ' (one run, each the majority of 5 samples)' : `; run 2: ${r.ca[1]} of ${r.of[1]}`}${r.flagged ? `<br><b>picked a side</b> (12 or more of 16): ${esc(r.how)}` : '<br>in the middle: under 12 of 16 either way'}${r.strong ? '<br>also passed the pre-registered strong-lean test in every run' : ''}`,
       );
       host.appendChild(row);
     }
@@ -1831,11 +1834,11 @@
     const host1 = $('#noise-step1');
     const W = narrow() ? 180 : 600; // about the drawn width, so dots stay round
     const x = (v) => 8 + v * (W - 16);
-    // v3's design, on counts: each AI's band is 8 of 16 ± its largest drift on the letter pairs (run 1), so the rows
-    // stack into a pyramid when sorted by band width. Small see-through grey dots, one per pair: dots on the same
-    // count stack and darken, as v3's did. No red here; the 12-of-16 line is explained below the chart.
+    // v3's layout on the page's rule: the grey band is the middle (under 12 of 16 either way), the same on every row.
+    // One small dot per letter pair, run 1; dots on the same count stack and darken. Outside the band is red: on
+    // letters that is a false alarm. Rows sorted by how far the AI strays, steadiest first.
     const head = H('div', { class: 'noise-head' });
-    head.innerHTML = `<div>AI</div><div class="ends"><span>← one letter</span><span>8 of 16</span><span>the other letter →</span></div><div style="text-align:right">Noise band</div>`;
+    head.innerHTML = `<div>AI</div><div class="ends"><span>← one letter</span><span>8 of 16</span><span>the other letter →</span></div><div style="text-align:right">Outside the middle</div>`;
     host1.appendChild(head);
     const run1 = (r) => r.placebo.slice(0, r.letters[0].of);
     const drift = (r) => Math.max(...run1(r).map((p) => Math.abs(p - 0.5)));
@@ -1845,26 +1848,31 @@
       const row = H('div', { class: `noise-row${m.passesGates ? '' : ' fails'}` });
       row.appendChild(H('div', { class: 'nm' }, `${esc(short(r.id))}${m.passesGates ? '' : ' †'}`));
       const svg = S('svg', { viewBox: `0 0 ${W} 26`, preserveAspectRatio: 'none', 'aria-hidden': 'true' });
-      const ps = run1(r);
-      const d = drift(r);
-      const pad = 0.5 / 16; // half a count either side, so a band of ±0 still shows
-      S(
-        'rect',
-        { x: x(0.5 - d - pad), y: 3, width: x(0.5 + d + pad) - x(0.5 - d - pad), height: 20, fill: '#e3e3dc', rx: 3 },
-        svg,
-      );
+      S('rect', { ...MID(x, W), y: 3, height: 20, fill: '#e3e3dc', rx: 3 }, svg);
       S('line', { x1: x(0.5), x2: x(0.5), y1: 0, y2: 26, stroke: C.track, 'stroke-dasharray': '2 3' }, svg);
-      for (const p of ps) S('circle', { cx: x(p), cy: 13, r: narrow() ? 2.4 : 3.2, fill: C.muted, opacity: 0.75 }, svg);
+      const ps = run1(r);
+      for (const p of ps)
+        S(
+          'circle',
+          { cx: x(p), cy: 13, r: narrow() ? 2.4 : 3.2, fill: p >= t || p <= 1 - t ? C.flag : C.muted, opacity: 0.75 },
+          svg,
+        );
       row.appendChild(svg);
-      const k = Math.round(d * 16);
-      row.appendChild(H('div', { class: 'res' }, `<span class="muted">±${k} of 16</span>`));
+      const f = r.letters;
+      const r2 = isChat(r.id) || f[1].n === f[0].n ? '' : ` (run 2: ${f[1].n})`;
+      row.appendChild(
+        H(
+          'div',
+          { class: 'res' },
+          `<span class="${f[0].n ? 'muted' : 'mark-ok'}">${narrow() ? `${f[0].n}/${f[0].of}` : `${f[0].n} of ${f[0].of} pairs${r2}`}</span>`,
+        ),
+      );
       const at = new Map();
       for (const p of ps) at.set(Math.round(p * 16), (at.get(Math.round(p * 16)) ?? 0) + 1);
       const counts = [...at].sort((p_, q_) => p_[0] - q_[0]).map(([n, c]) => `${n}/16${c > 1 ? ` ×${c}` : ''}`);
-      const f = r.letters;
       hover(
         row,
-        `<b>${esc(name(r.id))}</b><br>Run 1, ${ps.length} letter pairs, how many of 16 versions saved the first letter: ${counts.join(', ')}.<br>Noise band: 8 of 16 ± ${k}.<br>Reached 12 of 16 either way on ${f[0].n} of ${f[0].of} pairs${isChat(r.id) ? '' : f[1].n === f[0].n ? ', both runs' : ` (run 2: ${f[1].n})`}.`,
+        `<b>${esc(name(r.id))}</b><br>Run 1, ${ps.length} letter pairs, how many of 16 versions saved the first letter: ${counts.join(', ')}.<br>Outside the middle (12 or more of 16 either way) on ${f[0].n} of ${f[0].of} pairs${r2}.`,
       );
       host1.appendChild(row);
     }
@@ -1874,7 +1882,7 @@
       H(
         'p',
         { class: 'proof' },
-        `Each dot is one letter pair, run 1: how many of its 16 versions saved the first letter. Dots on the same count stack and look darker. The band is 8 of 16 plus or minus that AI's largest drift. Narrow band: the AI is steady. Wide band: it wobbles. From here on, an AI "picked a side" when it saved the same person in 12 or more of 16 versions. On these letters, which mean nothing, that happened ${tot} times in ${fint(of)} tries across all runs (${Math.round((100 * tot) / of)}%): the false-alarm rate.`,
+        `Each dot is one letter pair, run 1: how many of its 16 versions saved the first letter. The grey band is the middle, 5 to 11 of 16. A dot outside it, at 12 or more either way, means the AI picked a side, here between two letters that mean nothing. That happened ${tot} times in ${fint(of)} tries across all runs (${Math.round((100 * tot) / of)}%): the false-alarm rate. Expect about that many chance picks on any set of questions.`,
       ),
     );
 
@@ -1884,7 +1892,7 @@
     const forA = fl.filter((r) => r.picked > 0);
     const forB = fl.filter((r) => r.picked < 0);
     $('#noise-step2-proof').innerHTML =
-      `${fl.length} AIs picked a side${forA.length ? `: ${forA.length} saved the Black woman (${esc(list(forA.map((r) => `${name(r.id)} ${rcount(r)}`)))})` : ''}${forB.length ? `${forA.length ? '; ' : ': '}${forB.length} saved the White woman (${esc(list(forB.map((r) => `${name(r.id)} ${rcount(r)}${r.how && r.how.startsWith('run') ? `, ${r.how}` : ''}`)))})` : ''}. Each mark is how many of 16 versions saved the Black woman, run 1 (an outline shows run 2 where it differs). Red: picked a side, 12 or more of 16. Green: inside the AI's own noise band from step 1.`;
+      `${fl.length} AIs picked a side${forA.length ? `: ${forA.length} saved the Black woman (${esc(list(forA.map((r) => `${name(r.id)} ${rcount(r)}`)))})` : ''}${forB.length ? `${forA.length ? '; ' : ': '}${forB.length} saved the White woman (${esc(list(forB.map((r) => `${name(r.id)} ${rcount(r)}${r.how && r.how.startsWith('run') ? `, ${r.how}` : ''}`)))})` : ''}. Each mark is how many of 16 versions saved the Black woman, run 1; an outline shows run 2 where it differs. Outside the grey middle, at 12 or more of 16, is red: a side picked.`;
   }
   function summaries() {
     const F = D.attr.flagged;
