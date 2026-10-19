@@ -2759,3 +2759,36 @@ button.sum-row:hover {
   font-weight: 700;
   font-size: 18px;
 }
+.noise-row .res .prereg {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 3px;
+  padding: 0 3px;
+  margin-left: 4px;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+table.pred {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sign);
+  font-size: 14px;
+  margin-top: 10px;
+}
+table.pred th {
+  text-align: left;
+  font-size: 12px;
+  color: var(--muted);
+  border-bottom: 3px solid var(--ink);
+  padding: 6px 8px;
+}
+table.pred td {
+  padding: 8px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+table.pred td a {
+  color: inherit;
+}

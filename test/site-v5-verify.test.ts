@@ -805,21 +805,23 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
       for (const x of fl)
         if (x.spared !== person)
           errs.push(`${cid} card: ${name(x.id)} picked the ${x.spared}, not the ${person}, and the card says nothing`);
+      // Pre-registered reporting rule: only strong leans (every run) are named; the other picks are counted.
+      const strongFl = fl.filter((x) => x.strong);
       check(
         errs,
-        `${cid} card: models named = the models that picked a side`,
+        `${cid} card: models named = the strong leans among the picks`,
         named(proof),
-        fl.map((x) => x.id).sort(),
+        strongFl.map((x) => x.id).sort(),
       );
       const head = row(c.chart.model, pair);
-      const both = fl.filter((x) => x.how === 'both runs' && x.id !== head.id);
-      const once = fl.filter((x) => x.how === 'run 1 only' || x.how === 'run 2 only');
-      const chats = fl.filter((x) => isChat(x.id));
+      const both = strongFl.filter((x) => !isChat(x.id) && x.id !== head.id);
+      const chats = strongFl.filter((x) => isChat(x.id));
+      const weaker = fl.filter((x) => !x.strong).length;
       check(
         errs,
-        `${cid} card: chart model picked the ${person} in both runs`,
-        [head.how, head.spared],
-        ['both runs', person],
+        `${cid} card: chart model is a strong lean for the ${person}, both runs`,
+        [head.how, head.spared, head.strong],
+        ['both runs', person, true],
       );
       const headTxt =
         head.count[0] === head.count[1] && head.of[0] === head.of[1]
@@ -830,25 +832,23 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
         const t = `${name(x.id)} ${x.count[0]}/${x.of[0]}${x.count[1] !== x.count[0] ? ` (run 2: ${x.count[1]})` : ''}`;
         const i = proof.indexOf(t);
         if (i < 0 || (x.count[1] === x.count[0] && proof.slice(i + t.length).startsWith(' (run 2')))
-          errs.push(`${cid} card: should say "${t}" (both runs)`);
+          errs.push(`${cid} card: should say "${t}"`);
       }
-      const m = proof.match(/(\w+) more decision models? picked/);
+      const m = proof.match(/(\w+) more decision models? passed/);
       if (both.length) {
-        const w = m?.[1]?.toLowerCase();
-        if (w !== WORDS[both.length]) errs.push(`${cid} card: "${m?.[0]}" but ${both.length} more picked in both runs`);
-      } else if (m) errs.push(`${cid} card: "${m[0]}" but none more picked in both runs`);
-      for (const x of once) {
-        const k = x.how === 'run 2 only' ? 1 : 0;
-        const t = `${name(x.id)} (${x.how}: ${x.count[k]}/${x.of[k]})`;
-        if (!proof.includes(t)) errs.push(`${cid} card: should say "${t}"`);
-      }
+        if (m?.[1]?.toLowerCase() !== WORDS[both.length])
+          errs.push(`${cid} card: "${m?.[0]}" but ${both.length} more strong leans`);
+      } else if (m) errs.push(`${cid} card: "${m[0]}" but no more strong leans`);
+      const mw = proof.match(/(\w+) more leaned the same way by the page's looser rule/);
+      if (weaker ? mw?.[1]?.toLowerCase() !== WORDS[weaker] : mw)
+        errs.push(`${cid} card: looser-rule count "${mw?.[0]}" but ${weaker} picks were not strong leans`);
       for (const x of chats) {
         const t = `${name(x.id)} ${x.count[0]}/${x.of[0]}`;
         if (!/Chat models \(one run\)/.test(proof) || !proof.includes(t))
           errs.push(`${cid} card: should say "Chat models (one run): ${t}"`);
       }
       if (!chats.length && /Chat models/.test(proof))
-        errs.push(`${cid} card mentions chat models, but none picked a side`);
+        errs.push(`${cid} card mentions chat models, but none is a strong lean`);
       // "(lean 55/45 against noise of ±4)": check the lean and band in run 1.
       for (const mm of proof.matchAll(/([A-Z][\w .\-]+?) \d+\/\d+ \(lean (\d+)\/(\d+) against noise of ±(\d+)\)/g)) {
         const id = named(mm[1]!)[0]!;
@@ -862,7 +862,9 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
         );
       }
       // Take: "One AI saved X over Y in all 16 versions" — how many picked them in all 16, in every run?
-      const all16 = fl.filter((x) => x.spared === person && x.count.every((n, i) => n === 16 && x.of[i] === 16));
+      const all16 = fl.filter(
+        (x) => x.strong && x.spared === person && x.count.every((n, i) => n === 16 && x.of[i] === 16),
+      );
       const all16r1 = fl.filter((x) => x.spared === person && x.count[0] === 16 && x.of[0] === 16);
       const t = c.take as string;
       const tm = t.match(/^(\w+) AIs? saved .* in all 16 versions of the question, in both runs/);
@@ -874,9 +876,9 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
             `${cid} card take "${tm[0]}": ${all16.length} AIs did so in every run (${all16.map((x) => name(x.id)).join(', ')}); ${all16r1.length} in run 1 (${all16r1.map((x) => name(x.id)).join(', ')})`,
           );
       }
-      const tn = t.match(/^(\w+) AIs let .* beyond their own noise/);
-      if (tn && WORDS.indexOf(tn[1]!.toLowerCase()) !== fl.length)
-        errs.push(`${cid} take "${tn[0]}": ${fl.length} picked a side`);
+      const tn = t.match(/^(\w+) AIs passed the pre-registered strong-lean test/);
+      if (tn && WORDS.indexOf(tn[1]!.toLowerCase()) !== fl.filter((x) => x.strong).length)
+        errs.push(`${cid} take "${tn[0]}": ${fl.filter((x) => x.strong).length} strong leans`);
       return { fl, proof };
     };
     traitCard('race', 'Black woman|White woman', 'Black woman');

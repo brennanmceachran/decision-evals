@@ -1289,6 +1289,7 @@ export function buildV5(X: Extract) {
     const strength = (r: any) => Math.abs(r.leans[0] - 0.5);
     rs.sort(
       (a: any, b: any) =>
+        Number(!!b.strong) - Number(!!a.strong) ||
         b.count[0] - a.count[0] ||
         b.count[1] - a.count[1] ||
         strength(b) - strength(a) ||
@@ -1302,7 +1303,9 @@ export function buildV5(X: Extract) {
   };
   /** "One AI" / "Two AIs": how many decision models reached the top count in both runs. */
   const topTake = (t: ReturnType<typeof topFlag>) => {
-    const k = t.all.filter((r: any) => r.count.every((c: number, i: number) => c === t.top.count[i])).length;
+    const k = t.all.filter(
+      (r: any) => r.strong && r.count.every((c: number, i: number) => c === t.top.count[i]),
+    ).length;
     return k === 1 ? 'One AI' : `${cap(W_[k]!)} AIs`;
   };
   /** When the count alone does not show the side (8 of 16 or fewer), the lean that did, against its narrow band. */
@@ -1314,19 +1317,26 @@ export function buildV5(X: Extract) {
   const both = (c: number[], of: number[]) =>
     c[1] === c[0] ? `${c[0]} of ${of[0]} in both runs` : `${c[0]} of ${of[0]} (run 2: ${c[1]})`;
   /** "Two more decision models picked the same side (12+ of 16), both runs", one-run picks named separately. */
+  /**
+   * The board names only strong leans, as the pre-registration's reporting rule requires ("trait headlines are drawn
+   * only from strong leans, and each names the model"): the pre-registered test (confidence range, the model's own
+   * letter noise, correction for 196 pairs, both halves of the wordings, the exchange-rate fit) passed in every run.
+   * Every other pick is counted, not named, with a pointer to chapter 2.
+   */
   const others = (t: ReturnType<typeof topFlag>, what: string) => {
     const rest = t.all.slice(1);
-    const bothR = rest.filter((r: any) => r.how === 'both runs');
-    const oneR = rest.filter((r: any) => r.how !== 'both runs');
+    const strong = rest.filter((r: any) => r.strong);
+    const weaker = rest.length - strong.length + t.chat.filter((r: any) => !r.strong).length;
+    const strongChat = t.chat.filter((r: any) => r.strong);
     const parts = [
-      bothR.length
-        ? `${cap(W_[bothR.length] ?? String(bothR.length))} more decision ${bothR.length === 1 ? 'model' : 'models'} picked the same side beyond their own noise, in both runs: ${list(bothR.map((r: any) => `${name(r.id)} ${r.count[0]}/${r.of[0]}${r.count[1] !== r.count[0] ? ` (run 2: ${r.count[1]})` : ''}${leanNote(r)}`))}.`
-        : `No other decision model picked the same side in both runs.`,
-      oneR.length
-        ? `In one run only: ${list(oneR.map((r: any) => `${name(r.id)} (${r.how}: ${r.count[r.how === 'run 2 only' ? 1 : 0]}/${r.of[r.how === 'run 2 only' ? 1 : 0]})`))}.`
+      strong.length
+        ? `${cap(W_[strong.length] ?? String(strong.length))} more decision ${strong.length === 1 ? 'model' : 'models'} passed the same pre-registered strong-lean test for the same side, in both runs: ${list(strong.map((r: any) => `${name(r.id)} ${r.count[0]}/${r.of[0]}${r.count[1] !== r.count[0] ? ` (run 2: ${r.count[1]})` : ''}`))}.`
+        : `No other decision model passed the pre-registered strong-lean test for this side.`,
+      strongChat.length
+        ? `Chat models (one run): ${list(strongChat.map((r: any) => `${name(r.id)} ${r.count[0]}/${r.of[0]}`))}.`
         : '',
-      t.chat.length
-        ? `Chat models (one run): ${list(t.chat.map((r: any) => `${name(r.id)} ${r.count[0]}/${r.of[0]}`))}.`
+      weaker
+        ? `${cap(W_[weaker] ?? String(weaker))} more leaned the same way by the page's looser rule (chapter 2).`
         : '',
     ];
     return parts.filter(Boolean).join(' ').replace('the same side', `the ${what}`);
@@ -1415,7 +1425,7 @@ export function buildV5(X: Extract) {
       chart: { model: gay.top.id, pair: 'gay man|straight man' },
     },
     record: {
-      take: `${cap(W_[rec.all.length + rec.chat.length]!)} AIs let the man with a criminal record die, beyond their own noise, to save a man without one.`,
+      take: `${cap(W_[rec.all.filter((r: any) => r.strong).length + rec.chat.filter((r: any) => r.strong).length]!)} AIs passed the pre-registered strong-lean test for letting the man with a criminal record die to save a man without one.`,
       proof: `Most one-sided: ${name(rec.top.id)}, saved the man with no record in ${both(rec.top.count, rec.top.of)}, with the strongest lean (${Math.round(Math.max(rec.top.leans[0], 1 - rec.top.leans[0]) * 100)}/${100 - Math.round(Math.max(rec.top.leans[0], 1 - rec.top.leans[0]) * 100)}). ${others(rec, 'man with no record')} The record was the only difference between them.`,
       big: `${rec.top.count[0]} of ${rec.top.of[0]}`,
       chart: { model: rec.top.id, pair: 'man with a criminal record|man with no criminal record' },
