@@ -1,0 +1,135 @@
+[
+ {
+  "file": "img/u-group-L.jpg",
+  "v3": "acd056ac8b67f8dd2183aa8bc627890c0aa2af9d9b7b8044478ab6734faa600e",
+  "v5": "9aa634a1c21b853f00ba82d3164bd2ed0821e162de6f5a43418636877dc03ba5",
+  "source": "assets/real-final/u-group-L.jpg",
+  "reason": "the final study showed a different frame under this name"
+ },
+ {
+  "file": "img/u-group-R.jpg",
+  "v3": "31c12fa9d29afabc38eda661a339710608fda02687f861baab5d91e7fdc2f433",
+  "v5": "31c12fa9d29afabc38eda661a339710608fda02687f861baab5d91e7fdc2f433",
+  "source": "assets/real-final/u-group-R.jpg",
+  "reason": "unchanged: the final study used the same frame"
+ },
+ {
+  "file": "img/u-two-L.jpg",
+  "v3": "22e631a73b2e787ccd66fe8584f4e3ec4d78c391129fa7721ca1570f3804ced1",
+  "v5": "aa46663f2a3c8c800616d6bdbc6f7d47fb3e39b03bc89b1591500ff47f331c22",
+  "source": "assets/real-final/u-two-L.jpg",
+  "reason": "the final study showed a different frame under this name"
+ },
+ {
+  "file": "img/u-two-R.jpg",
+  "v3": "84d3d657227b1959f2e666b244a709bed3b7b55e16257293818d162da5ba2170",
+  "v5": "84d3d657227b1959f2e666b244a709bed3b7b55e16257293818d162da5ba2170",
+  "source": "assets/real-final/u-two-R.jpg",
+  "reason": "unchanged: the final study used the same frame"
+ },
+ {
+  "file": "img/u-empty-L.jpg",
+  "v3": "c94cf9c9b0aca343cb9c7ac6eec05ea6692337f5da6396e6f6ab8f9c09a6dd4e",
+  "v5": "c94cf9c9b0aca343cb9c7ac6eec05ea6692337f5da6396e6f6ab8f9c09a6dd4e",
+  "source": "assets/real-final/u-empty-L.jpg",
+  "reason": "unchanged: the final study used the same frame"
+ },
+ {
+  "file": "img/u-empty-R.jpg",
+  "v3": "81d5805c0e9b3ce03dbe2f2ffd4ee15609c8e1686da37605ecdc18d5c600aef1",
+  "v5": "81d5805c0e9b3ce03dbe2f2ffd4ee15609c8e1686da37605ecdc18d5c600aef1",
+  "source": "assets/real-final/u-empty-R.jpg",
+  "reason": "unchanged: the final study used the same frame"
+ },
+ {
+  "file": "img/w-group-L.jpg",
+  "v3": "5db1ae1cb7280b5b07fd3f413a0741b54ce089d0af706f416af04ea24a9e5068",
+  "v5": "a04bfee6bfa04494283920809c6b8ed04a68e197a9d036dc49f7689065f16afa",
+  "source": "assets/real-final/w-group-L.jpg",
+  "reason": "the final study showed a different frame under this name"
+ },
+ {
+  "file": "img/w-group-R.jpg",
+  "v3": "87d0f18e5c5144a2ec4b3ed91a34c4a577d53255c3196cb6f49f040b64bc067f",
+  "v5": "8a557c8a546645f5a37f0b8336049f4ede7b79af5276e64e61dc4c1eefc1ae89",
+  "source": "assets/real-final/w-group-R.jpg",
+  "reason": "the final study showed a different frame under this name"
+ },
+ {
+  "file": "img/w-two-L.jpg",
+  "v3": "2de7384c37d47e03dd013f2709cb9554fdaea359eca4e395812999cf2d724860",
+  "v5": "92fb5aeaf5c5ea2f1bd3e6518d1f5bedd33582a9783890f77f285e4df3daaab8",
+  "source": "assets/real-final/w-two-L.jpg",
+  "reason": "the final study showed a different frame under this name"
+ },
+ {
+  "file": "img/w-two-R.jpg",
+  "v3": "d596c428fa40c136d67fc27fb668a0ff8d3980c5bd43f284de6480a98c5c8c9b",
+  "v5": "876d5a17000efe18fc02dd4fb706135e2a1f4d00f8a907a7c4844f53e2d390ef",
+  "source": "assets/real-final/w-two-R.jpg",
+  "reason": "the final study showed a different frame under this name"
+ },
+ {
+  "file": "img/w-empty-L.jpg",
+  "v3": "730de42f057aaffb01e6b35b9b291c6f2d94df0b4c63ccbcc63476eb60f85243",
+  "v5": "00994236194dced0c7c34116ce984933744bd7e76295a26651793b98f54146e2",
+  "source": "assets/real-final/w-empty-L.jpg",
+  "reason": "the final study showed a different frame under this name"
+ },
+ {
+  "file": "img/w-empty-R.jpg",
+  "v3": "007757ac4e7b9f925f97e816bb9e543a743513488c006210dd1bc51fc0c75989",
+  "v5": "12c51aeb7424bdf57457bda6f7c67d14ea670aa4f96c1937af4aef8da9b9154b",
+  "source": "assets/real-final/w-empty-R.jpg",
+  "reason": "the final study showed a different frame under this name"
+ },
+ {
+  "file": "img/x-group-L.jpg",
+  "v3": null,
+  "v5": "31639e5908303b9629cb3a6ab923383af42cbe2c65b77eb3feabd0d5baab0ac5",
+  "source": "assets/real-final/x-group-L.jpg",
+  "reason": "final frame, shown in the real-or-generated game"
+ },
+ {
+  "file": "img/y-two-R.jpg",
+  "v3": null,
+  "v5": "afb6af7a4f9e4a6b0ae8170f2f872b1ffd17066c372b9f70e85823926b2e8379",
+  "source": "assets/real-final/y-two-R.jpg",
+  "reason": "final frame, shown in the real-or-generated game"
+ },
+ {
+  "file": "img/switch-5v1-plain.png",
+  "v3": "a9bd89647c2137626ac3a6b10c4abad9a635120ba2b324cc8775a43f69193448",
+  "v5": "d60b2834c11612b3330df88daf645b2d7cb9f4e99a7f4d45f5c0a961b8390a72",
+  "source": "src/render/diagram.ts at FINAL_SCALE (bytes of final job i-e01860f9fcc9)",
+  "reason": "the final study sent this diagram at 1280×960 (v3 shows the 2048×1536 pilot export of the same drawing)"
+ },
+ {
+  "file": "img/two-side-5v1-plain.png",
+  "v3": "d7429c1cd5f5c12912d14b88a32d80d60141c2b44f2a10ca288fb2b4b929ecbc",
+  "v5": "02bd4ef851d28493bb06c7cdb500f45f121f5e6a38b9bc3a564dbdb38f14ffed",
+  "source": "src/render/diagram.ts at FINAL_SCALE (bytes of final job i-de10c8e11c4a)",
+  "reason": "the final study sent this diagram at 1280×960 (v3 shows the 2048×1536 pilot export of the same drawing)"
+ },
+ {
+  "file": "img/v1-a-51.jpg",
+  "v3": "668d3bb7e741e967c9ed78aa196411678feb7cf4a6bd2719a2523d09ccbe8231",
+  "v5": "668d3bb7e741e967c9ed78aa196411678feb7cf4a6bd2719a2523d09ccbe8231",
+  "source": "unchanged from v3",
+  "reason": "pilot frame-making round, shown and labelled as pilot history in the realism strip"
+ },
+ {
+  "file": "img/v2-c-group-L.jpg",
+  "v3": "a45d6b167392d2b1ab86650bd8459edf248a52cf0dfb6d4b34fa8b9582791047",
+  "v5": "a45d6b167392d2b1ab86650bd8459edf248a52cf0dfb6d4b34fa8b9582791047",
+  "source": "unchanged from v3",
+  "reason": "pilot frame-making round, shown and labelled as pilot history in the realism strip"
+ },
+ {
+  "file": "img/v3-s-group-L.jpg",
+  "v3": "dd440100f93c28c929c4948b6bb6193ad062c36ea46ea1d65e708a8f307688ad",
+  "v5": "dd440100f93c28c929c4948b6bb6193ad062c36ea46ea1d65e708a8f307688ad",
+  "source": "unchanged from v3",
+  "reason": "pilot frame-making round, shown and labelled as pilot history in the realism strip"
+ }
+]
