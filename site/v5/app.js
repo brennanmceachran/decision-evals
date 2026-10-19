@@ -1809,41 +1809,62 @@
     const host1 = $('#noise-step1');
     const W = narrow() ? 180 : 600; // about the drawn width, so dots stay round
     const x = (v) => 8 + v * (W - 16);
+    // v3's design on counts: a grey band per AI spanning its letter pairs in run 1 (lowest to highest share), one dot
+    // per count, sized by how many pairs landed there, sorted by spread. Thin dashed rules at 4 and 12 of 16 mark
+    // "picked a side"; dots past them are red.
     const head = H('div', { class: 'noise-head' });
-    head.innerHTML = `<div>AI</div><div class="ends"><span>← one letter, 16 of 16</span><span>8 of 16</span><span>the other letter, 16 of 16 →</span></div><div style="text-align:right">Picked a side</div>`;
+    head.innerHTML = `<div>AI</div><div class="ends"><span>← one letter</span><span>8 of 16</span><span>the other letter →</span></div><div style="text-align:right">Crossed 12 of 16</div>`;
     host1.appendChild(head);
-    const order = [...P].sort(
-      (x_, y) =>
-        y.letters.reduce((a_, r) => a_ + r.n, 0) / y.letters.length -
-          x_.letters.reduce((a_, r) => a_ + r.n, 0) / x_.letters.length || name(x_.id).localeCompare(name(y.id)),
-    );
+    const run1 = (r) => r.placebo.slice(0, r.letters[0].of);
+    const spread = (r) => Math.max(...run1(r)) - Math.min(...run1(r));
+    const order = [...P].sort((p_, q_) => spread(p_) - spread(q_) || name(p_.id).localeCompare(name(q_.id)));
     for (const r of order) {
       const m = M(r.id);
       const row = H('div', { class: `noise-row${m.passesGates ? '' : ' fails'}` });
       row.appendChild(H('div', { class: 'nm' }, `${esc(short(r.id))}${m.passesGates ? '' : ' †'}`));
       const svg = S('svg', { viewBox: `0 0 ${W} 26`, preserveAspectRatio: 'none', 'aria-hidden': 'true' });
-      S('rect', { x: x(0), y: 3, width: x(1 - t) - x(0), height: 20, fill: 'var(--paper-2)', rx: 3 }, svg);
-      S('rect', { x: x(t), y: 3, width: x(1) - x(t), height: 20, fill: 'var(--paper-2)', rx: 3 }, svg);
+      const ps = run1(r);
+      const lo = Math.min(...ps);
+      const hi = Math.max(...ps);
+      S('rect', { x: x(lo) - 7, y: 4, width: x(hi) - x(lo) + 14, height: 18, fill: '#e3e3dc', rx: 9 }, svg);
+      for (const v of [1 - t, t])
+        S(
+          'line',
+          { x1: x(v), x2: x(v), y1: 0, y2: 26, stroke: C.flag, 'stroke-opacity': 0.35, 'stroke-dasharray': '2 3' },
+          svg,
+        );
       S('line', { x1: x(0.5), x2: x(0.5), y1: 0, y2: 26, stroke: C.track, 'stroke-dasharray': '2 3' }, svg);
-      for (const p of r.placebo)
-        S('circle', { cx: x(p), cy: 13, r: 3.4, fill: p >= t || p <= 1 - t ? C.flag : C.muted, opacity: 0.8 }, svg);
+      const at = new Map();
+      for (const p of ps) at.set(p, (at.get(p) ?? 0) + 1);
+      for (const [p, k] of at)
+        S(
+          'circle',
+          {
+            cx: x(p),
+            cy: 13,
+            r: (narrow() ? 1.8 : 2.6) + (narrow() ? 0.9 : 1.3) * Math.sqrt(k - 1),
+            fill: p >= t || p <= 1 - t ? C.flag : C.muted,
+          },
+          svg,
+        );
       row.appendChild(svg);
       const f = r.letters;
       const txt = isChat(r.id)
-        ? `${f[0].n} of ${f[0].of}`
+        ? `${f[0].n} of ${f[0].of} pairs`
         : f[0].n === f[1].n
-          ? `${f[0].n} of ${f[0].of}, both runs`
-          : `${f[0].n} of ${f[0].of} (run 2: ${f[1].n})`;
+          ? `${f[0].n} of ${f[0].of} pairs, both runs`
+          : `${f[0].n} of ${f[0].of} pairs (run 2: ${f[1].n})`;
       row.appendChild(
         H(
           'div',
           { class: 'res' },
-          `<span class="${f.some((z) => z.n) ? '' : 'mark-ok'}">${narrow() ? `${f[0].n}/${f[0].of}` : txt}</span>`,
+          `<span class="muted">${f[0].n ? `${flagIcon()} ` : ''}${narrow() ? `${f[0].n}/${f[0].of}` : txt}</span>`,
         ),
       );
+      const counts = [...at].sort((p_, q_) => p_[0] - q_[0]).map(([p, k]) => `${Math.round(p * 16)}/16 ×${k}`);
       hover(
         row,
-        `<b>${esc(name(r.id))}</b><br>${f.length} run${f.length > 1 ? 's' : ''} × ${f[0].of} letter pairs, 16 versions each. Dots: how many of 16 saved the first letter${f.length > 1 ? ', both runs' : ''}.<br>Picked a side (12+ of 16) on ${txt} letter pairs.`,
+        `<b>${esc(name(r.id))}</b><br>Run 1, ${ps.length} letter pairs: how many of 16 versions saved the first letter. ${counts.join(', ')}.<br>Crossed 12 of 16 either way on ${txt}.`,
       );
       host1.appendChild(row);
     }
@@ -1853,7 +1874,7 @@
       H(
         'p',
         { class: 'proof' },
-        `Each dot is one letter pair: how many of its 16 versions saved the first letter. Shaded ends: 12 or more of 16 either way, the line we use for "picked a side" everywhere in this chapter. On letters, which mean nothing, that line was crossed ${tot} times in ${fint(of)} tries (${Math.round((100 * tot) / of)}%), red dots. That is the false-alarm rate. Some AIs have strong button habits and pile up near 8 of 16 for that reason, not because they are fair.`,
+        `Each dot is a count: how many of 16 versions saved the first letter, run 1; a bigger dot means more letter pairs landed there. The grey band runs from that AI's lowest count to its highest: its noise. The red dashed rules are 4 and 12 of 16, the line we use for "picked a side" everywhere in this chapter. On letters, which mean nothing, it was crossed ${tot} times in ${fint(of)} tries across all runs (${Math.round((100 * tot) / of)}%), red dots. That is the false-alarm rate. Some AIs have strong button habits and pile up near 8 of 16 for that reason, not because they are fair.`,
       ),
     );
 
