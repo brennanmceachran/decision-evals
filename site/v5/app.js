@@ -1767,23 +1767,33 @@
     const gid = `bell${gradN++}`;
     const defs = S('defs', {}, svg);
     const g = S('linearGradient', { id: gid, x1: 0, x2: 1, y1: 0, y2: 0 }, defs);
-    // Normal density, sampled across ±Z widths, as opacity (1 at the centre).
+    // Normal density across ±Z widths as opacity, darkest at 50/50; it keeps a floor so the band ends at a hard edge
+    // exactly where "picked a side" starts.
     for (let k = 0; k <= 24; k++) {
       const u = (k / 24) * 2 - 1; // −1 … 1 across the band
-      const op = Math.exp(-0.5 * (u * Z) ** 2);
-      S('stop', { offset: `${(k / 24) * 100}%`, 'stop-color': '#c9c9c0', 'stop-opacity': op.toFixed(3) }, g);
+      const op = 0.35 + 0.65 * Math.exp(-0.5 * (u * Z) ** 2);
+      S('stop', { offset: `${(k / 24) * 100}%`, 'stop-color': '#d6d6cd', 'stop-opacity': op.toFixed(3) }, g);
     }
-    const x0 = x(0.5 - d) - 2;
-    const x1 = x(0.5 + d) + 2;
-    S('rect', { x: x0, y: 3, width: x1 - x0, height: 20, fill: `url(#${gid})`, rx: 3 }, svg);
+    const x0 = x(0.5 - d);
+    const x1 = x(0.5 + d);
+    S('rect', { x: x0, y: 3, width: x1 - x0, height: 20, fill: `url(#${gid})` }, svg);
     for (const v of [0.5 - d, 0.5 + d])
-      if (v > lo && v < hi) S('line', { x1: x(v), x2: x(v), y1: 5, y2: 21, stroke: '#b9b9b0', 'stroke-width': 1 }, svg);
+      if (v > lo && v < hi)
+        S('line', { x1: x(v), x2: x(v), y1: 3, y2: 23, stroke: '#9a9a91', 'stroke-width': 1.5 }, svg);
     S('line', { x1: x(0.5), x2: x(0.5), y1: 0, y2: 26, stroke: C.track, 'stroke-dasharray': '2 3' }, svg);
     return { svg, x };
   }
+  /** Letter-pair dots; past the line they are red: a false alarm, a side picked between meaningless letters. */
   const noiseDots = (svg, x, id) => {
-    for (const p of D.placeboDots.find((q) => q.id === id).leans.flat())
-      S('circle', { cx: x(p), cy: 13, r: narrow() ? 2.4 : 3.2, fill: C.muted, opacity: 0.75 }, svg);
+    const d = Z * sd(id);
+    for (const p of D.placeboDots.find((q) => q.id === id).leans.flat()) {
+      const out = Math.abs(p - 0.5) > d;
+      S(
+        'circle',
+        { cx: x(p), cy: 13, r: narrow() ? 2.4 : 3.2, fill: out ? C.flag : C.muted, opacity: out ? 0.9 : 0.75 },
+        svg,
+      );
+    }
   };
   const split = (p) => `${pts(Math.max(p, 1 - p))}/${100 - pts(Math.max(p, 1 - p))}`;
   /** Steps 2 and 3: v3's rows. The AI's noise band (and, in step 2, its letter dots), then one mark for this
@@ -1835,19 +1845,28 @@
         const of = r.of[i];
         return n * 2 === of ? `${n} of ${of} each` : `${esc(n * 2 > of ? a : b)} ${Math.max(n, of - n)} of ${of}`;
       };
+      // Count first (versions that saved the person it leaned to); the lean (where the mark sits) in small type.
+      const lm = D.placeboDots.find((q) => q.id === r.id).letterMax;
+      const leanSm = (i) => ` <small class="lean">lean ${split(r.leans[i])}</small>`;
+      const top = Math.max(r.ca[0], r.of[0] - r.ca[0]);
+      // A high count still inside the noise: say why, with the AI's most one-sided letter pair.
+      const why =
+        top / r.of[0] >= 0.75 && lm.of && top / r.of[0] <= lm.n / lm.of
+          ? `: noise (a letter got ${lm.n}/${lm.of})`
+          : ': inside its noise';
       const res = narrow()
         ? firm || oneRun
           ? `${firm ? flagIcon() : ''} <span class="${firm ? '' : 'muted'}">${r.count[k]}/${r.of[k]}</span>`
-          : `<span class="${mixed || r.confOnly ? 'muted' : 'mark-ok'}">${Math.max(r.ca[0], r.of[0] - r.ca[0])}/${r.of[0]}</span>`
+          : `<span class="${mixed || r.confOnly ? 'muted' : 'mark-ok'}">${top}/${r.of[0]}</span>`
         : firm
-          ? `${flagIcon()} saves the ${esc(r.spared)}: ${r.count[0]} of ${r.of[0]}${!isChat(r.id) && r.count[1] !== r.count[0] ? ` (run 2: ${r.count[1]})` : ''}`
+          ? `${flagIcon()} saves the ${esc(r.spared)}: ${r.count[0]} of ${r.of[0]}${!isChat(r.id) && r.count[1] !== r.count[0] ? ` (run 2: ${r.count[1]})` : ''}${leanSm(0)}`
           : oneRun
-            ? `<span class="muted">${esc(r.how)}: the ${esc(r.spared)}, ${r.count[k]} of ${r.of[k]}</span>`
+            ? `<span class="muted">${esc(r.how)}: the ${esc(r.spared)}, ${r.count[k]} of ${r.of[k]}</span>${leanSm(k)}`
             : r.confOnly
-              ? `<span class="muted">${cnt(0)}: chose evenly (slight lean)</span>`
+              ? `<span class="muted">${cnt(0)}: chose evenly</span>${leanSm(0)}`
               : mixed
                 ? `<span class="muted">${cnt(0)}: runs disagree</span>`
-                : `<span class="mark-ok">${cnt(0)}: inside its noise</span>`;
+                : `<span class="mark-ok">${cnt(0)}${why}</span>`;
       row.appendChild(H('div', { class: `res${firm ? ' flag' : ''}` }, res));
       hover(
         row,

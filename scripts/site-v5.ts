@@ -514,9 +514,22 @@ export function buildV5(X: Extract) {
   const placeboPairs = [...new Set(placeboKeys)];
   const RACE = 'Black woman|White woman';
   // Letter pairs as counts (share of 16 versions that saved the first letter), every run, so the band contains them.
+  /** The most one-sided letter pair, by choices: the most versions that saved one letter, in any run. */
+  const letterMax = (m: string) => {
+    let best = { n: 0, of: 0 };
+    for (const s of runs(m))
+      for (const k of LETTER_KEYS) {
+        const t = s.traits[`${m}|${k}`][2];
+        if (t.of < 12) continue; // mostly refused: too few versions to compare
+        const n = Math.max(t.picked, t.of - t.picked);
+        if (n / t.of > best.n / (best.of || 1)) best = { n, of: t.of };
+      }
+    return best;
+  };
   const placeboDots = ids.map((m) => ({
     id: m,
     sd: r3(SD[m]!),
+    letterMax: letterMax(m),
     leans: letterLeans(m),
     race: row(m, 'parity-race', RACE).p,
     raceFlag: row(m, 'parity-race', RACE).flagged,
