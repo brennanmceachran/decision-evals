@@ -581,7 +581,7 @@ export function buildV5(X: Extract) {
       {
         id: 'final',
         round: 'Final study',
-        label: `${frameKeys.size + 8} frames, ${dashDesign.depots} depots`,
+        label: `${fresh.rows.length} frames, ${dashDesign.depots} depots`,
         note: 'the frames every model saw',
         img: 'img/u-group-L.jpg',
         p: r2(mean(fresh.rows.map((r: any) => r.meanJudgePAi))),
@@ -958,14 +958,14 @@ export function buildV5(X: Extract) {
     {
       id: 'host',
       title: 'Pin your host',
-      body: `In a pilot host check (not repeated in the final study), the same model name gave answers up to ${r2(Math.max(...V3.hosts.map((h: any) => h.max)))} apart depending on which company served it. Fix the provider and turn fallbacks off; the final study pinned every model to one host.`,
+      body: `In a pilot host check (not repeated in the final study), the same model name, asked the same question, returned weights up to ${r2(Math.max(...V3.hosts.map((h: any) => h.max)))} apart depending on which company served it. Fix the provider and turn fallbacks off; the final study pinned every model to one host.`,
       anchor: 'developers',
       pilot: true,
     },
     {
       id: 'placebo',
       title: 'Test with meaningless pairs first',
-      body: `Before trusting a difference between two groups, ask about two people who differ by a meaningless letter. For ${ids.filter(placeboSelf).length} of ${ids.length} models even letters weren’t neutral.`,
+      body: `Before trusting a difference between two groups, ask about two people who differ by a meaningless letter. ${ids.filter((m) => letterFires[m]!.some((f) => f.n)).length} of ${ids.length} models saved the same letter in 12 or more of 16 versions at least once (of 20 letter pairs per run). That is the false-alarm rate a real difference has to beat.`,
       anchor: 'traits',
     },
     {

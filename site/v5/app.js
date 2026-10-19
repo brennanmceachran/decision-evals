@@ -1375,7 +1375,7 @@
     const head = H('div', { class: 'strip-head' });
     head.innerHTML = `<div>Model</div><div class="ends"><span style="color:var(--opt-b)">← ${esc(bLab)}</span><span>50/50</span><span style="color:var(--opt-a)">${esc(aLab)} →</span></div><div style="text-align:right">versions</div>`;
     host.appendChild(head);
-    const W = 600;
+    const W = narrow() ? 180 : 600; // about the drawn width, so dots stay round
     const x = (v) => 8 + v * (W - 16);
     const rowEl = (label, sub, p, opts = {}) => {
       const r = H('div', { class: `strip-row${opts.people ? ' people' : ''}${opts.fails ? ' fails' : ''}` });
@@ -1761,7 +1761,7 @@
    * The shaded zones are "picked a side" (12 or more of 16 either way). The result column says it in words.
    */
   function countRows(host, rows, { a, b }) {
-    const W = 600;
+    const W = narrow() ? 180 : 600; // about the drawn width, so dots stay round
     const x = (v) => 8 + v * (W - 16);
     const t = D.attr.sideShare;
     const head = H('div', { class: 'noise-head' });
@@ -1807,7 +1807,7 @@
     const P = D.placeboDots;
     const t = D.attr.sideShare;
     const host1 = $('#noise-step1');
-    const W = 600;
+    const W = narrow() ? 180 : 600; // about the drawn width, so dots stay round
     const x = (v) => 8 + v * (W - 16);
     const head = H('div', { class: 'noise-head' });
     head.innerHTML = `<div>AI</div><div class="ends"><span>← one letter, 16 of 16</span><span>8 of 16</span><span>the other letter, 16 of 16 →</span></div><div style="text-align:right">Picked a side</div>`;
@@ -1894,17 +1894,17 @@
     const host = $('#replication');
     const decision = ids.filter((id) => !isChat(id));
     const shown = decision.filter((id) => D.raceOverTime[id].some((p) => p.side));
-    const W = 600;
+    const W = narrow() ? 180 : 600; // about the drawn width, so dots stay round
     const t = D.attr.sideShare;
     const x = (v) => 8 + v * (W - 16);
     host.innerHTML = '';
     const head = H('div', { class: 'noise-head', style: 'margin-top:0' });
-    head.innerHTML = `<div>Model</div><div class="ends"><span>← saved the White man, 16 of 16</span><span>8 of 16</span><span>saved the Black man, 16 of 16 →</span></div><div style="text-align:right">Run 1 · run 2</div>`;
+    head.innerHTML = `<div>Model</div><div class="ends"><span>← saved the White man</span><span>8 of 16</span><span>saved the Black man →</span></div><div style="text-align:right">Saved the Black man</div>`;
     host.appendChild(head);
     for (const id of shown) {
       const pts = D.raceOverTime[id];
       const row = H('div', { class: 'noise-row' });
-      row.appendChild(H('div', { class: 'nm' }, esc(name(id))));
+      row.appendChild(H('div', { class: 'nm' }, esc(narrow() ? short(id) : name(id))));
       const svg = S('svg', { viewBox: `0 0 ${W} 40`, preserveAspectRatio: 'none', 'aria-hidden': 'true', style: 'height:40px' });
       S('rect', { x: x(0), y: 2, width: x(1 - t) - x(0), height: 36, fill: 'var(--opt-b-soft)', rx: 3 }, svg);
       S('rect', { x: x(t), y: 2, width: x(1) - x(t), height: 36, fill: 'var(--opt-a-soft)', rx: 3 }, svg);
@@ -1914,7 +1914,11 @@
       );
       row.appendChild(svg);
       row.appendChild(
-        H('div', { class: 'res' }, pts.map((p) => `${p.side ? flagIcon() : ''}${p.n}/${p.of}`).join(' · ')),
+        H(
+          'div',
+          { class: 'res stack' },
+          pts.map((p, k) => `<span>${p.side ? flagIcon() : ''}<small>run ${k + 1}</small> ${p.n}/${p.of}</span>`).join(''),
+        ),
       );
       hover(
         row,
@@ -2324,7 +2328,7 @@
     const rows = ids
       .filter((id) => ob[id].replicated || ob[id].firstOnly || ob[id].reverse)
       .sort((a, b) => Number(ob[b].replicated) - Number(ob[a].replicated));
-    const W = 600;
+    const W = narrow() ? 354 : 600; // about the drawn width (full width on phones), so marks keep their shape
     const x = (v) => 8 + v * (W - 16);
     for (const id of rows) {
       const o = ob[id];
@@ -2357,7 +2361,7 @@
         H(
           'div',
           { class: 'num', style: `color:${o.replicated ? 'var(--flag)' : 'var(--muted)'}` },
-          o.replicated ? '✗ both runs' : o.reverse ? 'second listed, both runs' : 'one run only',
+          `${o.replicated ? '✗ ' : ''}${o.counts.map((c, k) => `${o.counts.length > 1 ? `run ${k + 1}: ` : ''}first ${c.first.n}/${c.first.of}, second ${c.second.n}/${c.second.of}`).join(' · ')}${o.replicated ? '' : o.reverse ? ' (more when second)' : ' (one run only)'}`,
         ),
       );
       hover(
@@ -2415,10 +2419,11 @@
     host.appendChild(card);
     const right = H('div');
     const pc = D.pilot.refusalCapture;
-    const two = (xs, f) =>
-      xs[1].refused === xs[0].refused ? `${f(xs[0])}, both runs` : `${f(xs[0])} (run 2: ${xs[1].refused})`;
+    // "refused N of the M <what>", per run: both runs when they agree, else run 2 alongside.
+    const two = (xs, what) =>
+      `<b>${xs[0].refused} of the ${fint(xs[0].of)}</b> ${what}${xs[1].refused === xs[0].refused && xs[1].of === xs[0].of ? ' (the same in run 2)' : ` (run 2: ${xs[1].refused} of ${fint(xs[1].of)})`}`;
     const lr = D.facts.lunaRouting;
-    right.innerHTML = `<div class="ask compact"><div class="bar"><span>What came back (pilot capture)</span><b>HTTP 200, no error</b></div><pre>${esc(pc.response)}</pre></div><p class="proof">No reason given: the API returns a refusal and nothing else. In the final study it refused <b>${two(r.placebo, (x) => `${x.refused} of ${x.of}`)}</b> of these letter-only questions, ${two(r.identity, (x) => `${x.refused} of ${x.of}`)} one-against-one trait questions, and ${two(r.uneven, (x) => `${x.refused} of ${x.of}`)} where the numbers differ. It also refused ${two(lr.routing, (x) => `${x.refused} of ${x.of}`)} depot routing requests and ${two(lr.safety, (x) => `${x.refused} of ${x.of}`)} with the safety rule. It is the only model in the study that refused anything.</p>`;
+    right.innerHTML = `<div class="ask compact"><div class="bar"><span>What came back (pilot capture)</span><b>HTTP 200, no error</b></div><pre>${esc(pc.response)}</pre></div><p class="proof">No reason given: the API returns a refusal and nothing else (this capture is from the pilots; the final study logged the same kind of refusal). In the final study, run 1, it refused ${two(r.placebo, 'letter-only questions')}, ${two(r.identity, 'one-against-one trait questions')}, and ${two(r.uneven, 'trait questions where the numbers differ')}. It also refused ${two(lr.routing, 'depot routing requests with people in the frame')} and ${two(lr.safety, 'with the safety rule added')}. No other model refused any question, in any run.</p>`;
     host.appendChild(right);
   }
   function speed() {

@@ -1817,7 +1817,7 @@ section.night .choice.picked {
 }
 .order-row {
   display: grid;
-  grid-template-columns: 170px 1fr 130px;
+  grid-template-columns: 170px 1fr 260px;
   gap: 14px;
   align-items: center;
   padding: 9px 0;
@@ -2617,4 +2617,28 @@ button.sum-row:hover {
 }
 .check .out ul.fails li {
   margin-bottom: 4px;
+}
+.noise-row .res.stack {
+  display: grid;
+  gap: 2px;
+  line-height: 1.2;
+}
+.noise-row .res.stack small {
+  display: inline;
+  color: var(--muted);
+  font-size: 11px;
+  margin-right: 2px;
+}
+@media (max-width: 640px) {
+  .pips {
+    gap: 1px;
+  }
+  .pips i {
+    width: 10px;
+    font-size: 8px;
+  }
+}
+.order-row > .num {
+  font-size: 13px;
+  line-height: 1.35;
 }
