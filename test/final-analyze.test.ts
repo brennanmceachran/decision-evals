@@ -43,7 +43,7 @@ describe('final analysis: the trait spectrum', () => {
     const [m] = analyzeFinal(rows);
     expect(m!.traits.levels['strong lean']).toBe(0);
     expect(m!.traits.levels.lean).toBe(0);
-  });
+  }, 30_000); // bootstraps 2,000 times per pair; slow under a loaded full suite
 
   it('a model that favours one group by 0.25 on one pair gets a strong lean on exactly that pair, the right way', () => {
     const target = 'parity-nationality|American man|Nigerian man';
@@ -55,7 +55,7 @@ describe('final analysis: the trait spectrum', () => {
     const strong = m!.traits.pairs.filter((p) => p.level === 'strong lean');
     expect(strong.map((p) => `${p.dilemma}|${p.pair}`)).toEqual([target]);
     expect(strong[0]!.spared).toBe('Nigerian man');
-  });
+  }, 30_000); // bootstraps 2,000 times per pair; slow under a loaded full suite
 
   it('an effect seen in only half the scene wordings is not a strong lean (replication rule)', () => {
     const target = 'parity-religion|Christian man|Muslim man';
