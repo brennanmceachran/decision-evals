@@ -896,6 +896,8 @@ export function buildV5(X: Extract) {
   const opsKeys = ['dashcam ops two', 'dashcam ops group-one', 'dashcam ops empty'];
   const safeKeys = ['dashcam ops-safety two', 'dashcam ops-safety group-one', 'dashcam ops-safety empty'];
   const h1 = realIds.filter((m) => realModels[m]!.h1);
+  // The pre-registered prediction F3 named these six (PREREGISTRATION-FINAL.md).
+  const F3_IDS = ['cloudflare/clef', 'cloudflare/clef-flash', 'cloudflare/clef-omni', 'liquid/d1', 'perplexity/pplx-decider-v1.2', 'anthropic/claude-haiku-5.5'];
   const safetyFixed = realIds.filter((m) => realModels[m]!.safetyEffect.material);
   const safetyIgnored = realIds.filter((m) => dash[m]!.safety.of && dash[m]!.safety.toward === dash[m]!.safety.of);
   const facts = {
@@ -1006,9 +1008,9 @@ export function buildV5(X: Extract) {
     const oneR = rest.filter((r: any) => r.how !== 'both runs');
     const parts = [
       bothR.length
-        ? `${cap(W_[bothR.length] ?? String(bothR.length))} more decision ${bothR.length === 1 ? 'model' : 'models'} picked the same side, in both runs: ${list(bothR.map((r: any) => `${name(r.id)} ${r.count[0]}/${r.of[0]}`))}.`
+        ? `${cap(W_[bothR.length] ?? String(bothR.length))} more decision ${bothR.length === 1 ? 'model' : 'models'} picked the same side, in both runs: ${list(bothR.map((r: any) => `${name(r.id)} ${r.count[0]}/${r.of[0]}${r.count[1] !== r.count[0] ? ` (run 2: ${r.count[1]})` : ''}`))}.`
         : `No other decision model picked the same side in both runs.`,
-      oneR.length ? `In one run only: ${list(oneR.map((r: any) => `${name(r.id)} (${r.how})`))}.` : '',
+      oneR.length ? `In one run only: ${list(oneR.map((r: any) => `${name(r.id)} (${r.how}: ${r.count[r.how === 'run 2 only' ? 1 : 0]}/${r.of[r.how === 'run 2 only' ? 1 : 0]})`))}.` : '',
       t.chat.length ? `Chat models (one run): ${list(t.chat.map((r: any) => `${name(r.id)} ${r.count[0]}/${r.of[0]}`))}.` : '',
     ];
     return parts.filter(Boolean).join(' ').replace('the same side', `the ${what}`);
@@ -1078,7 +1080,7 @@ export function buildV5(X: Extract) {
     },
     nodiff: {
       take: `For ${W_[h1.length]} AIs, workers on the track made no measurable difference to where they sent the tram. The schedule decided.`,
-      proof: `${h1.map(name).join(', ')}. Asked to count the people on each track, they counted both tracks right in ${Math.min(...h1.map(cr))}–${Math.max(...h1.map(cr))}% of answers. Pre-registered, and held in every run (${list(h1.filter(isChat).map(name))}: one run).`,
+      proof: `${h1.map(name).join(', ')}. Asked to count the people on each track, they counted both tracks right in ${Math.min(...h1.map(cr))}–${Math.max(...h1.map(cr))}% of answers. The test (fixed in advance, applied to every model) held in every run (${list(h1.filter(isChat).map(name))}: one run). We predicted it in advance for six of them; not for ${list(h1.filter((m) => !F3_IDS.includes(m)).map(name))}.`,
       big: `${h1.length}`,
     },
     gay: {
