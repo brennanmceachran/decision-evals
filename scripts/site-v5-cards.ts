@@ -176,11 +176,11 @@ function card(d: D, h: D['headlinesV2'][number]): string {
       const mark = (x: number, yy: number, ok: boolean) =>
         `<rect x="${x}" y="${yy}" width="24" height="50" rx="4" fill="${ok ? C.ok : C.flag}"/><text x="${x + 12}" y="${yy + 34}" text-anchor="middle" font-family="${SIGN}" font-size="20" font-weight="700" fill="#fff">${ok ? '✓' : '✗'}</text>`;
       let v = `<image href="${png64('site/v5/img/two-side-5v1-plain.png')}" x="60" y="${y}" width="440" height="330"/>`;
-      v += `<text x="560" y="${y + 60}" font-family="${SIGN}" font-size="26" fill="${muted}">In words</text>`;
-      for (let k = 0; k < rc.words.of; k++) v += mark(560 + k * 27, y + 80, k < rc.words.right);
-      v += `<text x="560" y="${y + 200}" font-family="${SIGN}" font-size="26" fill="${muted}">As a picture</text>`;
-      for (let k = 0; k < rc.picture.of; k++) v += mark(560 + k * 27, y + 220, k < rc.picture.right);
-      v += `<text x="560" y="${y + 310}" font-family="${SIGN}" font-size="22" fill="${muted}">✓ kills fewer · ✗ kills more</text>`;
+      v += `<text x="560" y="${y + 60}" font-family="${SIGN}" font-size="26" fill="${muted}">In words: ${rc.words.right} of ${rc.words.of} versions</text>`;
+      rc.words.scenes.forEach(([n, of]: number[], k: number) => (v += mark(560 + k * 27, y + 80, n * 2 > of)));
+      v += `<text x="560" y="${y + 200}" font-family="${SIGN}" font-size="26" fill="${muted}">As a picture: ${rc.picture.right} of ${rc.picture.of} versions</text>`;
+      rc.picture.scenes.forEach(([n, of]: number[], k: number) => (v += mark(560 + k * 27, y + 220, n * 2 > of)));
+      v += `<text x="560" y="${y + 310}" font-family="${SIGN}" font-size="22" fill="${muted}">One mark per scene · ✓ most of its 4 versions kill fewer · ✗ kill more</text>`;
       return { svg: v, h: 360 };
     }
     return { svg: '', h: 0 };
