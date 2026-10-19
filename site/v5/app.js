@@ -2016,7 +2016,7 @@
       const firsts = tally((r) => r.top);
       const lasts = tally((r) => r.bottom);
       $('#league-proof').innerHTML =
-        `Each dot is one group's record in that AI's one-against-one questions on ${esc(LEAGUE_LABEL[set].toLowerCase())} (run 1; hover for run 2): how many versions saved a person from that group, of the versions they appeared in. Teal: saved most. Purple: saved least. A fair AI puts every dot near the middle. Of the ${wide.length} AIs with a spread over 20 points, first place goes to ${esc(list(firsts.map(([g, n]) => `${groupName(set, g)} (${n})`)))}; last place to ${esc(list(lasts.map(([g, n]) => `${groupName(set, g)} (${n})`)))}. One against one, these are tie-breakers: step 5 shows whether any AI lets more people die for them.`;
+        `Each dot is one group's record in that AI's one-against-one questions on ${esc(LEAGUE_LABEL[set].toLowerCase())} (run 1; hover for run 2): how many versions saved a person from that group, of the versions they appeared in. Teal: saved most. Purple: saved least. A fair AI puts every dot near the middle. Of the ${wide.length} AIs with a spread over 20 points, first place goes to ${esc(list(firsts.map(([g, n]) => `${groupName(set, g)} (${n})`)))}; last place to ${esc(list(lasts.map(([g, n]) => `${groupName(set, g)} (${n})`)))}. Step 5 puts a number on it: one of the favourite is worth how many of the others.`;
     };
     for (const set of sets) {
       const b = H('button', { class: 'btn', 'data-set': set, role: 'tab' }, esc(LEAGUE_LABEL[set]));
@@ -2025,59 +2025,114 @@
     }
     draw(sets[0]);
   }
-  /** Step 5: the price. For each trait, the most one-sided AI (its favourite vs its least-saved group), plus every AI
-   * that trades lives (beats its own letter baseline at 1 vs 2 or 3, every run). Cells: 1 vs 1, 1 vs 2, 1 vs 3, the
-   * share of versions that saved the one. Grey: a tie-breaker. Red: it lets more people die to save the one. */
-  function price() {
-    const host = $('#price');
-    const sh = (g) => g.runs[0].n / g.runs[0].of;
-    const spread = (r) => sh(r.groups[0]) - sh(r.groups.at(-1));
-    const order = [
-      'parity-race',
-      'parity-nationality',
-      'parity-wealth',
-      'parity-religion',
-      'parity-disability',
-      'parity-age',
-    ];
-    const sections = order.map((set) => {
-      const rs = D.leagues[set];
-      const extreme = [...rs].sort((p, q) => spread(q) - spread(p))[0];
-      const trades = rs.filter((r) => r.trades && r.id !== extreme.id);
-      return { set, rows: [extreme, ...trades.sort((p, q) => q.trades - p.trades)] };
-    });
-    const head = H('div', { class: 'price-head' });
-    head.innerHTML = `<div>AI</div><div>Saves one…</div><div>…over 1</div><div>…over 2</div><div>…over 3</div>`;
-    host.appendChild(head);
-    for (const sec of sections) {
-      host.appendChild(H('div', { class: 'price-sec' }, esc(LEAGUE_LABEL[sec.set])));
-      sec.rows.forEach((r, i) => {
-        const row = H('div', { class: 'price-row' });
-        const who = `1 ${groupName(sec.set, r.top)}`;
-        const vs = groupName(sec.set, r.bottom);
-        row.innerHTML = `<div class="nm">${esc(short(r.id))}${isChat(r.id) ? ' <small class="muted">one run</small>' : ''}${i === 0 ? ' <span class="badge">widest</span>' : ''}</div><div>${esc(who)} <span class="muted">vs ${esc(vs)}</span></div>${[
-          0, 1, 2,
-        ]
-          .map((k) => {
-            const ps = r.price.map((x) => x[k]);
-            const held = k === 0 ? ps[0].n / ps[0].of > 0.5 : k < r.trades;
-            return `<div class="cell${held ? (k ? ' trade' : ' tie') : ''}"><b>${ps[0].n}/${ps[0].of}</b>${ps[1] && ps[1].n !== ps[0].n ? ` <small>(r2 ${ps[1].n})</small>` : ''}</div>`;
-          })
-          .join('')}`;
+  /** Step 5: v3's pictogram. One figure of group A = N figures of group B, per AI, from the pre-registered exchange
+   * rate (run 1; run 2 in the tooltip). Partial figures for fractions; "more than 3" when A was saved at every ratio
+   * tested. AIs whose answers barely change with the numbers get no rate. */
+  function worth() {
+    const ucf = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+    const tabs = $('#worth-tabs');
+    const host = $('#worth');
+    const person = (fill, w = 12) =>
+      `<svg width="${w}" height="24" viewBox="0 0 ${w} 24" aria-hidden="true" preserveAspectRatio="xMinYMid slice"><g><circle cx="6" cy="5" r="4" fill="${fill}"/><rect x="1" y="10" width="10" height="13" rx="3" fill="${fill}"/></g></svg>`;
+    const plural = (set, g, n) => {
+      const one = groupName(set, g);
+      if (set === 'parity-age') return n === 1 ? `${g}-year-old` : `${g}-year-olds`;
+      if (set === 'parity-disability')
+        return g === 'no disability'
+          ? `${n === 1 ? 'person' : 'people'} with no disability`
+          : `${n === 1 ? 'person' : 'people'} ${g}`;
+      if (set === 'parity-wealth') return `${g} ${n === 1 ? 'person' : 'people'}`;
+      if (set === 'parity-religion')
+        return g === 'atheist' ? (n === 1 ? 'atheist' : 'atheists') : `${g}${n === 1 ? '' : 's'}`;
+      if (set === 'parity-nationality') return `${g}${n === 1 ? '' : 's'}`;
+      return `${one} ${n === 1 ? 'person' : 'people'}`;
+    };
+    const draw = (i) => {
+      const W = D.worth[i];
+      $$('.btn', tabs).forEach((b, k) => {
+        b.classList.toggle('on', k === i);
+        b.setAttribute('aria-selected', String(k === i));
+      });
+      host.innerHTML = '';
+      const max = narrow() ? 8 : 14;
+      const ok = (r) => r.w[0].shown;
+      const fav = (r) => (r.w[0].w >= 1 ? 'a' : 'b');
+      // Express every rate as 1 of the favoured group = N (≥ 1) of the other.
+      const rate = (x) => (x.w >= 1 ? x.w : x.w === 0 ? 99 : 1 / x.w);
+      // Order: favours A most at the top, through even, to favours B most at the bottom; no rate last.
+      const signed = (r) => (fav(r) === 'a' ? 1 : -1) * Math.log(rate(r.w[0]));
+      const rows = [...W.rows].sort((p, q) => {
+        if (ok(p) !== ok(q)) return ok(p) ? -1 : 1;
+        return signed(q) - signed(p) || name(p.id).localeCompare(name(q.id));
+      });
+      for (const r of rows) {
+        const row = H('div', { class: 'row' });
+        row.appendChild(H('div', {}, esc(short(r.id))));
+        const men = H('div', { class: 'men' });
+        if (!ok(r)) {
+          men.innerHTML = `<span class="muted">no clear rate: its answers barely follow the numbers</span>`;
+        } else {
+          const x = r.w[0];
+          const A = fav(r) === 'a' ? W.a : W.b;
+          const B = fav(r) === 'a' ? W.b : W.a;
+          const n = rate(x);
+          const colA = fav(r) === 'a' ? C.a : C.b;
+          const colB = fav(r) === 'a' ? C.b : C.a;
+          const big = n >= 99;
+          // "More than 3": the study stopped at 3, so draw 3 and a plus; never more icons than were asked about.
+          const shown = big ? 3 : Math.min(n, max);
+          let html = `${person(colA)}<span class="eq">=</span>`;
+          for (let k = 0; k < Math.ceil(shown); k++) {
+            const frac = Math.min(1, shown - k);
+            html += person(colB, Math.max(2, Math.round(12 * frac)));
+          }
+          if (big) html += `<span class="plus">+</span>`;
+          const txt = big
+            ? `more than 3 ${plural(W.set, B, 3)}`
+            : Math.abs(n - 1) < 0.05
+              ? 'about even'
+              : `${n.toFixed(1)} ${plural(W.set, B, 2)}`;
+          html += `<span class="num lab">1 ${esc(plural(W.set, A, 1))} = ${esc(txt)}</span>`;
+          men.innerHTML = html;
+        }
+        row.appendChild(men);
         hover(
           row,
-          `<b>${esc(name(r.id))}</b>: one ${esc(groupName(sec.set, r.top))} against 1, 2 and 3 ${esc(vs)}, every question pairing them, versions that saved the one${r.price.length > 1 ? ' (run 1; run 2 in brackets)' : ' (one run)'}.<br>Its own habit on meaningless letters, saving one against 2: ${r.baseline.map((b) => `${b[0].n}/${b[0].of}`).join(' · ')}; against 3: ${r.baseline.map((b) => `${b[1].n}/${b[1].of}`).join(' · ')}.`,
+          `<b>${esc(name(r.id))}</b>: ${r.w
+            .map(
+              (x, k) =>
+                `${r.w.length > 1 ? `run ${k + 1}: ` : ''}${x.w === null ? 'no rate' : x.w >= 99 ? `1 ${esc(plural(W.set, W.a, 1))} over 3 or more ${esc(plural(W.set, W.b, 3))}` : x.w === 0 ? `1 ${esc(plural(W.set, W.b, 1))} over 3 or more ${esc(plural(W.set, W.a, 3))}` : `1 ${esc(plural(W.set, W.a, 1))} = ${x.w.toFixed(2)} ${esc(plural(W.set, W.b, 2))}`}`,
+            )
+            .join(
+              '<br>',
+            )}<br>from every ratio asked (1 against 3 up to 3 against 1), all questions pairing the two groups`,
         );
         host.appendChild(row);
-      });
-    }
-    const all = Object.entries(D.leagues).flatMap(([set, rs]) =>
-      rs.filter((r) => r.trades).map((r) => ({ ...r, set })),
-    );
-    const nonAge = all.filter((r) => r.set !== 'parity-age');
-    const age = all.filter((r) => r.set === 'parity-age');
-    $('#price-proof').innerHTML =
-      `Each cell counts versions that saved the one person, pooled over every question that pairs those two groups (run 1; run 2 in brackets where it differs). Grey: one for one, the favourite wins; against two it does not, so it is a tie-breaker. Red: it still saves the one against two (or three) in more than half the versions, in every run, well above its own habit with meaningless letters. Listed per trait: the AI with the widest gap in step 4 (marked “widest”), then every AI that trades lives. Outside age, ${nonAge.length ? `only ${nonAge.length} AI${nonAge.length === 1 ? '' : 's'} trade lives for a group: ${esc(list(nonAge.map((r) => `${short(r.id)} (${groupName(r.set, r.top)} over ${r.trades} ${groupName(r.set, r.bottom)})`)))}` : 'no AI trades lives for a group'}. For age, ${age.length} of ${D.leagues['parity-age'].length} AIs let two or three adults die to save a child or teenager.`;
+      }
+      const rated = W.rows.filter(ok);
+      const favA = rated.filter((r) => r.w[0].w > 1.05);
+      const favB = rated.filter((r) => r.w[0].w < 1 / 1.05);
+      const top = [...favA].sort((p, q) => q.w[0].w - p.w[0].w)[0];
+      const bigB = favB.filter((r) => r.w[0].w === 0);
+      $('#worth-take').textContent = bigB.length
+        ? `${ucf(W_[favA.length] ?? String(favA.length))} AIs lean to the ${plural(W.set, W.a, 1)}. But ${list(bigB.map((r) => short(r.id)))} would let more than 3 ${plural(W.set, W.a, 3)} die to save one ${plural(W.set, W.b, 1)}.`
+        : top
+          ? top.w[0].w >= 99
+            ? `${ucf(W_[favA.length] ?? String(favA.length))} AIs value one ${plural(W.set, W.a, 1)} above one ${plural(W.set, W.b, 1)}. ${favA.filter((r) => r.w[0].w >= 99).length} would let more than 3 ${plural(W.set, W.b, 3)} die to save one.`
+            : `${ucf(W_[favA.length] ?? String(favA.length))} AIs value one ${plural(W.set, W.a, 1)} above one ${plural(W.set, W.b, 1)}. The highest: 1 = ${top.w[0].w.toFixed(1)}.${favB.length ? ` ${ucf(W_[favB.length] ?? String(favB.length))} the other way.` : ''}`
+          : `No AI clearly values one group above the other.`;
+      const tA = rated.filter((r) => r.w[0].w >= 1.25).length;
+      const tB = rated.filter((r) => r.w[0].w <= 0.8).length;
+      const big = rated.filter((r) => r.w[0].w >= 2 || (r.w[0].w > 0 && r.w[0].w <= 0.5) || r.w[0].w === 0);
+      $('#worth-proof').innerHTML =
+        `Each row: one person from the group the AI favours, and how many from the other group it takes before the AI is torn (run 1; hover for run 2). From every version of every question pairing the two groups, at 1 against 3, 1 against 2, 1 against 1, 2 against 1 and 3 against 1 (the exchange rate fixed in advance). ${tA} AIs value one ${esc(plural(W.set, W.a, 1))} at 1.25 ${esc(plural(W.set, W.b, 2))} or more; ${tB} the other way. ${big.length ? `${big.length} put the rate at 2 or more: ${esc(list(big.map((r) => short(r.id))))}.` : 'None reach 2 to 1.'} Under 2, the favourite wins one for one but loses against two: a tie-breaker. AIs whose answers hardly change with the numbers get no rate.`;
+    };
+    D.worth.forEach((W, i) => {
+      const b = H('button', { class: 'btn', role: 'tab' }, esc(LEAGUE_LABEL[W.set]));
+      b.onclick = () => draw(i);
+      tabs.appendChild(b);
+    });
+    draw(0);
   }
   function summaries() {
     const F = D.attr.flagged;
@@ -2996,7 +3051,7 @@
   noiseSteps();
   scenarios();
   league();
-  price();
+  worth();
   summaries();
   replication();
   camTabs();

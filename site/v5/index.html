@@ -244,17 +244,18 @@
 
         <div class="story">
           <div class="beat">
-            <h3 class="take">Step 5: what is that worth in lives?</h3>
+            <h3 class="take" id="worth-take">Step 5: what is one life worth?</h3>
             <p class="why">
-              The study also asked each question with uneven numbers: one person against two, and against three. If an
-              AI really values its favourite more, it should keep saving that one person as the other side grows. For
-              each trait: the most one-sided AI from step 4, then any AI that kept going.
+              Each question was also asked with uneven numbers: one person against two, and against three. From where
+              each AI switches sides we get its exchange rate: one of this group is worth how many of that group. A fair
+              AI says exactly 1.
             </p>
           </div>
         </div>
         <div class="wrap">
-          <div class="viz" id="price" data-fig></div>
-          <p class="proof" id="price-proof"></p>
+          <div class="btnrow league-tabs" id="worth-tabs" role="tablist" aria-label="Trait"></div>
+          <div class="viz picto" id="worth" data-fig></div>
+          <p class="proof" id="worth-proof"></p>
         </div>
 
         <div class="story">

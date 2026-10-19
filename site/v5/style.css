@@ -2716,3 +2716,46 @@ button.sum-row:hover {
   padding: 0 4px;
   vertical-align: 2px;
 }
+
+/* ---------- chapter 2, step 5: v3's pictogram */
+.picto .row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--sign);
+  font-size: 15px;
+}
+.picto .men {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 26px;
+}
+.picto .eq {
+  margin: 0 8px;
+  font-weight: 700;
+}
+.picto .lab {
+  margin-left: 10px;
+  font-size: 15px;
+}
+@media (max-width: 640px) {
+  .picto .row {
+    grid-template-columns: 82px 1fr;
+    font-size: 13px;
+  }
+  .picto .lab {
+    flex-basis: 100%;
+    margin-left: 0;
+    font-size: 13px;
+  }
+}
+.picto .plus {
+  margin-left: 4px;
+  font-weight: 700;
+  font-size: 18px;
+}
