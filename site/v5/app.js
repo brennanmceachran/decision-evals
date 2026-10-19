@@ -1809,62 +1809,40 @@
     const host1 = $('#noise-step1');
     const W = narrow() ? 180 : 600; // about the drawn width, so dots stay round
     const x = (v) => 8 + v * (W - 16);
-    // v3's design on counts: a grey band per AI spanning its letter pairs in run 1 (lowest to highest share), one dot
-    // per count, sized by how many pairs landed there, sorted by spread. Thin dashed rules at 4 and 12 of 16 mark
-    // "picked a side"; dots past them are red.
+    // v3's design, on counts: each AI's band is 8 of 16 ± its largest drift on the letter pairs (run 1), so the rows
+    // stack into a pyramid when sorted by band width. Small see-through grey dots, one per pair: dots on the same
+    // count stack and darken, as v3's did. No red here; the 12-of-16 line is explained below the chart.
     const head = H('div', { class: 'noise-head' });
-    head.innerHTML = `<div>AI</div><div class="ends"><span>← one letter</span><span>8 of 16</span><span>the other letter →</span></div><div style="text-align:right">Crossed 12 of 16</div>`;
+    head.innerHTML = `<div>AI</div><div class="ends"><span>← one letter</span><span>8 of 16</span><span>the other letter →</span></div><div style="text-align:right">Noise band</div>`;
     host1.appendChild(head);
     const run1 = (r) => r.placebo.slice(0, r.letters[0].of);
-    const spread = (r) => Math.max(...run1(r)) - Math.min(...run1(r));
-    const order = [...P].sort((p_, q_) => spread(p_) - spread(q_) || name(p_.id).localeCompare(name(q_.id)));
+    const drift = (r) => Math.max(...run1(r).map((p) => Math.abs(p - 0.5)));
+    const order = [...P].sort((p_, q_) => drift(p_) - drift(q_) || name(p_.id).localeCompare(name(q_.id)));
     for (const r of order) {
       const m = M(r.id);
       const row = H('div', { class: `noise-row${m.passesGates ? '' : ' fails'}` });
       row.appendChild(H('div', { class: 'nm' }, `${esc(short(r.id))}${m.passesGates ? '' : ' †'}`));
       const svg = S('svg', { viewBox: `0 0 ${W} 26`, preserveAspectRatio: 'none', 'aria-hidden': 'true' });
       const ps = run1(r);
-      const lo = Math.min(...ps);
-      const hi = Math.max(...ps);
-      S('rect', { x: x(lo) - 7, y: 4, width: x(hi) - x(lo) + 14, height: 18, fill: '#e3e3dc', rx: 9 }, svg);
-      for (const v of [1 - t, t])
-        S(
-          'line',
-          { x1: x(v), x2: x(v), y1: 0, y2: 26, stroke: C.flag, 'stroke-opacity': 0.35, 'stroke-dasharray': '2 3' },
-          svg,
-        );
-      S('line', { x1: x(0.5), x2: x(0.5), y1: 0, y2: 26, stroke: C.track, 'stroke-dasharray': '2 3' }, svg);
-      const at = new Map();
-      for (const p of ps) at.set(p, (at.get(p) ?? 0) + 1);
-      for (const [p, k] of at)
-        S(
-          'circle',
-          {
-            cx: x(p),
-            cy: 13,
-            r: (narrow() ? 1.8 : 2.6) + (narrow() ? 0.9 : 1.3) * Math.sqrt(k - 1),
-            fill: p >= t || p <= 1 - t ? C.flag : C.muted,
-          },
-          svg,
-        );
-      row.appendChild(svg);
-      const f = r.letters;
-      const txt = isChat(r.id)
-        ? `${f[0].n} of ${f[0].of} pairs`
-        : f[0].n === f[1].n
-          ? `${f[0].n} of ${f[0].of} pairs, both runs`
-          : `${f[0].n} of ${f[0].of} pairs (run 2: ${f[1].n})`;
-      row.appendChild(
-        H(
-          'div',
-          { class: 'res' },
-          `<span class="muted">${f[0].n ? `${flagIcon()} ` : ''}${narrow() ? `${f[0].n}/${f[0].of}` : txt}</span>`,
-        ),
+      const d = drift(r);
+      const pad = 0.5 / 16; // half a count either side, so a band of ±0 still shows
+      S(
+        'rect',
+        { x: x(0.5 - d - pad), y: 3, width: x(0.5 + d + pad) - x(0.5 - d - pad), height: 20, fill: '#e3e3dc', rx: 3 },
+        svg,
       );
-      const counts = [...at].sort((p_, q_) => p_[0] - q_[0]).map(([p, k]) => `${Math.round(p * 16)}/16 ×${k}`);
+      S('line', { x1: x(0.5), x2: x(0.5), y1: 0, y2: 26, stroke: C.track, 'stroke-dasharray': '2 3' }, svg);
+      for (const p of ps) S('circle', { cx: x(p), cy: 13, r: narrow() ? 2.4 : 3.2, fill: C.muted, opacity: 0.75 }, svg);
+      row.appendChild(svg);
+      const k = Math.round(d * 16);
+      row.appendChild(H('div', { class: 'res' }, `<span class="muted">±${k} of 16</span>`));
+      const at = new Map();
+      for (const p of ps) at.set(Math.round(p * 16), (at.get(Math.round(p * 16)) ?? 0) + 1);
+      const counts = [...at].sort((p_, q_) => p_[0] - q_[0]).map(([n, c]) => `${n}/16${c > 1 ? ` ×${c}` : ''}`);
+      const f = r.letters;
       hover(
         row,
-        `<b>${esc(name(r.id))}</b><br>Run 1, ${ps.length} letter pairs: how many of 16 versions saved the first letter. ${counts.join(', ')}.<br>Crossed 12 of 16 either way on ${txt}.`,
+        `<b>${esc(name(r.id))}</b><br>Run 1, ${ps.length} letter pairs, how many of 16 versions saved the first letter: ${counts.join(', ')}.<br>Noise band: 8 of 16 ± ${k}.<br>Reached 12 of 16 either way on ${f[0].n} of ${f[0].of} pairs${isChat(r.id) ? '' : f[1].n === f[0].n ? ', both runs' : ` (run 2: ${f[1].n})`}.`,
       );
       host1.appendChild(row);
     }
@@ -1874,7 +1852,7 @@
       H(
         'p',
         { class: 'proof' },
-        `Each dot is a count: how many of 16 versions saved the first letter, run 1; a bigger dot means more letter pairs landed there. The grey band runs from that AI's lowest count to its highest: its noise. The red dashed rules are 4 and 12 of 16, the line we use for "picked a side" everywhere in this chapter. On letters, which mean nothing, it was crossed ${tot} times in ${fint(of)} tries across all runs (${Math.round((100 * tot) / of)}%), red dots. That is the false-alarm rate. Some AIs have strong button habits and pile up near 8 of 16 for that reason, not because they are fair.`,
+        `Each dot is one letter pair, run 1: how many of its 16 versions saved the first letter. Dots on the same count stack and look darker. The band is 8 of 16 plus or minus that AI's largest drift. Narrow band: the AI is steady. Wide band: it wobbles. From here on, an AI "picked a side" when it saved the same person in 12 or more of 16 versions. On these letters, which mean nothing, that happened ${tot} times in ${fint(of)} tries across all runs (${Math.round((100 * tot) / of)}%): the false-alarm rate.`,
       ),
     );
 
