@@ -1746,25 +1746,43 @@
       .replace(new RegExp(`1 ${a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'g'), (m) => `<mark>${m}</mark>`)
       .replace(new RegExp(`1 ${b.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'g'), (m) => `<mark>${m}</mark>`);
   }
-  /** Each AI's noise band, run 1 (D.attr.band[id][run]): the furthest its letter-pair leans got from 50/50, plus 2
-   * points, as pre-registered. Positions on these charts are leans (the mean returned weight for one person over 16
-   * versions; chat models: the share of versions, majority of 5 samples), not how often; counts are in the text. */
-  const band = (id, i = 0) => D.attr.band[id][i];
+  /** Each AI's noise width (D.attr.sd): how far its letter-pair leans spread around 50/50 (root mean square, every
+   * run). Chance is drawn as a bell curve of that width, fading out; it picked a side past D.attr.z widths. Positions
+   * are leans (the mean returned weight for one person over 16 versions; chat models: the share of versions, each the
+   * majority of 5 samples), not how often; counts are in the text. */
+  const sd = (id) => D.attr.sd[id];
+  const Z = D.attr.z;
   const pts = (v) => Math.round(v * 100);
-  /** v3's noise row: a grey band, 50/50 ± that AI's noise, and the dashed 50/50 line. Returns the svg and x(). */
+  const pt1 = (v) => (v * 100 < 1 ? (v * 100).toFixed(1) : String(Math.round(v * 100)));
+  let gradN = 0;
+  /** v3's noise row, as a bell curve: a grey band darkest at 50/50, fading out to Z widths, where a faint tick marks
+   * "picked a side"; the dashed 50/50 line. Returns the svg and x(). */
   function bandSvg(id) {
     const W = narrow() ? 180 : 600; // about the drawn width, so marks keep their shape
     const lo = 0.15;
     const hi = 0.85;
     const x = (v) => 6 + ((Math.min(hi, Math.max(lo, v)) - lo) / (hi - lo)) * (W - 12);
     const svg = S('svg', { viewBox: `0 0 ${W} 26`, preserveAspectRatio: 'none', 'aria-hidden': 'true' });
-    const d = band(id);
-    S('rect', { x: x(0.5 - d), y: 3, width: x(0.5 + d) - x(0.5 - d), height: 20, fill: '#e3e3dc', rx: 3 }, svg);
+    const d = Z * sd(id);
+    const gid = `bell${gradN++}`;
+    const defs = S('defs', {}, svg);
+    const g = S('linearGradient', { id: gid, x1: 0, x2: 1, y1: 0, y2: 0 }, defs);
+    // Normal density, sampled across ±Z widths, as opacity (1 at the centre).
+    for (let k = 0; k <= 24; k++) {
+      const u = (k / 24) * 2 - 1; // −1 … 1 across the band
+      const op = Math.exp(-0.5 * (u * Z) ** 2);
+      S('stop', { offset: `${(k / 24) * 100}%`, 'stop-color': '#c9c9c0', 'stop-opacity': op.toFixed(3) }, g);
+    }
+    const x0 = x(0.5 - d) - 2;
+    const x1 = x(0.5 + d) + 2;
+    S('rect', { x: x0, y: 3, width: x1 - x0, height: 20, fill: `url(#${gid})`, rx: 3 }, svg);
+    for (const v of [0.5 - d, 0.5 + d])
+      if (v > lo && v < hi) S('line', { x1: x(v), x2: x(v), y1: 5, y2: 21, stroke: '#b9b9b0', 'stroke-width': 1 }, svg);
     S('line', { x1: x(0.5), x2: x(0.5), y1: 0, y2: 26, stroke: C.track, 'stroke-dasharray': '2 3' }, svg);
     return { svg, x };
   }
   const noiseDots = (svg, x, id) => {
-    for (const p of D.placeboDots.find((q) => q.id === id).leans[0])
+    for (const p of D.placeboDots.find((q) => q.id === id).leans.flat())
       S('circle', { cx: x(p), cy: 13, r: narrow() ? 2.4 : 3.2, fill: C.muted, opacity: 0.75 }, svg);
   };
   const split = (p) => `${pts(Math.max(p, 1 - p))}/${100 - pts(Math.max(p, 1 - p))}`;
@@ -1776,7 +1794,7 @@
     head.innerHTML = `<div>AI</div><div class="ends"><span>← ${esc(b)}</span><span>50/50</span><span>${esc(a)} →</span></div><div style="text-align:right">Result</div>`;
     host.appendChild(head);
     const sorted = noiseOrder
-      ? [...rows].sort((p, q) => band(p.id) - band(q.id) || name(p.id).localeCompare(name(q.id)))
+      ? [...rows].sort((p, q) => sd(p.id) - sd(q.id) || name(p.id).localeCompare(name(q.id)))
       : [...rows].sort(
           (p, q) => Number(!!q.flagged) - Number(!!p.flagged) || Math.abs(q.p - 0.5) - Math.abs(p.p - 0.5),
         );
@@ -1821,7 +1839,9 @@
           ? `${firm ? flagIcon() : ''} <span class="${firm ? '' : 'muted'}">${r.count[k]}/${r.of[k]}</span>`
           : `<span class="${mixed ? 'muted' : 'mark-ok'}">${Math.max(r.ca[0], r.of[0] - r.ca[0])}/${r.of[0]}</span>`
         : firm
-          ? `${flagIcon()} saves the ${esc(r.spared)}: ${r.count[0]} of ${r.of[0]}${!isChat(r.id) && r.count[1] !== r.count[0] ? ` (run 2: ${r.count[1]})` : ''}`
+          ? r.count[0] * 2 > r.of[0]
+            ? `${flagIcon()} saves the ${esc(r.spared)}: ${r.count[0]} of ${r.of[0]}${!isChat(r.id) && r.count[1] !== r.count[0] ? ` (run 2: ${r.count[1]})` : ''}`
+            : `${flagIcon()} leans to the ${esc(r.spared)} ${split(r.leans[0])}, chose ${r.count[0]} of ${r.of[0]}`
           : oneRun
             ? `<span class="muted">${esc(r.how)}: the ${esc(r.spared)}, ${r.count[k]} of ${r.of[k]}</span>`
             : mixed
@@ -1830,7 +1850,7 @@
       row.appendChild(H('div', { class: `res${firm ? ' flag' : ''}` }, res));
       hover(
         row,
-        `<b>${esc(name(r.id))}</b><br>lean (where the mark sits): ${r.leans.map((l, i) => `${r.leans.length > 1 ? `run ${i + 1} ` : ''}${lean(i)}`).join(', ')}${isChat(r.id) ? ' (share of versions, each the majority of 5 samples)' : ' (mean returned weight, not how often)'}<br>chose the ${esc(a)} in ${r.ca.map((n, i) => `${n} of ${r.of[i]}`).join(', run 2: ')} versions<br>noise band: 50/50 ± ${pts(band(r.id))} points${r.flagged ? `<br><b>picked a side</b>: ${esc(r.how)}` : ''}${r.strong ? '<br>also passed the pre-registered strong-lean test in every run' : ''}`,
+        `<b>${esc(name(r.id))}</b><br>lean (where the mark sits): ${r.leans.map((l, i) => `${r.leans.length > 1 ? `run ${i + 1} ` : ''}${lean(i)}`).join(', ')}${isChat(r.id) ? ' (share of versions, each the majority of 5 samples)' : ' (mean returned weight, not how often)'}<br>chose the ${esc(a)} in ${r.ca.map((n, i) => `${n} of ${r.of[i]}`).join(', run 2: ')} versions<br>noise width: ${pt1(sd(r.id))} points; this lean is ${(Math.abs(r.leans[0] - 0.5) / sd(r.id)).toFixed(1)} widths out${r.flagged ? `<br><b>picked a side</b>: ${esc(r.how)}` : ''}${r.strong ? '<br>also passed the pre-registered strong-lean test in every run' : ''}`,
       );
       host.appendChild(row);
     }
@@ -1841,9 +1861,9 @@
     // v3's figure: dots are the 20 letter pairs (run 1; chat models, their one run), the grey band is that AI's
     // noise, 50/50 ± the furthest any dot got plus 2 points (pre-registered). Sorted narrowest band first.
     const head = H('div', { class: 'noise-head' });
-    head.innerHTML = `<div>AI</div><div class="ends"><span>← one letter</span><span>50/50</span><span>the other letter →</span></div><div style="text-align:right">Noise band</div>`;
+    head.innerHTML = `<div>AI</div><div class="ends"><span>← one letter</span><span>50/50</span><span>the other letter →</span></div><div style="text-align:right">Noise</div>`;
     host1.appendChild(head);
-    const order = [...P].sort((p_, q_) => band(p_.id) - band(q_.id) || name(p_.id).localeCompare(name(q_.id)));
+    const order = [...P].sort((p_, q_) => sd(p_.id) - sd(q_.id) || name(p_.id).localeCompare(name(q_.id)));
     for (const r of order) {
       const m = M(r.id);
       const row = H('div', { class: 'noise-row' });
@@ -1851,10 +1871,10 @@
       const { svg, x } = bandSvg(r.id);
       noiseDots(svg, x, r.id);
       row.appendChild(svg);
-      row.appendChild(H('div', { class: 'res' }, `<span class="muted">±${pts(band(r.id))} points</span>`));
+      row.appendChild(H('div', { class: 'res' }, `<span class="muted">noise width ${pt1(sd(r.id))} pts</span>`));
       hover(
         row,
-        `<b>${esc(name(r.id))}</b><br>noise band: 50/50 ± ${pts(band(r.id))} points${r.band.length > 1 ? ` (run 2: ± ${pts(r.band[1])})` : ''}`,
+        `<b>${esc(name(r.id))}</b><br>noise width: ${pt1(sd(r.id))} points around 50/50, from ${r.leans.flat().length} letter-pair answers${r.leans.length > 1 ? ' (both runs)' : ''}<br>the band fades out at ${Z} widths: ${pt1(Z * sd(r.id))} points`,
       );
       host1.appendChild(row);
     }
@@ -1862,7 +1882,7 @@
       H(
         'p',
         { class: 'proof' },
-        `Each dot is one letter pair: the AI's lean over its 16 versions, from its returned weights (chat models, which return none: the share of versions, each the majority of 5 samples). Every dot sits inside its AI's band: that is how the band is set, the furthest lean on the letter pairs plus 2 points, fixed in advance. Narrow band: the AI is steady, so a small lean on a real question counts. Wide band: it wobbles, so only a big lean can.`,
+        `Each dot is one letter pair in one run: the AI's lean over its 16 versions, from its returned weights (chat models, which return none: the share of versions, each the majority of 5 samples). The grey band is chance, drawn as a bell curve from those dots: darkest at 50/50, fading out, gone at ${Z} times the AI's noise width (the faint ticks). Narrow band: a steady AI, so a small lean on a real question counts. Wide band: it wobbles, so only a big lean can. On these letters, ${D.attr.letterOut.n} of ${fint(D.attr.letterOut.of)} dots land past the ticks: chance is a little wilder than a perfect bell curve, which is why the line sits ${Z} widths out.`,
       ),
     );
 
@@ -1873,7 +1893,7 @@
     const forB = fl.filter((r) => r.picked < 0);
     const say = (r) => `${name(r.id)}, ${rcount(r)}${r.how && r.how.startsWith('run') ? `, ${r.how}` : ''}`;
     $('#noise-step2-proof').innerHTML =
-      `${fl.length} AIs leaned outside their own noise${forA.length ? `: ${forA.length} toward the Black woman (${esc(list(forA.map(say)))})` : ''}${forB.length ? `${forA.length ? '; ' : ': '}${forB.length} toward the White woman (${esc(list(forB.map(say)))})` : ''}; the counts are versions out of 16 that saved that person. The mark is the AI's lean, run 1 (an outline: run 2, where it differs). Red: outside its band in every run. Pink: one run only. Green: inside. A model can choose one person in 12 of 16 versions and still sit inside a wide band, or choose 10 of 16 and sit outside a narrow one: what counts is the lean against that AI's own noise.`;
+      `${fl.length} AIs leaned outside their own noise${forA.length ? `: ${forA.length} toward the Black woman (${esc(list(forA.map(say)))})` : ''}${forB.length ? `${forA.length ? '; ' : ': '}${forB.length} toward the White woman (${esc(list(forB.map(say)))})` : ''}; the counts are versions out of 16 that saved that person. The mark is the AI's lean, run 1 (an outline: run 2, where it differs). Red: past the ticks in every run. Pink: one run only. Green: inside. What counts is the lean against that AI's own noise, so a very steady AI can lean without its choices moving: Mercury Decide chose each woman 8 of 16 times, but its lean (52/48) is far outside its tiny noise.`;
   }
   function summaries() {
     const F = D.attr.flagged;
@@ -1881,7 +1901,7 @@
     const tested = P.length * ids.length;
     const bothRuns = F.filter((f) => f.how === 'both runs').length;
     $('#sum-total').innerHTML =
-      `<div class="big num">${F.length}</div><p>times an AI leaned outside its own noise band on a question, out of ${fint(tested)} AI-and-question pairs (${P.length} questions × ${ids.length} AIs). ${bothRuns} held in both runs; the rest are one run (chat models, or a decision model in one run only).</p>`;
+      `<div class="big num">${F.length}</div><p>times an AI leaned more than ${D.attr.z} noise widths from 50/50 on a question, out of ${fint(tested)} AI-and-question pairs (${P.length} questions × ${ids.length} AIs). ${bothRuns} held in both runs; the rest are one run (chat models, or a decision model in one run only). By the rule we wrote down before the study (outside the single furthest letter pair), it is ${D.attr.prereg}.</p>`;
     $('#sum-pairs').innerHTML = D.attr.setOrder
       .map((k) => {
         const ps = P.filter((p) => p.set === k);
@@ -2715,7 +2735,7 @@
     if (o.replicated)
       notes.push('Moves the lever far more often when it is listed first, even when nothing is at stake (both runs).');
     notes.push(
-      `Noise band on meaningless letters: 50/50 ± ${Math.round(D.attr.band[id][0] * 100)} points${D.attr.band[id].length > 1 && Math.round(D.attr.band[id][1] * 100) !== Math.round(D.attr.band[id][0] * 100) ? ` (run 2: ± ${Math.round(D.attr.band[id][1] * 100)})` : ''}. A side counts when its lean lands outside that, in every run.`,
+      `Noise on meaningless letters: ${pt1(sd(id))} points around 50/50. A side counts when its lean lands more than ${Z} times that from 50/50, in every run.`,
     );
     if (rm?.h1) notes.push('Dashcam: the workers made no measurable difference to its routing (in every run).');
     if (rm?.safetyEffect?.material) notes.push('A one-line safety rule changed its routing (in every run).');
