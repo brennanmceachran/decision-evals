@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Trolley Tests: what 22 AIs did when lives were on the line</title>
+    <meta
+      name="description"
+      content="We gave 22 AIs, from OpenAI, Anthropic, Google, Microsoft and others, 761,940 life-or-death choices. Claude called a camera feed live, then sent a tram at the workers. Here is what they did, with the proof under every picture."
+    />
+    <meta property="og:title" content="Claude said the camera feed was live. Then it sent the tram at the workers." />
+    <meta
+      property="og:description"
+      content="22 AIs, 761,940 life-or-death choices. Every finding as a picture, with the exact count under it."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="cards/03-photo-live-x.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="675" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="cards/03-photo-live-x.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%2314161a'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23f5b700'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <noscript
+      ><p class="noscript">This page needs JavaScript to lay out the cards. Every card is in /cards.</p></noscript
+    >
+
+    <header class="top">
+      <a class="brand" href="#"><span class="dot"></span>The Trolley Tests</a>
+      <nav aria-label="Sections">
+        <a href="#feed">Findings</a>
+        <a href="#you">Try it</a>
+        <a href="#how">How we know</a>
+        <a href="#press">Press</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-h">
+        <div class="hero-copy">
+          <h1 id="hero-h">We gave 22 AIs <span class="hi">761,940</span> life-or-death choices.</h1>
+          <p class="dek">
+            Some are chat assistants you know. Most are “decision models”, sold to make automated calls inside software.
+            Here is what they chose, one picture per finding, with the exact count under each.
+          </p>
+          <div class="hero-acts">
+            <a class="btn" href="#feed">See the findings</a>
+            <a class="btn ghost" href="#you">Try it yourself first</a>
+          </div>
+        </div>
+        <figure class="hero-media">
+          <video
+            id="hero-video"
+            src="cards/anim-photo.mp4"
+            poster="cards/01-photo-sm.jpg"
+            autoplay
+            muted
+            loop
+            playsinline
+            aria-label="A dashcam frame from a tram depot. A red route climbs the track toward two kneeling workers; skulls appear over them; the headline fills in: 100% of the time."
+          ></video>
+          <figcaption id="hero-cap"></figcaption>
+        </figure>
+      </section>
+
+      <section id="feed" class="feed" aria-labelledby="feed-h">
+        <div class="feed-head">
+          <h2 id="feed-h">The findings</h2>
+          <p>Ranked by how surprising they are. Tap a card to see it full size, share it, or read how we counted.</p>
+          <div class="filters" role="tablist" aria-label="Filter by topic" id="filters"></div>
+        </div>
+        <div class="grid" id="grid"></div>
+      </section>
+
+      <section id="you" class="you" aria-labelledby="you-h">
+        <h2 id="you-h">Before you read the AIs’ answers: what would you do?</h2>
+        <p>The same questions, worded as the AIs got them. Choose, then see what they chose.</p>
+        <div class="you-grid" id="you-grid"></div>
+      </section>
+
+      <section id="how" class="how" aria-labelledby="how-h">
+        <h2 id="how-h">How we know</h2>
+        <div class="how-grid">
+          <div>
+            <h3>Counted, not estimated</h3>
+            <p>
+              Every number on every card is a count of answers, with the total in the line under it. We asked each
+              question many ways: people swapped between tracks, the buttons in both orders, four wordings. The decision
+              models ran twice, independently, and a card only says “both runs” when both agree.
+            </p>
+          </div>
+          <div>
+            <h3>Checked twice</h3>
+            <p>
+              The cards are built from the raw answers by one script; a separate test, written without looking at it,
+              recounts every figure from the raw files, including the text drawn inside each image, and fails if a
+              single number differs.
+            </p>
+          </div>
+          <div>
+            <h3>What it doesn’t show</h3>
+            <p>
+              Every question was a forced choice, with no “treat them equally” button. The tram depot is simulated, not
+              a deployed system. An AI picking a side is a tiebreaker, not a price: no AI here reliably let two people
+              of one race or nationality die to save one of another.
+            </p>
+          </div>
+        </div>
+        <p class="how-more">
+          Full method, every model, every count: <a href="../v5/index.html#method">the long version</a> ·
+          <a href="https://github.com/brennanmceachran/decision-evals">raw data and code</a>
+        </p>
+      </section>
+
+      <section id="press" class="press" aria-labelledby="press-h">
+        <h2 id="press-h">For press and posting</h2>
+        <p>
+          <span
+            >Use any card. Every one comes in four sizes (portrait for Instagram, square, a 9:16 Story, and a 16:9 card
+            for X and links), and every one carries its proof line, so a screenshot keeps the context.</span
+          >
+        </p>
+        <div class="press-acts">
+          <a class="btn" href="trolley-tests-cards.zip" download>Download every card (zip)</a>
+          <a class="btn ghost" href="cards/anim-photo.mp4" download>Animation: the dashcam (mp4)</a>
+          <a class="btn ghost" href="cards/anim-fork.mp4" download>Animation: the fork (mp4)</a>
+        </div>
+        <p class="small"><span id="press-totals"></span></p>
+      </section>
+    </main>
+
+    <dialog id="viewer" aria-label="Card">
+      <div class="v-wrap">
+        <button class="v-close" type="button" aria-label="Close">×</button>
+        <button class="v-nav prev" type="button" aria-label="Previous card">‹</button>
+        <button class="v-nav next" type="button" aria-label="Next card">›</button>
+        <figure class="v-fig">
+          <img id="v-img" alt="" />
+        </figure>
+        <div class="v-side">
+          <p class="v-rank" id="v-rank"></p>
+          <h3 id="v-head"></h3>
+          <p class="v-src" id="v-src"></p>
+          <div class="v-share">
+            <button class="btn" type="button" id="v-native">Share</button>
+            <button class="btn ghost" type="button" id="v-copy">Copy link</button>
+            <button class="btn ghost" type="button" id="v-text">Copy headline + proof</button>
+          </div>
+          <p class="v-dl">
+            Download:
+            <a id="dl-p" download>portrait</a> · <a id="dl-s" download>square</a> · <a id="dl-st" download>story</a> ·
+            <a id="dl-x" download>X / link</a>
+          </p>
+          <p class="v-ev"><a id="v-ev">How we counted this →</a></p>
+          <div class="v-with" id="v-with"></div>
+        </div>
+      </div>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
