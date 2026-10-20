@@ -627,4 +627,227 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     has(errs, '17-picture', `right ${Math.round((100 * pc[0]) / pc[1])}% of the time`);
     expect(errs).toEqual([]);
   });
+  // The native page draws its scenes from window.CARDS.facts, not from the PNGs. Every value it shows is recounted here.
+  it('native page: every fact the page shows matches the raw recount', () => {
+    const errs: string[] = [];
+    const F = C.facts;
+    const eq = (label: string, got: unknown, want: unknown) => {
+      if (JSON.stringify(got) !== JSON.stringify(want))
+        errs.push(`${label}: page ${JSON.stringify(got)}, raw ${JSON.stringify(want)}`);
+    };
+    const no = (x: { n: number; of: number } | undefined): NO => (x ? [x.n, x.of] : [-1, -1]);
+    const dec = [...R.r1.models];
+    eq('totals.models', F.totals.models, new Set([...R.r1.models, ...R.r2.models, ...R.s2.models]).size);
+    eq('totals.answers', F.totals.answers, R.r1.answers + R.r2.answers + R.s2.answers);
+    eq('totals.decision', F.totals.decision, dec.length);
+    // dashcam
+    const hk = 'anthropic/claude-haiku-5.5';
+    eq('live.said', [F.live.said, F.live.of], R.s2.live.get(hk));
+    eq('live.hit', [F.live.hit, F.live.hitOf], R.s2.conflict.get(`${hk}|*`));
+    const both = (k: string): NO =>
+      [R.r1, R.r2].reduce<NO>(
+        (a, t) => [a[0] + (t.conflict.get(k)?.[0] ?? 0), a[1] + (t.conflict.get(k)?.[1] ?? 0)],
+        [0, 0],
+      );
+    eq('omniTwo', no(F.omniTwo), both('cloudflare/clef-omni|u-two-L.jpg'));
+    eq('clefGroup', no(F.clefGroup), both('cloudflare/clef|w-group-L.jpg'));
+    const lx = R.s2.counted.get('openai/gpt-6-luna|x-group-L.jpg')!;
+    eq('luna', [F.luna.n, F.luna.of], [lx[0], lx[1]]);
+    const la = [...R.s2.counted]
+      .filter(([k]) => k.startsWith('openai/gpt-6-luna|'))
+      .reduce<[number, number, number]>((a, [, v]) => [a[0] + v[0], a[1] + v[1], a[2] + v[2]], [0, 0, 0]);
+    eq('luna.all', [F.luna.allHit, F.luna.allOf, F.luna.allCounted], la);
+    eq('rule', [F.rule.n, F.rule.of], R.r1.safety.get('cloudflare/clef-omni'));
+    const pp = R.r1.safety.get('perplexity/pplx-decider-v1.2')!;
+    eq('rule.pplx', [F.rule.pplxObeyed, F.rule.pplxOf], [pp[1] - pp[0], pp[1]]);
+    eq('ruleBack.off', [F.ruleBack.off, F.ruleBack.offOf], R.s2.aligned.get(`${hk}|ops`));
+    eq('ruleBack.on', [F.ruleBack.on, F.ruleBack.onOf], R.s2.aligned.get(`${hk}|ops-safety`));
+    eq(
+      'ruleBack.luna',
+      [F.ruleBack.lunaD, F.ruleBack.lunaDOf],
+      R.r1.aligned.get('openai/gpt-6-luna-decisions|ops-safety'),
+    );
+    const vision = dec.filter((m) => R.r1.aligned.has(`${m}|ops`));
+    const pool = (t: T, fr: string): NO =>
+      vision.reduce<NO>(
+        (a, m) => [a[0] + (t.aligned.get(`${m}|${fr}`)?.[0] ?? 0), a[1] + (t.aligned.get(`${m}|${fr}`)?.[1] ?? 0)],
+        [0, 0],
+      );
+    eq(
+      'fault',
+      [F.fault.off, F.fault.offOf, F.fault.on, F.fault.onOf, F.fault.off2, F.fault.on2, F.fault.ais],
+      [
+        ...pool(R.r1, 'ops'),
+        ...pool(R.r1, 'ops-nostop'),
+        pool(R.r2, 'ops')[0],
+        pool(R.r2, 'ops-nostop')[0],
+        vision.length,
+      ],
+    );
+    const px = 'perplexity/pplx-decider-v1.2';
+    eq('split.dilemma', [F.split.dilemma, F.split.dilemmaOf], R.r1.dilemma.get(px));
+    eq('split.routing', [F.split.routing, F.split.routingOf], R.r1.conflict.get(`${px}|*`));
+    eq('split.routing2', F.split.routing2, R.r2.conflict.get(`${px}|*`)![0]);
+    for (const r of F.lineup) {
+      const t = runsOf(r.id)[0]!;
+      eq(`lineup ${r.id} routing`, [r.n, r.of], t.conflict.get(`${r.id}|*`));
+      const d = t.dilemma.get(r.id)!;
+      eq(`lineup ${r.id} dilemma`, [r.dilemma, r.dilemmaOf], [d[1] - d[0], d[1]]);
+    }
+    eq(
+      'lineup: every vision AI',
+      F.lineup.length,
+      ids().filter((m) => runsOf(m)[0]!.conflict.get(`${m}|*`)?.[1]).length,
+    );
+    // identity
+    eq('race', [F.race.n, F.race.of], pooled(R.r1, px, 'parity-race', /^Black (man|woman)\|White/, /^Black/));
+    const trade = (km: string, mk: string): NO => {
+      let n = 0;
+      let of = 0;
+      for (const [k, v] of R.r1.ident) {
+        const [m, s, a, b, r] = k.split('|');
+        if (m !== px || s !== 'parity-race') continue;
+        if (/^Black (man|woman)$/.test(a!) && /^White/.test(b!) && r === km) ((n += v[0]), (of += v[1]));
+        if (/^Black (man|woman)$/.test(b!) && /^White/.test(a!) && r === mk) ((n += v[1] - v[0]), (of += v[1]));
+      }
+      return [n, of];
+    };
+    eq('race.two', no(F.race.two), trade('1:2', '2:1'));
+    eq(
+      'age35',
+      no(F.age35),
+      pooled(R.r1, 'microsoft/microsoft-decision-1', 'parity-age', /aged 35\|.*aged 80$/, /aged 80$/),
+    );
+    const ages: NO = [0, 0];
+    for (const [k, v] of R.r1.ident) {
+      const [m, s, a, b, r] = k.split('|');
+      if (m !== 'microsoft/microsoft-decision-1' || s !== 'parity-age' || r !== '1:1') continue;
+      const a35 = /aged 35$/.test(a!);
+      const b35 = /aged 35$/.test(b!);
+      if (a35 === b35) continue;
+      ages[0] += a35 ? v[0] : v[1] - v[0];
+      ages[1] += v[1];
+    }
+    eq('age35.all', no(F.age35.all), ages);
+    // nationality leagues, the same base model
+    const league = (m: string, set: string, label: (p: string) => string) => {
+      const g: Record<string, NO> = {};
+      for (const [k, v] of R.r1.ident) {
+        const [mm, s, a, b, r] = k.split('|');
+        if (mm !== m || s !== set || r !== '1:1' || label(a!) === label(b!)) continue;
+        (g[label(a!)] ??= [0, 0])[0] += v[0];
+        g[label(a!)]![1] += v[1];
+        (g[label(b!)] ??= [0, 0])[0] += v[1] - v[0];
+        g[label(b!)]![1] += v[1];
+      }
+      return g;
+    };
+    const nat = (p: string) => p.split(' ')[0]!;
+    for (const [m, rows] of [
+      [px, F.samebase.pxRank],
+      ['cloudflare/clef', F.samebase.cfRank],
+    ] as const) {
+      const g = league(m, 'parity-nationality', nat);
+      eq(`samebase ${m}: groups`, rows.length, Object.keys(g).length);
+      for (const r of rows) eq(`samebase ${m} ${r.g}`, [r.n, r.of], g[r.g]);
+      for (let i = 1; i < rows.length; i++)
+        if (rows[i].n / rows[i].of > rows[i - 1].n / rows[i - 1].of)
+          errs.push(`samebase ${m}: not in order at ${rows[i].g}`);
+    }
+    eq(
+      'samebase.px',
+      no(F.samebase.px),
+      pooled(R.r1, px, 'parity-nationality', /^American (man|woman)\|Nigerian/, /^American/),
+    );
+    eq(
+      'samebase.cf',
+      no(F.samebase.cf),
+      pooled(R.r1, 'cloudflare/clef', 'parity-nationality', /^American (man|woman)\|Nigerian/, /^American/),
+    );
+    const jev = league('typesafe/jev-1.14', 'parity-race', (p) =>
+      p.startsWith('Middle') ? 'Middle Eastern' : p.split(' ')[0]!,
+    );
+    for (const r of F.jev) eq(`jev ${r.group}`, [r.n, r.of], jev[r.group]);
+    const dis = league('cloudflare/clef', 'parity-disability', (p) =>
+      /blind/.test(p) ? 'blind' : /deaf/.test(p) ? 'deaf' : /wheelchair/.test(p) ? 'in a wheelchair' : 'no disability',
+    );
+    for (const r of F.disability) eq(`disability ${r.group}`, [r.n, r.of], dis[r.group]);
+    eq('disability: no disability last', F.disability.at(-1).group, 'no disability');
+    // sides taken: the v5 per-pair rows (beyond the model's own noise, every run), counted per AI
+    const sides = (set: string, re: RegExp, who: RegExp) => {
+      const f = new Set<string>();
+      const a = new Set<string>();
+      for (const P of D5.scenarios.pairs.filter((p: any) => p.set === set && re.test(p.pair)))
+        for (const r of P.rows) if (r.how) (r.picked > 0 === who.test(P.pair.split('|')[0]) ? f : a).add(r.id);
+      return { for: f.size, against: a.size };
+    };
+    eq('sides.race', F.sides.race, sides('parity-race', /^Black (man|woman)\|White/, /^Black/));
+    eq('sides.wheel', F.sides.wheel, sides('parity-disability', /wheelchair\|.*no disability/, /wheelchair/));
+    for (const k of ['race', 'trans', 'gay', 'women', 'faith', 'wheel'])
+      if (F.sides[k].against !== 0) errs.push(`sides.${k}: the page says no AI took the other side`);
+    // dilemmas
+    const most = (m: string, d: string, t: T) => {
+      const x = t.acted.get(`${m}|${d}|5`);
+      return !!x && x[0] * 2 > x[1];
+    };
+    const all = ids();
+    eq(
+      'organs',
+      [F.organs.acting, F.organs.of, F.organs.acting2],
+      [
+        all.filter((m) => most(m, 'transplant', runsOf(m)[0]!)).length,
+        all.length,
+        all.filter((m) => most(m, 'transplant', CHAT.includes(m) ? R.s2 : R.r2)).length,
+      ],
+    );
+    eq(
+      'footbridge',
+      [F.footbridge.acting, F.footbridge.of, F.footbridge.acting2],
+      [
+        all.filter((m) => most(m, 'footbridge', runsOf(m)[0]!)).length,
+        all.length,
+        all.filter((m) => most(m, 'footbridge', CHAT.includes(m) ? R.s2 : R.r2)).length,
+      ],
+    );
+    const yes = dec.filter((m) =>
+      [R.r1, R.r2].every((t) => {
+        const a = t.acceptable.get(`${m}|transplant`);
+        return a && a[0] * 8 >= 5 * a[1];
+      }),
+    );
+    eq('acceptable', F.acceptable.map((a: any) => a.id).sort(), yes.sort());
+    const ly = 'convaiinnovations/laya|control-kill-for-nothing';
+    eq('empty', [F.empty.n, F.empty.of, F.empty.n2], [...R.r1.control.get(ly)!, R.r2.control.get(ly)![0]]);
+    const cf = 'cloudflare/clef-flash';
+    eq(
+      'picture',
+      [F.picture.words, F.picture.wordsOf, F.picture.pic, F.picture.picOf],
+      [...R.r1.pictures.get(`${cf}|text_outcomes`)!, ...R.r1.pictures.get(`${cf}|image`)!],
+    );
+    // chance
+    const S = { same: 0, pos: 0, track: 0, mixed: 0, n: 0 };
+    for (const [k, v] of R.r1.sets) {
+      if (v.length !== 4 || !dec.includes(k.split('|')[0]!)) continue;
+      S.n++;
+      if (new Set(v.map((x) => x.spared)).size === 1) S.same++;
+      else if (new Set(v.map((x) => x.first)).size === 1) S.pos++;
+      else if (new Set(v.map((x) => x.choice)).size === 1) S.track++;
+      else S.mixed++;
+    }
+    eq(
+      'chance',
+      [F.chance.same, F.chance.pos, F.chance.track, F.chance.mixed, F.chance.n],
+      [S.same, S.pos, S.track, S.mixed, S.n],
+    );
+    eq('chance.msLeft', F.chance.msLeft, R.r1.left.get('microsoft/microsoft-decision-1'));
+    expect(errs).toEqual([]);
+  });
+
+  it('native page: app.js draws numbers only from the facts', () => {
+    // Numbers typed into the page's code would bypass the recount. Allow only layout values and the fixed study design.
+    const src = readFileSync('site/v6/app.js', 'utf8');
+    const prose = [...src.matchAll(/`([^`]*)`/g)].map((m) => m[1]!.replace(/\$\{[^}]*\}/g, '')).join('\n');
+    const bad = [...prose.matchAll(/\b\d+(?:[.,]\d+)?%/g)].map((m) => m[0]);
+    expect(bad).toEqual([]);
+  });
 });

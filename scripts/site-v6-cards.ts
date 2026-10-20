@@ -347,11 +347,13 @@ cards.push({
   src: `${N('perplexity/pplx-decider-v1.2')}, the same dashcam pictures: spared the workers in ${px.dilemma.away} of ${px.dilemma.of} when worded as a trolley problem; sent the tram at them in ${px.routing.toward} of ${px.routing.of} as a routing job. Both runs. Simulated depot.`,
 });
 const gem = D.worth.find((w: any) => w.set === 'parity-age').rows.find((r: any) => r.id === 'google/gemini-3.5-flash-lite').w[0];
+// AIs that saved one 8-year-old over three 80-year-olds in most versions of every run (and whose rate is shown on v5).
+const kidsOthers = D.worth.find((w: any) => w.set === 'parity-age').rows.filter((r: any) => r.id !== 'google/gemini-3.5-flash-lite' && r.w[0].shown && r.w[0].w >= 99 && r.w.every((x: any) => x.c13.n * 2 > x.c13.of)).length;
 cards.push({
   name: '06-fork-age',
   head: `Google's AI would let three 80-year-olds die to save one child, {${pct(gem.c13.n, gem.c13.of)}} of the time.`,
   visual: forkVis({ label: '1 child,\naged 8', kind: 'child', n: 1, o: { shirt: GREEN } }, { label: '3 people\naged 80', kind: 'elder', n: 3 }, 'bottom'),
-  src: `${N('google/gemini-3.5-flash-lite')}: saved the child in ${gem.c13.n} of ${gem.c13.of} versions, one run. Six other AIs did the same in most versions. People spare the young too (Moral Machine, 2018). Forced choice.`,
+  src: `${N('google/gemini-3.5-flash-lite')}: saved the child in ${gem.c13.n} of ${gem.c13.of} versions, one run. ${['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'][kidsOthers]} other AIs did the same in most versions. People spare the young too (Moral Machine, 2018). Forced choice.`,
 });
 const omniW = D.leagues['parity-wealth'].find((r: any) => r.id === 'cloudflare/clef-omni').price;
 cards.push({
@@ -361,11 +363,12 @@ cards.push({
   src: `${N('cloudflare/clef-omni')}: ${omniW[0][2].n} of ${omniW[0][2].of} versions (run 2: ${omniW[1][2].n}). The study stopped at three. One-on-one, other AIs split: 3 sided with the poor person, 3 with the wealthy. Forced choice.`,
 });
 const ms = pooled('microsoft/microsoft-decision-1', 'parity-age', /aged 35\|.*aged 80$/, /aged 80$/);
+const ms35all = (() => { const g = D.leagues['parity-age'].find((r: any) => r.id === 'microsoft/microsoft-decision-1').groups.find((x: any) => x.group === '35').runs; if (g.some((r: any) => r.n !== g[0].n)) throw new Error('ms35: runs differ'); return g[0]; })();
 cards.push({
   name: '08-fork-35v80',
   head: `Microsoft's AI chose the 80-year-old over the 35-year-old {${pct(ms.n, ms.of)}} of the time.`,
   visual: forkVis({ label: '1 person\naged 80', kind: 'elder', n: 1 }, { label: '1 person\naged 35', kind: 'adult', n: 1 }, 'bottom'),
-  src: `${N('microsoft/microsoft-decision-1')}: ${ms.n} of ${ms.of} versions, both runs. Across all its age match-ups it saved a 35-year-old 0 times in 96. Forced choice.`,
+  src: `${N('microsoft/microsoft-decision-1')}: ${ms.n} of ${ms.of} versions, both runs. Across all its age match-ups it saved a 35-year-old ${ms35all.n} times in ${ms35all.of}. Forced choice.`,
 });
 const bw = pooled('perplexity/pplx-decider-v1.2', 'parity-race', /^Black (man|woman)\|White/, /^Black/);
 const bwS = sides('parity-race', /^Black (man|woman)\|White/, /^Black/);
@@ -1220,5 +1223,45 @@ for (const n of ['01-photo', '06-fork-age', '05-split'])
 for (const n of ['01-photo', '02-photo-group', '03-photo-live', '06-fork-age', '04-rule', '11-samebase'])
   cards.push({ ...cards.find((c) => c.name === n)!, name: `x-${n}`, format: 'landscape' });
 
-return { cards, compose, photoVis, forkVis, PH, omniTwo, gem, GREEN, drawn };
+// Every number the native page shows, in one place: the same values the cards draw, so the page, the images and the
+// independent checker all agree. `n`/`of` are counts; the page turns them into percentages.
+const F = {
+  totals: { models: D.totals.models, answers: D.totals.answers, decision: decIds.length, vision: vision.length },
+  live: { said: hk.live[0].n, of: hk.live[0].of, hit: hkR.toward, hitOf: hkR.of },
+  omniTwo: { n: omniTwo.at, of: omniTwo.of },
+  clefGroup: { n: clefGroup.at, of: clefGroup.of },
+  luna: { n: lunaX.n, of: lunaX.of, allHit: lunaAll[0], allOf: lunaAll[1], allCounted: lunaAll[2] },
+  rule: { n: sf.toward, of: sf.of, pplxObeyed: D.dash['perplexity/pplx-decider-v1.2'].safety.away, pplxOf: D.dash['perplexity/pplx-decider-v1.2'].safety.of },
+  ruleBack: { off: hkOps[0], offOf: hkOps[1], on: hkSafe[0], onOf: hkSafe[1], lunaD: lunaSafe[0], lunaDOf: lunaSafe[1] },
+  fault: { off: nsOps[0], offOf: nsOps[1], on: nsFault[0], onOf: nsFault[1], off2: pool('r2', 'ops')[0], on2: pool('r2', 'ops-nostop')[0], merc: [merc[0]![0], merc[1]![0]], ais: nsOps[1] / 128 },
+  split: { dilemma: px.dilemma.away, dilemmaOf: px.dilemma.of, routing: px.routing.toward, routingOf: px.routing.of, routing2: D.dash2['perplexity/pplx-decider-v1.2'].routing.toward },
+  lineup: Object.keys(D.dash).filter((m) => D.dash[m].routing.of).map((m) => ({ id: m, name: N(m), vendor: VENDOR(m), n: D.dash[m].routing.toward, of: D.dash[m].routing.of, dilemma: D.dash[m].dilemma.of - D.dash[m].dilemma.away, dilemmaOf: D.dash[m].dilemma.of })).sort((a, b) => b.n / b.of - a.n / a.of),
+  race: { n: bw.n, of: bw.of, for: bwS.for, against: bwS.against, tie: pr[0], two: pr[1] },
+  sides: { race: raceS, trans: transS, gay: gayS, women: womenS, faith: { for: ath.against, against: ath.for }, wheel: wcS },
+  women: { n: wmPool[0], of: wmPool[1], omni: omniWm },
+  age: { n: gem.c13.n, of: gem.c13.of, others: kidsOthers },
+  age35: { n: ms.n, of: ms.of, all: ms35all },
+  wealth: { n: omniW[0][2].n, of: omniW[0][2].of, n2: omniW[1][2].n },
+  samebase: { px: amPx, cf: amCf, base: D.models.find((x: any) => x.id === 'perplexity/pplx-decider-v1.2').base, pxRank: lg('perplexity/pplx-decider-v1.2'), cfRank: lg('cloudflare/clef') },
+  jev: jevRace.map((g: any) => ({ group: g.group, n: g.runs[0].n, of: g.runs[0].of })),
+  disability: clefDis.map((g: any) => ({ group: g.group, n: g.runs[0].n, of: g.runs[0].of })),
+  organs: { acting: tp.acting, of: tp.of, acting2: tp.ids2.length, chatActing: tp.ids.filter((m: string) => isChatId(m)).length },
+  footbridge: { acting: fb.acting, of: fb.of, acting2: fb.ids2.length },
+  acceptable: accYes.map((m) => ({ id: m, vendor: VENDOR(m), short: SHORT(m) })),
+  empty: { n: ly[0].n, of: ly[0].of, n2: ly[1].n },
+  picture: { words: rc.words.right, wordsOf: rc.words.of, pic: rc.picture.right, picOf: rc.picture.of, perception: Math.round(D.image.models['cloudflare/clef-flash'].perception * 100) },
+  chance: { ...S1, run2Same: MEGA.r2.sets.same, run2N: MEGA.r2.sets.n, msLeft },
+  flips: { solarFlash: FL['upstage/solar-decide-flash'], solar: FL['upstage/solar-decide'], d1u: FL['liquid/d1-ultra'], zero: Object.values(FL).filter((v) => v[0] === 0).length },
+  three: three.map((m) => ({ id: m, name: N(m), n: oneOverThree[m]![0], of: oneOverThree[m]![1] })).concat([{ id: 'rest', name: 'Every other decision AI', n: restPool[0], of: restPool[1] }]),
+  nace: { v15, v20 },
+  human: D.human,
+  wheel: { n: wc.n, of: wc.of },
+  photos: {
+    two: { ...PH.two, img: 'img/u-two-L.jpg', safe: TWO_EMPTY },
+    group: { ...PH.group, img: 'img/w-group-L.jpg' },
+    wet: { ...PH.wet, img: 'img/x-two-R.jpg', safe: WET_EMPTY },
+    xg: { ...XG, img: 'img/x-group-L.jpg' },
+  },
+};
+return { cards, compose, photoVis, forkVis, PH, omniTwo, gem, GREEN, drawn, F };
 }
