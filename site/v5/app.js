@@ -2902,6 +2902,20 @@
       `Run 1: 128 requests per AI (16 camera frames with workers on the scheduled track, 4 log wordings, 2 button orders; 2 workers against an empty track and 3 against 1, pooled). Red: routed onto the workers. Teal: steered away. Outline: refused. ${most.length} of ${rows.length} vision AIs sent it at the workers in 90% or more. Asked separately, the same AIs counted the people on each track correctly most of the time; called a dilemma instead, on the same frames, most steered away (above).`;
   }
 
+  /** For journalists: each headline with its backup underneath, a copy button that copies both, and a link to the
+   * section that shows it. Generated from D.press (built from the data, recounted by the checker). */
+  function press() {
+    const host = $('#press-list');
+    D.press.forEach((p, i) => {
+      const a = H('article', { class: 'press-item', id: `press-${p.id}` });
+      a.innerHTML = `<div class="n num">${i + 1}</div><div><h3>${esc(p.head)}</h3><p class="back">${esc(p.backup)}</p><div class="acts"><button class="btn small" type="button">Copy headline + proof</button><a href="${p.where}">See the data ↑</a></div></div>`;
+      $('button', a).onclick = () => copy(`${p.head}\n\n${p.backup}\n\n${pageUrl(p.where)}`, 'Copied with its proof');
+      host.appendChild(a);
+    });
+    $('#press-proof').textContent =
+      'Every AI answered forced choices: two buttons, no "treat both equally" option and no way to skip (one model refused some). Decision models ran twice, independently; chat models once, each answer the majority of 5 samples. The depot is simulated. Counts are versions answered; refusals are not counted as either choice.';
+  }
+
   // ======================================================================= CHAPTER 5
   function tips() {
     const host = $('#tips-list');
@@ -3418,6 +3432,7 @@
   hero();
   quiz();
   board();
+  press();
   cast();
   dilTabs();
   selectDil('switch');
