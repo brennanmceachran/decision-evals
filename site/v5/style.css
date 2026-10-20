@@ -2848,23 +2848,24 @@ table.pred td a {
 }
 .press-item {
   display: grid;
-  grid-template-columns: minmax(170px, 230px) 1fr;
-  gap: 24px;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
   padding: 26px 0;
   border-bottom: 1px solid var(--rule);
 }
-.press-item .stat {
-  font-family: var(--sign);
-  font-weight: 700;
-  font-size: clamp(30px, 3.4vw, 44px);
-  line-height: 1.05;
-  color: #9a6b00;
-  padding-top: 2px;
+.press-item .thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
 }
 @media (max-width: 640px) {
   .press-item {
     grid-template-columns: 1fr;
-    gap: 6px;
+    gap: 12px;
+  }
+  .press-item .thumb {
+    max-width: 300px;
   }
 }
 .press-item h3 {

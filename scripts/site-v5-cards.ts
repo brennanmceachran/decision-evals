@@ -2,7 +2,7 @@
 // meanings (teal = first option, purple = the other, red ✗/flag = flag or wrong, green ✓ = right). The takeaway is
 // the headline, the picture shows the question, and a method strip keeps a screenshot honest on its own.
 // Drawn as SVG from the same DATA as the page; rasterised with resvg using system fonts.
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { Resvg } from '@resvg/resvg-js';
 import type { buildV5 } from './site-v5.js';
 
@@ -266,7 +266,7 @@ function og(d: D): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${s}</svg>`;
 }
 
-/** A press card: the number, the headline, and the whole proof line printed under it, so a screenshot keeps it. */
+/** A press card: a short headline, the counts drawn as squares with plain labels, and a short proof line. */
 function pressCard(d: D, p: D['press'][number]): string {
   const W = 1080;
   const H = 1350;
@@ -274,33 +274,64 @@ function pressCard(d: D, p: D['press'][number]): string {
   const bg = night ? '#0e1418' : C.paper;
   const ink = night ? '#e8ecee' : C.ink;
   const muted = night ? '#b8c2c8' : '#3c4046';
+  const empty = night ? '#2a343b' : '#dcdcd4';
+  const tone = { bad: C.flag, good: C.ok, side: C.b } as const;
   let s = `<rect width="${W}" height="${H}" fill="${bg}"/>`;
   s += `<rect x="0" y="0" width="${W}" height="64" fill="${C.ink}"/><circle cx="62" cy="32" r="9" fill="${C.amber}"/><text x="82" y="41" font-family="${SIGN}" font-size="26" fill="${C.amber}">The Trolley Tests</text>`;
-  // A "before → after" number goes on two lines, the arrow drawn (the sign font has no arrow glyph).
-  const parts = p.stat.split(' → ');
-  const statSize = parts.length > 1 ? 130 : p.stat.length <= 10 ? 200 : 150;
-  const statFill = night ? C.amber : '#9a6b00';
-  const statText = (x: number, yy: number, t: string) =>
-    `<text x="${x}" y="${yy}" font-family="${SIGN}" font-size="${statSize}" font-weight="700" fill="${statFill}">${esc(t)}</text>`;
-  let y = 110 + statSize;
-  s += statText(60, y, parts[0]!);
-  if (parts[1]) {
-    y += statSize * 1.05;
-    const ay = y - statSize * 0.36;
-    s += `<path d="M64 ${ay} H140 M112 ${ay - 26} L142 ${ay} L112 ${ay + 26}" fill="none" stroke="${statFill}" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>`;
-    s += statText(170, y, parts[1]);
+  const hl = wrap(p.head, 27);
+  if (hl.length > 4) throw new Error(`press card ${p.id}: headline is ${hl.length} lines`);
+  s += lines(60, 150, hl, 66, 78, `font-family="${SERIF}" font-weight="700" fill="${ink}"`);
+  let y = 150 + hl.length * 78 + 20;
+  const proof = wrap(p.proof, 62);
+  if (proof.length > 3) throw new Error(`press card ${p.id}: proof is ${proof.length} lines`);
+  const bottom = H - 70 - 40 - proof.length * 36;
+  const room = bottom - y - 20;
+  if (p.grids?.length) {
+    // One square size for every grid on a card, so two counts compare at a glance: the largest that fits them all.
+    const per = room / p.grids.length;
+    const labelH = (gr: (typeof p.grids)[number]) => 94 + wrap(gr.label, 56).length * 34;
+    let cell = 8;
+    for (let c = 120; c >= 8; c--) {
+      const cols = Math.floor(960 / c);
+      if (p.grids.every((gr) => Math.ceil(gr.of / cols) * c <= per - labelH(gr) - 20)) {
+        cell = c;
+        break;
+      }
+    }
+    const cols = Math.floor(960 / cell);
+    const gap = Math.max(2, Math.round(cell * 0.12));
+    for (const gr of p.grids) {
+      s += `<text x="60" y="${y + 52}" font-family="${SIGN}" font-size="56" font-weight="700" fill="${tone[gr.tone]}">${gr.n} of ${gr.of}</text>`;
+      s += lines(60, y + 94, wrap(gr.label, 56), 28, 34, `font-family="${SIGN}" fill="${muted}"`);
+      const top = y + labelH(gr);
+      for (let i = 0; i < gr.of; i++) {
+        const cx = 60 + (i % cols) * cell;
+        const cy = top + Math.floor(i / cols) * cell;
+        s += `<rect x="${cx}" y="${cy}" width="${cell - gap}" height="${cell - gap}" rx="${Math.min(6, cell / 6)}" fill="${i < gr.n ? tone[gr.tone] : empty}"/>`;
+      }
+      y += labelH(gr) + Math.ceil(gr.of / cols) * cell + 40;
+    }
+  } else if (p.ranks?.length) {
+    const colW = 960 / p.ranks.length;
+    p.ranks.forEach((r, k) => {
+      const x = 60 + k * colW;
+      s += lines(x, y + 40, wrap(r.label, 24), 30, 36, `font-family="${SIGN}" font-weight="700" fill="${ink}"`);
+      const top = y + 40 + wrap(r.label, 24).length * 36;
+      const rowH = Math.min(52, (bottom - top - 20) / r.rows.length);
+      r.rows.forEach((row, i) => {
+        const yy = top + i * rowH;
+        const hit = row.group === r.mark;
+        const share = row.n / row.of;
+        const fill = hit ? C.flag : empty;
+        s += `<text x="${x}" y="${yy + rowH * 0.62}" font-family="${SIGN}" font-size="${hit ? 28 : 24}" font-weight="${hit ? 700 : 400}" fill="${hit ? C.flag : muted}">${i + 1}. ${esc(row.group)}</text>`;
+        s += `<rect x="${x + 230}" y="${yy + rowH * 0.25}" width="${(colW - 270) * share}" height="${rowH * 0.5}" rx="4" fill="${fill}"/>`;
+      });
+    });
   }
-  y += 90;
-  const hl = wrap(p.head, 30);
-  s += lines(60, y, hl, 58, 70, `font-family="${SERIF}" font-weight="700" fill="${ink}"`);
-  y += hl.length * 70 + 30;
-  const bl = wrap(p.backup, 70);
-  const lh = 34;
-  s += `<rect x="60" y="${y - 4}" width="6" height="${bl.length * lh}" fill="${C.amber}"/>`;
-  s += lines(86, y + 22, bl, 25, lh, `font-family="${SIGN}" fill="${muted}"`);
+  s += `<rect x="60" y="${bottom + 6}" width="6" height="${proof.length * 36 - 8}" fill="${C.amber}"/>`;
+  s += lines(84, bottom + 30, proof, 27, 36, `font-family="${SIGN}" fill="${muted}"`);
   s += `<rect x="0" y="${H - 70}" width="${W}" height="70" fill="${C.ink}"/>`;
-  s += `<text x="60" y="${H - 26}" font-family="${SIGN}" font-size="22" fill="#fff">${d.totals.models} AI models · ${d.totals.answers.toLocaleString('en-US')} answers · two runs · Oct 2026</text><text x="${W - 60}" y="${H - 26}" text-anchor="end" font-family="${SIGN}" font-size="22" fill="${C.amber}">${esc(d.site.replace(/^https:\/\//, '').replace(/\/$/, ''))}</text>`;
-  if (y + 22 + bl.length * lh > H - 90) throw new Error(`press card ${p.id}: proof line does not fit`);
+  s += `<text x="60" y="${H - 26}" font-family="${SIGN}" font-size="22" fill="#fff">${d.totals.models} AI models · ${d.totals.answers.toLocaleString('en-US')} answers · Oct 2026</text><text x="${W - 60}" y="${H - 26}" text-anchor="end" font-family="${SIGN}" font-size="22" fill="${C.amber}">${esc(d.site.replace(/^https:\/\//, '').replace(/\/$/, ''))}</text>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${s}</svg>`;
 }
 
@@ -310,6 +341,7 @@ export function renderCardsV5(d: D) {
     new Resvg(svg, { font: { loadSystemFonts: true, defaultFontFamily: 'Helvetica Neue' } }).render().asPng();
   for (const h of d.headlinesV2) writeFileSync(`site/v5/cards/${h.id}.png`, png(card(d, h)));
   writeFileSync('site/v5/cards/og.png', png(og(d)));
+  rmSync('site/v5/cards/press', { recursive: true, force: true });
   mkdirSync('site/v5/cards/press', { recursive: true });
   for (const p of d.press) writeFileSync(`site/v5/cards/press/${p.id}.png`, png(pressCard(d, p)));
   console.log(`→ site/v5/cards/ (${d.headlinesV2.length} cards + og.png, ${d.press.length} press cards)`);

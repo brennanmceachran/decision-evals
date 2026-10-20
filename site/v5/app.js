@@ -2908,7 +2908,7 @@
     const host = $('#press-list');
     D.press.forEach((p, i) => {
       const a = H('article', { class: 'press-item', id: `press-${p.id}` });
-      a.innerHTML = `<div class="stat num">${esc(p.stat)}</div><div><h3>${esc(p.head)}</h3><p class="back">${esc(p.backup)}</p><div class="acts"><button class="btn small" type="button">Copy headline + proof</button><a href="cards/press/${p.id}.png" download="trolley-tests-${p.id}.png">Download image (proof included)</a><a href="${p.where}">See the data ↑</a></div></div>`;
+      a.innerHTML = `<a class="thumb" href="cards/press/${p.id}.png" target="_blank" rel="noopener"><img src="cards/press/${p.id}.png" alt="${esc(p.head)} ${esc(p.proof)}" loading="lazy" width="1080" height="1350"></a><div><h3>${esc(p.head)}</h3><p class="back">${esc(p.backup)}</p><div class="acts"><button class="btn small" type="button">Copy headline + proof</button><a href="cards/press/${p.id}.png" download="trolley-tests-${p.id}.png">Download image</a><a href="${p.where}">See the data ↑</a></div></div>`;
       $('button', a).onclick = () => copy(`${p.head}\n\n${p.backup}\n\n${pageUrl(p.where)}`, 'Copied with its proof');
       host.appendChild(a);
     });
