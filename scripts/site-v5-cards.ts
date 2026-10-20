@@ -266,11 +266,51 @@ function og(d: D): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${s}</svg>`;
 }
 
+/** A press card: the number, the headline, and the whole proof line printed under it, so a screenshot keeps it. */
+function pressCard(d: D, p: D['press'][number]): string {
+  const W = 1080;
+  const H = 1350;
+  const night = p.where === '#dashcam';
+  const bg = night ? '#0e1418' : C.paper;
+  const ink = night ? '#e8ecee' : C.ink;
+  const muted = night ? '#b8c2c8' : '#3c4046';
+  let s = `<rect width="${W}" height="${H}" fill="${bg}"/>`;
+  s += `<rect x="0" y="0" width="${W}" height="64" fill="${C.ink}"/><circle cx="62" cy="32" r="9" fill="${C.amber}"/><text x="82" y="41" font-family="${SIGN}" font-size="26" fill="${C.amber}">The Trolley Tests</text>`;
+  // A "before → after" number goes on two lines, the arrow drawn (the sign font has no arrow glyph).
+  const parts = p.stat.split(' → ');
+  const statSize = parts.length > 1 ? 130 : p.stat.length <= 10 ? 200 : 150;
+  const statFill = night ? C.amber : '#9a6b00';
+  const statText = (x: number, yy: number, t: string) =>
+    `<text x="${x}" y="${yy}" font-family="${SIGN}" font-size="${statSize}" font-weight="700" fill="${statFill}">${esc(t)}</text>`;
+  let y = 110 + statSize;
+  s += statText(60, y, parts[0]!);
+  if (parts[1]) {
+    y += statSize * 1.05;
+    const ay = y - statSize * 0.36;
+    s += `<path d="M64 ${ay} H140 M112 ${ay - 26} L142 ${ay} L112 ${ay + 26}" fill="none" stroke="${statFill}" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>`;
+    s += statText(170, y, parts[1]);
+  }
+  y += 90;
+  const hl = wrap(p.head, 30);
+  s += lines(60, y, hl, 58, 70, `font-family="${SERIF}" font-weight="700" fill="${ink}"`);
+  y += hl.length * 70 + 30;
+  const bl = wrap(p.backup, 70);
+  const lh = 34;
+  s += `<rect x="60" y="${y - 4}" width="6" height="${bl.length * lh}" fill="${C.amber}"/>`;
+  s += lines(86, y + 22, bl, 25, lh, `font-family="${SIGN}" fill="${muted}"`);
+  s += `<rect x="0" y="${H - 70}" width="${W}" height="70" fill="${C.ink}"/>`;
+  s += `<text x="60" y="${H - 26}" font-family="${SIGN}" font-size="22" fill="#fff">${d.totals.models} AI models · ${d.totals.answers.toLocaleString('en-US')} answers · two runs · Oct 2026</text><text x="${W - 60}" y="${H - 26}" text-anchor="end" font-family="${SIGN}" font-size="22" fill="${C.amber}">${esc(d.site.replace(/^https:\/\//, '').replace(/\/$/, ''))}</text>`;
+  if (y + 22 + bl.length * lh > H - 90) throw new Error(`press card ${p.id}: proof line does not fit`);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${s}</svg>`;
+}
+
 export function renderCardsV5(d: D) {
   mkdirSync('site/v5/cards', { recursive: true });
   const png = (svg: string) =>
     new Resvg(svg, { font: { loadSystemFonts: true, defaultFontFamily: 'Helvetica Neue' } }).render().asPng();
   for (const h of d.headlinesV2) writeFileSync(`site/v5/cards/${h.id}.png`, png(card(d, h)));
   writeFileSync('site/v5/cards/og.png', png(og(d)));
-  console.log(`→ site/v5/cards/ (${d.headlinesV2.length} cards + og.png)`);
+  mkdirSync('site/v5/cards/press', { recursive: true });
+  for (const p of d.press) writeFileSync(`site/v5/cards/press/${p.id}.png`, png(pressCard(d, p)));
+  console.log(`→ site/v5/cards/ (${d.headlinesV2.length} cards + og.png, ${d.press.length} press cards)`);
 }

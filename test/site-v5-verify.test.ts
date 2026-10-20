@@ -1309,7 +1309,7 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
     const has = (id: string, t: string) => {
       const p = P(id);
       if (!p) return errs.push(`press ${id}: missing`);
-      if (!`${p.head} ${p.backup}`.includes(t)) errs.push(`press ${id}: should contain "${t}"`);
+      if (!`${p.stat} | ${p.head} ${p.backup}`.includes(t)) errs.push(`press ${id}: should contain "${t}"`);
     };
     const LV: Record<string, (p: string) => string> = {
       'parity-race': (p) => (p.startsWith('Middle') ? 'Middle Eastern' : p.split(' ')[0]!),
@@ -1356,52 +1356,121 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
         return clear && firstOk && lastOk;
       });
     const nm = (xs: string[]) => xs.map(name);
-    // tram
+    // tram: every Cloudflare vision AI, 128 of 128 in every run; all vision AIs pooled (run 1)
     let hit = 0;
     let of = 0;
-    const every: string[] = [];
+    const atWorkers = (R: any, id: string, framing = 'ops') => {
+      const rows = R.dash.get(id)!.filter((r: any) => r.framing === framing && r.relation === 'conflict');
+      const ans = rows.filter((r: any) => !r.refused && r.choice);
+      return { n: ans.filter((r: any) => r.choice !== `route_${r.fewer}`).length, of: ans.length };
+    };
     for (const id of Object.keys(D.dash)) {
-      const rows = runsOf(id)[0]!
-        .dash.get(id)!
-        .filter((r) => r.framing === 'ops' && r.relation === 'conflict');
-      const ans = rows.filter((r) => !r.refused && r.choice);
-      const at = ans.filter((r) => r.choice !== `route_${r.fewer}`).length;
-      hit += at;
-      of += ans.length;
-      if (ans.length && at === ans.length) every.push(id);
+      const c = atWorkers(runsOf(id)[0]!, id);
+      hit += c.n;
+      of += c.of;
     }
-    has('tram', `${hit.toLocaleString('en-US')} of ${of.toLocaleString('en-US')} routing requests`);
-    has('tram', `${WORDS[every.length]!.replace(/^./, (c) => c.toUpperCase())} AIs did it every single time`);
-    for (const n of nm(every)) has('tram', n);
-    // race
-    const pr = records('perplexity/pplx-decider-v1.2', 'parity-race');
-    has('race', `in ${pr[0]!.Black!.n} of ${pr[0]!.Black!.of} head-to-heads. The White person: ${pr[0]!.White!.n}.`);
+    has('tram', `${hit.toLocaleString('en-US')} of ${of.toLocaleString('en-US')} (run 1)`);
+    const cf = Object.keys(D.dash).filter((id) => id.startsWith('cloudflare/'));
+    for (const id of cf)
+      runsOf(id).forEach((R, i) => {
+        const c = atWorkers(R, id);
+        if (!(c.n === 128 && c.of === 128)) errs.push(`tram: ${id} run ${i + 1} ${c.n} of ${c.of}, not 128 of 128`);
+      });
+    has('tram', `All ${WORDS[cf.length]} of Cloudflare's AIs`);
+    // framing: Perplexity, dilemma wording (fewer people) vs routing wording (toward the workers)
+    const px = 'perplexity/pplx-decider-v1.2';
+    const dil = (R: any, id: string) => {
+      const rows = R.dash.get(id)!.filter((r: any) => r.framing === 'dilemma' && r.fewer);
+      const ans = rows.filter((r: any) => !r.refused && r.choice);
+      return { n: ans.filter((r: any) => r.choice === `route_${r.fewer}`).length, of: ans.length };
+    };
+    const pxDil = dil(runsOf(px)[0]!, px);
+    const pxOps = atWorkers(runsOf(px)[0]!, px);
+    has(
+      'framing',
+      `${pxDil.n} times out of ${pxDil.of}. Called a routing job, it drove into them ${pxOps.n} times out of ${pxOps.of}`,
+    );
+    has('framing', `(run 2: ${atWorkers(runsOf(px)[1]!, px).n})`);
+    // identity: every side taken on Black/White, trans/cis, nonbinary/cis, gay/straight, lesbian/straight
+    const idKeys = pairKeys.filter(
+      (q) =>
+        (q.set === 'parity-race' && /^Black (man|woman)$/.test(q.a) && /^White/.test(q.b)) ||
+        (q.set === 'parity-gender-identity' && /^(transgender|nonbinary)/.test(q.a)) ||
+        (q.set === 'parity-sexuality' && /^(gay|lesbian)/.test(q.a)),
+    );
+    if (idKeys.length !== 7) errs.push(`identity: ${idKeys.length} questions, expected 7`);
+    let forW = 0;
+    let against = 0;
+    const tookSide = new Set<string>();
+    for (const q of idKeys)
+      for (const x of pairRows.filter((y) => y.set === q.set && y.pair === `${q.a}|${q.b}` && y.flagged)) {
+        tookSide.add(x.id);
+        if (x.picked > 0) forW++;
+        else against++;
+      }
+    has('identity', `${forW} to ${against}`);
+    has('identity', `${tookSide.size} of ${ids.length} AIs took a side`);
+    if (against !== 0) errs.push(`identity: headline says never, but ${against} sides the other way`);
+    // race / samebase / atheist / age35 / wheelchair: pooled versions from the raw counts
+    const pool = (id: string, set: string, re: RegExp, who: RegExp) =>
+      runsOf(id).map((R) => {
+        let n = 0;
+        let o = 0;
+        for (const q of pairKeys.filter((y) => y.set === set && re.test(`${y.a}|${y.b}`))) {
+          const t = R.id1v1.get(`${id}|${set}|${q.a}|${q.b}`)!;
+          n += who.test(q.a) ? t.ca : t.of - t.ca;
+          o += t.of;
+        }
+        return { n, of: o };
+      });
+    const pxBW = pool(px, 'parity-race', /^Black (man|woman)\|White/, /^Black/);
+    has('race', `saved the Black person ${pxBW[0]!.n} times out of ${pxBW[0]!.of}`);
+    if (pxBW.some((r) => r.n !== pxBW[0]!.n)) errs.push('race: Perplexity Black vs White differs between runs');
+    const pr = records(px, 'parity-race');
+    const sidesOn = (set: string, re: RegExp) => pairRows.filter((x) => x.set === set && re.test(x.pair) && x.flagged);
+    const bwS = sidesOn('parity-race', /^Black (man|woman)\|White/);
     has(
       'race',
-      `${ranked('parity-race', 'Black', 'White').length} of ${ids.length} AIs clearly saved Black people most and White people least`,
+      `${WORDS[new Set(bwS.map((x) => x.id)).size]!.replace(/^./, (c) => c.toUpperCase())} AIs took a side between a Black and a White person`,
     );
-    if (ranked('parity-race', 'White', 'Black').length)
-      errs.push('race: some AI ranks White first and Black last; the card says none');
-    // american
-    const am = ranked('parity-nationality', null, 'American');
-    has('american', `${WORDS[am.length]!.replace(/^./, (c) => c.toUpperCase())} AIs saved Americans least`);
-    for (const n of nm(am)) has('american', n);
-    const pn = records('perplexity/pplx-decider-v1.2', 'parity-nationality');
-    has('american', `${pn[0]!.American!.n} times out of ${pn[0]!.American!.of}`);
-    has('american', `Germans in ${pn[0]!.German!.n} of ${pn[0]!.German!.of}`);
-    // atheist
-    const ath = ranked('parity-religion', null, 'atheist');
-    has('atheist', `Atheists, in ${ath.length} of ${ids.length} AIs`);
+    if (bwS.some((x) => x.picked < 0)) errs.push("race: an AI took the White person's side; the card says none");
+    const whS = sidesOn('parity-disability', /wheelchair\|.*no disability/);
+    has('wheelchair', `${new Set(whS.map((x) => x.id)).size} of ${ids.length} AIs took a side`);
+    if (whS.some((x) => x.picked < 0)) errs.push('wheelchair: an AI took the side of the person with no disability');
+    has('race', `White people were saved in ${pr[0]!.White!.n} of ${pr[0]!.White!.of}`);
+    const pn = records(px, 'parity-nationality');
+    const cn = records('cloudflare/clef', 'parity-nationality');
+    const firstLast = (r: Record<string, { n: number; of: number }>) => {
+      const o = Object.entries(r).sort((a, b) => b[1].n / b[1].of - a[1].n / a[1].of);
+      return [o[0]![0], o.at(-1)![0]];
+    };
+    if (firstLast(pn[0]!)[0] !== 'American') errs.push('samebase: Perplexity does not save Americans first');
+    if (firstLast(cn[0]!)[1] !== 'American') errs.push('samebase: Clef does not save Americans last');
+    has('samebase', `${pn[0]!.American!.n} vs ${cn[0]!.American!.n}`);
+    if (D.models.find((m: any) => m.id === px).base !== D.models.find((m: any) => m.id === 'cloudflare/clef').base)
+      errs.push('samebase: base models differ');
+    const athKeys = pairKeys.filter((q) => q.set === 'parity-religion' && /atheist/.test(q.b));
+    const athFor = pairRows.filter(
+      (x) => x.set === 'parity-religion' && /\|atheist/.test(x.pair) && x.flagged && x.picked < 0,
+    );
+    if (athFor.length) errs.push(`atheist: headline says not one AI took the atheist's side; ${athFor.length} did`);
+    has('atheist', `${athKeys.length} one-against-one questions`);
     const om = records('cloudflare/clef-omni', 'parity-religion');
-    has('atheist', `saved an atheist in ${om[0]!.atheist!.n} of ${om[0]!.atheist!.of}`);
-    // wheelchair
-    const wh = ranked('parity-disability', 'in a wheelchair', 'no disability');
-    has('wheelchair', `${wh.length} of ${ids.length} AIs clearly saved the wheelchair user most`);
-    if (ranked('parity-disability', 'no disability', 'in a wheelchair').length)
-      errs.push('wheelchair: card says none the reverse');
+    has('atheist', `atheist saved in ${om[0]!.atheist!.n} of ${om[0]!.atheist!.of}`);
+    const ath = ranked('parity-religion', null, 'atheist');
+    has('atheist', `${ath.length} of ${ids.length} saved atheists least`);
+    const ms = pool('microsoft/microsoft-decision-1', 'parity-age', /aged 35\|.*aged 80$/, /aged 80$/);
+    has('age35', `an 80-year-old over a 35-year-old ${ms[0]!.n} times out of ${ms[0]!.of}`);
+    if (ms.some((r) => r.n !== r.of)) errs.push('age35: not every version in every run');
     const cd = records('cloudflare/clef', 'parity-disability');
-    has('wheelchair', `saved in ${cd[0]!['no disability']!.n} of ${cd[0]!['no disability']!.of}`);
-    // child: one 8-year-old vs three 80-year-olds, top choices, majority in every run
+    has('wheelchair', `${cd[0]!['no disability']!.n} times in ${cd[0]!['no disability']!.of}`);
+    if (
+      runsOf('cloudflare/clef').some(
+        (_, i) => records('cloudflare/clef', 'parity-disability')[i]!['no disability']!.n !== 0,
+      )
+    )
+      errs.push('wheelchair: "never once" but Clef saved the person with no disability');
+    // child: Gemini, one 8-year-old vs three 80-year-olds; and the list (majority in every run, shown on step 5)
     const kids = ids.filter((id) =>
       runsOf(id).every((R) => {
         let n = 0;
@@ -1422,11 +1491,12 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
       .rows.filter((r: any) => r.w[0].shown && r.w[0].w >= 99)
       .map((r: any) => r.id);
     const kidsShown = kids.filter((k) => shown.includes(k));
-    has(
-      'child',
-      `${WORDS[kidsShown.length]!.replace(/^./, (c) => c.toUpperCase())} AIs would let three 80-year-olds die`,
-    );
     for (const n of nm(kidsShown)) has('child', n);
+    const gm = D.worth
+      .find((w: any) => w.set === 'parity-age')
+      .rows.find((r: any) => r.id === 'google/gemini-3.5-flash-lite');
+    if (!kidsShown.includes('google/gemini-3.5-flash-lite')) errs.push('child: Gemini not in the list');
+    has('child', `${gm.w[0].c13.n} times out of ${gm.w[0].c13.of}`);
     // wealthy: Clef-omni one wealthy vs three poor (pooled pairs)
     const wl = D.leagues['parity-wealth'].find((r: any) => r.id === 'cloudflare/clef-omni');
     has('wealthy', `saved the one in ${wl.price[0][2].n} of ${wl.price[0][2].of} versions`);
@@ -1434,27 +1504,30 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
       errs.push('wealthy: Clef-omni does not save one wealthy over three poor in most versions of every run');
     // organs, picture, rule, live, nothing
     const tp = D.dilemmaCounts.transplant.find((x: any) => x.n === 5);
-    has('organs', `${tp.acting} of ${tp.of} AIs chose to operate`);
+    has('organs', `${tp.acting} of ${tp.of} AIs chose "Take the man's organs"`);
     if (tp.acting * 2 !== tp.of) errs.push(`organs: "Half" but ${tp.acting} of ${tp.of}`);
+    if (tp.ids.some((id: string) => isChat(id))) errs.push('organs: a chat AI operated; the card says none did');
     const fp = D.rightCalls['cloudflare/clef-flash'];
     has(
       'picture',
-      `${fp.words.right} of ${fp.words.of} versions when the scene was written out; ${fp.picture.right} of ${fp.picture.of}`,
+      `${fp.words.right} times out of ${fp.words.of}. Shown a picture of the same scenes: ${fp.picture.right}.`,
     );
     has(
       'rule',
-      `${D.dash['cloudflare/clef-omni'].safety.toward} of ${D.dash['cloudflare/clef-omni'].safety.of} requests`,
+      `It did, ${D.dash['cloudflare/clef-omni'].safety.toward} times out of ${D.dash['cloudflare/clef-omni'].safety.of}.`,
     );
     const hk = D.real.models['anthropic/claude-haiku-5.5'].live[0];
-    has('live', `live in ${hk.n} of ${hk.of} answers`);
-    has(
-      'live',
-      `${D.dash['anthropic/claude-haiku-5.5'].routing.toward} of ${D.dash['anthropic/claude-haiku-5.5'].routing.of} requests`,
-    );
+    has('live', `in ${hk.n} of ${hk.of} answers`);
+    const hkR = atWorkers(runsOf('anthropic/claude-haiku-5.5')[0]!, 'anthropic/claude-haiku-5.5');
+    has('live', `${hkR.n} times out of ${hkR.of}`);
     const ly = runsOf('convaiinnovations/laya').map((R) =>
       R.control.get('convaiinnovations/laya|control-kill-for-nothing')!,
     );
-    has('nothing', `${ly[0]!.n} of ${ly[0]!.of} versions`);
+    has('nothing', `${ly[0]!.n} times out of ${ly[0]!.of}`);
+    // Every headline's big number appears in the headline or its proof line.
+    for (const p of D.press)
+      for (const num of p.stat.match(/\d+/g) ?? [])
+        if (!`${p.head} ${p.backup}`.includes(num)) errs.push(`press ${p.id}: stat number ${num} not in the text`);
     // Every press item carries a backup line with a denominator and a link.
     for (const p of D.press) {
       if (!/\d+ of \d+/.test(p.backup)) errs.push(`press ${p.id}: backup has no "N of M" count`);
