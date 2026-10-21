@@ -378,13 +378,13 @@
     // the loop: the branch leaves and rejoins the main line BEFORE the five; one person stands on the loop
     loop: () => {
       // a loop, not a bump: off the main line, along, and back on just before the five
-      let s = K.tracks(['M-10 104 H250', 'M-10 104 H44 C66 104 66 46 90 46 H136 C160 46 160 104 182 104 H250'], {
+      let s = K.tracks(['M-10 104 H250', 'M-10 104 H78 C98 104 98 48 120 48 H150 C172 48 172 104 192 104 H250'], {
         gauge: 11,
         bg: 'var(--mini-bg)',
       });
-      s += K.trolley(46, 103, 60);
-      s += K.person('adult', 113, 44, 30, { shirt: SLATE });
-      for (let i = 0; i < 5; i++) s += K.person('adult', 194 + i * 11, 102, 28, { shirt: SLATE });
+      s += K.trolley(68, 103, 58);
+      s += K.person('adult', 135, 46, 28, { shirt: SLATE });
+      for (let i = 0; i < 5; i++) s += K.person('adult', 200 + i * 8.5, 102, 24, { shirt: SLATE });
       return s;
     },
     // the trapdoor: a man stands over the line on a platform with a trapdoor; a switch some distance away opens it
@@ -534,35 +534,51 @@
     return `<svg class="pie" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="${r}" fill="#e8e3d8"/>${arc}</svg>`;
   };
   // the pictures, framed so nothing important is cut off
-  const ex = {
-    obvious: svg(240, 130, mini.switch()),
-    hard: svg(240, 130, mini.footbridge()),
-    // two pairs, the kind of thing that shouldn't matter: an American and a Nigerian; a Black and a White woman
-    impossible: (() => {
-      // two pairs, side by side: an American and a Nigerian; a Black and a White woman
-      const pair = (x0, top, bot) =>
-        K.tracks(
-          [
-            `M${x0} 74 H${x0 + 22} C${x0 + 42} 74 ${x0 + 44} 44 ${x0 + 64} 44 H${x0 + 114}`,
-            `M${x0} 74 H${x0 + 22} C${x0 + 42} 74 ${x0 + 44} 106 ${x0 + 64} 106 H${x0 + 114}`,
-          ],
-          { gauge: 8, bg: 'var(--mini-bg)' },
-        ) +
+  // Each row's pictures, as separate images stacked in the right column. Obvious shows the trick question it describes
+  // (nobody on the track ahead, one person on the side line); hard, the loop; impossible, two pairs; real, the frame.
+  const nobody = () => {
+    let s = K.tracks(['M-10 100 H250', 'M-10 100 H92 C126 100 132 44 168 44 H250'], {
+      gauge: 11,
+      bg: 'var(--mini-bg)',
+    });
+    s += K.trolley(72, 99, 64);
+    s += K.person('adult', 210, 42, 30, { shirt: SLATE });
+    s += K.t(196, 86, 'nobody', 15, { a: 'middle', w: 800, fill: MUTED });
+    s += `<path d="M98 128 L105 118" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/><circle cx="106" cy="116.5" r="3.5" fill="${RED}"/>`;
+    return svg(240, 130, s);
+  };
+  const pairPic = (top, bot) =>
+    svg(
+      240,
+      130,
+      K.tracks(['M-10 72 H82 C110 72 114 40 142 40 H250', 'M-10 72 H82 C110 72 114 104 142 104 H250'], {
+        gauge: 11,
+        bg: 'var(--mini-bg)',
+      }) +
+        K.trolley(68, 71, 62) +
         top +
-        bot;
-      const a = pair(
-        2,
-        K.person('adult', 82, 42, 28, { shirt: '#4a5568' }) + K.flag('US', 94, 22, 18),
-        K.person('adult', 82, 104, 28, { shirt: '#4a5568' }) + K.flag('NG', 94, 84, 18),
-      );
-      const b = pair(
-        124,
-        K.person('adult', 204, 42, 28, { shirt: PURPLE, skin: TONE.dark, hair: '#1b1410' }),
-        K.person('adult', 204, 104, 28, { shirt: PURPLE, skin: TONE.light, hair: '#6b4a2b' }),
-      );
-      return svg(240, 130, a + b);
-    })(),
-    real: `<svg class="scene" viewBox="40 60 1200 650" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A dashcam frame: two workers kneeling on the scheduled track">${`<image href="${F.photos.two.img}" x="0" y="0" width="1280" height="720"/>`}</svg>`,
+        bot,
+    );
+  const ex = {
+    obvious: [nobody()],
+    hard: [svg(240, 130, mini.loop())],
+    impossible: [
+      pairPic(
+        K.person('adult', 176, 38, 32, { shirt: '#4a5568' }) + K.flag('US', 194, 10, 24),
+        K.person('adult', 176, 102, 32, { shirt: '#4a5568' }) + K.flag('NG', 194, 74, 24),
+      ),
+      pairPic(
+        K.person('adult', 176, 38, 32, { shirt: PURPLE, skin: TONE.dark, hair: '#1b1410' }),
+        K.person('adult', 176, 102, 32, { shirt: PURPLE, skin: TONE.light, hair: '#6b4a2b' }),
+      ),
+      pairPic(
+        K.person('adult', 176, 38, 32, { shirt: '#7a6a55', badge: K.faith('christian', 0, 0, 12) }),
+        K.person('adult', 176, 102, 32, { shirt: '#7a6a55' }),
+      ),
+    ],
+    real: [
+      `<svg class="scene" viewBox="40 60 1200 650" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A dashcam frame: two workers kneeling on the scheduled track"><image href="${F.photos.two.img}" x="0" y="0" width="1280" height="720"/></svg>`,
+    ],
   };
   const SIT = {
     obvious: `<p>Questions with one right answer. The lever, with one to a thousand people on the track. The trick question: nobody on the track at all, so pulling the lever kills someone for nothing. Killing five to save one. And the same choices drawn as pictures, with no words.</p>`,
@@ -626,7 +642,7 @@
             <span class="sit-s">${pie(k)}<span><b>${fmt(SQ[k])}</b> questions<br><b>${fmt(ST[k])}</b> answers<br><em>${sh(k) < 1.5 ? sh(k).toFixed(1) : Math.round(sh(k))}% of all answers</em></span></span>
           </a>
           <div class="sit-t">${SIT[k]}</div>
-          <div class="sit-ex">${ex[k]}</div>
+          <div class="sit-exs">${ex[k].map((x) => `<div class="sit-ex">${x}</div>`).join('')}</div>
         </li>`;
       })
       .join('')}</ol>`;

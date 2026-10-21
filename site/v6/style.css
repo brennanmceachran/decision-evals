@@ -2286,6 +2286,10 @@ button {
 .sit-t p + p {
   margin-top: 10px;
 }
+.sit-exs {
+  display: grid;
+  gap: 10px;
+}
 .sit-ex {
   --mini-bg: #faf8f3;
   aspect-ratio: 240 / 130;
@@ -2373,7 +2377,7 @@ button {
   .sits li {
     grid-template-columns: 170px minmax(0, 1fr);
   }
-  .sit-ex {
+  .sit-exs {
     grid-column: 2;
     max-width: 300px;
   }
@@ -2399,9 +2403,10 @@ button {
     order: 3;
     flex-basis: 100%;
   }
-  .sit-ex {
+  .sit-exs {
     grid-column: auto;
     max-width: none;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
   .reqchart .mk .md {
     display: none;
