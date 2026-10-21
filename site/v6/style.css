@@ -102,8 +102,24 @@ button {
   text-decoration: none;
   white-space: nowrap;
 }
-.topbar nav a:hover {
+.topbar nav a:hover,
+.topbar nav a.on {
   color: #fff;
+}
+.topbar nav .st {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  border-radius: 5px;
+  background: #39424a;
+  color: #fff;
+  font-size: 12px;
+}
+.topbar nav a.on .st {
+  background: var(--amber);
+  color: var(--ink);
 }
 
 /* ---------- hero */
@@ -147,7 +163,6 @@ button {
   background: #000;
 }
 .hero-frame .scene.photo {
-  aspect-ratio: 920 / 480;
   border-radius: 0;
 }
 .hero-q {
@@ -212,15 +227,12 @@ button {
 .chapter:nth-of-type(odd) {
   background: var(--paper);
 }
-#tram {
+#real {
   background: var(--night);
   color: #fff;
 }
-#chance {
+#twist {
   background: var(--sand);
-}
-#how {
-  background: var(--paper);
 }
 #press {
   background: var(--night);
@@ -237,12 +249,413 @@ button {
 .ch-head .dek {
   font-size: clamp(18px, 1.6vw, 21px);
   max-width: 56ch;
-  margin: 18px 0 0;
+  margin: 14px 0 0;
   color: var(--muted);
 }
-#tram .ch-head .dek,
 #press .ch-head .dek {
   color: #aab3b9;
+}
+
+/* ---------- a rung opens with a dark band: where you are on the ladder, the claim, and its findings to scan */
+.rung {
+  padding-top: 0;
+}
+.rung-head {
+  margin: 0 calc(-1 * var(--pad)) clamp(56px, 8vw, 112px);
+  padding: clamp(56px, 8vw, 112px) var(--pad) clamp(44px, 6vw, 72px);
+  background: var(--ink);
+  color: #fff;
+}
+#real .rung-head {
+  background: #1b252d;
+}
+.rung-in {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+.rung-steps {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 44px;
+  margin-bottom: 18px;
+}
+.rung-steps i {
+  width: 30px;
+  border-radius: 4px 4px 0 0;
+  background: #39424a;
+}
+.rung-steps i:nth-child(1) {
+  height: 25%;
+}
+.rung-steps i:nth-child(2) {
+  height: 50%;
+}
+.rung-steps i:nth-child(3) {
+  height: 75%;
+}
+.rung-steps i:nth-child(4) {
+  height: 100%;
+}
+.rung-steps i.on {
+  background: var(--amber);
+}
+.rung-n {
+  margin: 0 0 14px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #aab3b9;
+}
+.rung-n b {
+  margin-left: 10px;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--amber);
+}
+.rung-head h2 {
+  font-size: clamp(38px, 5.6vw, 76px);
+  max-width: 17ch;
+}
+.rung-head .dek {
+  font-size: clamp(18px, 1.6vw, 21px);
+  max-width: 58ch;
+  margin: 18px 0 0;
+  color: #c9d0d5;
+}
+.rung-list {
+  list-style: none;
+  padding: 0;
+  margin-top: clamp(28px, 4vw, 44px);
+  margin-bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 clamp(20px, 3vw, 44px);
+  counter-reset: f;
+}
+.rung-list li {
+  border-top: 1px solid #343c43;
+}
+.rung-list a {
+  display: block;
+  padding: 12px 0 14px;
+  color: #e6ebee;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.35;
+}
+.rung-list a:hover {
+  color: var(--amber);
+}
+#twist .ch-head .kicker {
+  color: var(--red);
+}
+
+/* ---------- the hard rung's own chart: five dilemmas, AIs against people */
+.dl-chart {
+  margin-top: clamp(28px, 4vw, 44px);
+}
+.dl-key {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #c9d0d5;
+}
+.dl-key i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin: 0 6px 0 16px;
+  vertical-align: -1px;
+}
+.dl-key i:first-child {
+  margin-left: 0;
+}
+.dl-key .ai,
+.dl-chart .b.ai i {
+  background: var(--red);
+}
+.dl-key .hu,
+.dl-chart .b.hu i {
+  background: #8c9198;
+}
+.dl-chart ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.dl-chart li {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 18px;
+  row-gap: 4px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid #343c43;
+}
+.dl-chart .lb {
+  grid-row: span 2;
+  font-weight: 800;
+  font-size: 18px;
+}
+.dl-chart .b {
+  display: grid;
+  grid-template-columns: 1fr 56px;
+  gap: 12px;
+  align-items: center;
+}
+.dl-chart .b::before {
+  content: '';
+  grid-area: 1 / 1;
+  height: 14px;
+  border-radius: 4px;
+  background: #2a333a;
+}
+.dl-chart .b i {
+  grid-area: 1 / 1;
+  height: 14px;
+  border-radius: 4px;
+  width: 0;
+  transition: width 1s cubic-bezier(0.5, 0, 0.3, 1) 0.2s;
+}
+.dl-chart.played .b i {
+  width: calc(var(--w) * 1%);
+}
+.dl-chart .b b {
+  text-align: right;
+  font-size: 18px;
+}
+.dl-chart .b.ai b {
+  color: #ff6b5e;
+}
+.dl-chart .b.hu b {
+  color: #aab3b9;
+}
+.dl-note {
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: #8f989e;
+}
+
+/* ---------- the study: who we tested, how, and the ladder */
+#study {
+  background: var(--paper);
+}
+.lineup2 {
+  max-width: var(--measure);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr);
+  gap: clamp(14px, 2vw, 24px);
+}
+.lg {
+  padding: clamp(18px, 2.4vw, 28px);
+  border-radius: 20px;
+  background: var(--sand);
+}
+.lg.chat {
+  background: #e3e8ee;
+}
+.lg h3 {
+  font-size: clamp(24px, 2.4vw, 32px);
+}
+.lg > p {
+  margin: 6px 0 16px;
+  color: #3a3f46;
+  font-size: 16px;
+}
+.lg ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+}
+.lg li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.lg .mk {
+  font-weight: 800;
+  font-size: 15px;
+}
+.bots-row {
+  display: flex;
+  gap: 6px;
+}
+.bots-row .m {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 58px;
+}
+.bots-row .scene {
+  width: 40px;
+}
+.bots-row small {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.2;
+}
+.method {
+  max-width: var(--measure);
+  margin: clamp(28px, 4vw, 44px) auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.4vw, 32px);
+}
+.method p {
+  margin: 0;
+  font-size: 17px;
+  color: #3a3f46;
+}
+.method b {
+  display: block;
+  color: var(--ink);
+  font-size: 19px;
+  margin-bottom: 4px;
+}
+.ladder-h {
+  max-width: var(--measure);
+  margin: clamp(48px, 7vw, 88px) auto 18px;
+  font-size: clamp(24px, 2.6vw, 34px);
+}
+.ladder {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: end;
+  gap: 10px;
+}
+.ladder a {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  /* each step stands taller than the last */
+  min-height: calc(110px + var(--n) * 46px);
+  padding: 18px;
+  border-radius: 16px 16px 4px 4px;
+  background: var(--ink);
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.15s;
+}
+.ladder li:nth-child(4) a {
+  background: #1b252d;
+}
+.ladder a:hover {
+  transform: translateY(-4px);
+}
+.ladder .st {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--amber);
+}
+.ladder b {
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1;
+}
+.ladder span:last-child {
+  font-size: 15px;
+  color: #c9d0d5;
+}
+
+/* ---------- appendix */
+#science {
+  background: var(--paper);
+}
+.models-t {
+  max-width: var(--measure);
+  margin: clamp(40px, 6vw, 72px) auto 0;
+}
+.models-t h3 {
+  font-size: clamp(24px, 2.6vw, 34px);
+  margin-bottom: 14px;
+}
+.scroll-x {
+  overflow-x: auto;
+}
+.models-t table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.models-t th {
+  text-align: left;
+  font-size: 13px;
+  color: var(--muted);
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--ink);
+  white-space: nowrap;
+}
+.models-t td {
+  padding: 9px 10px;
+  border-bottom: 1px solid #ddd8cc;
+  vertical-align: top;
+}
+.models-t .r {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.models-t .mute {
+  color: var(--muted);
+}
+.models-t .ok {
+  color: var(--green);
+  font-weight: 700;
+}
+.models-t .bad {
+  color: var(--red);
+  font-weight: 700;
+}
+.models-t .note {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 12px 0 0;
+}
+.deeper {
+  max-width: var(--measure);
+  margin: clamp(40px, 6vw, 72px) auto 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.deeper a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  padding: 18px;
+  border-radius: 14px;
+  border: 2px solid var(--ink);
+  text-decoration: none;
+}
+.deeper a:hover {
+  background: var(--ink);
+  color: #fff;
+}
+.deeper b {
+  font-size: 18px;
+}
+.deeper span {
+  font-size: 15px;
+  color: var(--muted);
+}
+.deeper a:hover span {
+  color: #c9d0d5;
 }
 
 /* ---------- a finding: headline, scene, proof */
@@ -275,7 +688,6 @@ button {
 }
 .scene.photo {
   border-radius: 16px;
-  aspect-ratio: 16 / 9;
   height: auto;
   background: #000;
 }
@@ -288,7 +700,7 @@ button {
   line-height: 1.55;
   color: #50555c;
 }
-#tram .f-proof,
+#real .f-proof,
 #press .f-proof {
   color: #aab3b9;
 }
@@ -462,7 +874,7 @@ button {
 .bad {
   color: var(--red);
 }
-#tram .good {
+#real .good {
   color: #3ed183;
 }
 
@@ -1266,6 +1678,15 @@ button {
 
 /* ---------- small screens */
 @media (max-width: 860px) {
+  .lineup2,
+  .method,
+  .deeper,
+  .rung-list {
+    grid-template-columns: 1fr;
+  }
+  .ladder {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .hero-inner,
   .flip-body,
   .ranks,
@@ -1321,6 +1742,29 @@ button {
   body {
     font-size: 17px;
   }
+  .models-t th:nth-child(2),
+  .models-t td:nth-child(2),
+  .models-t th:nth-child(3),
+  .models-t td:nth-child(3) {
+    display: none;
+  }
+  .dl-chart li {
+    grid-template-columns: 1fr;
+  }
+  .dl-chart .lb {
+    grid-row: auto;
+    font-size: 16px;
+  }
+  .ladder a {
+    min-height: calc(80px + var(--n) * 24px);
+    padding: 14px;
+  }
+  .rung-steps {
+    height: 32px;
+  }
+  .rung-steps i {
+    width: 22px;
+  }
   .pair,
   .four,
   .tally {
@@ -1338,7 +1782,7 @@ button {
     padding: 10px 14px;
   }
   .hero-frame .scene.photo {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 4 / 3 !important;
   }
   .hundred {
     grid-template-columns: repeat(10, 1fr);

@@ -129,8 +129,8 @@ async function scan(tag: Tag): Promise<T> {
     const canon = ok ? v.keyToCanonical?.[r.choice] : null;
     if (d.startsWith('control-') && ok)
       inc(t.control, `${m}|${d}`, ['pull', 'push', 'harvest', 'drop'].includes(canon));
-    if (['switch', 'footbridge', 'transplant'].includes(d) && ok)
-      inc(t.acted, `${m}|${d}|${pt.n}`, ['pull', 'push', 'harvest'].includes(canon));
+    if (['switch', 'loop', 'trapdoor', 'footbridge', 'transplant'].includes(d) && ok)
+      inc(t.acted, `${m}|${d}|${pt.n}`, ['pull', 'push', 'harvest', 'drop'].includes(canon));
     if ((d === 'transplant' || d === 'footbridge') && Number(pt.n) === 5 && !r.refused) {
       const p = r.probes?.probes?.acceptable;
       if (p && !p.refused) inc(t.acceptable, `${m}|${d}`, p.choice === 'true');
@@ -840,6 +840,39 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       [S.same, S.pos, S.track, S.mixed, S.n],
     );
     eq('chance.msLeft', F.chance.msLeft, R.r1.left.get('microsoft/microsoft-decision-1'));
+    // the study: who was tested
+    eq('models', F.models.map((m: any) => m.id).sort(), ids().sort());
+    eq(
+      'models: chat',
+      F.models
+        .filter((m: any) => m.kind === 'chat')
+        .map((m: any) => m.id)
+        .sort(),
+      [...CHAT].sort(),
+    );
+    // the ladder: AIs that acted in most of 8 versions at 5 lives, each run; chat models in their one run
+    for (const d of F.ladder) {
+      const acted = (t2: boolean) =>
+        all.filter((m) => {
+          const x = (CHAT.includes(m) ? R.s2 : t2 ? R.r2 : R.r1).acted.get(`${m}|${d.id}|5`);
+          return !!x && x[0] * 2 > x[1];
+        });
+      eq(`ladder ${d.id}`, [d.acted, d.acted2, d.of], [acted(false).length, acted(true).length, all.length]);
+      eq(`ladder ${d.id} chat`, [d.chat, d.chatOf], [acted(false).filter((m) => CHAT.includes(m)).length, CHAT.length]);
+      eq(`ladder ${d.id} people`, d.human, D5.human[d.id].value);
+    }
+    // the obvious rung: AIs that pulled the lever in most versions of a control, in any run
+    for (const o of F.obvious) {
+      const failed = all.filter((m) =>
+        runsOf(m).some((t) => {
+          const x = t.control.get(`${m}|${o.id}`);
+          return !!x && x[0] * 2 > x[1];
+        }),
+      );
+      eq(`obvious ${o.id}`, o.failed.map((x: any) => x.id).sort(), failed.sort());
+      for (const x of o.failed)
+        eq(`obvious ${o.id} ${x.id}`, [x.n, x.of], runsOf(x.id)[0]!.control.get(`${x.id}|${o.id}`));
+    }
     expect(errs).toEqual([]);
   });
 

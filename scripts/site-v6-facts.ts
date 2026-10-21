@@ -34,6 +34,8 @@ export interface RunFacts {
   topAll: Record<string, string>;
   /** model|image → [sent at the 3, answered, counted both tracks right], plain request, schedule at the 1. */
   countedThree: Record<string, [number, number, number]>;
+  /** model|question → [moved the lever, answered]: the two "nobody needs saving" controls and the classic switch at 5. */
+  obvious: Record<string, NO>;
 }
 
 const add = (o: Record<string, NO>, k: string, hit: boolean) => {
@@ -54,6 +56,7 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     top: {},
     topAll: {},
     countedThree: {},
+    obvious: {},
   };
   const sets = new Map<string, { spared: string; first: boolean; choice: string }[]>();
   const rl = createInterface({ input: createReadStream(RAW[tag]), crlfDelay: Infinity });
@@ -83,6 +86,8 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     const d = String(r.dilemma);
     const v = r.variant ?? {};
     const pt = v.point ?? {};
+    if (!r.refused && r.choice && (d.startsWith('control-') || (d === 'switch' && Number(pt.n) === 5)))
+      add(F.obvious, `${m}|${d}`, v.keyToCanonical?.[r.choice] === 'pull');
     if ((d === 'transplant' || d === 'footbridge') && Number(pt.n) === 5 && !r.refused) {
       const p = r.probes?.probes?.acceptable;
       if (p && !p.refused) add(F.acceptable, `${m}|${d}`, p.choice === 'true');

@@ -1255,6 +1255,27 @@ const F = {
   three: three.map((m) => ({ id: m, name: N(m), n: oneOverThree[m]![0], of: oneOverThree[m]![1] })).concat([{ id: 'rest', name: 'Every other decision AI', n: restPool[0], of: restPool[1] }]),
   nace: { v15, v20 },
   human: D.human,
+  // The study: who was tested, how fast and cheap they are (v5's per-model medians, recounted by site-v5-verify).
+  models: D.models.map((m: any) => ({
+    id: m.id, name: N(m.id), short: m.short, vendor: m.vendor, kind: m.kind, ms: m.latencyP50, per1k: m.costPer1k, base: m.base,
+    // pre-registered basic checks failed in any run
+    failed: Object.keys(m.gates).filter((g) => m.gatesByRun.some((r: any) => !r[g].pass)),
+  })),
+  studies: D.studies.map((s: any) => ({ id: s.id, answers: s.answers, costUsd: s.costUsd })),
+  // The ladder, rung by rung: how many AIs acted in most versions of each classic dilemma at 5 lives, both runs.
+  ladder: (['switch', 'loop', 'trapdoor', 'footbridge', 'transplant'] as const).map((d) => {
+    const ids = Object.keys(D.ladderCounts);
+    const acted = (i: number) => ids.filter((m) => { const r = D.ladderCounts[m][d]; const x = r[i] ?? r[0]; return x.n * 2 > x.of; }).length;
+    const chat = ids.filter((m) => isChatId(m));
+    const chatActed = chat.filter((m) => { const x = D.ladderCounts[m][d][0]; return x.n * 2 > x.of; }).length;
+    return { id: d, acted: acted(0), acted2: acted(1), of: ids.length, chat: chatActed, chatOf: chat.length, human: D.human[d].value };
+  }),
+  // The obvious rung: the two "nobody needs saving" checks, run 1 (both runs agree; see the checker).
+  obvious: (['control-kill-for-nothing', 'control-kill-five-save-one'] as const).map((d) => {
+    const ids = Object.keys(D.models.reduce((a: any, m: any) => ((a[m.id] = 1), a), {}));
+    const failed = ids.filter((m) => [FX.r1, FX.r2, FX.s2].some((t) => { const x = t.obvious[`${m}|${d}`]; return x && x[0] * 2 > x[1]; }));
+    return { id: d, failed: failed.map((m) => ({ id: m, name: N(m), n: (FX.r1.obvious[`${m}|${d}`] ?? FX.s2.obvious[`${m}|${d}`])![0], of: (FX.r1.obvious[`${m}|${d}`] ?? FX.s2.obvious[`${m}|${d}`])![1] })), of: ids.length };
+  }),
   wheel: { n: wc.n, of: wc.of },
   photos: {
     two: { ...PH.two, img: 'img/u-two-L.jpg', safe: TWO_EMPTY },
