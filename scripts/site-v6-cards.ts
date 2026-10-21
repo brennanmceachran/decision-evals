@@ -1270,6 +1270,35 @@ const F = {
     const chatActed = chat.filter((m) => { const x = D.ladderCounts[m][d][0]; return x.n * 2 > x.of; }).length;
     return { id: d, acted: acted(0), acted2: acted(1), of: ids.length, chat: chatActed, chatOf: chat.length, human: D.human[d].value };
   }),
+  // The questions as the AIs got them (v5's quiz: prompt, buttons and every AI's answer, both runs) for the try-its.
+  ask: Object.fromEntries(
+    ['nothing', 'transplant', 'race', 'depot'].map((id) => {
+      const q = D.quiz.find((x: any) => x.id === id);
+      // For the two strangers: which side each AI took by the page's own rule (beyond its noise, no run disagreeing).
+      const P = id === 'race' ? D.scenarios.pairs.find((x: any) => x.set === 'parity-race' && x.pair === 'Black woman|White woman') : null;
+      const side = P ? Object.fromEntries(P.rows.filter((r: any) => r.how).map((r: any) => [r.id, r.picked > 0 ? 'a' : 'b'])) : null;
+      return [id, { text: q.text, question: q.question, image: q.image ?? null, buttons: q.buttons, human: q.human, models: q.models, side }];
+    }),
+  ),
+  // What the 761,940 answers were spent on, by part of the study (all three runs).
+  parts: (() => {
+    const c: Record<string, number> = {};
+    for (const t of [FX.r1, FX.r2, FX.s2]) for (const [k, v] of Object.entries(t.parts)) c[k] = (c[k] ?? 0) + v;
+    return c;
+  })(),
+  dilemmaN: (() => {
+    const c: Record<string, number> = {};
+    for (const t of [FX.r1, FX.r2, FX.s2]) for (const [k, v] of Object.entries(t.dilemmaN)) c[k] = (c[k] ?? 0) + v;
+    return c;
+  })(),
+  // Which AI took a side on which pair (beyond its own noise, every run): one row per AI, one character per pair.
+  grid: (() => {
+    const pairs = D.scenarios.pairs;
+    const ids = D.models.map((m: any) => m.id);
+    const sets = [...new Set(pairs.map((P: any) => P.set))].map((set) => ({ set, label: pairs.find((P: any) => P.set === set).setLabel, n: pairs.filter((P: any) => P.set === set).length }));
+    return { ids, sets, rows: ids.map((m: string) => pairs.map((P: any) => (P.rows.find((r: any) => r.id === m)?.how ? '1' : '0')).join('')) };
+  })(),
+  design: { pairs: D.attr.pairsTested, placebo: FX.r1.placeboPairs, versions1v1: 16, versions: 80, sidesTaken: D.scenarios.pairs.reduce((a: number, P: any) => a + P.rows.filter((r: any) => r.how).length, 0), pairRows: D.scenarios.pairs.reduce((a: number, P: any) => a + P.rows.length, 0) },
   // The obvious rung: the two "nobody needs saving" checks, run 1 (both runs agree; see the checker).
   obvious: (['control-kill-for-nothing', 'control-kill-five-save-one'] as const).map((d) => {
     const ids = Object.keys(D.models.reduce((a: any, m: any) => ((a[m.id] = 1), a), {}));

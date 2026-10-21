@@ -261,7 +261,7 @@ button {
   padding-top: 0;
 }
 .rung-head {
-  margin: 0 calc(-1 * var(--pad)) clamp(56px, 8vw, 112px);
+  margin: 0 calc(-1 * var(--pad)) clamp(36px, 5vw, 64px);
   padding: clamp(56px, 8vw, 112px) var(--pad) clamp(44px, 6vw, 72px);
   background: var(--ink);
   color: #fff;
@@ -325,27 +325,29 @@ button {
 .rung-list {
   list-style: none;
   padding: 0;
-  margin-top: clamp(28px, 4vw, 44px);
-  margin-bottom: 0;
+  margin: clamp(24px, 3vw, 36px) 0 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0 clamp(20px, 3vw, 44px);
-  counter-reset: f;
 }
 .rung-list li {
-  border-top: 1px solid #343c43;
+  border-top: 1px solid #d9d3c6;
 }
 .rung-list a {
   display: block;
-  padding: 12px 0 14px;
-  color: #e6ebee;
+  padding: 11px 0 13px;
+  color: var(--ink);
   text-decoration: none;
   font-weight: 700;
   font-size: 16px;
   line-height: 1.35;
 }
+.rung-list a::after {
+  content: ' ↓';
+  color: var(--red);
+}
 .rung-list a:hover {
-  color: var(--amber);
+  color: var(--red);
 }
 #twist .ch-head .kicker {
   color: var(--red);
@@ -359,7 +361,7 @@ button {
   margin: 0 0 12px;
   font-size: 15px;
   font-weight: 700;
-  color: #c9d0d5;
+  color: #3a3f46;
 }
 .dl-key i {
   display: inline-block;
@@ -393,7 +395,7 @@ button {
   row-gap: 4px;
   align-items: center;
   padding: 10px 0;
-  border-top: 1px solid #343c43;
+  border-top: 1px solid #d9d3c6;
 }
 .dl-chart .lb {
   grid-row: span 2;
@@ -411,7 +413,7 @@ button {
   grid-area: 1 / 1;
   height: 14px;
   border-radius: 4px;
-  background: #2a333a;
+  background: #e4dfd3;
 }
 .dl-chart .b i {
   grid-area: 1 / 1;
@@ -420,7 +422,8 @@ button {
   width: 0;
   transition: width 1s cubic-bezier(0.5, 0, 0.3, 1) 0.2s;
 }
-.dl-chart.played .b i {
+.dl-chart.played .b i,
+.played .dl-chart .b i {
   width: calc(var(--w) * 1%);
 }
 .dl-chart .b b {
@@ -428,15 +431,15 @@ button {
   font-size: 18px;
 }
 .dl-chart .b.ai b {
-  color: #ff6b5e;
+  color: var(--red);
 }
 .dl-chart .b.hu b {
-  color: #aab3b9;
+  color: var(--muted);
 }
 .dl-note {
   margin: 12px 0 0;
   font-size: 14px;
-  color: #8f989e;
+  color: var(--muted);
 }
 
 /* ---------- the study: who we tested, how, and the ladder */
@@ -2037,4 +2040,561 @@ button {
 }
 .q-end a {
   color: var(--amber);
+}
+
+/* ================================================================== the intro: two characters */
+.cast {
+  max-width: var(--measure);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(14px, 2vw, 24px);
+}
+.who-card {
+  padding: clamp(20px, 2.6vw, 32px);
+  border-radius: 22px;
+  background: var(--sand);
+}
+.who-card.new {
+  background: var(--ink);
+  color: #fff;
+}
+.who-n {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.who-card.new .who-n {
+  color: var(--amber);
+}
+.who-card h3 {
+  font-size: clamp(30px, 3.4vw, 46px);
+  margin-bottom: 12px;
+}
+.who-card > p {
+  margin: 0 0 14px;
+  font-size: 17px;
+  color: #3a3f46;
+}
+.who-card.new > p {
+  color: #c9d0d5;
+}
+.classics {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.classics li {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 14px;
+  align-items: center;
+  padding: 6px 0;
+  border-top: 1px solid #d9d3c6;
+}
+.classics .scene {
+  grid-row: span 2;
+  width: 112px;
+}
+.classics b {
+  align-self: end;
+  font-size: 17px;
+}
+.classics span {
+  align-self: start;
+  font-size: 15px;
+  color: #3a3f46;
+}
+.adopt {
+  margin: 18px 0 0;
+}
+.req rect {
+  fill: #39424a;
+  transform-box: fill-box;
+  transform-origin: bottom;
+  transform: scaleY(0.04);
+  transition: transform 0.6s cubic-bezier(0.3, 1.2, 0.5, 1);
+  transition-delay: calc(var(--i) * 30ms);
+}
+.req rect.last {
+  fill: var(--amber);
+}
+.played .req rect,
+.adopt.played .req rect {
+  transform: none;
+}
+.req .ax {
+  font: 700 13px var(--font);
+  fill: #8f989e;
+}
+.adopt figcaption {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #c9d0d5;
+}
+.adopt figcaption b {
+  display: block;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.1;
+  color: var(--amber);
+}
+.cast-q {
+  max-width: var(--measure);
+  margin: clamp(36px, 5vw, 56px) auto clamp(24px, 3vw, 36px);
+  font-size: clamp(24px, 2.8vw, 38px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+.srcs {
+  max-width: var(--measure);
+  margin: 26px auto 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.split {
+  max-width: var(--measure);
+  margin: clamp(40px, 6vw, 72px) auto 0;
+}
+.split h3 {
+  font-size: clamp(24px, 2.6vw, 34px);
+  margin-bottom: 14px;
+}
+.split-bar {
+  display: flex;
+  height: 44px;
+  border-radius: 10px;
+  overflow: hidden;
+  gap: 3px;
+}
+.split-bar span {
+  flex: 0 0 calc(var(--w) * 1%);
+  min-width: 6px;
+}
+.k-imp,
+.split-key .k-imp i {
+  background: var(--ink);
+}
+.k-real,
+.split-key .k-real i {
+  background: var(--red);
+}
+.k-hard,
+.split-key .k-hard i {
+  background: var(--amber);
+}
+.split-key {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 24px;
+  font-size: 15px;
+}
+.split-key li {
+  background: none !important;
+}
+.split-key i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 6px;
+}
+.split-key span {
+  display: block;
+  color: var(--muted);
+}
+.split-why {
+  max-width: 70ch;
+  margin: 22px 0 0;
+  font-size: 18px;
+  color: #3a3f46;
+}
+.split-why b {
+  color: var(--ink);
+}
+
+/* ================================================================== a step: questions, try it, what we asked, what we found */
+.rung-body {
+  max-width: var(--measure);
+  margin: 0 auto clamp(64px, 9vw, 120px);
+}
+.qs {
+  list-style: none;
+  margin: 0 0 clamp(28px, 4vw, 44px);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.qs.five {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.qs li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--sand);
+}
+#real .qs li {
+  background: var(--night2);
+}
+.qs .scene {
+  width: 100%;
+  max-width: 200px;
+  margin-bottom: 6px;
+}
+.qs b {
+  font-size: 18px;
+  line-height: 1.2;
+}
+.qs b.big {
+  font-size: clamp(36px, 4vw, 52px);
+  line-height: 1;
+  color: var(--red);
+}
+.qs span {
+  font-size: 15px;
+  color: #3a3f46;
+}
+/* try it: the question on the left, you and then the AIs on the right */
+.try {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(14px, 2vw, 24px);
+  align-items: start;
+}
+.try-q {
+  padding: clamp(16px, 2vw, 24px);
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  background: #fff;
+  color: var(--ink);
+}
+.try-tag {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.try-q > .scene {
+  max-width: 220px;
+  margin-bottom: 10px;
+}
+.try-q .scene.photo {
+  max-width: none;
+  border-radius: 10px;
+}
+.try-text {
+  margin: 0;
+  white-space: pre-wrap;
+  font:
+    500 15px/1.55 Menlo,
+    'SF Mono',
+    Consolas,
+    monospace;
+  color: #23272e;
+}
+.try-ask {
+  margin: 10px 0 0;
+  font:
+    700 15px/1.5 Menlo,
+    'SF Mono',
+    Consolas,
+    monospace;
+}
+.try-a {
+  min-height: 100%;
+  padding: clamp(16px, 2vw, 24px);
+  border: 2px dashed #c9c2b4;
+  border-radius: 16px;
+}
+.try.dark .try-a {
+  border-color: #39424a;
+}
+.try-pick {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+.try-h {
+  margin: 0;
+  font-size: clamp(26px, 2.8vw, 36px);
+  font-weight: 800;
+}
+.try-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.try-btns button {
+  min-height: 50px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 3px solid currentColor;
+  background: transparent;
+  font-weight: 800;
+  font-size: 17px;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    background 0.15s,
+    color 0.15s;
+}
+.try-btns button:hover {
+  transform: translateY(-2px);
+  background: var(--ink);
+  color: #fff;
+}
+.try.dark .try-btns button:hover {
+  background: #fff;
+  color: var(--ink);
+}
+.try-btns .third {
+  border-style: dashed;
+}
+.try-note {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.try-skip {
+  margin-top: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.try-you {
+  margin: 0 0 14px;
+  font-size: 19px;
+  font-weight: 700;
+}
+.try-you:empty {
+  display: none;
+}
+.try-side {
+  padding: 12px 0;
+  border-top: 1px solid #d9d3c6;
+}
+.try.dark .try-side {
+  border-color: #39424a;
+}
+.try-side p {
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+.try-side b {
+  font-size: 30px;
+  margin-right: 4px;
+}
+.try-side.bad b {
+  color: var(--red);
+}
+.try-side.x b {
+  color: var(--muted);
+}
+.bots-in {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 2px;
+}
+.bots-in .r {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 54px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.25s,
+    transform 0.35s cubic-bezier(0.3, 1.5, 0.5, 1);
+  transition-delay: calc(var(--i) * 50ms);
+}
+.played .bots-in .r {
+  opacity: 1;
+  transform: none;
+}
+.bots-in .scene {
+  width: 34px;
+}
+.bots-in small,
+.cb small {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  color: var(--muted);
+}
+.try-x,
+.try-after {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.asked {
+  max-width: 76ch;
+  margin: clamp(22px, 3vw, 32px) 0 0;
+  padding-left: 14px;
+  border-left: 4px solid var(--amber);
+  font-size: 16px;
+  color: #3a3f46;
+}
+#real .asked {
+  color: #c9d0d5;
+}
+.asked b {
+  color: inherit;
+}
+.verdict {
+  margin-top: clamp(40px, 6vw, 72px);
+  padding: clamp(22px, 3vw, 40px);
+  border-radius: 22px;
+  background: var(--sand);
+  color: var(--ink);
+}
+.v-tag {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--red);
+}
+.verdict h3 {
+  font-size: clamp(28px, 3.4vw, 46px);
+  max-width: 24ch;
+  margin-bottom: clamp(18px, 2.4vw, 28px);
+}
+.ov-line {
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+/* the cast: 22 robots, lit by what each did */
+.cast-bots {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  gap: 10px 6px;
+}
+.cb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 2px 6px;
+  border-radius: 12px;
+  background: #fff;
+  opacity: 0.35;
+  transition:
+    opacity 0.3s,
+    background 0.3s;
+  transition-delay: calc(0.3s + var(--i) * 40ms);
+}
+.cb .scene {
+  width: 36px;
+}
+.played .cb {
+  opacity: 1;
+}
+.played .cb.bad {
+  background: #fbe1de;
+  box-shadow: inset 0 0 0 3px var(--red);
+}
+.played .cb.warn {
+  background: #fdf0c8;
+}
+.played .cb.ok {
+  background: #dff1e6;
+}
+.played .cb.off {
+  opacity: 0.3;
+}
+.cast-key {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.cast-key i {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  margin-right: 6px;
+  vertical-align: -2px;
+}
+.cast-key .bad i {
+  background: #fbe1de;
+  box-shadow: inset 0 0 0 2px var(--red);
+}
+.cast-key .warn i {
+  background: #fdf0c8;
+}
+.cast-key .ok i {
+  background: #dff1e6;
+}
+.cast-key .off i {
+  background: #fff;
+  opacity: 0.5;
+}
+.cast-note {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+/* the grid: every AI against every pair */
+.grid-wrap {
+  overflow-x: auto;
+}
+.pgrid {
+  display: block;
+  width: 100%;
+  min-width: 720px;
+  height: auto;
+}
+.pgrid rect {
+  fill: #ddd6c8;
+}
+.pgrid rect.on {
+  fill: var(--red);
+}
+.pgrid .gl {
+  font: 700 9px var(--font);
+  fill: var(--muted);
+}
+.grid-cap {
+  margin: 12px 0 0;
+  font-size: 16px;
+}
+.grid-cap b {
+  font-size: 26px;
+  color: var(--red);
+}
+@media (max-width: 860px) {
+  .cast,
+  .try,
+  .qs,
+  .split-key {
+    grid-template-columns: 1fr;
+  }
+  .qs.five {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .cast-bots {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
 }

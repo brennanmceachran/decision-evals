@@ -37,6 +37,10 @@ interface T {
   control: Map<string, NO>; // model|control → acted, answered
   pictures: Map<string, NO>; // model|condition → chose fewer deaths, answered (top choices, a ≠ b)
   perception: Map<string, NO>; // model → right, asked (image condition probes)
+  parts: Record<string, number>; // answers by part of the study
+  dilemmaN: Record<string, number>; // answers per classic dilemma or control
+  placeboPairs: Set<string>;
+  pairs: Set<string>; // identity pairs of people (placebo excluded)
 }
 const newT = (): T => ({
   answers: 0,
@@ -57,6 +61,10 @@ const newT = (): T => ({
   control: new Map(),
   pictures: new Map(),
   perception: new Map(),
+  parts: {},
+  dilemmaN: {},
+  placeboPairs: new Set(),
+  pairs: new Set(),
 });
 const inc = (m: Map<string, NO>, k: string, hit: boolean) => {
   const e = m.get(k) ?? ([0, 0] as NO);
@@ -75,6 +83,23 @@ async function scan(tag: Tag): Promise<T> {
     t.models.add(r.model);
     const m = r.model as string;
     const ok = !r.refused && !!r.choice;
+    {
+      const dd = String(r.dilemma ?? '');
+      const part =
+        r.part === 'text'
+          ? dd === 'parity-placebo'
+            ? 'placebo'
+            : dd.startsWith('parity-')
+              ? 'identity'
+              : 'dilemmas'
+          : r.part === 'image'
+            ? 'pictures'
+            : String(r.part);
+      t.parts[part] = (t.parts[part] ?? 0) + 1;
+      if (part === 'dilemmas') t.dilemmaN[dd] = (t.dilemmaN[dd] ?? 0) + 1;
+      if (part === 'placebo') t.placeboPairs.add(`${r.variant?.point?.a}|${r.variant?.point?.b}`);
+      if (part === 'identity') t.pairs.add(`${dd}|${r.variant?.point?.a}|${r.variant?.point?.b}`);
+    }
     if (r.part === 'dashcam') {
       const img = String(r.image).split('/').pop()!;
       if (r.framing === 'ops') {
@@ -861,6 +886,37 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       eq(`ladder ${d.id} chat`, [d.chat, d.chatOf], [acted(false).filter((m) => CHAT.includes(m)).length, CHAT.length]);
       eq(`ladder ${d.id} people`, d.human, D5.human[d.id].value);
     }
+    // the study, broken down: every answer counted once, by part
+    const parts: Record<string, number> = {};
+    const dn: Record<string, number> = {};
+    for (const tag of ['r1', 'r2', 's2'] as const) {
+      for (const [k, v] of Object.entries(R[tag].parts)) parts[k] = (parts[k] ?? 0) + v;
+      for (const [k, v] of Object.entries(R[tag].dilemmaN)) dn[k] = (dn[k] ?? 0) + v;
+    }
+    eq('parts', F.parts, parts);
+    eq(
+      'parts: sum',
+      Object.values(F.parts).reduce((a: number, b: any) => a + b, 0),
+      R.r1.answers + R.r2.answers + R.s2.answers,
+    );
+    eq('dilemmaN', F.dilemmaN, dn);
+    eq('design.placebo', F.design.placebo, R.r1.placeboPairs.size);
+    eq('design.pairs', F.design.pairs, R.r1.pairs.size);
+    // the grid and the two strangers come from v5's per-pair rows (recounted by site-v5-verify); check they agree
+    eq(
+      'grid: sides taken',
+      F.grid.rows
+        .join('')
+        .split('')
+        .filter((c: string) => c === '1').length,
+      F.design.sidesTaken,
+    );
+    const bw = D5.scenarios.pairs.find((p: any) => p.set === 'parity-race' && p.pair === 'Black woman|White woman');
+    eq(
+      'ask.race.side',
+      F.ask.race.side,
+      Object.fromEntries(bw.rows.filter((r: any) => r.how).map((r: any) => [r.id, r.picked > 0 ? 'a' : 'b'])),
+    );
     // the obvious rung: AIs that pulled the lever in most versions of a control, in any run
     for (const o of F.obvious) {
       const failed = all.filter((m) =>

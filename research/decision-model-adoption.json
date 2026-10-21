@@ -1,0 +1,82 @@
+{
+  "read": "2026-10-21",
+  "note": "Copied by hand from the pages named. OpenRouter counts only requests routed through OpenRouter: a floor on use, not a total. See research/decision-model-adoption.md.",
+  "daily": {
+    "source": "https://openrouter.ai/rankings/decisions",
+    "label": "Daily decision requests on OpenRouter (chart tooltips, total; Sep 21-24 show one model, Jev 1.13)",
+    "asOf": "2026-10-20",
+    "millions": [
+      ["2026-09-21", 82.4],
+      ["2026-09-22", 83.6],
+      ["2026-09-23", 126],
+      ["2026-09-24", 141],
+      ["2026-09-25", 132],
+      ["2026-09-26", 128],
+      ["2026-09-27", 121],
+      ["2026-09-28", 132],
+      ["2026-09-29", 139],
+      ["2026-09-30", 161],
+      ["2026-10-01", 154],
+      ["2026-10-02", 147],
+      ["2026-10-03", 123],
+      ["2026-10-04", 114],
+      ["2026-10-05", 149],
+      ["2026-10-06", 160],
+      ["2026-10-07", 165],
+      ["2026-10-08", 165],
+      ["2026-10-09", 167],
+      ["2026-10-10", 171],
+      ["2026-10-11", 158],
+      ["2026-10-12", 191],
+      ["2026-10-13", 187],
+      ["2026-10-14", 221],
+      ["2026-10-15", 213],
+      ["2026-10-16", 226],
+      ["2026-10-17", 192],
+      ["2026-10-18", 171],
+      ["2026-10-19", 227],
+      ["2026-10-20", 257]
+    ]
+  },
+  "share": {
+    "source": "https://openrouter.ai/rankings/decisions",
+    "label": "Share of decision requests on OpenRouter by model author, week beginning Oct 12, 2026; change in requests against the week before",
+    "authors": [
+      ["TypeSafe", 80.0, 7],
+      ["Perplexity", 4.8, 332],
+      ["Nace.AI", 4.4, 668],
+      ["Cloudflare", 2.8, 133],
+      ["Inception", 2.1, 150],
+      ["OpenAI", 1.8, 54],
+      ["Liquid", 1.5, 454],
+      ["Microsoft", 1.1, 110],
+      ["Jared Palmer", 0.9, null],
+      ["All other authors", 0.6, 77]
+    ]
+  },
+  "classification": {
+    "source": "https://openrouter.ai/rankings",
+    "label": "Classification, share of all spend on OpenRouter (Top models by task)",
+    "share": 11.6
+  },
+  "launches": [
+    { "date": "2026-09-15", "what": "TypeSafe Jev", "source": "https://dealroom.co/news/157162-what-is-jev-typesafe-ais-decision-model-for-software/" },
+    { "date": "2026-09-29", "what": "OpenAI Decisions API", "source": "https://vercel.com/i/what-are-decision-models" },
+    { "date": "2026-10-01", "what": "Cloudflare Clef, Perplexity Decider", "source": "https://kai-waehner.de/blog/2026/10/20/how-decision-models-became-a-new-ai-category-after-jev" },
+    { "date": "2026-10-09", "what": "Microsoft Decision-1", "source": "https://vercel.com/changelog/microsoft-decision-1-now-available-on-ai-gateway" },
+    { "date": "2026-10-14", "what": "Jev 1.14", "source": "https://kai-waehner.de/blog/2026/10/20/how-decision-models-became-a-new-ai-category-after-jev" }
+  ],
+  "frozen": "2026-10-17",
+  "jevons": {
+    "source": "https://madewithjev.com/what-is-jev",
+    "text": "Named after William Stanley Jevons, who argued in 1865 that more efficient steam engines would make Britain burn more coal, not less."
+  },
+  "risk": {
+    "source": "https://www.sophos.com/en-us/blog/jevs-paradox-hidden-cost-of-cheap-ai-decisions",
+    "text": "Sophos, \"Jev's Paradox\": when decisions get cheap enough to automate everywhere, any error rate above today's adds up to more mistakes."
+  },
+  "uses": {
+    "source": "https://vercel.com/i/what-are-decision-models",
+    "list": ["routing a form to sales or support", "ranking incidents by urgency", "checking an agent's work", "filtering notifications"]
+  }
+}

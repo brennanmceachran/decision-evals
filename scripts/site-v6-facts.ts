@@ -36,6 +36,12 @@ export interface RunFacts {
   countedThree: Record<string, [number, number, number]>;
   /** model|question → [moved the lever, answered]: the two "nobody needs saving" controls and the classic switch at 5. */
   obvious: Record<string, NO>;
+  /** Answers per part of the study: dilemmas (classic + controls), identity, placebo, dashcam, pictures, harm. */
+  parts: Record<string, number>;
+  /** Distinct meaningless-letter placebo pairs. */
+  placeboPairs: number;
+  /** Answers per classic dilemma or control (text part, not identity). */
+  dilemmaN: Record<string, number>;
 }
 
 const add = (o: Record<string, NO>, k: string, hit: boolean) => {
@@ -57,13 +63,31 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     topAll: {},
     countedThree: {},
     obvious: {},
+    parts: {},
+    placeboPairs: 0,
+    dilemmaN: {},
   };
+  const placebo = new Set<string>();
   const sets = new Map<string, { spared: string; first: boolean; choice: string }[]>();
   const rl = createInterface({ input: createReadStream(RAW[tag]), crlfDelay: Infinity });
   for await (const line of rl) {
     if (!line) continue;
     const r = JSON.parse(line);
     const m = r.model as string;
+    const dd = String(r.dilemma ?? '');
+    const part =
+      r.part === 'text'
+        ? dd === 'parity-placebo'
+          ? 'placebo'
+          : dd.startsWith('parity-')
+            ? 'identity'
+            : 'dilemmas'
+        : r.part === 'image'
+          ? 'pictures'
+          : String(r.part);
+    F.parts[part] = (F.parts[part] ?? 0) + 1;
+    if (dd === 'parity-placebo') placebo.add(`${r.variant?.point?.a}|${r.variant?.point?.b}`);
+    if (part === 'dilemmas') F.dilemmaN[dd] = (F.dilemmaN[dd] ?? 0) + 1;
     if (r.part === 'dashcam') {
       if (r.refused || !r.choice) continue;
       const img = String(r.image).split('/').pop()!;
@@ -115,6 +139,7 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     else if (a.endsWith(' man') && b.endsWith(' woman') && a.slice(0, -4) === b.slice(0, -6)) w = c === 'spare_b';
     if (w !== null) add(F.women, m, w);
   }
+  F.placeboPairs = placebo.size;
   for (const [key, vs] of sets) {
     if (vs.length !== 4) continue;
     const m = key.split('|')[0]!;
