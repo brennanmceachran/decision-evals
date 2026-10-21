@@ -56,15 +56,22 @@
     const botD = `M${j0} ${jy} C${(j0 + j1) / 2} ${jy} ${(j0 + j1) / 2} ${by} ${j1} ${by} H${W + 20}`;
     const hotD = o.hit === 'top' ? topD : botD;
     let s = K.track(topD, { bg }) + K.track(botD, { bg });
+    // where the trolley is heading if nobody acts (the question, before any answer)
+    if (o.route)
+      s += `<path d="${o.route === 'top' ? topD : botD}" fill="none" stroke="${AMBER}" stroke-width="9" stroke-dasharray="2 18" stroke-linecap="round" class="heading"/>`;
     // the chosen track: drawn red, revealed by stroke-dashoffset when the scene plays
-    s += `<g class="hot">${K.track(hotD, { hot: true, bg })
-      .replace(/stroke-dasharray="9 13"/g, '')
-      .replace(/<path /g, '<path pathLength="1" ')}</g>`;
+    if (o.hit)
+      s += `<g class="hot">${K.track(hotD, { hot: true, bg })
+        .replace(/stroke-dasharray="9 13"/g, '')
+        .replace(/<path /g, '<path pathLength="1" ')}</g>`;
     s += `<g class="tram">${C ? K.trolley(j0 - 6, jy - 2, 200) : K.trolley(250, jy - 2, 260)}</g>`;
     const rx = C ? 78 : 105;
     const rh = Math.min(C ? 120 : 140, (by - jy) * 0.95);
-    s += `<g class="ai">${K.robot(rx, by - 30, rh, 'lever')}</g>`;
-    s += `<g class="ai-pulled">${K.robot(rx, by - 30, rh, o.hit === 'top' ? 'up' : 'down')}</g>`;
+    // the lever, held by the AI (or standing alone when the scene is just the dilemma)
+    s += o.noAi
+      ? `<g class="lever">${K.robot(rx, by - 30, rh, 'lever').replace(/<path d="M-16 -46[\s\S]*$/, '</g>')}</g>`
+      : `<g class="ai">${K.robot(rx, by - 30, rh, 'lever')}</g>`;
+    if (o.hit) s += `<g class="ai-pulled">${K.robot(rx, by - 30, rh, o.hit === 'top' ? 'up' : 'down')}</g>`;
     const crowd = (side, yy, dead) => {
       let c = '';
       const gap = o.gap ?? (C ? 84 : 100);
@@ -163,6 +170,7 @@
     const r = RUNGS[id];
     s.className = `chapter${r ? ' rung' : ''}`;
     s.id = id;
+    if (r) s.style.setProperty('--step', `var(--c${r.n})`);
     if (r) {
       s.innerHTML = `<header class="rung-head"><div class="rung-in">
           <div class="rung-steps" aria-hidden="true">${Object.values(RUNGS)
@@ -321,7 +329,6 @@
   const makers = [...new Set(decM.map((m) => m.vendor))].sort(
     (a, b) => (known.indexOf(a) + 1 || 99) - (known.indexOf(b) + 1 || 99),
   );
-  const org = F.ladder.find((x) => x.id === 'transplant');
   const fast = decM.filter((m) => m.ms < 500).length;
   const bot = (chat) =>
     svg(
@@ -332,6 +339,7 @@
           ? `<rect x="36" y="2" width="24" height="16" rx="5" fill="#fff" stroke="${INK}" stroke-width="3"/><path d="M42 18 l-2 6 l7 -6z" fill="#fff" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/>`
           : ''),
     );
+  /** The AIs, robots grouped by maker. */
   const group = (ms, chat) =>
     [...new Set(ms.map((m) => m.vendor))]
       .map(
@@ -402,82 +410,180 @@
     ['footbridge', 'The footbridge', 'Push a man off a bridge to stop it.'],
     ['transplant', 'The surgeon', 'Take a healthy patient’s organs to save five.'],
   ];
-  const P_ = F.parts;
-  const parts = [
+  // ---- the chart: decision requests per day on OpenRouter, from Jev's launch. Sep 15-20 from Jev's own model page
+  // (archived; it was the only decision model there), Sep 21 on from OpenRouter's decision rankings.
+  const series = [
+    ...A.early.requests.filter(([d]) => d < A.daily.millions[0][0]).map(([d, n]) => [d, n / 1e6]),
+    ...A.daily.millions,
+  ];
+  const reqChart = (() => {
+    // phones get their own proportions so the labels stay legible
+    const W = NARROW ? 520 : 1000;
+    const H = NARROW ? 470 : 430;
+    const m = NARROW ? { l: 50, r: 10, t: 128, b: 36 } : { l: 58, r: 16, t: 96, b: 40 };
+    const iw = W - m.l - m.r;
+    const ih = H - m.t - m.b;
+    const top = 300;
+    const n = series.length;
+    const step = iw / n;
+    const gapW = NARROW ? 3 : 5;
+    const bw = step - gapW;
+    const X = (i) => m.l + i * step + gapW / 2;
+    const Y = (v) => m.t + ih - (v / top) * ih;
+    const iOf = (d) => series.findIndex((x) => x[0] === d);
+    let g = '';
+    for (const v of [100, 200, 300])
+      g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" class="grid"/><text x="${m.l - 10}" y="${Y(v) + 5}" class="ylab" text-anchor="end">${v}M</text>`;
+    g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(0)}" y2="${Y(0)}" class="base"/>`;
+    series.forEach(([d, v], i) => {
+      const h = Math.max(v ? 2 : 0, Y(0) - Y(v));
+      const last = i === n - 1;
+      g += `<g class="d" data-d="${d}" data-v="${v}"><rect class="hit" x="${X(i) - 2.5}" y="${m.t}" width="${step}" height="${ih}"/><rect class="bar${last ? ' last' : ''}" x="${X(i)}" y="${Y(0) - h}" width="${bw}" height="${h}" rx="3" style="--i:${i}"/></g>`;
+    });
+    // launches: a marker line from the label down to the bars, in two rows so neighbours never collide
+    const marks = NARROW
+      ? [
+          [A.launches[0].date, 'Jev', 0, 'start'],
+          [A.launches[1].date, 'OpenAI', 1, 'middle'],
+          [A.launches[2].date, 'Cloudflare, Perplexity', 2, 'middle'],
+          [A.launches[3].date, 'Microsoft', 0, 'middle'],
+          [A.launches[4].date, 'Jev 1.14', 1, 'end'],
+        ]
+      : [
+          [A.launches[0].date, 'Jev launches', 0, 'start'],
+          [A.launches[1].date, 'OpenAI', 0, 'middle'],
+          [A.launches[2].date, 'Cloudflare, Perplexity', 1, 'middle'],
+          [A.launches[3].date, 'Microsoft', 0, 'middle'],
+          [A.launches[4].date, 'Jev 1.14', 1, 'middle'],
+        ];
+    for (const [d, label, row, anchor] of marks) {
+      const i = iOf(d);
+      if (i < 0) continue;
+      const x = X(i) + bw / 2;
+      const ly = 22 + row * (NARROW ? 38 : 34);
+      g += `<g class="mk" style="--i:${i}"><line x1="${x}" x2="${x}" y1="${ly + 8}" y2="${Y(series[i][1]) - 6}"/><circle cx="${x}" cy="${ly + 8}" r="3.5"/><text x="${anchor === 'start' ? x - 4 : anchor === 'end' ? x + 4 : x}" y="${ly}" text-anchor="${anchor}">${label}<tspan class="md"> ${mdy(d)}</tspan></text></g>`;
+    }
+    // the two ends of the story, labelled on the chart itself
+    const li = n - 1;
+    g += `<text x="${X(0)}" y="${Y(0) - 12}" class="end">0</text>`;
+    g += `<text x="${X(li) + bw}" y="${Y(series[li][1]) - 12}" class="end big" text-anchor="end">${Math.round(series[li][1])}M</text>`;
+    g += `<text x="${X(0)}" y="${H - 12}" class="xlab">${mdy(series[0][0])}</text><text x="${X(li) + bw}" y="${H - 12}" class="xlab" text-anchor="end">${mdy(series[li][0])}</text>`;
+    return `<figure class="reqchart${NARROW ? ' narrow' : ''}"><figcaption class="fig-t">Decision requests per day on OpenRouter</figcaption><div class="rc-wrap"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Decision requests per day on OpenRouter: zero on ${mdy(series[0][0])}, ${Math.round(series[li][1])} million on ${mdy(series[li][0])}.">${g}</svg><div class="rc-tip" hidden></div></div>
+      <figcaption class="fig-c"><b>From nothing to ${Math.round(series[li][1])} million a day in five weeks.</b> OpenRouter carries only part of all use. Sources: <a href="${A.early.source}">Jev’s OpenRouter page</a> (archived, ${mdy(series[0][0])}–${mdy(A.daily.millions[0][0])}), <a href="${A.daily.source}">OpenRouter decision rankings</a>; launches: <a href="${A.launches[0].source}">Jev</a>, <a href="${A.launches[1].source}">OpenAI</a>, <a href="${A.launches[2].source}">Cloudflare, Perplexity</a>, <a href="${A.launches[3].source}">Microsoft</a>, <a href="${A.launches[4].source}">Jev 1.14</a>.</figcaption></figure>`;
+  })();
+  // ---- the two characters
+  const lever = fork({
+    compact: true,
+    ph: 118,
+    gap: 58,
+    x0: 440,
+    top: { label: '1 person', kind: 'adult', n: 1, o: { shirt: SLATE } },
+    bottom: { label: '5 people', kind: 'adult', n: 5, o: { shirt: SLATE } },
+    hit: null,
+    route: 'bottom',
+    noAi: true,
+  });
+  const others = makers.length - 5;
+  const sw0 = F.ladder.find((x) => x.id === 'switch');
+  // ---- the situations: four kinds, easiest first, each with its share of all the answers
+  const ST = F.steps;
+  const sh = (k) => (100 * ST[k]) / F.totals.answers;
+  const sits = [
     {
-      id: 'imp',
-      name: 'Impossible',
-      n: P_.identity + P_.placebo,
-      what: `two strangers, ${F.design.pairs} pairs of people plus ${F.design.placebo} made-up control pairs`,
+      id: 'obvious',
+      text: 'Questions with one right answer. The lever, with one to a thousand people on the track. Nobody on the track at all, so pulling the lever kills someone for nothing. Killing five to save one. And the same choices drawn as pictures, with no words.',
     },
-    { id: 'real', name: 'Real', n: P_.dashcam, what: '24 dashcam frames, four kinds of depot log' },
     {
       id: 'hard',
-      name: 'Obvious and hard',
-      n: P_.dilemmas + P_.pictures + P_.harm,
-      what: 'the classic dilemmas at 1 to 1,000 lives, the checks, the pictures',
+      text: 'The same trade, one life for five, made more personal each time: a loop, a trapdoor, pushing a man off a bridge, a surgeon taking a healthy patient’s organs. Here we can compare the AIs with what people say.',
+    },
+    {
+      id: 'impossible',
+      text: 'Two strangers, one on each track, alike except for one thing: race, nationality, religion, wealth, age, a disability. There is no right answer.',
+      hook: `<p class="hook"><b>Why ${fmt(ST.impossible)}?</b> Because a hidden bias hides behind everything else. Put an American on the left track and a Nigerian on the right, and Microsoft’s AI sends the tram left: the American dies. Swap them, and it sends the tram left again: now the Nigerian dies. It never picked a person. It steered left, ${P(F.chance.msLeft[0], F.chance.msLeft[1])} of the time.</p><p class="hook">So we asked every pair ${F.design.versions} ways: each person on each track, the buttons in both orders, four wordings, one against one, two or three. ${F.design.placebo} pairs of made-up groups (“Group-B” against “Group-F”) measured how far each AI leans when there is nothing to lean on. And the decision models ran it all twice. Whatever survives that is real.</p>`,
+    },
+    {
+      id: 'real',
+      text: 'The same choice, as a job. A tram depot’s log and a frame from the cab camera: workers on the scheduled track, nobody on the other. Nothing said “people”.',
     },
   ];
-  const study = chapter('study', {
-    kicker: 'The study',
-    title: 'An old test. A new kind of AI.',
-    dek: '',
-  });
-  // Daily requests, drawn as bars: the second character arriving.
-  const bars = (() => {
-    const W = 560;
-    const H = 150;
-    const max = Math.max(...day.map((d) => d[1]));
-    const bw = W / day.length;
-    return `<svg class="scene req" viewBox="0 0 ${W} ${H + 24}" role="img" aria-label="Daily decision requests on OpenRouter, ${mdy(first[0])} to ${mdy(peak[0])}: from ${Math.round(first[1])} million to ${Math.round(peak[1])} million">${day
-      .map(
-        ([d, v], i) =>
-          `<rect class="${i === day.length - 1 ? 'last' : ''}" x="${i * bw + 1}" y="${H - (v / max) * H}" width="${bw - 2}" height="${(v / max) * H}" rx="2" style="--i:${i}"/>`,
-      )
-      .join(
-        '',
-      )}<text x="0" y="${H + 20}" class="ax">${mdy(first[0])}</text><text x="${W}" y="${H + 20}" class="ax" text-anchor="end">${mdy(peak[0])}</text></svg>`;
-  })();
-  study.insertAdjacentHTML(
-    'beforeend',
-    `<div class="cast">
-      <div class="who-card">
-        <p class="who-n">You know this one</p>
-        <h3>The trolley problem</h3>
-        <p>For fifty years philosophers have used it to ask when, if ever, it is right to sacrifice one person to save five. Most people agree on the first version and split on the last.</p>
-        <ol class="classics">${classics.map(([id, name, line]) => `<li>${svg(230, 124, mini[id]())}<b>${name}</b><span>${line}</span></li>`).join('')}</ol>
-      </div>
-      <div class="who-card new">
-        <p class="who-n">You probably don’t know this one</p>
-        <h3>Decision models</h3>
-        <p>A new kind of AI that doesn’t write anything. You give it a situation and a set of buttons; it presses one, in a fraction of a second, for a fraction of a cent, and doesn’t say why. They’re sold for ${A.uses.list.slice(0, 3).join(', ')}.</p>
-        <p>The first, TypeSafe’s Jev, launched on ${mdy(A.launches[0].date)}. It’s named after William Stanley Jevons, who argued in 1865 that cheaper steam power would make Britain burn more coal, not less: make decisions cheap, and far more of them get handed to machines. OpenAI, Cloudflare, Perplexity and Microsoft followed within four weeks.</p>
-        <figure class="adopt">${bars}<figcaption><b>${Math.round(peak[1])} million</b> decision requests a day on OpenRouter alone by ${mdy(peak[0])}, up from ${Math.round(first[1])} million a month earlier. Some makers’ volumes more than doubled in a week (${A.share.authors
-          .filter((x) => x[2] >= 100)
-          .slice(0, 3)
-          .map((x) => `${x[0]} +${x[2]}%`)
-          .join(', ')}).</figcaption></figure>
-      </div>
+  const pctLabel = (x) => (x < 1.5 ? `${Math.round(x)}%` : `${Math.round(x)}%`);
+  const study = document.createElement('section');
+  study.className = 'chapter story';
+  study.id = 'study';
+  study.innerHTML = `
+    <h2>An old test. A new kind of AI.</h2>
+    <p class="lede">A new kind of AI has arrived, built to make decisions inside software: fast, cheap, and without saying why. We took the oldest test in moral philosophy, borrowed what decades of studies have learned about asking it fairly, and put it to these AIs ${fmt(F.totals.answers)} times.</p>
+
+    <h3>Context</h3>
+    <p>Decision models don’t write anything. You give one a situation and a set of buttons; it presses one, in a fraction of a second, for a fraction of a cent. They’re sold for ${A.uses.list.slice(0, 3).join(', ')}.</p>
+    <p>The first, TypeSafe’s Jev, launched on ${mdy(A.launches[0].date)}. It’s named after William Stanley Jevons, who argued in 1865 that more efficient steam engines would make Britain burn more coal, not less. The bet is the same: make decisions cheap, and far more of them get handed to machines. Within four weeks OpenAI, Cloudflare, Perplexity and Microsoft had shipped their own.</p>
+    ${reqChart}
+    <p>Nobody sells them for life-or-death calls. But at a fraction of a cent a decision, they will end up wired into systems that make them. So we built a test.</p>
+
+    <h3>The test</h3>
+    <p>It has two characters. One you know: the trolley problem, which philosophers have argued over for more than fifty years, with decades of surveys of how people answer it. One you probably don’t: the decision models, with three familiar chat models to compare them against.</p>
+    <div class="duo">
+      <article class="char">
+        <div class="char-main">
+          <h4>The trolley problem</h4>
+          <div class="char-scene">${lever}</div>
+          <p>A runaway trolley is heading for five people. Pull the lever, and it kills one instead. ${Math.round(sw0.human * 100)}% of people asked say pulling it is permissible.</p>
+        </div>
+        <div class="char-more">
+          <p>We also asked the harder versions, where the same trade gets more personal:</p>
+          <ul class="minis">${classics
+            .slice(1)
+            .map(([id, name]) => `<li>${svg(230, 124, mini[id]())}<span>${name.replace('The ', '')}</span></li>`)
+            .join('')}</ul>
+        </div>
+      </article>
+      <article class="char">
+        <div class="char-main">
+          <h4>${decM.length} decision models</h4>
+          <ul class="makers">${group(decM, false)}</ul>
+          <p>From ${makers.slice(0, 5).join(', ')} and ${others} more makers. ${fast} of ${decM.length} answered in under half a second.</p>
+        </div>
+        <div class="char-more">
+          <p>We also asked ${chatM.length} standard chat models, the familiar kind developers are moving off, for comparison. Same questions, same buttons; each answered five times, and the majority counts.</p>
+          <ul class="makers small">${group(chatM, true)}</ul>
+        </div>
+      </article>
     </div>
-    <p class="cast-q">Nobody sells them for life-or-death calls. But they’ll be wired into systems that make them. So we put the two together, ${fmt(F.totals.answers)} times.</p>
-    <div class="lineup2">
-      <div class="lg dec"><h3>${decM.length} decision models</h3><p>Every one we could call, ${A.launches.length ? `tested within five weeks of the first launch` : ''}. ${fast} of ${decM.length} answered in under half a second.</p><ul>${group(decM, false)}</ul></div>
-      <div class="lg chat"><h3>${chatM.length} standard chat models</h3><p>The well-known, battle-tested AIs developers would be moving off. Same questions, same buttons; each answered 5 times and the majority counts.</p><ul>${group(chatM, true)}</ul></div>
-    </div>
-    <div class="split"><h3>Where ${fmt(F.totals.answers)} answers went</h3>
-      <div class="split-bar">${parts.map((p) => `<span class="k-${p.id}" style="--w:${(100 * p.n) / F.totals.answers}" title="${esc(p.name)}: ${fmt(p.n)}"></span>`).join('')}</div>
-      <ul class="split-key">${parts.map((p) => `<li class="k-${p.id}"><i></i><b>${p.name}</b> ${fmt(p.n)} <span>${p.what}</span></li>`).join('')}</ul>
-      <p class="split-why"><b>Why so many on the impossible ones?</b> Because a hidden bias hides behind everything else. An AI might favour the person listed first, the left-hand track, or a turn of phrase, and look as if it favours a race or a religion. So every pair of people was asked ${F.design.versions} ways: each person on each track, the buttons in both orders, four wordings, one against one and one against two or three. ${F.design.placebo} pairs of made-up groups (“Group-B” against “Group-F”) showed how far each AI leans when there is nothing to lean on. And the decision models took the whole study twice. Only a preference that survives all of that counts here.</p>
-    </div>
-    <h3 class="ladder-h">So we start easy and work up.</h3>
-    <ol class="ladder">${Object.entries(RUNGS)
-      .map(
-        ([id, r]) =>
-          `<li style="--n:${r.n}"><a href="#${id}"><span class="st">${r.n}</span><b>${r.name}</b><span>${r.short}</span></a></li>`,
-      )
-      .join('')}</ol>
-    <p class="srcs">Requests: <a href="${A.daily.source}">OpenRouter decision rankings</a>, read ${mdy(A.read)}; OpenRouter routes only part of all use. Launches: <a href="${A.launches[0].source}">Jev</a>, <a href="${A.launches[1].source}">OpenAI</a>, <a href="${A.launches[2].source}">Cloudflare, Perplexity</a>, <a href="${A.launches[3].source}">Microsoft</a>.</p>`,
-  );
+
+    <h3>The situations</h3>
+    <p>Then we put them to the test: ${fmt(F.totals.answers)} questions, in four kinds of situation, easiest first. Each gets its own section below.</p>
+    <ol class="sits">${sits
+      .map((x) => {
+        const r = RUNGS[x.id];
+        return `<li class="sit s${r.n}${x.hook ? ' hooked' : ''}" style="--c:var(--c${r.n})">
+          <a class="sit-k" href="#${x.id}"><span class="sit-n"><i>${r.n}</i>${r.name}</span><b>${fmt(ST[x.id])}</b><span class="sit-q">questions</span><span class="sit-bar"><i style="--w:${sh(x.id)}"></i></span><em>${pctLabel(sh(x.id))} of all</em></a>
+          <div class="sit-t"><p>${x.text}</p>${x.hook ?? ''}<a class="sit-go" href="#${x.id}">Go to step ${r.n}: ${r.name} ↓</a></div>
+        </li>`;
+      })
+      .join('')}</ol>`;
+  main.appendChild(study);
+  sections.push({ id: 'study', el: study });
+  // the chart's hover: the day and its requests
+  {
+    const wrap = $('.rc-wrap', study);
+    const tip = $('.rc-tip', study);
+    $$('.reqchart .d', study).forEach((d) =>
+      d.addEventListener('mouseenter', () => {
+        const v = Number(d.dataset.v);
+        tip.innerHTML = `<b>${mdy(d.dataset.d)}</b>${v >= 1 ? `${Math.round(v)}M requests` : v > 0 ? `${Math.round(v * 1e6)} requests` : 'not on OpenRouter yet'}`;
+        const r = $('.bar', d).getBoundingClientRect();
+        const w = wrap.getBoundingClientRect();
+        tip.style.left = `${r.left - w.left + r.width / 2}px`;
+        tip.style.top = `${r.top - w.top}px`;
+        tip.hidden = false;
+        d.classList.add('on');
+      }),
+    );
+    $$('.reqchart .d', study).forEach((d) =>
+      d.addEventListener('mouseleave', () => ((tip.hidden = true), d.classList.remove('on'))),
+    );
+  }
 
   // ================================================================== 2. OBVIOUS
   const sw = F.ladder.find((x) => x.id === 'switch');
@@ -1142,12 +1248,12 @@
       }),
     { threshold: 0.35 },
   );
-  $$('.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .adopt').forEach((el) =>
-    io.observe(el),
+  $$('.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo').forEach(
+    (el) => io.observe(el),
   );
   if (reduce)
-    $$('.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .adopt').forEach((el) =>
-      el.classList.add('played'),
+    $$('.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo').forEach(
+      (el) => el.classList.add('played'),
     );
 
   // ------------------------------------------------------------------ share

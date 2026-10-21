@@ -900,6 +900,22 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       R.r1.answers + R.r2.answers + R.s2.answers,
     );
     eq('dilemmaN', F.dilemmaN, dn);
+    eq('steps', F.steps, {
+      obvious:
+        dn.switch! +
+        dn['control-kill-for-nothing']! +
+        dn['control-kill-five-save-one']! +
+        parts.pictures! +
+        parts.harm!,
+      hard: dn.loop! + dn.trapdoor! + dn.footbridge! + dn.transplant!,
+      impossible: parts.identity! + parts.placebo!,
+      real: parts.dashcam!,
+    });
+    eq(
+      'steps: sum',
+      Object.values(F.steps).reduce((a: number, b: any) => a + b, 0),
+      R.r1.answers + R.r2.answers + R.s2.answers,
+    );
     eq('design.placebo', F.design.placebo, R.r1.placeboPairs.size);
     eq('design.pairs', F.design.pairs, R.r1.pairs.size);
     // the grid and the two strangers come from v5's per-pair rows (recounted by site-v5-verify); check they agree
@@ -929,6 +945,24 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       for (const x of o.failed)
         eq(`obvious ${o.id} ${x.id}`, [x.n, x.of], runsOf(x.id)[0]!.control.get(`${x.id}|${o.id}`));
     }
+    expect(errs).toEqual([]);
+  });
+
+  it('native page: the adoption chart is the archived data, and the two OpenRouter series agree where they overlap', () => {
+    const A = C.adoption;
+    const early = new Map<string, number>(A.early.requests);
+    const errs: string[] = [];
+    // Jev's own model page (archived) and the decision rankings chart must match on the days both cover.
+    for (const [d, m] of A.daily.millions as [string, number][]) {
+      const e = early.get(d);
+      if (e === undefined || d >= '2026-09-24') continue; // Sep 24 is a partial day in the snapshot
+      if (Math.abs(e / 1e6 - m) > 0.6) errs.push(`${d}: model page ${e}, rankings ${m}M`);
+    }
+    // Before Jev reached OpenRouter there were no decision requests there.
+    for (const d of ['2026-09-15', '2026-09-16']) if (early.get(d) !== 0) errs.push(`${d} not 0`);
+    // Launch dates on the chart are the sourced ones.
+    for (const l of A.launches)
+      if (!/^2026-\d\d-\d\d$/.test(l.date) || !l.source.startsWith('https://')) errs.push(`launch ${l.what}`);
     expect(errs).toEqual([]);
   });
 

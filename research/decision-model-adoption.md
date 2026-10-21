@@ -59,3 +59,11 @@ Classification: "11.6% of all spend" (share of spend on OpenRouter, the task dec
   (https://vercel.com/i/what-are-decision-models)
 
 This study's design froze on 2026-10-17, so the 19 decision models were tested within five weeks of the first launch.
+
+## Before Sep 21: Jev's own model page (Wayback Machine)
+
+OpenRouter's rankings chart starts on Sep 21. Jev 1.13's model page carries its own daily request counts
+("model_chart"); the snapshot of 2026-09-24 (https://web.archive.org/web/20260924171451/https://openrouter.ai/typesafe/jev-1.13)
+reads: Sep 17: 458 · Sep 18: 28,243,338 · Sep 19: 52,641,640 · Sep 20: 64,434,110 · Sep 21: 82,379,677 (the rankings
+chart shows 82.4M that day, so the two series agree) · Sep 22: 83,638,877 · Sep 23: 125,647,722. Jev was the only
+decision model on OpenRouter until Sep 29, so these are the totals. Sep 15-16: not on OpenRouter yet (0).
