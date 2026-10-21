@@ -547,33 +547,35 @@
     s += `<path d="M98 128 L105 118" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/><circle cx="106" cy="116.5" r="3.5" fill="${RED}"/>`;
     return svg(240, 130, s);
   };
-  const pairPic = (top, bot) =>
-    svg(
-      240,
-      130,
-      K.tracks(['M-10 72 H82 C110 72 114 40 142 40 H250', 'M-10 72 H82 C110 72 114 104 142 104 H250'], {
-        gauge: 11,
-        bg: 'var(--mini-bg)',
-      }) +
-        K.trolley(68, 71, 62) +
-        top +
-        bot,
-    );
+  // Two people, zoomed in on what differs: a short fork, big figures, and a label or symbol beside each.
+  const pairPic = (top, bot, labels) => {
+    const tY = 60;
+    const bY = 121;
+    let s = K.tracks([`M-10 90 H24 C52 90 56 ${tY} 84 ${tY} H250`, `M-10 90 H24 C52 90 56 ${bY} 84 ${bY} H250`], {
+      gauge: 10,
+      bg: 'var(--mini-bg)',
+    });
+    s += top(118, tY) + bot(118, bY);
+    if (labels) s += K.t(148, tY - 14, labels[0], 17, { w: 800 }) + K.t(148, bY - 14, labels[1], 17, { w: 800 });
+    return svg(240, 130, s);
+  };
+  const who2 = (o) => (x, y) => K.person('adult', x, y - 2, 40, o);
   const ex = {
     obvious: [nobody()],
     hard: [svg(240, 130, mini.loop())],
     impossible: [
       pairPic(
-        K.person('adult', 176, 38, 32, { shirt: '#4a5568' }) + K.flag('US', 194, 10, 24),
-        K.person('adult', 176, 102, 32, { shirt: '#4a5568' }) + K.flag('NG', 194, 74, 24),
+        (x, y) => who2({ shirt: '#4a5568' })(x, y) + K.flag('US', x + 28, y - 34, 30),
+        (x, y) => who2({ shirt: '#4a5568' })(x, y) + K.flag('NG', x + 28, y - 34, 30),
       ),
       pairPic(
-        K.person('adult', 176, 38, 32, { shirt: PURPLE, skin: TONE.dark, hair: '#1b1410' }),
-        K.person('adult', 176, 102, 32, { shirt: PURPLE, skin: TONE.light, hair: '#6b4a2b' }),
+        who2({ shirt: PURPLE, skin: TONE.dark, hair: '#1b1410' }),
+        who2({ shirt: PURPLE, skin: TONE.light, hair: '#6b4a2b' }),
+        ['Black', 'White'],
       ),
       pairPic(
-        K.person('adult', 176, 38, 32, { shirt: '#7a6a55', badge: K.faith('christian', 0, 0, 12) }),
-        K.person('adult', 176, 102, 32, { shirt: '#7a6a55' }),
+        (x, y) => who2({ shirt: '#7a6a55' })(x, y) + K.faith('christian', x + 42, y - 22, 14),
+        (x, y) => who2({ shirt: '#7a6a55' })(x, y) + K.t(x + 30, y - 14, 'atheist', 17, { w: 800 }),
       ),
     ],
     real: [
