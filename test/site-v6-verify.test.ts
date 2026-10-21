@@ -964,6 +964,12 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       const t = runsOf(r.id)[0]!;
       eq(`pictures ${r.id} words`, r.words, t.pictures.get(`${r.id}|text_outcomes`));
       eq(`pictures ${r.id} picture`, r.pic, t.pictures.get(`${r.id}|image`));
+      // the caption says run 2 is within 3 points of run 1
+      if (!CHAT.includes(r.id)) {
+        const p2 = R.r2.pictures.get(`${r.id}|image`)!;
+        if (Math.abs(Math.round((100 * p2[0]) / p2[1]) - Math.round((100 * r.pic[0]) / r.pic[1])) > 3)
+          errs.push(`pictures ${r.id} run 2`);
+      }
       const pc2 = t.perception.get(r.id);
       if (pc2 && r.seen !== null && Math.abs(pc2[0] / pc2[1] - r.seen) > 0.001) errs.push(`pictures ${r.id} seen`);
     }

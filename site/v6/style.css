@@ -2813,7 +2813,24 @@ button {
 
 /* ================================================================== a step, as a blog post (step 1 first) */
 .story.step {
-  border-top: 6px solid var(--step);
+  position: relative;
+  isolation: isolate;
+}
+/* the step's own colour, fading down into the page: a soft hero behind the title */
+.step-hero {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: min(560px, 70vh);
+  max-width: none !important;
+  margin: 0 !important;
+  z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--step) 30%, var(--paper)) 0%,
+    color-mix(in srgb, var(--step) 16%, var(--paper)) 30%,
+    color-mix(in srgb, var(--step) 6%, var(--paper)) 62%,
+    var(--paper) 100%
+  );
 }
 .step-k {
   display: flex;
@@ -2934,104 +2951,107 @@ button {
   height: auto;
   margin: 0 auto;
 }
-.dumb2 {
+.wp2-q {
+  margin: 0 0 10px;
+  font-size: 19px;
+  font-weight: 800;
+}
+.wp2-head,
+.wp2-rows li {
+  display: grid;
+  grid-template-columns: minmax(150px, 210px) 1fr 1fr;
+  gap: 18px;
+  align-items: center;
+}
+.wp2-head {
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--ink);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.wp2-rows {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.dumb2 li {
-  display: grid;
-  grid-template-columns: minmax(150px, 220px) 1fr 54px;
-  gap: 14px;
-  align-items: center;
-  padding: 6px 0;
-  border-top: 1px solid #f0ece3;
+.wp2-rows li {
+  padding: 7px 0;
+  border-bottom: 1px solid #f0ece3;
 }
-.dumb2 .who {
+.wp2-rows .who {
   font-size: 15px;
   font-weight: 700;
 }
-.dumb2 .tr {
-  position: relative;
-  height: 20px;
+.wp2-rows .cell {
+  display: grid;
+  grid-template-columns: 1fr 86px;
+  gap: 10px;
+  align-items: center;
 }
-.dumb2 .tr::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 2px;
+.wp2-rows .sb {
+  height: 12px;
+  border-radius: 6px;
   background: #ece8df;
+  overflow: hidden;
 }
-.dumb2 .ln {
-  position: absolute;
-  top: calc(50% - 2px);
-  height: 4px;
-  left: calc(var(--a) * 1%);
-  width: calc((var(--b) - var(--a)) * 1%);
-  background: var(--red);
-  opacity: 0.35;
+.wp2-rows .sb i {
+  display: block;
+  height: 100%;
+  width: calc(var(--w) * 1%);
+  border-radius: 6px;
+  background: #3b4149;
 }
-.dumb2 i {
-  position: absolute;
-  top: 50%;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  left: calc(var(--x) * 1%);
-  z-index: 1;
-}
-.dumb2 i.w,
-.wp2 .k i.w {
-  background: var(--green);
-}
-.dumb2 i.p,
-.wp2 .k i.p {
-  background: var(--red);
-}
-.dumb2 b {
-  text-align: right;
-  font-size: 16px;
-  color: var(--red);
+.wp2-rows b {
+  font-size: 15px;
   font-variant-numeric: tabular-nums;
+}
+/* where the picture made it worse, the picture column says so */
+.wp2-rows .drop .pic .sb i {
+  background: var(--red);
+}
+.wp2-rows .drop .pic b {
+  color: var(--red);
 }
 .wp2 figcaption {
   margin-top: 12px;
   font-size: 14px;
   color: var(--muted);
 }
-.wp2 .k {
-  margin-right: 14px;
-  font-weight: 800;
-  color: var(--ink);
-}
-.wp2 .k i {
-  display: inline-block;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  margin-right: 5px;
-  vertical-align: -1px;
-}
+
 @media (max-width: 560px) {
   .wp2-ex {
     grid-template-columns: 1fr;
   }
-  .hbars li,
-  .dumb2 li {
+  .hbars li {
     grid-template-columns: 112px 1fr 46px;
     gap: 8px;
   }
-  .hbars .bl,
-  .dumb2 .who {
+  .hbars .bl {
     font-size: 13px;
     line-height: 1.2;
   }
-  .hbars b,
-  .dumb2 b {
+  .hbars b {
     font-size: 14px;
+  }
+  .wp2-head,
+  .wp2-rows li {
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 12px;
+  }
+  .wp2-head span:first-child {
+    display: none;
+  }
+  .wp2-rows .who {
+    grid-column: 1 / -1;
+    font-size: 14px;
+  }
+  .wp2-rows .cell {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .wp2-rows b {
+    font-size: 13px;
   }
 }
 
