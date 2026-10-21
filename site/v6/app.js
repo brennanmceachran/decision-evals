@@ -363,11 +363,11 @@
   const mini = {
     switch: () => {
       let s =
-        K.track('M-10 70 H90 C120 70 120 30 150 30 H230', { gauge: 12 }) +
-        K.track('M90 70 C120 70 120 110 150 110 H230', { gauge: 12 });
-      s += K.trolley(70, 69, 70);
-      for (let i = 0; i < 5; i++) s += K.person('adult', 160 + i * 14, 108, 34, { shirt: SLATE });
-      s += K.person('adult', 190, 28, 34, { shirt: SLATE });
+        K.track('M-10 76 H90 C120 76 120 44 150 44 H240', { gauge: 12 }) +
+        K.track('M90 76 C120 76 120 110 150 110 H240', { gauge: 12 });
+      s += K.trolley(70, 75, 70);
+      for (let i = 0; i < 5; i++) s += K.person('adult', 160 + i * 14, 108, 32, { shirt: SLATE });
+      s += K.person('adult', 190, 42, 32, { shirt: SLATE });
       return s;
     },
     loop: () => {
@@ -497,36 +497,49 @@
     const lx = 300;
     const ly = 350;
     s += `<g class="lev"><rect x="${lx - 22}" y="${ly - 8}" width="44" height="12" rx="3" fill="${INK}"/><g class="arm" style="transform-origin:${lx}px ${ly - 4}px"><path d="M${lx} ${ly - 4} L${lx} ${ly - 64}" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><circle cx="${lx}" cy="${ly - 66}" r="10" fill="${RED}" stroke="${INK}" stroke-width="4"/></g></g>`;
-    s += `<g class="who"><g class="who-bot">${K.robot(lx - 62, ly + 4, 100)}</g><g class="who-tag"><rect x="${lx - 280}" y="${ly - 62}" width="172" height="34" rx="17" fill="${INK}"/><path d="M${lx - 108} ${ly - 45} l14 -6 v12z" fill="${INK}"/><text x="${lx - 194}" y="${ly - 39}" text-anchor="middle" class="tag-t">?</text></g></g>`;
+    s += `<g class="who"><g class="who-bot">${K.robot(lx - 62, ly + 4, 100)}</g><g class="who-tag"><rect x="${lx - 286}" y="${ly - 102}" width="172" height="34" rx="10" fill="${INK}"/><path d="M${lx - 134} ${ly - 69} L${lx - 108} ${ly - 69} L${lx - 98} ${ly - 54} Z" fill="${INK}"/><text x="${lx - 200}" y="${ly - 79}" text-anchor="middle" class="tag-t">?</text></g></g>`;
     return `<svg class="scene lever" viewBox="0 0 ${W} ${H}" role="img" aria-label="A trolley heading for five people. A lever would send it onto a side line, where one person is standing. Beside the lever: an AI.">${s}</svg>`;
   })();
   const others = makers.length - 5;
   const sw0 = F.ladder.find((x) => x.id === 'switch');
-  // ---- the situations: one wide card, the same format for each, a small example of what was asked
+  // ---- the situations: one row each (step and stats | what it is | what it looks like)
   const ST = F.steps;
   const SQ = F.stepQ;
   const sh = (k) => (100 * ST[k]) / F.totals.answers;
+  /** A small pie: this situation's share of all the answers. */
+  const pie = (k) => {
+    const f = ST[k] / F.totals.answers;
+    const a = 2 * Math.PI * f - Math.PI / 2;
+    const r = 15;
+    const big = f > 0.5 ? 1 : 0;
+    const arc =
+      f >= 0.999
+        ? `<circle cx="18" cy="18" r="${r}" fill="var(--c)"/>`
+        : `<path d="M18 18 L18 ${18 - r} A${r} ${r} 0 ${big} 1 ${18 + r * Math.cos(a)} ${18 + r * Math.sin(a)} Z" fill="var(--c)"/>`;
+    return `<svg class="pie" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="${r}" fill="#e8e3d8"/>${arc}</svg>`;
+  };
+  // the pictures, framed so nothing important is cut off
   const ex = {
-    obvious: svg(230, 124, mini.switch()),
-    hard: svg(230, 124, mini.footbridge()),
+    obvious: svg(240, 130, mini.switch()),
+    hard: svg(240, 130, mini.footbridge()),
     impossible: svg(
-      230,
-      124,
-      K.track('M-10 70 H70 C100 70 100 34 130 34 H240', { gauge: 12 }) +
-        K.track('M70 70 C100 70 100 106 130 106 H240', { gauge: 12 }) +
-        K.trolley(56, 69, 62) +
-        K.person('adult', 158, 32, 36, { shirt: '#4a5568' }) +
-        K.flag('US', 182, 4, 30) +
-        K.person('adult', 158, 104, 36, { shirt: '#4a5568' }) +
-        K.flag('NG', 182, 76, 30),
+      240,
+      130,
+      K.track('M-10 76 H70 C100 76 100 46 130 46 H250', { gauge: 12 }) +
+        K.track('M70 76 C100 76 100 112 130 112 H250', { gauge: 12 }) +
+        K.trolley(56, 75, 62) +
+        K.person('adult', 156, 44, 32, { shirt: '#4a5568' }) +
+        K.flag('US', 178, 18, 30) +
+        K.person('adult', 156, 110, 32, { shirt: '#4a5568' }) +
+        K.flag('NG', 178, 84, 30),
     ),
-    real: `<svg class="scene" viewBox="200 170 820 440" role="img" aria-label="A dashcam frame: two workers kneeling on the scheduled track">${`<image href="${F.photos.two.img}" x="0" y="0" width="1280" height="720"/>`}</svg>`,
+    real: `<svg class="scene" viewBox="40 60 1200 650" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A dashcam frame: two workers kneeling on the scheduled track">${`<image href="${F.photos.two.img}" x="0" y="0" width="1280" height="720"/>`}</svg>`,
   };
   const SIT = {
-    obvious: 'One right answer.',
-    hard: 'One life for five, made personal.',
-    impossible: 'Only one thing differs. No right answer.',
-    real: 'The same choice, as a job.',
+    obvious: `<p>Questions with one right answer. The lever, with one to a thousand people on the track. The trick question: nobody on the track at all, so pulling the lever kills someone for nothing. Killing five to save one. And the same choices drawn as pictures, with no words.</p>`,
+    hard: `<p>The same trade every time, one life for five, made more personal: a loop, a trapdoor, pushing a man off a bridge, a surgeon taking a healthy patient’s organs. People get more reluctant at every step, so here we can compare the AIs with what people say.</p>`,
+    impossible: `<p>Two strangers, one on each track, alike except for one thing: race, nationality, religion, wealth, age, a disability. There is no right answer.</p><p>This is where a hidden bias hides, behind everything else. Put an American on the left track and a Nigerian on the right, and Microsoft’s AI sends the tram left: the American dies. Swap them, and it sends it left again: now the Nigerian dies. It never picked a person; it steered left, ${P(F.chance.msLeft[0], F.chance.msLeft[1])} of the time. So we asked about every pair ${F.design.versions} ways, with each person on each track, the buttons in both orders, four wordings, one against one, two or three, and ${F.design.placebo} pairs of made-up groups (“Group-B” against “Group-F”) to measure how far each AI leans when there is nothing to lean on. That is why this took ${Math.round(sh('impossible'))}% of the answers.</p>`,
+    real: `<p>The same choice, as a job. A tram depot’s log and a frame from the cab camera, the request a routing system would actually get: workers on the scheduled track, nobody on the other. Nothing said “people”.</p>`,
   };
   const study = document.createElement('section');
   study.className = 'chapter story';
@@ -572,30 +585,22 @@
       </article>
     </div>
 
-    <h3>${fmt(F.totals.answers)} answers later</h3>
+    <h3>So we asked ${fmt(F.totals.answers)} times</h3>
     <p>We wrote ${fmt(Object.values(SQ).reduce((a, b) => a + b, 0))} distinct questions and put each one to every AI that could answer it. The decision models answered everything twice, so we could tell a preference from noise. That came to ${fmt(F.totals.answers)} answers, in four kinds of situation, easiest first.</p>
-    <div class="sits">
-      <ol>${['obvious', 'hard', 'impossible', 'real']
-        .map((k) => {
-          const r = RUNGS[k];
-          return `<li style="--c:var(--c${r.n})"><a href="#${k}">
+    <ol class="sits">${['obvious', 'hard', 'impossible', 'real']
+      .map((k) => {
+        const r = RUNGS[k];
+        return `<li style="--c:var(--c${r.n})">
+          <a class="sit-k" href="#${k}">
             <span class="sit-n"><i>${r.n}</i>${r.name}</span>
-            <span class="sit-ex">${ex[k]}</span>
-            <span class="sit-t">${SIT[k]}</span>
-            <span class="sit-c"><b>${fmt(SQ[k])}</b> questions<br><b>${fmt(ST[k])}</b> answers</span>
-          </a></li>`;
-        })
-        .join('')}</ol>
-      <div class="sit-all" aria-hidden="true">${['obvious', 'hard', 'impossible', 'real'].map((k) => `<span style="--w:${sh(k)};--c:var(--c${RUNGS[k].n})"></span>`).join('')}</div>
-      <p class="sit-cap">Share of all ${fmt(F.totals.answers)} answers: ${['obvious', 'hard', 'impossible', 'real']
-        .map(
-          (k) =>
-            `<span style="--c:var(--c${RUNGS[k].n})"><i></i>${RUNGS[k].name} ${sh(k) < 1.5 ? sh(k).toFixed(1) : Math.round(sh(k))}%</span>`,
-        )
-        .join('')}</p>
-    </div>
-    <p><b>Why did ${Math.round(sh('impossible'))}% go to the impossible ones?</b> Because a hidden bias hides behind everything else. Put an American on the left track and a Nigerian on the right, and Microsoft’s AI sends the tram left: the American dies. Swap them, and it sends the tram left again: now the Nigerian dies. It never picked a person. It steered left, ${P(F.chance.msLeft[0], F.chance.msLeft[1])} of the time.</p>
-    <p>So we asked about every pair of people ${F.design.versions} ways: each person on each track, the buttons in both orders, four wordings, one against one, two or three. ${F.design.placebo} pairs of made-up groups (“Group-B” against “Group-F”) measured how far each AI leans when there is nothing to lean on. Whatever survives all of that is real.</p>`;
+            <span class="sit-s">${pie(k)}<span><b>${fmt(ST[k])}</b> answers<br><b>${fmt(SQ[k])}</b> questions<br><em>${sh(k) < 1.5 ? sh(k).toFixed(1) : Math.round(sh(k))}% of all answers</em></span></span>
+            <span class="sit-go">Step ${r.n} ↓</span>
+          </a>
+          <div class="sit-t">${SIT[k]}</div>
+          <div class="sit-ex">${ex[k]}</div>
+        </li>`;
+      })
+      .join('')}</ol>`;
   main.appendChild(study);
   sections.push({ id: 'study', el: study });
   // The lever: the AIs take turns. Each steps up wearing its name, pulls, and the trolley takes the side line (every

@@ -2202,117 +2202,104 @@ button {
   opacity: 0.85;
 }
 
-/* ---- the situations: one wide card, four columns in the same format, then one bar of all the answers */
+/* ---- the situations: one row each. Left: the step and its numbers. Middle: what it is. Right: what it looks like. */
 .sits {
-  padding: clamp(18px, 2.4vw, 28px);
+  list-style: none;
+  padding: clamp(6px, 1vw, 10px) clamp(18px, 2.4vw, 30px);
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 0 0 1px #e4dfd3;
 }
-.sits ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.sits li {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(10px, 1.6vw, 18px);
+  grid-template-columns: 200px minmax(0, 1fr) 240px;
+  gap: clamp(18px, 2.6vw, 34px);
+  align-items: start;
+  padding: clamp(18px, 2.4vw, 26px) 0;
+  border-bottom: 1px solid #ece8df;
 }
-.sits li a {
+.sits li:last-child {
+  border-bottom: 0;
+}
+.sit-k {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  height: 100%;
-  padding: 14px;
-  border-radius: 14px;
-  border-top: 5px solid var(--c);
-  background: #faf8f3;
+  gap: 12px;
   color: var(--ink);
   text-decoration: none;
-  transition:
-    transform 0.15s,
-    background 0.15s;
-}
-.sits li a:hover {
-  transform: translateY(-3px);
-  background: color-mix(in srgb, var(--c) 7%, #fff);
 }
 .sit-n {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 19px;
+  gap: 9px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--c);
 }
 .sit-n i {
   display: inline-grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 7px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
   background: var(--c);
   color: #fff;
   font-style: normal;
+  font-size: 16px;
+}
+.sit-s {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.sit-s b {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.sit-s em {
+  display: inline-block;
+  margin-top: 2px;
+  box-shadow: none;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--c);
+}
+.pie {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  margin-top: 2px;
+}
+.sit-go {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--c);
+}
+.sit-k:hover .sit-go {
+  text-decoration: underline;
+}
+.sit-t p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #2a2e35;
+}
+.sit-t p + p {
+  margin-top: 10px;
 }
 .sit-ex {
-  display: block;
-  aspect-ratio: 230 / 124;
-  border-radius: 10px;
-  background: #fff;
+  aspect-ratio: 240 / 130;
+  border-radius: 12px;
+  background: #faf8f3;
+  box-shadow: inset 0 0 0 1px #ece8df;
   overflow: hidden;
 }
 .sit-ex .scene {
   width: 100%;
   height: 100%;
-}
-.sit-t {
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.35;
-}
-.sit-c {
-  margin-top: auto;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--muted);
-}
-.sit-c b {
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-}
-.sit-all {
-  display: flex;
-  gap: 3px;
-  height: 30px;
-  margin-top: clamp(16px, 2vw, 22px);
-}
-.sit-all span {
-  position: relative;
-  flex: 0 0 calc(max(var(--w), 0.9) * 1%);
-  border-radius: 6px;
-  background: var(--c);
-}
-.sit-cap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 16px;
-  margin: 10px 0 0;
-  font-size: 14px;
-  color: var(--muted);
-}
-.sit-cap span {
-  font-weight: 800;
-  color: var(--ink);
-}
-.sit-cap i {
-  display: inline-block;
-  width: 11px;
-  height: 11px;
-  margin-right: 5px;
-  border-radius: 3px;
-  background: var(--c);
-  vertical-align: -1px;
 }
 
 /* ---- the lever: an AI steps up, pulls, the trolley takes the side line */
@@ -2386,8 +2373,12 @@ button {
   .duo {
     grid-template-columns: 1fr;
   }
-  .sits ol {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .sits li {
+    grid-template-columns: 170px minmax(0, 1fr);
+  }
+  .sit-ex {
+    grid-column: 2;
+    max-width: 300px;
   }
 }
 @media (max-width: 560px) {
@@ -2397,26 +2388,23 @@ button {
   .minis {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .sits ol {
+  .sits li {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
-  .sits li a {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    grid-template-areas: 'n n' 'ex t' 'ex c';
-    column-gap: 12px;
+  .sit-k {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
   }
-  .sit-n {
-    grid-area: n;
+  .sit-s {
+    order: 3;
+    flex-basis: 100%;
   }
   .sit-ex {
-    grid-area: ex;
-  }
-  .sit-t {
-    grid-area: t;
-  }
-  .sit-c {
-    grid-area: c;
+    grid-column: auto;
+    max-width: none;
   }
   .reqchart .mk .md {
     display: none;
