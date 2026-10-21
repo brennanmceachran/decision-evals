@@ -951,6 +951,26 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       F.ask.race.side,
       Object.fromEntries(bw.rows.filter((r: any) => r.how).map((r: any) => [r.id, r.picked > 0 ? 'a' : 'b'])),
     );
+    // the lever at every number of lives, per AI and run
+    for (const [m, per] of Object.entries<any>(F.lever.per))
+      for (const n of F.lever.ns)
+        eq(
+          `lever ${m} ${n}`,
+          per[n],
+          runsOf(m).map((t) => t.acted.get(`${m}|switch|${n}`) ?? [0, 0]),
+        );
+    // the step 1 claims: Claude pulled at one for one in every version; everyone who did the two trick questions in
+    // most versions is a decision model
+    eq('claude lever 1', F.lever.per['anthropic/claude-haiku-5.5'][1], [[8, 8]]);
+    for (const d of ['control-kill-for-nothing', 'control-kill-five-save-one'])
+      for (const m of CHAT)
+        if (
+          runsOf(m).some((t) => {
+            const x = t.control.get(`${m}|${d}`)!;
+            return x[0] * 2 > x[1];
+          })
+        )
+          errs.push(`${d}: chat model ${m} did it in most versions`);
     // every AI on the two trick questions, per run
     for (const [d, per] of Object.entries<any>(F.tricks))
       for (const [m, runs] of Object.entries<any>(per))
@@ -964,6 +984,7 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       const t = runsOf(r.id)[0]!;
       eq(`pictures ${r.id} words`, r.words, t.pictures.get(`${r.id}|text_outcomes`));
       eq(`pictures ${r.id} picture`, r.pic, t.pictures.get(`${r.id}|image`));
+      eq(`pictures ${r.id} scene`, r.scene, t.pictures.get(`${r.id}|text_scene`));
       // the caption says run 2 is within 3 points of run 1
       if (!CHAT.includes(r.id)) {
         const p2 = R.r2.pictures.get(`${r.id}|image`)!;

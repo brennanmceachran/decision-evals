@@ -1940,8 +1940,24 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
       };
     }),
     // The questions as the AIs got them (v5's quiz: prompt, buttons and every AI's answer, both runs) for the try-its.
-    ask: Object.fromEntries(
-      ['nothing', 'transplant', 'race', 'depot'].map((id) => {
+    ask: Object.fromEntries([
+      // the lever at 5 lives and "kill five to save one", as the AIs got them (v5 carries the exact text)
+      [
+        'lever5',
+        {
+          text: D.dilemmaPrompts.switch.text,
+          question: D.dilemmaPrompts.switch.question,
+          buttons: D.dilemmaPrompts.switch.buttons.map((t: string) => ({ text: t })),
+        },
+      ],
+      [
+        'five',
+        (() => {
+          const c = D.checks.find((x: any) => x.id === 'five');
+          return { text: c.text, question: c.question, buttons: c.buttons.map((t: string) => ({ text: t })) };
+        })(),
+      ],
+      ...['nothing', 'transplant', 'race', 'depot'].map((id) => {
         const q = D.quiz.find((x: any) => x.id === id);
         // For the two strangers: which side each AI took by the page's own rule (beyond its noise, no run disagreeing).
         const P =
@@ -1964,7 +1980,7 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
           },
         ];
       }),
-    ),
+    ]),
     // What the 761,940 answers were spent on, by part of the study (all three runs).
     parts: (() => {
       const c: Record<string, number> = {};
@@ -2060,6 +2076,24 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         ),
       ]),
     ),
+    // The lever at every number of lives on the track: per AI, [pulled, versions] in each run it took part in.
+    lever: (() => {
+      const ns = [...new Set(Object.keys(FX.r1.lever).map((k) => Number(k.split('|')[1])))].sort((a, b) => a - b);
+      return {
+        ns,
+        per: Object.fromEntries(
+          D.models.map((m: any) => [
+            m.id,
+            Object.fromEntries(
+              ns.map((n) => [
+                n,
+                (isChatId(m.id) ? [FX.s2] : [FX.r1, FX.r2]).map((t) => t.lever[`${m.id}|${n}`] ?? [0, 0]),
+              ]),
+            ),
+          ]),
+        ),
+      };
+    })(),
     // Every vision AI: chose the fewer deaths in words and as a wordless picture (the same 17 scenes), and how often it
     // counted the people in the pictures right.
     pictures: Object.entries(D.rightCalls).map(([m, v]: any) => ({
@@ -2067,6 +2101,7 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
       name: N(m),
       vendor: VENDOR(m),
       words: [v.words.right, v.words.of],
+      scene: [v.scene.right, v.scene.of],
       pic: [v.picture.right, v.picture.of],
       seen: D.image.models[m]?.perception ?? null,
     })),

@@ -44,6 +44,8 @@ export interface RunFacts {
   dilemmaN: Record<string, number>;
   /** Distinct questions (job ids) per situation: obvious, hard, impossible, real. */
   stepJobs: Record<string, Set<string>>;
+  /** model|n → [pulled the lever, answered]: the classic switch at every number of lives. */
+  lever: Record<string, NO>;
 }
 
 const add = (o: Record<string, NO>, k: string, hit: boolean) => {
@@ -69,6 +71,7 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     placeboPairs: 0,
     dilemmaN: {},
     stepJobs: {},
+    lever: {},
   };
   const placebo = new Set<string>();
   const sets = new Map<string, { spared: string; first: boolean; choice: string }[]>();
@@ -123,6 +126,7 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     const d = String(r.dilemma);
     const v = r.variant ?? {};
     const pt = v.point ?? {};
+    if (!r.refused && r.choice && d === 'switch') add(F.lever, `${m}|${pt.n}`, v.keyToCanonical?.[r.choice] === 'pull');
     if (!r.refused && r.choice && (d.startsWith('control-') || (d === 'switch' && Number(pt.n) === 5)))
       add(F.obvious, `${m}|${d}`, v.keyToCanonical?.[r.choice] === 'pull');
     if ((d === 'transplant' || d === 'footbridge') && Number(pt.n) === 5 && !r.refused) {
