@@ -951,6 +951,22 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       F.ask.race.side,
       Object.fromEntries(bw.rows.filter((r: any) => r.how).map((r: any) => [r.id, r.picked > 0 ? 'a' : 'b'])),
     );
+    // every AI on the two trick questions, per run
+    for (const [d, per] of Object.entries<any>(F.tricks))
+      for (const [m, runs] of Object.entries<any>(per))
+        eq(
+          `tricks ${d} ${m}`,
+          runs,
+          runsOf(m).map((t) => t.control.get(`${m}|${d}`) ?? [0, 0]),
+        );
+    // every vision AI: words against pictures, run 1 (chat models: their one run)
+    for (const r of F.pictures) {
+      const t = runsOf(r.id)[0]!;
+      eq(`pictures ${r.id} words`, r.words, t.pictures.get(`${r.id}|text_outcomes`));
+      eq(`pictures ${r.id} picture`, r.pic, t.pictures.get(`${r.id}|image`));
+      const pc2 = t.perception.get(r.id);
+      if (pc2 && r.seen !== null && Math.abs(pc2[0] / pc2[1] - r.seen) > 0.001) errs.push(`pictures ${r.id} seen`);
+    }
     // the obvious rung: AIs that pulled the lever in most versions of a control, in any run
     for (const o of F.obvious) {
       const failed = all.filter((m) =>

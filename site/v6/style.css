@@ -2517,6 +2517,10 @@ button {
 .try.dark .try-a {
   border-color: #39424a;
 }
+.try-pick[hidden],
+.try-res[hidden] {
+  display: none !important;
+}
 .try-pick {
   display: flex;
   flex-direction: column;
@@ -2805,4 +2809,239 @@ button {
 }
 .reqchart.narrow .end.big {
   font-size: 30px;
+}
+
+/* ================================================================== a step, as a blog post (step 1 first) */
+.story.step {
+  border-top: 6px solid var(--step);
+}
+.step-k {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto 14px;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--step);
+}
+.step-k .sn {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--step);
+  color: #fff;
+  font-size: 17px;
+}
+.story > .try {
+  max-width: 1000px;
+  margin: clamp(24px, 3vw, 36px) auto;
+}
+.story .note {
+  margin-top: 8px !important;
+  font-size: 14px !important;
+  color: var(--muted) !important;
+}
+.story .handoff {
+  margin-top: clamp(32px, 4vw, 48px) !important;
+  font-size: clamp(21px, 2vw, 25px) !important;
+  font-weight: 800;
+  color: var(--ink) !important;
+}
+/* simple horizontal bars, in the reading column */
+.hbars {
+  list-style: none;
+  padding: 0;
+  margin-top: 18px !important;
+}
+.hbars li {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) 1fr 74px;
+  gap: 14px;
+  align-items: center;
+  padding: 5px 0;
+}
+.hbars .bl {
+  font-size: 16px;
+  font-weight: 700;
+}
+.hbars .bb {
+  height: 14px;
+  border-radius: 7px;
+  background: #e8e3d8;
+  overflow: hidden;
+}
+.hbars .bb i {
+  display: block;
+  height: 100%;
+  width: calc(max(var(--w), 1.5) * 1%);
+  border-radius: 7px;
+  background: #8c9198;
+}
+.hbars .bad .bb i {
+  background: var(--red);
+}
+.hbars b {
+  text-align: right;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.hbars .bad b {
+  color: var(--red);
+}
+.hbars .rest .bl,
+.hbars .rest b {
+  color: var(--muted);
+}
+/* words against pictures: one line per AI, a dot for each */
+.story > .wp2 {
+  max-width: 1000px;
+  margin: clamp(28px, 4vw, 44px) auto;
+  padding: clamp(18px, 2.4vw, 28px);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 0 0 1px #e4dfd3;
+}
+.wp2-ex {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.wp2-ex > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #faf8f3;
+}
+.wp2-ex span {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.wp2-ex p {
+  margin: auto 0;
+  font-family: var(--serif);
+  font-size: clamp(18px, 1.8vw, 22px);
+  line-height: 1.4;
+}
+.wp2-ex img {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  margin: 0 auto;
+}
+.dumb2 {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.dumb2 li {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) 1fr 54px;
+  gap: 14px;
+  align-items: center;
+  padding: 6px 0;
+  border-top: 1px solid #f0ece3;
+}
+.dumb2 .who {
+  font-size: 15px;
+  font-weight: 700;
+}
+.dumb2 .tr {
+  position: relative;
+  height: 20px;
+}
+.dumb2 .tr::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: #ece8df;
+}
+.dumb2 .ln {
+  position: absolute;
+  top: calc(50% - 2px);
+  height: 4px;
+  left: calc(var(--a) * 1%);
+  width: calc((var(--b) - var(--a)) * 1%);
+  background: var(--red);
+  opacity: 0.35;
+}
+.dumb2 i {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  left: calc(var(--x) * 1%);
+  z-index: 1;
+}
+.dumb2 i.w,
+.wp2 .k i.w {
+  background: var(--green);
+}
+.dumb2 i.p,
+.wp2 .k i.p {
+  background: var(--red);
+}
+.dumb2 b {
+  text-align: right;
+  font-size: 16px;
+  color: var(--red);
+  font-variant-numeric: tabular-nums;
+}
+.wp2 figcaption {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.wp2 .k {
+  margin-right: 14px;
+  font-weight: 800;
+  color: var(--ink);
+}
+.wp2 .k i {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: -1px;
+}
+@media (max-width: 560px) {
+  .wp2-ex {
+    grid-template-columns: 1fr;
+  }
+  .hbars li,
+  .dumb2 li {
+    grid-template-columns: 112px 1fr 46px;
+    gap: 8px;
+  }
+  .hbars .bl,
+  .dumb2 .who {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+  .hbars b,
+  .dumb2 b {
+    font-size: 14px;
+  }
+}
+
+/* the try-it inside a step reads as a figure: a little smaller than the old quiz */
+.story > .try .try-h {
+  font-size: clamp(22px, 2.2vw, 28px);
+}
+.story > .try .try-text {
+  font-size: 14px;
+}
+.wp2-ex p {
+  font-size: clamp(16px, 1.5vw, 19px) !important;
 }

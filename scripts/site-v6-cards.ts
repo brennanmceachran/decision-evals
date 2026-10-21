@@ -2048,6 +2048,28 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         of: ids.length,
       };
     }),
+    // Every AI on the two trick questions: [moved the lever, versions] per run (chat models: their one run).
+    tricks: Object.fromEntries(
+      (['control-kill-for-nothing', 'control-kill-five-save-one'] as const).map((d) => [
+        d,
+        Object.fromEntries(
+          D.models.map((m: any) => [
+            m.id,
+            (isChatId(m.id) ? [FX.s2] : [FX.r1, FX.r2]).map((t) => t.obvious[`${m.id}|${d}`] ?? [0, 0]),
+          ]),
+        ),
+      ]),
+    ),
+    // Every vision AI: chose the fewer deaths in words and as a wordless picture (the same 17 scenes), and how often it
+    // counted the people in the pictures right.
+    pictures: Object.entries(D.rightCalls).map(([m, v]: any) => ({
+      id: m,
+      name: N(m),
+      vendor: VENDOR(m),
+      words: [v.words.right, v.words.of],
+      pic: [v.picture.right, v.picture.of],
+      seen: D.image.models[m]?.perception ?? null,
+    })),
     wheel: { n: wc.n, of: wc.of },
     photos: {
       two: { ...PH.two, img: 'img/u-two-L.jpg', safe: TWO_EMPTY },
