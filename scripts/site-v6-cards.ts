@@ -2009,6 +2009,17 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         real: P.dashcam!,
       };
     })(),
+    // Distinct questions per situation (job ids; run 2 repeats run 1's, the chat models' are the same questions).
+    stepQ: Object.fromEntries(
+      ['obvious', 'hard', 'impossible', 'real'].map((k) => [
+        k,
+        new Set([...(FX.r1.stepJobs[k] ?? []), ...(FX.r2.stepJobs[k] ?? []), ...(FX.s2.stepJobs[k] ?? [])]).size,
+      ]),
+    ),
+    // Each AI at the classic lever, five against one: [took the action, versions], run 1 (chat models: their one run).
+    lever5: Object.fromEntries(
+      Object.entries(D.ladderCounts).map(([m, v]: any) => [m, [v.switch[0].n, v.switch[0].of]]),
+    ),
     design: {
       pairs: D.attr.pairsTested,
       placebo: FX.r1.placeboPairs,

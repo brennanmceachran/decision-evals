@@ -2096,7 +2096,14 @@ button {
 }
 .char-main {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: clamp(20px, 2.6vw, 30px);
+}
+.char-scene {
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 .char h4 {
   font-size: clamp(26px, 2.6vw, 34px);
@@ -2195,142 +2202,192 @@ button {
   opacity: 0.85;
 }
 
-/* ---- the situations: one row each, in its step colour; the impossible row is the hook */
+/* ---- the situations: one wide card, four columns in the same format, then one bar of all the answers */
 .sits {
+  padding: clamp(18px, 2.4vw, 28px);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 0 0 1px #e4dfd3;
+}
+.sits ol {
   list-style: none;
+  margin: 0;
   padding: 0;
-  border-top: 2px solid var(--ink);
-}
-.sit {
   display: grid;
-  grid-template-columns: 230px minmax(0, 1fr);
-  gap: clamp(18px, 3vw, 40px);
-  padding: clamp(20px, 2.6vw, 28px) 0;
-  border-bottom: 1px solid #ddd8cc;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 1.6vw, 18px);
 }
-.story .sit-k {
-  text-decoration: none;
-}
-.sit-k {
+.sits li a {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
+  gap: 10px;
+  height: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border-top: 5px solid var(--c);
+  background: #faf8f3;
+  color: var(--ink);
   text-decoration: none;
+  transition:
+    transform 0.15s,
+    background 0.15s;
+}
+.sits li a:hover {
+  transform: translateY(-3px);
+  background: color-mix(in srgb, var(--c) 7%, #fff);
 }
 .sit-n {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--c);
 }
 .sit-n i {
   display: inline-grid;
   place-items: center;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 7px;
   background: var(--c);
   color: #fff;
   font-style: normal;
-  font-size: 15px;
-}
-.sit-k b {
-  margin-top: 10px;
-  font-size: clamp(28px, 3vw, 38px);
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink);
-}
-.sit-q {
   font-size: 14px;
-  font-weight: 700;
-  color: var(--muted);
 }
-.sit-bar {
+.sit-ex {
   display: block;
-  width: 100%;
-  height: 10px;
-  margin-top: 10px;
-  border-radius: 5px;
-  background: #e8e3d8;
+  aspect-ratio: 230 / 124;
+  border-radius: 10px;
+  background: #fff;
   overflow: hidden;
 }
-.sit-bar i {
-  display: block;
+.sit-ex .scene {
+  width: 100%;
   height: 100%;
-  width: calc(max(var(--w), 0.8) * 1%);
-  border-radius: 5px;
-  background: var(--c);
 }
-.sit-k em {
-  box-shadow: none;
-  margin-top: 4px;
-  font-style: normal;
-  font-size: 13px;
+.sit-t {
+  font-size: 16px;
   font-weight: 700;
+  line-height: 1.35;
+}
+.sit-c {
+  margin-top: auto;
+  font-size: 14px;
+  line-height: 1.5;
   color: var(--muted);
 }
-.sit-t p {
-  margin: 0;
-  font-size: 18px;
-  line-height: 1.55;
-  color: #2a2e35;
+.sit-c b {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
-.sit-t .hook {
-  margin-top: 14px;
-  font-size: 18px;
+.sit-all {
+  display: flex;
+  gap: 3px;
+  height: 30px;
+  margin-top: clamp(16px, 2vw, 22px);
 }
-.sit-t .hook b {
-  color: var(--c);
+.sit-all span {
+  position: relative;
+  flex: 0 0 calc(max(var(--w), 0.9) * 1%);
+  border-radius: 6px;
+  background: var(--c);
 }
-.sit.hooked {
-  margin: 0 calc(-1 * clamp(14px, 2vw, 24px));
-  padding-left: clamp(14px, 2vw, 24px);
-  padding-right: clamp(14px, 2vw, 24px);
-  background: color-mix(in srgb, var(--c3) 7%, var(--paper));
-  border-bottom-color: color-mix(in srgb, var(--c3) 25%, #ddd8cc);
+.sit-cap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--muted);
 }
-.sit.hooked .sit-k b {
-  font-size: clamp(36px, 4vw, 52px);
-  color: var(--c);
-}
-.sit-go {
-  display: inline-block;
-  margin-top: 12px;
-  font-size: 15px;
+.sit-cap span {
   font-weight: 800;
-  color: var(--c) !important;
-  text-decoration: none;
+  color: var(--ink);
 }
-.sit-go:hover {
-  text-decoration: underline;
+.sit-cap i {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  margin-right: 5px;
+  border-radius: 3px;
+  background: var(--c);
+  vertical-align: -1px;
 }
+
+/* ---- the lever: an AI steps up, pulls, the trolley takes the side line */
+.char-sub {
+  margin: -6px 0 14px !important;
+  font-size: 17px !important;
+  font-weight: 700;
+  color: var(--muted) !important;
+}
+.scene.lever {
+  max-width: 520px;
+}
+.scene.lever .who-bot {
+  opacity: 0.32;
+  filter: grayscale(1);
+  transition:
+    opacity 0.4s,
+    filter 0.4s,
+    transform 0.5s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.scene.lever.on .who-bot {
+  opacity: 1;
+  filter: none;
+  transform: translateX(10px);
+}
+.scene.lever .tag-t {
+  font: 800 17px var(--font);
+  fill: #fff;
+}
+.scene.lever .who-tag {
+  transition: opacity 0.3s;
+}
+.scene.lever .arm {
+  transition: transform 0.5s cubic-bezier(0.5, 0, 0.3, 1.4);
+  transform: rotate(-24deg);
+}
+.scene.lever.pulled .arm {
+  transform: rotate(24deg);
+}
+.scene.lever .way {
+  animation: heading 1.6s linear infinite;
+  transition: opacity 0.4s;
+}
+.scene.lever .way-b {
+  opacity: 0;
+}
+.scene.lever.pulled .way-a {
+  opacity: 0;
+}
+.scene.lever.pulled .way-b {
+  opacity: 1;
+}
+.scene.lever .lt {
+  transition: transform 1.2s cubic-bezier(0.5, 0, 0.3, 1) 0.4s;
+}
+.scene.lever.pulled .lt {
+  transform: translateX(14px);
+}
+.makers .m.lit {
+  border-radius: 8px;
+  background: #fdf0c8;
+  box-shadow: 0 0 0 2px var(--amber);
+}
+.makers .m {
+  transition:
+    background 0.3s,
+    box-shadow 0.3s;
+}
+
 @media (max-width: 860px) {
   .duo {
     grid-template-columns: 1fr;
   }
-  .sit {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .sit-k {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: baseline;
-    column-gap: 12px;
-  }
-  .sit-n {
-    grid-column: 1 / -1;
-  }
-  .sit-k b {
-    margin-top: 6px;
-  }
-  .sit-bar,
-  .sit-k em {
-    grid-column: 1 / -1;
+  .sits ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (max-width: 560px) {
@@ -2339,6 +2396,27 @@ button {
   }
   .minis {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sits ol {
+    grid-template-columns: 1fr;
+  }
+  .sits li a {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    grid-template-areas: 'n n' 'ex t' 'ex c';
+    column-gap: 12px;
+  }
+  .sit-n {
+    grid-area: n;
+  }
+  .sit-ex {
+    grid-area: ex;
+  }
+  .sit-t {
+    grid-area: t;
+  }
+  .sit-c {
+    grid-area: c;
   }
   .reqchart .mk .md {
     display: none;

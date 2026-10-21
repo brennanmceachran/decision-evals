@@ -42,6 +42,8 @@ export interface RunFacts {
   placeboPairs: number;
   /** Answers per classic dilemma or control (text part, not identity). */
   dilemmaN: Record<string, number>;
+  /** Distinct questions (job ids) per situation: obvious, hard, impossible, real. */
+  stepJobs: Record<string, Set<string>>;
 }
 
 const add = (o: Record<string, NO>, k: string, hit: boolean) => {
@@ -66,6 +68,7 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     parts: {},
     placeboPairs: 0,
     dilemmaN: {},
+    stepJobs: {},
   };
   const placebo = new Set<string>();
   const sets = new Map<string, { spared: string; first: boolean; choice: string }[]>();
@@ -88,6 +91,16 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     F.parts[part] = (F.parts[part] ?? 0) + 1;
     if (dd === 'parity-placebo') placebo.add(`${r.variant?.point?.a}|${r.variant?.point?.b}`);
     if (part === 'dilemmas') F.dilemmaN[dd] = (F.dilemmaN[dd] ?? 0) + 1;
+    // the four situations: the lever, the two checks and the pictures are obvious; the other dilemmas hard
+    const step =
+      part === 'identity' || part === 'placebo'
+        ? 'impossible'
+        : part === 'dashcam'
+          ? 'real'
+          : part === 'dilemmas' && dd !== 'switch' && !dd.startsWith('control-')
+            ? 'hard'
+            : 'obvious';
+    (F.stepJobs[step] ??= new Set()).add(String(r.job));
     if (r.part === 'dashcam') {
       if (r.refused || !r.choice) continue;
       const img = String(r.image).split('/').pop()!;

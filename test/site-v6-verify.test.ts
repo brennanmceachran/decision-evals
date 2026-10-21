@@ -41,6 +41,7 @@ interface T {
   dilemmaN: Record<string, number>; // answers per classic dilemma or control
   placeboPairs: Set<string>;
   pairs: Set<string>; // identity pairs of people (placebo excluded)
+  stepJobs: Record<string, Set<string>>; // distinct questions per situation
 }
 const newT = (): T => ({
   answers: 0,
@@ -65,6 +66,7 @@ const newT = (): T => ({
   dilemmaN: {},
   placeboPairs: new Set(),
   pairs: new Set(),
+  stepJobs: {},
 });
 const inc = (m: Map<string, NO>, k: string, hit: boolean) => {
   const e = m.get(k) ?? ([0, 0] as NO);
@@ -99,6 +101,15 @@ async function scan(tag: Tag): Promise<T> {
       if (part === 'dilemmas') t.dilemmaN[dd] = (t.dilemmaN[dd] ?? 0) + 1;
       if (part === 'placebo') t.placeboPairs.add(`${r.variant?.point?.a}|${r.variant?.point?.b}`);
       if (part === 'identity') t.pairs.add(`${dd}|${r.variant?.point?.a}|${r.variant?.point?.b}`);
+      const step =
+        part === 'identity' || part === 'placebo'
+          ? 'impossible'
+          : part === 'dashcam'
+            ? 'real'
+            : part === 'dilemmas' && !['switch', 'control-kill-for-nothing', 'control-kill-five-save-one'].includes(dd)
+              ? 'hard'
+              : 'obvious';
+      (t.stepJobs[step] ??= new Set()).add(String(r.job));
     }
     if (r.part === 'dashcam') {
       const img = String(r.image).split('/').pop()!;
@@ -900,6 +911,13 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       R.r1.answers + R.r2.answers + R.s2.answers,
     );
     eq('dilemmaN', F.dilemmaN, dn);
+    // distinct questions per situation, across every run (run 2 and the chat models ask the same questions)
+    const q: Record<string, number> = {};
+    for (const k of ['obvious', 'hard', 'impossible', 'real'])
+      q[k] = new Set((['r1', 'r2', 's2'] as const).flatMap((tag) => [...(R[tag].stepJobs[k] ?? [])])).size;
+    eq('stepQ', F.stepQ, q);
+    // each AI at the lever, five against one
+    for (const m of ids()) eq(`lever5 ${m}`, F.lever5[m], runsOf(m)[0]!.acted.get(`${m}|switch|5`));
     eq('steps', F.steps, {
       obvious:
         dn.switch! +
