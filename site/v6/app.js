@@ -360,46 +360,57 @@
   const mdy = (d) =>
     new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
   // Character one: the trolley problem, as the five classic scenes (drawn small, one line each).
+  // Each scene shows its own mechanism, in 240×130. Routes that share track are drawn as one railway (K.tracks).
   const mini = {
+    // the lever: a switch splits the line; five straight on, one on the branch
     switch: () => {
-      let s =
-        K.track('M-10 76 H90 C120 76 120 44 150 44 H240', { gauge: 12 }) +
-        K.track('M90 76 C120 76 120 110 150 110 H240', { gauge: 12 });
-      s += K.trolley(70, 75, 70);
-      for (let i = 0; i < 5; i++) s += K.person('adult', 160 + i * 14, 108, 32, { shirt: SLATE });
-      s += K.person('adult', 190, 42, 32, { shirt: SLATE });
+      // two tracks, clearly apart: five straight on, one on the branch; the lever at the switch
+      let s = K.tracks(['M-10 100 H250', 'M-10 100 H92 C126 100 132 44 168 44 H250'], {
+        gauge: 11,
+        bg: 'var(--mini-bg)',
+      });
+      s += K.trolley(72, 99, 64);
+      for (let i = 0; i < 5; i++) s += K.person('adult', 172 + i * 14, 98, 30, { shirt: SLATE });
+      s += K.person('adult', 210, 42, 30, { shirt: SLATE });
+      s += `<path d="M98 128 L105 118" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/><circle cx="106" cy="116.5" r="3.5" fill="${RED}"/>`;
       return s;
     },
+    // the loop: the branch leaves and rejoins the main line BEFORE the five; one person stands on the loop
     loop: () => {
-      let s =
-        K.track('M-10 100 H230', { gauge: 12 }) +
-        K.track('M70 100 C100 100 100 40 140 40 C185 40 185 100 210 100', { gauge: 12 });
-      s += K.trolley(60, 99, 70);
-      for (let i = 0; i < 5; i++) s += K.person('adult', 150 + i * 14, 98, 34, { shirt: SLATE });
-      s += K.person('adult', 140, 38, 34, { shirt: SLATE });
+      // a loop, not a bump: off the main line, along, and back on just before the five
+      let s = K.tracks(['M-10 104 H250', 'M-10 104 H44 C66 104 66 46 90 46 H136 C160 46 160 104 182 104 H250'], {
+        gauge: 11,
+        bg: 'var(--mini-bg)',
+      });
+      s += K.trolley(46, 103, 60);
+      s += K.person('adult', 113, 44, 30, { shirt: SLATE });
+      for (let i = 0; i < 5; i++) s += K.person('adult', 194 + i * 11, 102, 28, { shirt: SLATE });
       return s;
     },
+    // the trapdoor: a man stands over the line on a platform with a trapdoor; a switch some distance away opens it
     trapdoor: () => {
-      let s = K.track('M-10 110 H230', { gauge: 12 });
-      s += `<rect x="100" y="52" width="80" height="8" fill="#8a6d4b" stroke="${INK}" stroke-width="3"/><path d="M128 60 v-1 M152 60 v-1" stroke="${RED}" stroke-width="4"/>`;
-      s += K.person('adult', 140, 52, 36, { shirt: SLATE }) + K.trolley(70, 109, 70);
-      for (let i = 0; i < 5; i++) s += K.person('adult', 160 + i * 13, 108, 30, { shirt: SLATE });
+      let s = K.tracks(['M-10 112 H250'], { gauge: 11, bg: 'var(--mini-bg)' });
+      s += `<path d="M112 62 H134 M154 62 H184" stroke="#8a6d4b" stroke-width="8" stroke-linecap="round"/><path d="M134 62 L142 80" stroke="${RED}" stroke-width="6" stroke-linecap="round"/><path d="M118 66 V104 M178 66 V104" stroke="${INK}" stroke-width="4"/>`;
+      s += K.person('adult', 144, 58, 32, { shirt: '#7a6a55' });
+      s += K.trolley(70, 111, 64);
+      for (let i = 0; i < 5; i++) s += K.person('adult', 192 + i * 12, 110, 28, { shirt: SLATE });
       return s;
     },
+    // the footbridge: you stand beside a man on a bridge over the line, and would have to push him
     footbridge: () => {
-      let s = K.track('M-10 110 H230', { gauge: 12 });
-      s += `<rect x="96" y="52" width="88" height="8" fill="#8a6d4b" stroke="${INK}" stroke-width="3"/><path d="M104 60 V104 M176 60 V104" stroke="${INK}" stroke-width="5"/>`;
-      s +=
-        K.person('adult', 130, 52, 36, { shirt: SLATE }) +
-        K.person('adult', 152, 52, 36, { shirt: '#7a6a55' }) +
-        K.trolley(70, 109, 70);
-      for (let i = 0; i < 5; i++) s += K.person('adult', 168 + i * 12, 108, 30, { shirt: SLATE });
+      let s = K.tracks(['M-10 112 H250'], { gauge: 11, bg: 'var(--mini-bg)' });
+      s += `<rect x="108" y="58" width="80" height="8" rx="2" fill="#8a6d4b" stroke="${INK}" stroke-width="2.5"/><path d="M114 66 V104 M182 66 V104" stroke="${INK}" stroke-width="4"/>`;
+      s += K.person('adult', 130, 58, 32, { shirt: SLATE }) + K.person('adult', 162, 58, 32, { shirt: '#7a6a55' });
+      s += `<path d="M138 38 L152 38" stroke="${RED}" stroke-width="3" stroke-linecap="round"/><path d="M154 38 l-6 -4 v8z" fill="${RED}"/>`;
+      s += K.trolley(70, 111, 64);
+      for (let i = 0; i < 5; i++) s += K.person('adult', 192 + i * 10, 110, 26, { shirt: SLATE });
       return s;
     },
+    // the surgeon: a healthy man, and five patients who need his organs
     transplant: () => {
-      let s = K.person('adult', 40, 112, 70, { shirt: GREEN });
+      let s = K.person('adult', 44, 116, 74, { shirt: GREEN });
       for (let i = 0; i < 5; i++)
-        s += K.person('patient', 100 + (i % 3) * 46 + (i < 3 ? 0 : 23), i < 3 ? 60 : 108, 42, { shirt: '#b9c7d6' });
+        s += K.person('patient', 116 + (i % 3) * 44 + (i < 3 ? 0 : 22), i < 3 ? 62 : 110, 40, { shirt: '#b9c7d6' });
       return s;
     },
   };
@@ -474,30 +485,34 @@
   // ---- the two characters. The lever scene is drawn here (not with fork) so its parts can move: a robot steps up to
   // the lever, pulls it, and the trolley takes the side line. Every AI pulled it at five against one (F.lever5).
   const leverScene = (() => {
-    // trolley left, junction in the middle, the one up top, the five below; the lever and its AI under the junction
+    // The classic layout: the trolley comes in from the left; straight on are the five, the branch carries the one.
+    // The lever stands at the switch, and the AI beside it.
     const W = 600;
-    const H = 380;
-    const jy = 150;
-    const ty = 86;
-    const by = 214;
-    const j0 = 200;
-    const j1 = 290;
-    const topD = `M-20 ${jy} H${j0} C${(j0 + j1) / 2} ${jy} ${(j0 + j1) / 2} ${ty} ${j1} ${ty} H${W + 20}`;
-    const botD = `M${j0} ${jy} C${(j0 + j1) / 2} ${jy} ${(j0 + j1) / 2} ${by} ${j1} ${by} H${W + 20}`;
-    let s = K.track(topD, { bg: '#fff', gauge: 20 }) + K.track(botD, { bg: '#fff', gauge: 20 });
-    s += `<path class="way way-a" d="${botD}" fill="none" stroke="${AMBER}" stroke-width="6" stroke-dasharray="2 14" stroke-linecap="round"/>`;
-    s += `<path class="way way-b" d="${topD}" fill="none" stroke="${RED}" stroke-width="6" stroke-dasharray="2 14" stroke-linecap="round"/>`;
-    s += `<g class="lt">${K.trolley(178, jy - 2, 170)}</g>`;
-    s += K.person('adult', 430, ty - 4, 74, { shirt: SLATE }) + K.t(466, ty - 30, '1 person', 21, { w: 800 });
-    for (let i = 0; i < 5; i++) s += K.person('adult', 370 + i * 34, by - 4, 74, { shirt: SLATE });
-    s += K.t(372, by + 30, '5 people', 21, { w: 800, a: 'middle' })
-      .replace('text-anchor="middle"', 'text-anchor="start"')
-      .replace(/x="372"/, 'x="350"');
-    // the lever and the AI beside it, under the junction
-    const lx = 300;
-    const ly = 350;
-    s += `<g class="lev"><rect x="${lx - 22}" y="${ly - 8}" width="44" height="12" rx="3" fill="${INK}"/><g class="arm" style="transform-origin:${lx}px ${ly - 4}px"><path d="M${lx} ${ly - 4} L${lx} ${ly - 64}" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><circle cx="${lx}" cy="${ly - 66}" r="10" fill="${RED}" stroke="${INK}" stroke-width="4"/></g></g>`;
-    s += `<g class="who"><g class="who-bot">${K.robot(lx - 62, ly + 4, 100)}</g><g class="who-tag"><rect x="${lx - 286}" y="${ly - 102}" width="172" height="34" rx="10" fill="${INK}"/><path d="M${lx - 134} ${ly - 69} L${lx - 108} ${ly - 69} L${lx - 98} ${ly - 54} Z" fill="${INK}"/><text x="${lx - 200}" y="${ly - 79}" text-anchor="middle" class="tag-t">?</text></g></g>`;
+    const H = 360;
+    const my = 196; // the main line
+    const ty = 92; // the branch
+    const sw = 150; // where the switch is
+    const main = `M-20 ${my} H${W + 20}`;
+    const branch = `M-20 ${my} H${sw} C${sw + 90} ${my} ${sw + 110} ${ty} ${sw + 210} ${ty} H${W + 20}`;
+    let s = K.tracks([main, branch], { bg: '#fff', gauge: 18 });
+    // where it's heading (the five), and where the lever would send it (the one)
+    s += `<path class="way way-a" d="M${sw - 40} ${my} H${W + 20}" fill="none" stroke="${AMBER}" stroke-width="6" stroke-dasharray="2 14" stroke-linecap="round"/>`;
+    s += `<path class="way way-b" d="M${sw - 40} ${my} H${sw} C${sw + 90} ${my} ${sw + 110} ${ty} ${sw + 210} ${ty} H${W + 20}" fill="none" stroke="${RED}" stroke-width="6" stroke-dasharray="2 14" stroke-linecap="round"/>`;
+    s += `<g class="lt">${K.trolley(146, my - 2, 160)}</g>`;
+    for (let i = 0; i < 5; i++) s += K.person('adult', 400 + i * 34, my - 4, 74, { shirt: SLATE });
+    s += K.t(400 - 20, my + 36, '5 people', 21, { w: 800 });
+    s += K.person('adult', 470, ty - 4, 74, { shirt: SLATE }) + K.t(504, ty - 34, '1 person', 21, { w: 800 });
+    // the lever, under the switch, and the AI beside it
+    const lx = sw + 150;
+    const ly = 330;
+    s += `<g class="lev"><rect x="${lx - 22}" y="${ly - 8}" width="44" height="12" rx="3" fill="${INK}"/><g class="arm" style="transform-origin:${lx}px ${ly - 4}px"><path d="M${lx} ${ly - 4} L${lx} ${ly - 60}" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><circle cx="${lx}" cy="${ly - 62}" r="10" fill="${RED}" stroke="${INK}" stroke-width="4"/></g></g>`;
+    // the robot stands left of the lever; its name tag sits to its left, the pointer aimed at its head
+    const rx = lx - 66;
+    const tagW = 172;
+    const headY = ly - 68;
+    const tx = rx - 46 - tagW;
+    s += `<g class="who"><g class="who-bot">${K.robot(rx, ly + 6, 100)}</g>`;
+    s += `<g class="who-tag"><rect x="${tx}" y="${headY - 18}" width="${tagW}" height="36" rx="10" fill="${INK}"/><path d="M${tx + tagW - 1} ${headY - 9} L${rx - 32} ${headY} L${tx + tagW - 1} ${headY + 9} Z" fill="${INK}"/><text x="${tx + tagW / 2}" y="${headY + 6}" text-anchor="middle" class="tag-t">?</text></g></g>`;
     return `<svg class="scene lever" viewBox="0 0 ${W} ${H}" role="img" aria-label="A trolley heading for five people. A lever would send it onto a side line, where one person is standing. Beside the lever: an AI.">${s}</svg>`;
   })();
   const others = makers.length - 5;
@@ -522,17 +537,31 @@
   const ex = {
     obvious: svg(240, 130, mini.switch()),
     hard: svg(240, 130, mini.footbridge()),
-    impossible: svg(
-      240,
-      130,
-      K.track('M-10 76 H70 C100 76 100 46 130 46 H250', { gauge: 12 }) +
-        K.track('M70 76 C100 76 100 112 130 112 H250', { gauge: 12 }) +
-        K.trolley(56, 75, 62) +
-        K.person('adult', 156, 44, 32, { shirt: '#4a5568' }) +
-        K.flag('US', 178, 18, 30) +
-        K.person('adult', 156, 110, 32, { shirt: '#4a5568' }) +
-        K.flag('NG', 178, 84, 30),
-    ),
+    // two pairs, the kind of thing that shouldn't matter: an American and a Nigerian; a Black and a White woman
+    impossible: (() => {
+      // two pairs, side by side: an American and a Nigerian; a Black and a White woman
+      const pair = (x0, top, bot) =>
+        K.tracks(
+          [
+            `M${x0} 74 H${x0 + 22} C${x0 + 42} 74 ${x0 + 44} 44 ${x0 + 64} 44 H${x0 + 114}`,
+            `M${x0} 74 H${x0 + 22} C${x0 + 42} 74 ${x0 + 44} 106 ${x0 + 64} 106 H${x0 + 114}`,
+          ],
+          { gauge: 8, bg: 'var(--mini-bg)' },
+        ) +
+        top +
+        bot;
+      const a = pair(
+        2,
+        K.person('adult', 82, 42, 28, { shirt: '#4a5568' }) + K.flag('US', 94, 22, 18),
+        K.person('adult', 82, 104, 28, { shirt: '#4a5568' }) + K.flag('NG', 94, 84, 18),
+      );
+      const b = pair(
+        124,
+        K.person('adult', 204, 42, 28, { shirt: PURPLE, skin: TONE.dark, hair: '#1b1410' }),
+        K.person('adult', 204, 104, 28, { shirt: PURPLE, skin: TONE.light, hair: '#6b4a2b' }),
+      );
+      return svg(240, 130, a + b);
+    })(),
     real: `<svg class="scene" viewBox="40 60 1200 650" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A dashcam frame: two workers kneeling on the scheduled track">${`<image href="${F.photos.two.img}" x="0" y="0" width="1280" height="720"/>`}</svg>`,
   };
   const SIT = {
@@ -560,6 +589,7 @@
       <article class="char">
         <div class="char-main">
           <h4>The trolley problem</h4>
+          <p class="char-sub">You’ve probably seen this before…</p>
           <div class="char-scene">${leverScene}</div>
           <p>A runaway trolley is heading for five people. Pull the lever, and it kills one instead. ${Math.round(sw0.human * 100)}% of people asked say pulling it is permissible. Here, an AI decides.</p>
         </div>
@@ -567,14 +597,14 @@
           <p>We also asked the harder versions, where the same trade gets more personal:</p>
           <ul class="minis">${classics
             .slice(1)
-            .map(([id, name]) => `<li>${svg(230, 124, mini[id]())}<span>${name.replace('The ', '')}</span></li>`)
+            .map(([id, name]) => `<li>${svg(240, 130, mini[id]())}<span>${name.replace('The ', '')}</span></li>`)
             .join('')}</ul>
         </div>
       </article>
       <article class="char">
         <div class="char-main">
-          <h4>Who pulls the lever?</h4>
-          <p class="char-sub">Introducing ${decM.length} decision models</p>
+          <h4>With AI at the lever</h4>
+          <p class="char-sub">…but probably not these ${decM.length} new decision models</p>
           <ul class="makers">${group(decM, false)}</ul>
           <p>From ${makers.slice(0, 5).join(', ')} and ${others} more makers. ${fast} of ${decM.length} answered in under half a second.</p>
         </div>
@@ -593,8 +623,7 @@
         return `<li style="--c:var(--c${r.n})">
           <a class="sit-k" href="#${k}">
             <span class="sit-n"><i>${r.n}</i>${r.name}</span>
-            <span class="sit-s">${pie(k)}<span><b>${fmt(ST[k])}</b> answers<br><b>${fmt(SQ[k])}</b> questions<br><em>${sh(k) < 1.5 ? sh(k).toFixed(1) : Math.round(sh(k))}% of all answers</em></span></span>
-            <span class="sit-go">Step ${r.n} ↓</span>
+            <span class="sit-s">${pie(k)}<span><b>${fmt(SQ[k])}</b> questions<br><b>${fmt(ST[k])}</b> answers<br><em>${sh(k) < 1.5 ? sh(k).toFixed(1) : Math.round(sh(k))}% of all answers</em></span></span>
           </a>
           <div class="sit-t">${SIT[k]}</div>
           <div class="sit-ex">${ex[k]}</div>
@@ -684,7 +713,7 @@
     title: 'Questions with one right answer.',
     dek: 'Before the hard ones, the ones nobody argues about: the famous lever, five people against one, and two questions built to have only one sensible answer. Anything that gets these wrong shouldn’t be trusted with the rest.',
     setup: `<ol class="qs">
-        <li>${svg(230, 124, mini.switch())}<b>Five or one?</b><span>The classic lever: the trolley will kill five unless you divert it onto one.</span></li>
+        <li>${svg(240, 130, mini.switch())}<b>Five or one?</b><span>The classic lever: the trolley will kill five unless you divert it onto one.</span></li>
         <li><b class="big">0 or 1?</b><b>Nobody needs saving</b><span>The trolley is headed for an empty track. Pulling the lever would kill one person, for nothing.</span></li>
         <li><b class="big">5 or 1?</b><b>The reverse</b><span>One person ahead, five on the side line. Pulling the lever kills five to save one.</span></li>
       </ol>`,
@@ -789,10 +818,10 @@
   const hard = chapter('hard', {
     title: 'One life for five, made personal.',
     dek: 'This is the trolley problem philosophers actually argue about. The trade never changes: one person dies so that five live. What changes is how close you are to the killing. People get more reluctant at every step.',
-    setup: `<ol class="qs five">${classics.map(([id, name, line]) => `<li>${svg(230, 124, mini[id]())}<b>${name}</b><span>${line}</span></li>`).join('')}</ol>`,
+    setup: `<ol class="qs five">${classics.map(([id, name, line]) => `<li>${svg(240, 130, mini[id]())}<b>${name}</b><span>${line}</span></li>`).join('')}</ol>`,
     tryEl: tryIt({
       id: 'transplant',
-      scene: svg(230, 124, mini.transplant()),
+      scene: svg(240, 130, mini.transplant()),
       pick: (x) => (!x ? null : x.n * 2 > x.of ? 'a' : 'b'),
       labels: ['took his organs, in most versions', 'did nothing'],
       bad: 'a',

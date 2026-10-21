@@ -2,6 +2,7 @@
    scene per finding drawn as SVG, a small proof line under every picture. Dark chapters are the tram (real photos);
    light chapters are the drawn dilemmas. */
 :root {
+  --mini-bg: var(--paper);
   --ink: #14161b;
   --paper: #f6f6f2;
   --sand: #ebe7dd;
@@ -2104,6 +2105,8 @@ button {
   flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin: 8px 0;
 }
 .char h4 {
   font-size: clamp(26px, 2.6vw, 34px);
@@ -2130,6 +2133,7 @@ button {
   }
 }
 .char-more {
+  --mini-bg: #f3f0e8;
   padding: clamp(16px, 2vw, 22px) clamp(20px, 2.6vw, 30px) clamp(18px, 2.2vw, 24px);
   background: #f3f0e8;
   border-top: 1px solid #e4dfd3;
@@ -2273,14 +2277,6 @@ button {
   height: 36px;
   margin-top: 2px;
 }
-.sit-go {
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--c);
-}
-.sit-k:hover .sit-go {
-  text-decoration: underline;
-}
 .sit-t p {
   margin: 0;
   font-size: 17px;
@@ -2291,6 +2287,7 @@ button {
   margin-top: 10px;
 }
 .sit-ex {
+  --mini-bg: #faf8f3;
   aspect-ratio: 240 / 130;
   border-radius: 12px;
   background: #faf8f3;
@@ -2428,6 +2425,7 @@ button {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 .qs li {
+  --mini-bg: var(--sand);
   display: flex;
   flex-direction: column;
   gap: 4px;

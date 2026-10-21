@@ -51,22 +51,45 @@ export function flag(code: string, x: number, y: number, w: number) {
   let g = '';
   switch (code) {
     case 'US':
-      for (let i = 0; i < 13; i++) g += `<rect y="${(i * h) / 13}" width="${w}" height="${h / 13 + 0.3}" fill="${i % 2 ? '#fff' : '#b22234'}"/>`;
+      for (let i = 0; i < 13; i++)
+        g += `<rect y="${(i * h) / 13}" width="${w}" height="${h / 13 + 0.3}" fill="${i % 2 ? '#fff' : '#b22234'}"/>`;
       g += `<rect width="${w * 0.42}" height="${(h * 7) / 13}" fill="#3c3b6e"/>`;
-      for (let r = 0; r < 4; r++) for (let c = 0; c < 5; c++) g += `<circle cx="${w * 0.05 + c * w * 0.08}" cy="${h * 0.07 + r * h * 0.115}" r="${w * 0.016}" fill="#fff"/>`;
+      for (let r = 0; r < 4; r++)
+        for (let c = 0; c < 5; c++)
+          g += `<circle cx="${w * 0.05 + c * w * 0.08}" cy="${h * 0.07 + r * h * 0.115}" r="${w * 0.016}" fill="#fff"/>`;
       break;
-    case 'NG': g = v('#008751', '#fff', '#008751'); break;
-    case 'DE': g = hz('#000', '#dd0000', '#ffce00'); break;
-    case 'FR': g = v('#0055a4', '#fff', '#ef4135'); break;
-    case 'IT': g = v('#009246', '#fff', '#ce2b37'); break;
-    case 'IN': g = hz('#ff9933', '#fff', '#138808') + `<circle cx="${w / 2}" cy="${h / 2}" r="${h * 0.12}" fill="none" stroke="#000080" stroke-width="${h * 0.03}"/>`; break;
-    case 'JP': g = `<rect width="${w}" height="${h}" fill="#fff"/><circle cx="${w / 2}" cy="${h / 2}" r="${h * 0.3}" fill="#bc002d"/>`; break;
+    case 'NG':
+      g = v('#008751', '#fff', '#008751');
+      break;
+    case 'DE':
+      g = hz('#000', '#dd0000', '#ffce00');
+      break;
+    case 'FR':
+      g = v('#0055a4', '#fff', '#ef4135');
+      break;
+    case 'IT':
+      g = v('#009246', '#fff', '#ce2b37');
+      break;
+    case 'IN':
+      g =
+        hz('#ff9933', '#fff', '#138808') +
+        `<circle cx="${w / 2}" cy="${h / 2}" r="${h * 0.12}" fill="none" stroke="#000080" stroke-width="${h * 0.03}"/>`;
+      break;
+    case 'JP':
+      g = `<rect width="${w}" height="${h}" fill="#fff"/><circle cx="${w / 2}" cy="${h / 2}" r="${h * 0.3}" fill="#bc002d"/>`;
+      break;
     case 'PK':
       g = `<rect width="${w}" height="${h}" fill="#01411c"/><rect width="${w * 0.25}" height="${h}" fill="#fff"/><circle cx="${w * 0.62}" cy="${h * 0.5}" r="${h * 0.3}" fill="#fff"/><circle cx="${w * 0.68}" cy="${h * 0.43}" r="${h * 0.26}" fill="#01411c"/><polygon points="${star(w * 0.74, h * 0.36, h * 0.1)}" fill="#fff"/>`;
       break;
     case 'CN':
       g = `<rect width="${w}" height="${h}" fill="#ee1c25"/><polygon points="${star(w * 0.17, h * 0.28, h * 0.16)}" fill="#ffde00"/>`;
-      for (const [a, b] of [[0.33, 0.1], [0.4, 0.2], [0.4, 0.35], [0.33, 0.45]]) g += `<polygon points="${star(w * a!, h * b!, h * 0.055)}" fill="#ffde00"/>`;
+      for (const [a, b] of [
+        [0.33, 0.1],
+        [0.4, 0.2],
+        [0.4, 0.35],
+        [0.33, 0.45],
+      ])
+        g += `<polygon points="${star(w * a!, h * b!, h * 0.055)}" fill="#ffde00"/>`;
       break;
     case 'BR':
       g = `<rect width="${w}" height="${h}" fill="#009c3b"/><polygon points="${w * 0.08},${h / 2} ${w / 2},${h * 0.1} ${w * 0.92},${h / 2} ${w / 2},${h * 0.9}" fill="#ffdf00"/><circle cx="${w / 2}" cy="${h / 2}" r="${h * 0.22}" fill="#002776"/>`;
@@ -75,32 +98,57 @@ export function flag(code: string, x: number, y: number, w: number) {
       g = `<rect width="${w}" height="${h}" fill="#012169"/><path d="M0 0L${w} ${h}M${w} 0L0 ${h}" stroke="#fff" stroke-width="${h * 0.2}"/><path d="M0 0L${w} ${h}M${w} 0L0 ${h}" stroke="#c8102e" stroke-width="${h * 0.07}"/><path d="M${w / 2} 0V${h}M0 ${h / 2}H${w}" stroke="#fff" stroke-width="${h * 0.33}"/><path d="M${w / 2} 0V${h}M0 ${h / 2}H${w}" stroke="#c8102e" stroke-width="${h * 0.2}"/>`;
       break;
     case 'RAINBOW':
-      ['#e40303', '#ff8c00', '#ffed00', '#008026', '#004dff', '#750787'].forEach((c, i) => (g += `<rect y="${(i * h) / 6}" width="${w}" height="${h / 6 + 0.3}" fill="${c}"/>`));
+      ['#e40303', '#ff8c00', '#ffed00', '#008026', '#004dff', '#750787'].forEach(
+        (c, i) => (g += `<rect y="${(i * h) / 6}" width="${w}" height="${h / 6 + 0.3}" fill="${c}"/>`),
+      );
       break;
     case 'TRANS':
-      ['#5bcefa', '#f5a9b8', '#fff', '#f5a9b8', '#5bcefa'].forEach((c, i) => (g += `<rect y="${(i * h) / 5}" width="${w}" height="${h / 5 + 0.3}" fill="${c}"/>`));
+      ['#5bcefa', '#f5a9b8', '#fff', '#f5a9b8', '#5bcefa'].forEach(
+        (c, i) => (g += `<rect y="${(i * h) / 5}" width="${w}" height="${h / 5 + 0.3}" fill="${c}"/>`),
+      );
       break;
   }
   const id = `c${Math.random().toString(36).slice(2, 8)}`;
   return `<g transform="translate(${x} ${y})"><clipPath id="${id}"><rect width="${w}" height="${h}" rx="${w * 0.04}"/></clipPath><g clip-path="url(#${id})">${g}</g><rect width="${w}" height="${h}" rx="${w * 0.04}" fill="none" stroke="${INK}" stroke-width="${Math.max(2, w * 0.04)}"/></g>`;
 }
 export const FLAG: Record<string, string> = {
-  American: 'US', Nigerian: 'NG', German: 'DE', French: 'FR', Italian: 'IT', Indian: 'IN', Japanese: 'JP', Pakistani: 'PK', Chinese: 'CN', Brazilian: 'BR', British: 'GB',
+  American: 'US',
+  Nigerian: 'NG',
+  German: 'DE',
+  French: 'FR',
+  Italian: 'IT',
+  Indian: 'IN',
+  Japanese: 'JP',
+  Pakistani: 'PK',
+  Chinese: 'CN',
+  Brazilian: 'BR',
+  British: 'GB',
 };
 
 /** A faith symbol in a white disc, r = radius. */
 export function faith(kind: 'christian' | 'muslim' | 'jewish' | 'hindu', x: number, y: number, r: number) {
   const k = r / 20;
   let g = `<circle r="20" fill="#fff" stroke="${INK}" stroke-width="2.5"/>`;
-  if (kind === 'christian') g += `<rect x="-2.6" y="-13" width="5.2" height="26" fill="${INK}"/><rect x="-9" y="-6.5" width="18" height="5.2" fill="${INK}"/>`;
-  if (kind === 'muslim') g += `<circle cx="-2" cy="0" r="11" fill="${INK}"/><circle cx="2.5" cy="-1.5" r="9" fill="#fff"/><polygon points="${star(9, -1, 4.6)}" fill="${INK}"/>`;
-  if (kind === 'jewish') g += `<polygon points="0,-12 10.4,6 -10.4,6" fill="none" stroke="${INK}" stroke-width="2.6"/><polygon points="0,12 10.4,-6 -10.4,-6" fill="none" stroke="${INK}" stroke-width="2.6"/>`;
-  if (kind === 'hindu') g += `<text x="0" y="8" text-anchor="middle" font-family="'Devanagari MT'" font-weight="700" font-size="25" fill="${INK}">ॐ</text>`;
+  if (kind === 'christian')
+    g += `<rect x="-2.6" y="-13" width="5.2" height="26" fill="${INK}"/><rect x="-9" y="-6.5" width="18" height="5.2" fill="${INK}"/>`;
+  if (kind === 'muslim')
+    g += `<circle cx="-2" cy="0" r="11" fill="${INK}"/><circle cx="2.5" cy="-1.5" r="9" fill="#fff"/><polygon points="${star(9, -1, 4.6)}" fill="${INK}"/>`;
+  if (kind === 'jewish')
+    g += `<polygon points="0,-12 10.4,6 -10.4,6" fill="none" stroke="${INK}" stroke-width="2.6"/><polygon points="0,12 10.4,-6 -10.4,-6" fill="none" stroke="${INK}" stroke-width="2.6"/>`;
+  if (kind === 'hindu')
+    g += `<text x="0" y="8" text-anchor="middle" font-family="'Devanagari MT'" font-weight="700" font-size="25" fill="${INK}">ॐ</text>`;
   return `<g transform="translate(${x} ${y}) scale(${k})">${g}</g>`;
 }
 
 export type Kind = 'adult' | 'child' | 'elder' | 'wheelchair' | 'worker' | 'suit' | 'poor' | 'patient';
-export type PersonOpts = { shirt?: string; skin?: string; ghost?: boolean; flag?: string; badge?: string; hair?: string };
+export type PersonOpts = {
+  shirt?: string;
+  skin?: string;
+  ghost?: boolean;
+  flag?: string;
+  badge?: string;
+  hair?: string;
+};
 /** A person standing on (x, y), `h` tall at adult scale. Blank face. */
 export function person(kind: Kind, x: number, y: number, h: number, o: PersonOpts = {}) {
   const k = h / 130;
@@ -108,7 +156,8 @@ export function person(kind: Kind, x: number, y: number, h: number, o: PersonOpt
   const skin = o.ghost ? '#e7e1d6' : (o.skin ?? NEUTRAL);
   const body = o.ghost ? '#ddd6c9' : (o.shirt ?? SLATE);
   const hair = o.ghost ? '#d6cfc2' : (o.hair ?? '#2b2118');
-  const head = (cx: number, cy: number, r: number) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${skin}" stroke="${dark}" stroke-width="4"/>`;
+  const head = (cx: number, cy: number, r: number) =>
+    `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${skin}" stroke="${dark}" stroke-width="4"/>`;
   let g = '';
   if (kind === 'wheelchair') {
     g += `<circle cx="-4" cy="-30" r="30" fill="none" stroke="${dark}" stroke-width="7"/><circle cx="-4" cy="-30" r="5" fill="${dark}"/><circle cx="36" cy="-7" r="7" fill="${dark}"/>`;
@@ -116,7 +165,8 @@ export function person(kind: Kind, x: number, y: number, h: number, o: PersonOpt
     g += `<path d="M-24 -62 V-104 Q-24 -114 -14 -114 H2 Q12 -114 12 -104 V-62 Z" fill="${body}" stroke="${dark}" stroke-width="4"/>`;
     g += `<path d="M-8 -66 H28 V-20" fill="none" stroke="${dark}" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 -14 h10" stroke="${dark}" stroke-width="8" stroke-linecap="round"/>`;
     g += `<path d="M4 -96 L20 -76" stroke="${body}" stroke-width="12" stroke-linecap="round"/><circle cx="22" cy="-73" r="6" fill="${skin}" stroke="${dark}" stroke-width="3"/>`;
-    g += head(-6, -130, 17) + `<path d="M-23 -132 Q-22 -150 -6 -150 Q10 -150 11 -132 Q2 -142 -23 -132Z" fill="${hair}"/>`;
+    g +=
+      head(-6, -130, 17) + `<path d="M-23 -132 Q-22 -150 -6 -150 Q10 -150 11 -132 Q2 -142 -23 -132Z" fill="${hair}"/>`;
     if (o.badge) g += `<g transform="translate(-6 -88)">${o.badge}</g>`;
     return `<g transform="translate(${x} ${y}) scale(${k})">${g}</g>`;
   }
@@ -141,18 +191,26 @@ export function person(kind: Kind, x: number, y: number, h: number, o: PersonOpt
   if (!o.flag) p += `<circle cx="36" cy="-54" r="6.5" fill="${skin}" stroke="${dark}" stroke-width="3"/>`;
   // torso
   p += `<path d="M-26 -94 Q-26 -106 -14 -106 H14 Q26 -106 26 -94 V-48 H-26 Z" fill="${body}" stroke="${dark}" stroke-width="4"/>`;
-  if (kind === 'worker' && !o.ghost) p += `<path d="M-24 -80 H24 M-24 -66 H24" stroke="#fff" stroke-width="6"/><path d="M-10 -106 V-50 M10 -106 V-50" stroke="#fff" stroke-width="5" opacity=".0"/>`;
-  if (kind === 'suit' && !o.ghost) p += `<path d="M-9 -106 L0 -86 L9 -106 Z" fill="#fff"/><path d="M-3 -98 L0 -66 L3 -98 Z" fill="${RED}"/><path d="M-26 -94 L-8 -60 M26 -94 L8 -60" stroke="#2a2f3a" stroke-width="3"/>`;
-  if (kind === 'poor' && !o.ghost) p += `<rect x="-14" y="-76" width="12" height="10" fill="#8a7a62" stroke="${dark}" stroke-width="2"/><rect x="6" y="-62" width="10" height="9" fill="#8a7a62" stroke="${dark}" stroke-width="2"/>`;
+  if (kind === 'worker' && !o.ghost)
+    p += `<path d="M-24 -80 H24 M-24 -66 H24" stroke="#fff" stroke-width="6"/><path d="M-10 -106 V-50 M10 -106 V-50" stroke="#fff" stroke-width="5" opacity=".0"/>`;
+  if (kind === 'suit' && !o.ghost)
+    p += `<path d="M-9 -106 L0 -86 L9 -106 Z" fill="#fff"/><path d="M-3 -98 L0 -66 L3 -98 Z" fill="${RED}"/><path d="M-26 -94 L-8 -60 M26 -94 L8 -60" stroke="#2a2f3a" stroke-width="3"/>`;
+  if (kind === 'poor' && !o.ghost)
+    p += `<rect x="-14" y="-76" width="12" height="10" fill="#8a7a62" stroke="${dark}" stroke-width="2"/><rect x="6" y="-62" width="10" height="9" fill="#8a7a62" stroke="${dark}" stroke-width="2"/>`;
   if (o.badge) p += `<g transform="translate(0 -78)">${o.badge}</g>`;
-  if (elder) p += `<path d="M44 -56 V0 M44 -56 Q44 -66 34 -66" fill="none" stroke="${dark}" stroke-width="6" stroke-linecap="round"/>`;
+  if (elder)
+    p += `<path d="M44 -56 V0 M44 -56 Q44 -66 34 -66" fill="none" stroke="${dark}" stroke-width="6" stroke-linecap="round"/>`;
   // neck, head, hair
   p += `<rect x="-6" y="-112" width="12" height="10" fill="${skin}" stroke="${dark}" stroke-width="3"/>`;
   p += head(0, child ? -128 : -126, child ? 23 : 19);
-  if (elder && !o.ghost) p += `<path d="M-20 -124 Q-20 -150 0 -150 Q20 -150 20 -124 Q14 -138 0 -140 Q-14 -138 -20 -124Z" fill="#fff" stroke="${dark}" stroke-width="3"/>`;
-  else if (kind === 'worker' && !o.ghost) p += `<path d="M-22 -128 Q-22 -152 0 -152 Q22 -152 22 -128 Z" fill="${AMBER}" stroke="${dark}" stroke-width="4"/><rect x="-27" y="-132" width="54" height="8" rx="4" fill="${AMBER}" stroke="${dark}" stroke-width="3"/>`;
-  else if (child && !o.ghost) p += `<path d="M-23 -128 Q-23 -153 0 -153 Q23 -153 23 -128 Q12 -140 0 -140 Q-12 -140 -23 -128Z" fill="${hair}"/><circle cx="17" cy="-148" r="7" fill="${hair}"/>`;
-  else if (!o.ghost) p += `<path d="M-20 -126 Q-20 -148 0 -148 Q20 -148 20 -126 Q12 -138 0 -138 Q-12 -138 -20 -126Z" fill="${hair}"/>`;
+  if (elder && !o.ghost)
+    p += `<path d="M-20 -124 Q-20 -150 0 -150 Q20 -150 20 -124 Q14 -138 0 -140 Q-14 -138 -20 -124Z" fill="#fff" stroke="${dark}" stroke-width="3"/>`;
+  else if (kind === 'worker' && !o.ghost)
+    p += `<path d="M-22 -128 Q-22 -152 0 -152 Q22 -152 22 -128 Z" fill="${AMBER}" stroke="${dark}" stroke-width="4"/><rect x="-27" y="-132" width="54" height="8" rx="4" fill="${AMBER}" stroke="${dark}" stroke-width="3"/>`;
+  else if (child && !o.ghost)
+    p += `<path d="M-23 -128 Q-23 -153 0 -153 Q23 -153 23 -128 Q12 -140 0 -140 Q-12 -140 -23 -128Z" fill="${hair}"/><circle cx="17" cy="-148" r="7" fill="${hair}"/>`;
+  else if (!o.ghost)
+    p += `<path d="M-20 -126 Q-20 -148 0 -148 Q20 -148 20 -126 Q12 -138 0 -138 Q-12 -138 -20 -126Z" fill="${hair}"/>`;
   if (o.flag && !o.ghost) {
     // holding a flag on a pole in the right hand
     p += `<path d="M36 -54 V-200" stroke="${dark}" stroke-width="5" stroke-linecap="round"/><circle cx="36" cy="-54" r="6.5" fill="${skin}" stroke="${dark}" stroke-width="3"/>`;
@@ -212,10 +270,29 @@ export function track(d: string, o: { hot?: boolean; gauge?: number; bg?: string
   const g = o.gauge ?? 30;
   const rail = o.hot ? RED : '#5f646b';
   return (
-    (o.hot ? `<path d="${d}" fill="none" stroke="${RED}" stroke-width="${g * 2.6}" stroke-linecap="round" opacity=".15"/>` : '') +
+    (o.hot
+      ? `<path d="${d}" fill="none" stroke="${RED}" stroke-width="${g * 2.6}" stroke-linecap="round" opacity=".15"/>`
+      : '') +
     `<path d="${d}" fill="none" stroke="#a8916d" stroke-width="${g * 1.55}" stroke-dasharray="9 13"/>` +
     `<path d="${d}" fill="none" stroke="${rail}" stroke-width="${g + 7}" stroke-linecap="round"/>` +
     `<path d="${d}" fill="none" stroke="${o.bg ?? PAPER}" stroke-width="${g - 5}" stroke-linecap="round"/>`
+  );
+}
+/**
+ * Several routes that share track, drawn as one railway: every route's ties, then every rail, then every gap between
+ * rails. Drawing them in layers (not route by route) lets a branch leave the main line the way a real switch does,
+ * without one route's gap cutting through another's rails. Give every route its full length from the same start, so
+ * the shared stretch is drawn identically.
+ */
+export function tracks(ds: string[], o: { hot?: boolean; gauge?: number; bg?: string } = {}) {
+  const g = o.gauge ?? 30;
+  const rail = o.hot ? RED : '#5f646b';
+  const each = (attrs: string) => ds.map((d) => `<path d="${d}" fill="none" ${attrs}/>`).join('');
+  return (
+    (o.hot ? each(`stroke="${RED}" stroke-width="${g * 2.6}" stroke-linecap="round" opacity=".15"`) : '') +
+    each(`stroke="#a8916d" stroke-width="${g * 1.55}" stroke-dasharray="9 13"`) +
+    each(`stroke="${rail}" stroke-width="${g + 7}"`) +
+    each(`stroke="${o.bg ?? PAPER}" stroke-width="${g - 5}"`)
   );
 }
 export const svg = (w: number, h: number, body: string) =>
