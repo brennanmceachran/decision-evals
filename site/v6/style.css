@@ -2286,6 +2286,9 @@ button {
 .sit-t p + p {
   margin-top: 10px;
 }
+.sit-t b {
+  color: var(--ink);
+}
 .sit-exs {
   display: grid;
   gap: 10px;

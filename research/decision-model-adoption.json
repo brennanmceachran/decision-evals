@@ -280,5 +280,19 @@
       ]
     ],
     "note": "Sep 15-16: Jev not yet on OpenRouter (0). Used for Sep 15-20 only; from Sep 21 the rankings chart (which matches) is used."
+  },
+  "valuation": {
+    "date": "2026-10-09",
+    "amount": "$870 million",
+    "valuation": "$7.5 billion",
+    "lead": "Andreessen Horowitz",
+    "daysAfterLaunch": 24,
+    "source": "https://www.unite.ai/typesafe-ai-raises-870m-series-a-at-7-5b-valuation-to-ship-more-ai-models/"
+  },
+  "vercel": {
+    "date": "2026-10-15",
+    "share": 35.3,
+    "text": "Jev was the fastest-adopted model in AI Gateway history, reaching 35% of paid teams in its first two weeks",
+    "source": "https://vercel.com/blog/ai-gateway-production-index-october-2026"
   }
 }

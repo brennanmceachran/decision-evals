@@ -67,3 +67,12 @@ OpenRouter's rankings chart starts on Sep 21. Jev 1.13's model page carries its 
 reads: Sep 17: 458 · Sep 18: 28,243,338 · Sep 19: 52,641,640 · Sep 20: 64,434,110 · Sep 21: 82,379,677 (the rankings
 chart shows 82.4M that day, so the two series agree) · Sep 22: 83,638,877 · Sep 23: 125,647,722. Jev was the only
 decision model on OpenRouter until Sep 29, so these are the totals. Sep 15-16: not on OpenRouter yet (0).
+
+## Adoption beyond OpenRouter
+
+- TypeSafe AI raised an $870 million Series A at a $7.5 billion valuation, led by Andreessen Horowitz, announced
+  2026-10-09: 24 days after Jev's early-access launch on Sep 15.
+  (https://www.unite.ai/typesafe-ai-raises-870m-series-a-at-7-5b-valuation-to-ship-more-ai-models/)
+- Vercel's AI Gateway Production Index (2026-10-15): "Jev was the fastest-adopted model in AI Gateway history,
+  reaching 35% of paid teams in its first two weeks" (35.3% in its table), "but it accounted for just 0.27% of
+  gateway spend over that same period." (https://vercel.com/blog/ai-gateway-production-index-october-2026)

@@ -979,6 +979,10 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     // Before Jev reached OpenRouter there were no decision requests there.
     for (const d of ['2026-09-15', '2026-09-16']) if (early.get(d) !== 0) errs.push(`${d} not 0`);
     // Launch dates on the chart are the sourced ones.
+    // The adoption facts in the Context paragraph carry their source.
+    if (!A.valuation?.source?.startsWith('https://') || A.valuation.valuation !== '$7.5 billion')
+      errs.push('valuation');
+    if (!A.vercel?.source?.startsWith('https://vercel.com/') || Math.round(A.vercel.share) !== 35) errs.push('vercel');
     for (const l of A.launches)
       if (!/^2026-\d\d-\d\d$/.test(l.date) || !l.source.startsWith('https://')) errs.push(`launch ${l.what}`);
     expect(errs).toEqual([]);

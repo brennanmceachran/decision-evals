@@ -583,10 +583,10 @@
     ],
   };
   const SIT = {
-    obvious: `<p>Questions with one right answer. The lever, with one to a thousand people on the track. The trick question: nobody on the track at all, so pulling the lever kills someone for nothing. Killing five to save one. And the same choices drawn as pictures, with no words.</p>`,
-    hard: `<p>The same trade every time, one life for five, made more personal: a loop, a trapdoor, pushing a man off a bridge, a surgeon taking a healthy patient’s organs. People get more reluctant at every step, so here we can compare the AIs with what people say.</p>`,
-    impossible: `<p>Two strangers, one on each track, alike except for one thing: race, nationality, religion, wealth, age, a disability. There is no right answer.</p><p>This is where a hidden bias hides, behind everything else. Put an American on the left track and a Nigerian on the right, and Microsoft’s AI sends the tram left: the American dies. Swap them, and it sends it left again: now the Nigerian dies. It never picked a person; it steered left, ${P(F.chance.msLeft[0], F.chance.msLeft[1])} of the time. So we asked about every pair ${F.design.versions} ways, with each person on each track, the buttons in both orders, four wordings, one against one, two or three, and ${F.design.placebo} pairs of made-up groups (“Group-B” against “Group-F”) to measure how far each AI leans when there is nothing to lean on. That is why this took ${Math.round(sh('impossible'))}% of the answers.</p>`,
-    real: `<p>The same choice, as a job. A tram depot’s log and a frame from the cab camera, the request a routing system would actually get: workers on the scheduled track, nobody on the other. Nothing said “people”.</p>`,
+    obvious: `<p><b>Nobody is on the track ahead.</b> Pulling the lever would kill one person, for nothing. Questions like this have one right answer. Most people agree on the lever, too, with five people on the track, or a thousand. Any AI that gets these wrong shouldn’t be trusted with the rest.</p>`,
+    hard: `<p><b>The trade is always one life for five.</b> What changes is how close you have to get: send the trolley round a loop where one man’s body stops it, open a trapdoor under him, push him off a bridge, take a healthy patient’s organs. People get more reluctant at every step. Do the AIs?</p>`,
+    impossible: `<p><b>Two strangers, one on each track.</b> They’re identical except for one thing: nationality, race, religion, wealth, age, a disability. There is no right answer, so a fair machine would be a coin toss.</p><p>Hidden bias hides here, behind everything else. Put an American on the left track and a Nigerian on the right, and Microsoft’s AI sends the tram left: the American dies. Swap them, and it sends it left again: now the Nigerian dies. It never chose a person. It steered left, ${P(F.chance.msLeft[0], F.chance.msLeft[1])} of the time.</p><p>So we asked about every pair ${F.design.versions} ways, swapping tracks, buttons and wording, and added ${F.design.placebo} pairs of made-up groups (“Group-B” against “Group-F”) to measure each AI’s lean when there is nothing to lean on. That is why this took ${Math.round(sh('impossible'))}% of all the answers.</p>`,
+    real: `<p><b>The same choice, as a job.</b> No trolley problem, no “people”: a tram depot’s routing request, a log line and a frame from the cab camera. The schedule sends the tram at two workers; the other track is empty. Which way?</p>`,
   };
   const study = document.createElement('section');
   study.className = 'chapter story';
@@ -597,7 +597,8 @@
 
     <h3>Context</h3>
     <p>Decision models don’t write anything. You give one a situation and a set of buttons; it presses one, in a fraction of a second, for a fraction of a cent. They’re sold for ${A.uses.list.slice(0, 3).join(', ')}.</p>
-    <p>The first, TypeSafe’s Jev, launched on ${mdy(A.launches[0].date)}. It’s named after William Stanley Jevons, who argued in 1865 that more efficient steam engines would make Britain burn more coal, not less. The bet is the same: make decisions cheap, and far more of them get handed to machines. Within four weeks OpenAI, Cloudflare, Perplexity and Microsoft had shipped their own.</p>
+    <p>The first, TypeSafe’s Jev, launched on ${mdy(A.launches[0].date)}. It’s named after William Stanley Jevons, who argued in 1865 that more efficient steam engines would make Britain burn more coal, not less. The bet is the same: make decisions cheap, and far more of them get handed to machines.</p>
+    <p>Developers took the bet. Within two weeks, Jev was in use at <a href="${A.vercel.source}">${Math.round(A.vercel.share)}% of paying teams</a> on Vercel’s AI gateway, the fastest uptake of any model there. ${A.valuation.daysAfterLaunch} days after launch, TypeSafe was <a href="${A.valuation.source}">valued at ${A.valuation.valuation}</a>. And within four weeks, OpenAI, Cloudflare, Perplexity and Microsoft had shipped their own.</p>
     ${reqChart}
     <p>Nobody sells them for life-or-death calls. But at a fraction of a cent a decision, they will end up wired into systems that make them. So we built a test.</p>
 
@@ -633,8 +634,8 @@
       </article>
     </div>
 
-    <h3>So we asked ${fmt(F.totals.answers)} times</h3>
-    <p>We wrote ${fmt(Object.values(SQ).reduce((a, b) => a + b, 0))} distinct questions and put each one to every AI that could answer it. The decision models answered everything twice, so we could tell a preference from noise. That came to ${fmt(F.totals.answers)} answers, in four kinds of situation, easiest first.</p>
+    <h3>So we asked ${fmt(F.totals.answers)} questions</h3>
+    <p>We wrote ${fmt(Object.values(SQ).reduce((a, b) => a + b, 0))} different questions and put every one to every AI that could answer it, and to the decision models twice, so we could tell a preference from noise. ${fmt(F.totals.answers)} asked and answered, in four kinds of situation, easiest first.</p>
     <ol class="sits">${['obvious', 'hard', 'impossible', 'real']
       .map((k) => {
         const r = RUNGS[k];
