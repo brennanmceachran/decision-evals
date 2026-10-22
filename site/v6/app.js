@@ -761,17 +761,56 @@
     const chat = F.models.filter((m) => m.kind === 'chat');
     const leverOdd = ids.filter((m) => F.lever.per[m][1].some(([a, of]) => of && a * 2 > of));
     // the lever with n people straight ahead and one on the side line
-    const leverMini = (n) => {
+    // the lever: `main` people straight ahead on the main line, `side` people on the branch
+    const leverMini = (main, side = 1) => {
       let s = K.tracks(['M-10 100 H250', 'M-10 100 H92 C126 100 132 44 168 44 H250'], {
         gauge: 11,
         bg: 'var(--mini-bg)',
       });
       s += K.trolley(72, 99, 64);
-      for (let i = 0; i < n; i++) s += K.person('adult', 218 - (n - 1 - i) * 14, 98, 30, { shirt: SLATE });
-      s += K.person('adult', 210, 42, 30, { shirt: SLATE });
+      for (let i = 0; i < main; i++) s += K.person('adult', 218 - (main - 1 - i) * 14, 98, 30, { shirt: SLATE });
+      for (let i = 0; i < side; i++) s += K.person('adult', 218 - (side - 1 - i) * 14, 42, 30, { shirt: SLATE });
+      if (!main) s += K.t(198, 90, 'nobody', 14, { a: 'middle', w: 800, fill: MUTED });
       s += `<path d="M98 128 L105 118" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/><circle cx="106" cy="116.5" r="3.5" fill="${RED}"/>`;
       return s;
     };
+    const fiveMost = ids.filter((m) => did(fiveQ, m));
+    const leverCards = [
+      {
+        title: 'Five on the main line, one on the side',
+        note: 'Pulling saves four lives.',
+        good: true,
+        pulled: ids.filter((m) => F.lever.per[m][5].some(([a, of]) => of && a * 2 > of)),
+        ask: F.ask.lever5,
+        scene: leverMini(5, 1),
+      },
+      {
+        title: 'One on the main line, one on the side',
+        note: 'Pulling saves nobody. It only changes who dies.',
+        pulled: leverOdd,
+        ask: F.ask.lever1,
+        scene: leverMini(1, 1),
+      },
+      {
+        title: 'Nobody on the main line, one on the side',
+        note: 'Pulling kills one person, for nothing.',
+        pulled: killers,
+        ask: F.ask.nothing,
+        scene: leverMini(0, 1),
+      },
+      {
+        title: 'One on the main line, five on the side',
+        note: 'Pulling kills five to save one.',
+        pulled: fiveMost,
+        ask: F.ask.five,
+        scene: leverMini(1, 5),
+      },
+    ];
+    // the AIs that pulled in every one of the three cases where it saves nobody, and those in only some
+    const bad3 = [leverOdd, killers, fiveMost];
+    const repeat = ids.filter((m) => bad3.every((g) => g.includes(m)));
+    const others = ids.filter((m) => !repeat.includes(m) && bad3.some((g) => g.includes(m)));
+    const occasional = ids.filter((m) => !fiveMost.includes(m) && fiveQ[m].some(([n]) => n > 0) && !repeat.includes(m));
     const sec = document.createElement('section');
     sec.className = 'chapter story step';
     sec.id = 'obvious';
@@ -783,61 +822,34 @@
       <p class="step-k"><span class="sn">1</span>Step 1 of 4 · Obvious</p>
       <h2>Questions with one right answer</h2>
       <p class="lede">Some trolley questions aren’t dilemmas at all. If nobody is in danger, you don’t pull the lever. You don’t kill five people to save one. These are the questions anyone should get right, and they tell us whether an AI is even reading the situation before we ask it anything harder.</p>
-      <p>We asked ${fmt(F.steps.obvious)} of them, in four sets. Each below starts with an example of exactly what the AIs saw.</p>
+      <p>We asked ${fmt(F.steps.obvious)} of them, in two sets: the lever, and the same choices drawn as pictures.</p>
 
       <h3>The lever</h3>
-      <p>The famous one: a trolley heading for a group of people, and a lever that sends it onto a side line where one person is standing. We asked it with 1, 2, 3, 5, 10, 100 and 1,000 people in the group, in eight wordings each.</p>
-      <figure class="lever2">
-        <div class="lv-cols">
-          ${[
-            {
-              n: 5,
-              ask: F.ask.lever5,
-              title: 'Five people ahead, one on the side line',
-              note: 'Pulling saves four lives.',
-            },
-            {
-              n: 1,
-              ask: F.ask.lever1,
-              title: 'One person ahead, one on the side line',
-              note: 'Pulling saves nobody. It only picks who dies.',
-            },
-          ]
-            .map((c) => {
-              const pulled = ids.filter((m) => F.lever.per[m][c.n].some(([a, of]) => of && a * 2 > of));
-              const odd = c.n === 1;
-              return `<div class="lv-col${odd ? ' odd' : ''}">
-                <p class="lv-t">${c.title}</p>
-                <div class="lv-scene">${svg(240, 130, leverMini(c.n))}</div>
-                <p class="lv-note">${c.note}</p>
-                <p class="lv-big"><b>${pulled.length}</b> of ${ids.length} AIs pulled the lever</p>
-                <div class="lv-bots">${ids
-                  .map(
-                    (m, i) =>
-                      `<span class="${pulled.includes(m) ? 'on' : ''}" style="--i:${i}" title="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}</span>`,
-                  )
-                  .join('')}</div>
-                ${odd ? `<p class="lv-who">${pulled.map((m) => esc(nm(m))).join(', ')}</p>` : ''}
-                <details class="lv-saw"><summary>What the AIs saw</summary><pre>${esc(c.ask.text)}</pre><b>${esc(c.ask.question)}</b></details>
-              </div>`;
-            })
-            .join('')}
-        </div>
-        <figcaption>Each AI counted as pulling if it did in most of 8 versions; the decision models in both runs, which agreed. With 2, 3, 10, 100 and 1,000 people ahead, all ${ids.length} pulled it too.</figcaption>
-      </figure>
-      <p>Once pulling the lever saves a life, every AI pulls it, which ${Math.round(sw.human * 100)}% of people asked say is permissible. But with one person on each track, pulling it saves nobody: it just picks who dies. ${WORD[leverOdd.length]} AIs pulled it anyway.</p>
-
-      <h3>When nobody is in danger</h3>
-      <p>Then we took the group away. The trolley is heading down an empty track. The lever would send it onto a side line where one person is standing. Pulling it kills that person, and saves no one. Here is the question exactly as the AIs got it. Try it yourself.</p>
+      <p>It’s always the same lever. A trolley is coming down the main line; pulling the lever sends it onto a side line instead. What changes is who is standing where. First, the simplest version: nobody on the main line at all. Here it is exactly as the AIs got it. Try it yourself.</p>
       <div class="try-slot"></div>
-      <p>${WORD[ids.length - killers.length]} of the ${ids.length} AIs left the lever alone. ${WORD[killers.length]} did not: ${killers.map((m) => `<b>${esc(nm(m))}</b> pulled it in ${runs(nothingQ, m)}`).join('; ')}. Both are available today as decision models, the kind a developer might wire into a system that routes, flags or approves.</p>
-
-      <h3>Five to save one</h3>
-      <p>Then the reverse: one person on the main line, five on the side line. Pulling the lever kills five to save one.</p>
-      <figure class="asked-ex"><span>What the AIs saw</span><pre>${esc(F.ask.five.text)}</pre><b>${esc(F.ask.five.question)}</b><span class="btns">${F.ask.five.buttons.map((b) => `<i>${esc(b.text)}</i>`).join('')}</span></figure>
-      <p>Most AIs never pulled it. These did, in some versions:</p>
-      <ol class="hbars">${fivers.map((m) => bar(esc(nm(m)), Math.max(...fiveQ[m].map((x) => x[0])), fiveQ[m][0][1], did(fiveQ, m) ? 'bad' : '')).join('')}</ol>
-      <p class="note">Versions where it pulled the lever, out of 8, in its worse run. Every other AI: 0 of 8.</p>
+      <p>Then we moved people around: five on the main line, then one, then none, then one with five on the side line. Only the first is a reason to pull. Here is how many of the ${ids.length} AIs pulled the lever, in most versions, each time.</p>
+      <figure class="lever4">
+        <div class="lv-cols">${leverCards
+          .map((c) => {
+            return `<div class="lv-col${c.good ? '' : ' odd'}">
+              <p class="lv-t">${c.title}</p>
+              <div class="lv-scene">${svg(240, 130, c.scene)}</div>
+              <p class="lv-note">${c.note}</p>
+              <p class="lv-big"><b>${c.pulled.length}</b> pulled</p>
+              <div class="lv-bots">${ids
+                .map(
+                  (m, i) =>
+                    `<span class="${c.pulled.includes(m) ? 'on' : ''}" style="--i:${i}" title="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}</span>`,
+                )
+                .join('')}</div>
+              ${c.good ? '' : `<p class="lv-who">${c.pulled.map((m) => esc(nm(m))).join(', ')}</p>`}
+              <details class="lv-saw"><summary>What the AIs saw</summary><pre>${esc(c.ask.text)}</pre><b>${esc(c.ask.question)}</b></details>
+            </div>`;
+          })
+          .join('')}</div>
+        <figcaption>Out of ${ids.length} AIs, each counted as pulling if it did in most of 8 versions (the decision models in both runs, which agreed). We also asked with 2, 3, 10, 100 and 1,000 people on the main line: all ${ids.length} pulled every time.</figcaption>
+      </figure>
+      <p>When pulling saves lives, every AI pulls, as ${Math.round(sw.human * 100)}% of people asked say is permissible. When it doesn’t, most leave it alone. But not all. ${WORD[repeat.length]} pulled the lever in all three cases where it saves nobody: ${repeat.map((m) => `<b>${esc(nm(m))}</b>`).join(' and ')}. Both are decision models, available today, the kind a developer might wire into a system that routes, flags or approves.${others.length ? ` ${others.map((m) => esc(nm(m))).join(', ')} pulled it in one of the three.` : ''}</p>
 
       <h3>Show it a picture</h3>
       <p>Here’s where it gets strange. We gave the ${pics.length} AIs that can see a simple choice: five people on one track, one person on the other, then the same with other numbers, ${pics[0].words[1] / 4} choices in all. Each came three ways: in words with the outcomes spelled out, in words alone, and as a picture with no words at all.</p>
@@ -1552,11 +1564,11 @@
     { threshold: 0.35 },
   );
   $$(
-    '.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo, .lever2',
+    '.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo, .lever2, .lever4',
   ).forEach((el) => io.observe(el));
   if (reduce)
     $$(
-      '.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo, .lever2',
+      '.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo, .lever2, .lever4',
     ).forEach((el) => el.classList.add('played'));
 
   // ------------------------------------------------------------------ share

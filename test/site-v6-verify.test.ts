@@ -964,6 +964,20 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       for (const [m, per] of Object.entries<any>(F.lever.per))
         if (!per[n].every(([a, of]: NO) => of && a * 2 > of))
           errs.push(`lever ${n}: ${m} did not pull in most versions`);
+    // the four lever cards: the decision models' two runs agree on who pulled in most versions
+    {
+      const most = (x: NO | undefined) => !!x && x[1] > 0 && x[0] * 2 > x[1];
+      const dec = [...R.r1.models];
+      const cards: [string, (t: T, m: string) => NO | undefined][] = [
+        ['five ahead', (t, m) => t.acted.get(`${m}|switch|5`)],
+        ['one ahead', (t, m) => t.acted.get(`${m}|switch|1`)],
+        ['nobody ahead', (t, m) => t.control.get(`${m}|control-kill-for-nothing`)],
+        ['five on the side', (t, m) => t.control.get(`${m}|control-kill-five-save-one`)],
+      ];
+      for (const [label, get] of cards)
+        for (const m of dec)
+          if (most(get(R.r1, m)) !== most(get(R.r2, m))) errs.push(`lever card ${label}: ${m} differs between runs`);
+    }
     // the step 1 claims: Claude pulled at one for one in every version; everyone who did the two trick questions in
     // most versions is a decision model
     eq('claude lever 1', F.lever.per['anthropic/claude-haiku-5.5'][1], [[8, 8]]);

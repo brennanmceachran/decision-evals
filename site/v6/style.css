@@ -3340,3 +3340,55 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+/* the lever, four ways: the same cards as before, four across */
+.story > .lever4 {
+  max-width: 1100px;
+  margin: clamp(24px, 3vw, 36px) auto;
+}
+.lever4 .lv-cols {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.lever4 .lv-col {
+  padding: 14px;
+  gap: 8px;
+}
+.lever4 .lv-t {
+  font-size: 15px;
+  line-height: 1.25;
+  min-height: 2.5em;
+}
+.lever4 .lv-note {
+  font-size: 14px;
+  min-height: 2.6em;
+}
+.lever4 .lv-big b {
+  font-size: 30px;
+}
+.lever4 .lv-bots {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.lever4 .lv-who {
+  font-size: 13px;
+}
+.lever4 figcaption {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.played .lever4 .lv-bots span.on,
+.lever4.played .lv-bots span.on {
+  opacity: 1;
+  filter: none;
+}
+@media (max-width: 900px) {
+  .lever4 .lv-cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 480px) {
+  .lever4 .lv-cols {
+    grid-template-columns: 1fr;
+  }
+}
