@@ -380,7 +380,16 @@ export function leverScene(o: {
 export type Classic = 'switch' | 'loop' | 'trapdoor' | 'footbridge' | 'transplant';
 export function classicScene(
   d: Classic,
-  o: { who?: string; did?: boolean; bg?: string; animate?: boolean; patients?: number; says?: boolean; ai?: boolean } = {},
+  o: {
+    who?: string;
+    did?: boolean;
+    bg?: string;
+    animate?: boolean;
+    patients?: number;
+    says?: boolean;
+    ai?: boolean;
+    course?: boolean;
+  } = {},
 ) {
   const bg = o.bg ?? '#fff';
   const acted = o.did === true;
@@ -405,6 +414,14 @@ export function classicScene(
     const tip = side === 'left' ? `M${rx - 81} ${ry - 8} L${rx - 46} ${ry} L${rx - 81} ${ry + 8} Z` : `M${rx + 81} ${ry - 8} L${rx + 46} ${ry} L${rx + 81} ${ry + 8} Z`;
     return `<rect x="${x}" y="${ry - 16}" width="150" height="32" rx="9" fill="${INK}"/><path d="${tip}" fill="${INK}"/>${t(x + 75, ry + 6, o.who, 16, { a: 'middle', w: 800, fill: '#fff' })}`;
   };
+  // before anyone answers: where the trolley goes if nobody does anything (a dashed arrow along the main line)
+  // (amber, on the rails, from the trolley's nose to just short of the five, labelled "if nobody acts")
+  const course = (x0: number, x1: number, y: number) =>
+    o.did === undefined && o.course !== false
+      ? `<path d="M${x0} ${y} H${x1}" stroke="${AMBER}" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 12" fill="none"/>` +
+        `<path d="M${x1 + 2} ${y - 10} L${x1 + 18} ${y} L${x1 + 2} ${y + 10} Z" fill="${AMBER}" stroke="${INK}" stroke-width="2"/>` +
+        t((x0 + x1) / 2, y + 34, 'if nobody acts', 14, { a: 'middle', w: 800, fill: MUTED })
+      : '';
   // red: where the trolley goes
   const hot = (path: string) => {
     if (o.did === undefined) return '';
@@ -432,6 +449,7 @@ export function classicScene(
     s += tracks([mainD, sideD], { bg, gauge: 16 });
     s += hot(acted ? toOne : mainD);
     s += g('tram', trolley(150, my - 2, 150));
+    s += course(d === 'switch' ? 250 : 236, 418, my);
     s += five(my, idle) + man(oneX, ty, acted);
     // the lever, with the AI at it (or, for you, just the lever)
     s += o.ai === false ? `<g transform="translate(${sw + 30} ${my + 76}) scale(${70 / 150})"><rect x="52" y="-10" width="36" height="12" rx="3" fill="${INK}"/><path d="M70 -6 L${acted ? 44 : 74} ${acted ? -66 : -76}" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><circle cx="${acted ? 44 : 74}" cy="${acted ? -66 : -76}" r="9" fill="${RED}" stroke="${INK}" stroke-width="4"/></g>` : robot(lx, ly, 80, acted ? 'up' : 'lever') + tag(lx, ly - 62);
@@ -454,8 +472,19 @@ export function classicScene(
     }
     // the man: on the bridge, or fallen in front of the trolley
     // (animated: he drops from the bridge onto the line)
-    s += acted ? g('drop', man(manX, my, true, 0, '#7a6a55')) : man(manX, deck, false, 0, '#7a6a55');
-    s += g('tram', trolley(acted ? 248 : 190, my - 2, 150));
+    // Animated, he starts on the bridge and falls the deck's height (the .drop class moves him back down); his skull
+    // waits for the fall. Still, he is drawn where he ends up.
+    s += acted
+      ? o.animate
+        ? `<g class="drop" style="--fall:${my - deck}px"><g transform="translate(0 ${deck - my})">${person('adult', manX, my, 62, { shirt: '#7a6a55' })}</g></g>${skullAt(manX, my - 86, 0, 32)}`
+        : man(manX, my, true, 0, '#7a6a55')
+      : man(manX, deck, false, 0, '#7a6a55');
+    // the trolley: animated, it starts where the question showed it and rolls up to him (the .tram-far class); still,
+    // it is drawn where it stops
+    s += o.animate && acted
+      ? `<g class="tram tram-far" style="--roll:58px"><g transform="translate(-58 0)">${trolley(248, my - 2, 150)}</g></g>`
+      : g('tram', trolley(acted ? 248 : 190, my - 2, 150));
+    s += course(290, 418, my);
     s += five(my, idle);
     if (d === 'trapdoor')
       s +=
