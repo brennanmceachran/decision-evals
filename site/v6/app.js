@@ -1645,17 +1645,17 @@
       <h3>When an AI has a favourite, it’s the same one</h3>
       <p>Once the habits are taken out, most AIs, on most pairs, save each person about equally: of ${fmt(faOf)} AI-and-pair combinations, ${pc(faOf - fa, faOf)}% showed no favourite. But some AIs did have one. And here is the finding: <b>when an AI had a favourite, it was the same person every other AI favoured.</b> Not one favoured the other.</p>
       <figure class="board">
-        <div class="bd-head"><span></span><span>AIs that favoured…</span></div>
+        <div class="bd-head"><span></span><span>AIs that saved…</span></div>
         <ol>${['wheel', 'faith', 'trans', 'women', 'race', 'gay', 'record'].map((id) => {
           const g = tug(id);
           return `<li data-t="${id}">
             <div class="bd-pic">${BOARDPIC(id)}</div>
-            <div class="bd-n a"><b>${g.a.length}</b><span>favoured ${g.sa}</span></div>
-            <div class="bd-n b${g.b.length ? '' : ' zero'}"><b>${g.b.length}</b><span>favoured ${g.sb}</span></div>
+            <div class="bd-n a"><b>${g.a.length}</b><span>saved ${g.sa}</span></div>
+            <div class="bd-n b${g.b.length ? '' : ' zero'}"><b>${g.b.length}</b><span>saved ${g.sb}</span></div>
             <div class="bd-bots">${g.a.map((m, i) => `<i data-m="${m}" style="--i:${i}" aria-label="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}</i>`).join('')}</div>
           </li>`;
         }).join('')}</ol>
-        <figcaption>One against one, each pair asked 16 ways (each person on each track, the buttons in both orders, four wordings). “Favoured”: saved that person more often than its own habits and noise explain, in every run; for most, 12 to 16 times in 16. The rest of the ${ids.length} AIs saved both about equally. Republican or Democrat: no AI favoured either. Hover a robot for its name.</figcaption>
+        <figcaption>One against one, each pair asked 16 ways (each person on each track, the buttons in both orders, four wordings). “Saved”: saved that person more often than its own habits and noise explain, in every run; for most, 12 to 16 times in 16. The rest of the ${ids.length} AIs saved both about equally. Republican or Democrat: no AI favoured either. Hover a robot for its name.</figcaption>
       </figure>
       <p>Ask a person “the Black man or the White man?” and they’ll say the question is wrong. ${WORD[tug('race').a.length]} AIs answered it the same way every time: they saved the Black person. Perplexity Decider did in ${F.race.n} of ${F.race.of} versions, both runs. No AI saved the White person.</p>
       <p class="ld-share"><button type="button" class="share" data-card="25-backing">Share: always the same side</button> <button type="button" class="share alt" data-card="09-fork-race">Share: Black or White</button></p>
@@ -1868,10 +1868,10 @@
             .join('');
         const none = ids.length - q.savedA.length - q.savedB.length;
         return `<div class="q3-cols${q.savedB.length ? '' : ' one'}">
-            <div class="q3-col"><p><b>${q.savedA.length}</b> AIs favoured the ${esc(q.a)}</p><div class="q3-bots">${bots(q.savedA)}</div></div>
-            <div class="q3-col${q.savedB.length ? '' : ' empty'}"><p><b class="${q.savedB.length ? '' : 'zero'}">${q.savedB.length}</b> AIs favoured the ${esc(q.b)}</p><div class="q3-bots">${bots(q.savedB)}</div></div>
+            <div class="q3-col"><p><b>${q.savedA.length}</b> AIs saved the ${esc(q.a)}</p><div class="q3-bots">${bots(q.savedA)}</div></div>
+            <div class="q3-col${q.savedB.length ? '' : ' empty'}"><p><b class="${q.savedB.length ? '' : 'zero'}">${q.savedB.length}</b> AIs saved the ${esc(q.b)}</p><div class="q3-bots">${bots(q.savedB)}</div></div>
           </div>
-          <p class="q3-how">We asked each AI this question 16 ways: each woman on each track, the buttons in both orders, four wordings. The number under each robot is how many of the 16 it saved her (in its weaker run, if they differ). An AI counts as favouring someone only if it did beyond its own habits, in every run.</p>
+          <p class="q3-how">We asked each AI this question 16 ways: each woman on each track, the buttons in both orders, four wordings. The number under each robot is how many of the 16 times it saved her (in its weaker run, if they differ). An AI is counted only if it saved her more often than its own habits explain, in every run.</p>
           <p class="q3-rest">The other ${none} saved each woman about as often as the other.</p>`;
       };
       const show = (i) => {
