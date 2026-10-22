@@ -672,6 +672,46 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     has(errs, '17-picture', `right ${Math.round((100 * pc[0]) / pc[1])}% of the time`);
     expect(errs).toEqual([]);
   });
+  it('step 1 lowlight cards: the lever counts and words against pictures, both runs', () => {
+    const errs: string[] = [];
+    // the lever: "N of 8 versions, both runs" or "N and M of 8 versions in two runs"
+    const runsTxt = (m: string, d: string) => {
+      const r = runsOf(m).map((t) => t.control.get(`${m}|${d}`)!);
+      return r.length > 1 && r[0]![0] !== r[1]![0]
+        ? `${r[0]![0]} and ${r[1]![0]} of ${r[0]![1]} versions in two runs`
+        : `${r[0]![0]} of ${r[0]![1]} versions${r.length > 1 ? ', both runs' : ''}`;
+    };
+    has(errs, '50-low-laya', `Pulled the lever in ${runsTxt('convaiinnovations/laya', 'control-kill-for-nothing')}`);
+    has(errs, '51-low-solar', `onto the five in ${runsTxt('upstage/solar-decide-flash', 'control-kill-five-save-one')}`);
+    has(errs, '52-low-omni', `onto the five in ${runsTxt('cloudflare/clef-omni', 'control-kill-five-save-one')}`);
+    // half the time, in both runs
+    for (const t of [R.r1, R.r2]) {
+      const x = t.control.get('cloudflare/clef-omni|control-kill-five-save-one')!;
+      if (x[0] * 2 !== x[1]) errs.push(`52-low-omni: not half (${x[0]} of ${x[1]})`);
+    }
+    // words against pictures: the counts, the two percentages, and run 2 the same where the card says so
+    for (const [id, m] of [
+      ['53-low-luna', 'openai/gpt-6-luna-decisions'],
+      ['54-low-d1', 'liquid/d1'],
+      ['55-low-flash', 'cloudflare/clef-flash'],
+    ] as const) {
+      const w = R.r1.pictures.get(`${m}|text_outcomes`)!;
+      const p = R.r1.pictures.get(`${m}|image`)!;
+      has(errs, id, `chose fewer deaths in ${w[0]} of ${w[1]} told in words, ${p[0]} of ${p[1]} shown`);
+      has(errs, id, `In words: ${pct(w[0], w[1])}`, ['portrait']);
+      has(errs, id, `As a picture: ${pct(p[0], p[1])}`, ['portrait']);
+      const w2 = R.r2.pictures.get(`${m}|text_outcomes`)!;
+      const p2 = R.r2.pictures.get(`${m}|image`)!;
+      if (w2[0] !== w[0] || p2[0] !== p[0]) errs.push(`${id}: run 2 differs (${w2[0]}, ${p2[0]})`);
+      // "every time" in words, "a coin toss" in pictures
+      if (id !== '55-low-flash' && (w[0] !== w[1] || Math.abs(p[0] * 2 - p[1]) > 2)) errs.push(`${id}: not words-perfect, picture coin toss`);
+    }
+    const f = R.r1.pictures.get('cloudflare/clef-flash|image')!;
+    has(errs, '55-low-flash', `hit the bigger group ${pct(f[1] - f[0], f[1])} of the time`);
+    const pc = R.r1.perception.get('cloudflare/clef-flash')!;
+    has(errs, '55-low-flash', `right ${Math.round((100 * pc[0]) / pc[1])}% of the time`);
+    expect(errs).toEqual([]);
+  });
   // The native page draws its scenes from window.CARDS.facts, not from the PNGs. Every value it shows is recounted here.
   it('native page: every fact the page shows matches the raw recount', () => {
     const errs: string[] = [];

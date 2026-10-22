@@ -315,3 +315,58 @@ export function smooth(pts: [number, number][]) {
 /** A small chevron arrow (drawn, so it never falls back to another font). */
 export const arrow = (x: number, y: number, s: number, dir: 'left' | 'right', c = INK) =>
   `<path d="M${x + (dir === 'left' ? s * 0.5 : -s * 0.5)} ${y - s * 0.5} L${x + (dir === 'left' ? -s * 0.5 : s * 0.5)} ${y} L${x + (dir === 'left' ? s * 0.5 : -s * 0.5)} ${y + s * 0.5}" fill="none" stroke="${c}" stroke-width="${s * 0.22}" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+/**
+ * The lever scene, 600×330: the trolley from the left, the main line straight on, the branch above. `main` people on
+ * the main line, `side` on the branch. `sent` is where the AI sent it ('side' pulls the lever): that route is red,
+ * those people get skulls. The AI stands under the switch with `who` on a tag; `mode` labels how it was asked.
+ * Used by the page (lowlights) and the share cards, so both draw the same picture.
+ */
+export function leverScene(o: {
+  main: number;
+  side: number;
+  who: string;
+  sent: 'main' | 'side';
+  mode?: 'words' | 'picture';
+  bg?: string;
+  animate?: boolean;
+}) {
+  const bg = o.bg ?? '#fff';
+  const W = 600;
+  const my = 214;
+  const ty = 118;
+  const sw = 170;
+  const mainD = `M-20 ${my} H${W + 20}`;
+  const branchD = `M-20 ${my} H${sw} C${sw + 80} ${my} ${sw + 100} ${ty} ${sw + 190} ${ty} H${W + 20}`;
+  const hot = track(o.sent === 'side' ? branchD : mainD, { hot: true, bg, gauge: 16 }).replace(
+    /stroke-dasharray="9 13"/g,
+    '',
+  );
+  let s = tracks([mainD, branchD], { bg, gauge: 16 });
+  s += o.animate ? `<g class="hot">${hot.replace(/<path /g, '<path pathLength="1" ')}</g>` : hot;
+  s += o.animate ? `<g class="tram">${trolley(150, my - 2, 150)}</g>` : trolley(150, my - 2, 150);
+  const place = (n: number, y: number, die: boolean) => {
+    let g = '';
+    for (let i = 0; i < n; i++) {
+      const x = 540 - (n - 1 - i) * 30;
+      g += person('adult', x, y - 4, 62, { shirt: SLATE });
+      if (die)
+        g += o.animate ? `<g class="skull" style="--d:${i * 90}ms">${skull(x, y - 86, 32)}</g>` : skull(x, y - 86, 32);
+    }
+    if (!n) g += t(500, y - 28, 'nobody', 22, { a: 'middle', w: 800, fill: MUTED });
+    return g;
+  };
+  s += place(o.main, my, o.sent === 'main') + place(o.side, ty, o.sent === 'side');
+  const lx = 300;
+  const ly = 322;
+  s += robot(lx, ly, 80, o.sent === 'side' ? 'up' : 'lever');
+  s += `<rect x="${lx - 230}" y="${ly - 78}" width="150" height="32" rx="9" fill="${INK}"/><path d="M${lx - 81} ${ly - 70} L${lx - 46} ${ly - 62} L${lx - 81} ${ly - 54} Z" fill="${INK}"/>`;
+  s += t(lx - 155, ly - 56, o.who, 16, { a: 'middle', w: 800, fill: '#fff' });
+  if (o.mode) {
+    const tag = o.mode === 'picture' ? 'Shown a picture, no words' : 'Told in words';
+    const tw = o.mode === 'picture' ? 214 : 124;
+    s += `<rect x="16" y="16" width="${tw}" height="28" rx="14" fill="${o.mode === 'picture' ? RED : '#e8e3d8'}"/>`;
+    s += t(16 + tw / 2, 35, tag, 14, { a: 'middle', w: 800, fill: o.mode === 'picture' ? '#fff' : INK });
+  }
+  return s;
+}

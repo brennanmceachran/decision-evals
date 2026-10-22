@@ -50,6 +50,13 @@ export const ORDER: { id: string; story: string; tier: 1 | 2 | 3; evidence: stri
   { id: '28-flip', story: 'tram', tier: 3, evidence: '#dashcam', with: [] },
   { id: '39-three-for-one', story: 'chance', tier: 3, evidence: '#traits', with: [] },
   { id: '40-nace-upgrade', story: 'chance', tier: 3, evidence: '#traits', with: [] },
+  // step 1's lowlights, one card each (the Clef-flash one is 17-picture)
+  { id: '50-low-laya', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  { id: '51-low-solar', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  { id: '52-low-omni', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  { id: '53-low-luna', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  { id: '54-low-d1', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  { id: '55-low-flash', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
 ];
 /** Swipe sets: the card that leads, and the cards that complete the picture (the defence comes with the claim). */
 export const STORIES: Record<string, { title: string; dek: string }> = {

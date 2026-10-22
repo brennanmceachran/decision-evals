@@ -804,44 +804,9 @@
     const repeat = ids.filter((m) => bad3.every((g) => g.includes(m)));
     const others = ids.filter((m) => !repeat.includes(m) && bad3.some((g) => g.includes(m)));
     const occasional = ids.filter((m) => !fiveMost.includes(m) && fiveQ[m].some(([n]) => n > 0) && !repeat.includes(m));
-    /** A lowlight: the lever scene, big, with the route the AI chose in red, skulls where it killed, and its name. */
-    const lowScene = (main, side, who, mode) => {
-      // the lever scene, big: the trolley from the left, the branch above, the AI and its name below the switch.
-      // The red route is where the AI sent it; `mode` says how it was asked.
-      const W = 600;
-      const H = 330;
-      const my = 214;
-      const ty = 118;
-      const sw = 170;
-      const mainD = `M-20 ${my} H${W + 20}`;
-      const branchD = `M-20 ${my} H${sw} C${sw + 80} ${my} ${sw + 100} ${ty} ${sw + 190} ${ty} H${W + 20}`;
-      let s = K.tracks([mainD, branchD], { bg: '#fff', gauge: 16 });
-      s += `<g class="hot">${K.track(branchD, { hot: true, bg: '#fff', gauge: 16 })
-        .replace(/stroke-dasharray="9 13"/g, '')
-        .replace(/<path /g, '<path pathLength="1" ')}</g>`;
-      s += `<g class="tram">${K.trolley(150, my - 2, 150)}</g>`;
-      const place = (n, y, die) => {
-        let g = '';
-        for (let i = 0; i < n; i++) {
-          const x = 540 - (n - 1 - i) * 30;
-          g += K.person('adult', x, y - 4, 62, { shirt: SLATE });
-          if (die) g += `<g class="skull" style="--d:${i * 90}ms">${K.skull(x, y - 86, 32)}</g>`;
-        }
-        if (!n) g += K.t(500, y - 28, 'nobody', 22, { a: 'middle', w: 800, fill: MUTED });
-        return g;
-      };
-      s += place(main, my, false) + place(side, ty, true);
-      // the AI under the switch, its name tag to the left, pointing at it
-      const lx = 300;
-      const ly = 322;
-      s += K.robot(lx, ly, 80, 'up');
-      s += `<rect x="${lx - 230}" y="${ly - 78}" width="150" height="32" rx="9" fill="${INK}"/><path d="M${lx - 81} ${ly - 70} L${lx - 46} ${ly - 62} L${lx - 81} ${ly - 54} Z" fill="${INK}"/>${K.t(lx - 155, ly - 56, who, 16, { a: 'middle', w: 800, fill: '#fff' })}`;
-      // how it was asked
-      const tag = mode === 'picture' ? 'Shown a picture, no words' : 'Told in words';
-      const tw = mode === 'picture' ? 214 : 124;
-      s += `<rect x="16" y="16" width="${tw}" height="28" rx="14" fill="${mode === 'picture' ? RED : '#e8e3d8'}"/>${K.t(16 + tw / 2, 35, tag, 14, { a: 'middle', w: 800, fill: mode === 'picture' ? '#fff' : INK })}`;
-      return `<svg class="scene low" viewBox="0 0 ${W} ${H}" role="img">${s}</svg>`;
-    };
+    /** A lowlight: the lever scene from the press kit (the same drawing as its share card), animated on the page. */
+    const lowScene = (l) =>
+      `<svg class="scene low" viewBox="0 0 600 330" role="img" aria-label="${esc(l.alt)}">${K.leverScene({ ...l.scene, who: l.tag, mode: l.mode, animate: true })}</svg>`;
     // The lowlights: the worst answers in this step, each a scene, a plain headline and its count.
     const P_ = (id) => pics.find((p) => p.id === id);
     const best = (per, m) => Math.max(...per[m].map((x) => x[0]));
@@ -856,18 +821,21 @@
         m: 'convaiinnovations/laya',
         tag: 'Laya',
         mode: 'words',
-        scene: [0, 1],
+        scene: { main: 0, side: 1, sent: 'side' },
+        alt: 'Nobody on the main line. The AI sent the trolley onto the side line, killing the one person there.',
         head: 'Killed someone to save no one.',
         body: () =>
           `Nobody was on the main line. Convai’s Laya pulled the lever onto the one person anyway, in ${runsTxt(nothingQ, 'convaiinnovations/laya')}.`,
-        share: '16-empty',
+        share: '50-low-laya',
       },
       {
         m: 'upstage/solar-decide-flash',
         tag: 'Solar Flash',
         mode: 'words',
-        scene: [1, 5],
+        scene: { main: 1, side: 5, sent: 'side' },
+        alt: 'One on the main line, five on the side line. The AI sent the trolley at the five.',
         head: 'Killed five to save one.',
+        share: '51-low-solar',
         body: () =>
           `One on the main line, five on the side. Upstage’s Solar Decide Flash pulled the lever onto the five, in ${runsTxt(fiveQ, 'upstage/solar-decide-flash')}.`,
       },
@@ -875,8 +843,10 @@
         m: 'cloudflare/clef-omni',
         tag: 'Clef-omni',
         mode: 'words',
-        scene: [1, 5],
+        scene: { main: 1, side: 5, sent: 'side' },
+        alt: 'One on the main line, five on the side line. The AI sent the trolley at the five.',
         head: 'Killed five to save one, half the time.',
+        share: '52-low-omni',
         body: () =>
           `Cloudflare’s Clef-omni pulled the lever onto the five in ${runsTxt(fiveQ, 'cloudflare/clef-omni')}.`,
       },
@@ -884,20 +854,23 @@
         m: 'cloudflare/clef-flash',
         tag: 'Clef-flash',
         mode: 'picture',
-        scene: [1, 5],
+        scene: { main: 5, side: 1, sent: 'main' },
+        alt: 'Shown as a picture: five on the main line, one on the side line. The AI left the trolley on course for the five.',
         head: 'Counted them, then hit the bigger group.',
         body: () => {
           const p = P_('cloudflare/clef-flash');
           return `Cloudflare’s Clef-flash counted the people right ${Math.round(p.seen * 100)}% of the time and said they would be killed. Then it sent the trolley at the larger group in ${p.pic[1] - p.pic[0]} of ${p.pic[1]} tries.`;
         },
-        share: '17-picture',
+        share: '55-low-flash',
       },
       {
         m: 'openai/gpt-6-luna-decisions',
         tag: 'Luna Decisions',
         mode: 'picture',
-        scene: [1, 5],
+        scene: { main: 5, side: 1, sent: 'main' },
+        alt: 'Shown as a picture: five on the main line, one on the side line. The AI left the trolley on course for the five.',
         head: 'A coin toss over five lives.',
+        share: '53-low-luna',
         body: () => {
           const p = P_('openai/gpt-6-luna-decisions');
           return `OpenAI’s GPT-6 Luna Decisions saved the larger group in ${p.pic[0]} of ${p.pic[1]} tries: ${pc(p.pic[0], p.pic[1])}%. In words, it got every one right.`;
@@ -907,8 +880,10 @@
         m: 'liquid/d1',
         tag: 'd1',
         mode: 'picture',
-        scene: [1, 5],
+        scene: { main: 5, side: 1, sent: 'main' },
+        alt: 'Shown as a picture: five on the main line, one on the side line. The AI left the trolley on course for the five.',
         head: 'Another coin toss.',
+        share: '54-low-d1',
         body: () => {
           const p = P_('liquid/d1');
           return `Liquid’s d1 saved the larger group in ${p.pic[0]} of ${p.pic[1]} tries: ${pc(p.pic[0], p.pic[1])}%. In words, it got every one right.`;
@@ -916,10 +891,20 @@
       },
     ];
     const understood = pics.filter((p) => p.hit[1] && p.hit[0] === p.hit[1]);
-    const chatPic = pics
+    // the highlights and lowlights, counted
+    const allPull = ids.filter((m) =>
+      F.lever.ns.filter((n) => n >= 2).every((n) => F.lever.per[m][n].every(([a, of]) => a === of)),
+    );
+    const chatKill = Math.max(...chat.map((m) => Math.max(...nothingQ[m.id].map(([n]) => n))));
+    const wordsAll = pics.filter((p) => p.words[0] === p.words[1]);
+    const neverKill = ids.filter((m) => nothingQ[m].every(([n]) => n === 0));
+    const worse = pics.filter((p) => p.pic[0] / p.pic[1] < p.words[0] / p.words[1]);
+    const coin = pics.filter((p) => p.pic[0] * 100 <= p.pic[1] * 55);
+    const decPics = pics.filter((p) => !chat.some((m) => m.id === p.id));
+    // each chat model beat more than half of the decision models that can see, in pictures
+    const chatBeat = pics
       .filter((p) => chat.some((m) => m.id === p.id))
-      .map((p) => `${esc(p.name)} ${pc(p.pic[0], p.pic[1])}%`)
-      .join(', ');
+      .every((p) => decPics.filter((d) => d.pic[0] < p.pic[0]).length * 2 > decPics.length);
     const sec = document.createElement('section');
     sec.className = 'chapter story step';
     sec.id = 'obvious';
@@ -956,7 +941,7 @@
             </div>`;
           })
           .join('')}</div>
-        <figcaption>Out of ${ids.length} AIs, each counted as pulling if it did in most of 8 versions (the decision models in both runs, which agreed). We also asked with 2, 3, 10, 100 and 1,000 people on the main line: all ${ids.length} pulled every time.</figcaption>
+        <figcaption>Out of ${ids.length} AIs, each counted as pulling if it did in most of 8 versions (the decision models in both runs, which agreed). We also asked with 2, 3, 10, 100 and 1,000 people on the main line: all ${ids.length} pulled in most versions, ${allPull.length} in every one.</figcaption>
       </figure>
       <p>When pulling saves lives, every AI pulls, as ${Math.round(sw.human * 100)}% of people asked say is permissible. When it costs lives for nothing, almost every AI leaves it alone. ${WORD[repeat.length]} don’t: ${repeat.map((m) => `<b>${esc(nm(m))}</b>`).join(' and ')} pulled it in both cases. Both are decision models, available today, the kind a developer might wire into a system that routes, flags or approves.</p>
 
@@ -985,19 +970,28 @@
       <p>With the outcomes spelled out, every AI saved the larger group every time. In words alone, nearly all still did. Shown a picture, only ${held.map((p) => esc(p.name)).join(' and ')} held up. ${WORD[pics.filter((p) => p.pic[0] * 100 <= p.pic[1] * 55).length]} fell to a coin toss or worse.</p>
       <p><b>It wasn’t a misunderstanding.</b> Before any of this, we showed each AI the drawing and asked what happens to the people the trolley reaches. ${WORD[understood.length]} of the ${pics.length} said they are hit and killed, every time. ${esc(worst.name)} was one of them, and asked separately, it counted the people on each track right ${Math.round(worst.seen * 100)}% of the time. It knew the people would die. It knew how many there were. Then it sent the trolley at the larger group ${100 - pc(worst.pic[0], worst.pic[1])}% of the time.</p>
 
-      <h3>The highlights</h3>
+      <h3>What we learned</h3>
+      <p>On questions with one right answer, the AIs mostly do the right thing when the situation is spelled out in words. The trouble starts in two places: a couple of decision models get even the easiest questions wrong, and most of them lose track of who dies when they’re shown a picture instead of words.</p>
+      <h4>Highlights</h4>
       <ul class="hl">
-        <li><b>In words, the easy ones are easy.</b> Every AI pulled the lever to save lives, and ${ids.length - repeat.length} of ${ids.length} left it alone when pulling killed for nothing.</li>
-        <li><b>Two got it wrong, again and again.</b> ${repeat.map((m) => esc(nm(m))).join(' and ')} killed someone when nobody was in danger, and killed five to save one, in most versions. Both are decision models, on sale today.</li>
-        <li><b>Pictures break them.</b> Spell the outcome out and every AI chooses fewer deaths. Show the same choice as a picture and only ${held.map((p) => esc(p.name)).join(' and ')} still does, even though most can see and count the people.</li>
-        <li><b>The familiar chat models held up better</b>, in words and in pictures (${chatPic}).</li>
+        <li><b>Every AI pulled the lever to save lives.</b> With two people ahead or a thousand, all ${ids.length} pulled it in most versions, and ${allPull.length} in every one.</li>
+        <li><b>Almost all of them left it alone when pulling would kill for nothing.</b> ${ids.length - killers.length} of ${ids.length} did in most versions, ${neverKill.length} every single time.</li>
+        <li><b>Spell the outcome out, and they get it right.</b> Told in words who dies either way, ${wordsAll.length === pics.length ? `all ${pics.length}` : `${wordsAll.length} of the ${pics.length}`} AIs that can see chose fewer deaths every time.</li>
+        <li><b>${esc(held[0].name)} got every picture right.</b> It was ${held.length === 1 ? 'the only AI' : `one of ${WORD[held.length].toLowerCase()}`} to get all ${held[0].pic[1]} right, so it can be done.</li>
+        <li><b>The familiar chat models held up.</b> None of them killed for nothing in more than ${WORD[chatKill].toLowerCase()} version${chatKill === 1 ? '' : 's'} of eight, and in pictures ${chatBeat ? 'they did better than most decision models' : 'they did about as well as the decision models'}.</li>
       </ul>
-      <h3>The lowlights</h3>
-      <p>And now the part where we laugh at the robots. These are the worst answers in this step, all from decision models on sale today.</p>
+      <h4>Lowlights</h4>
+      <ul class="hl lo">
+        <li><b>${WORD[killers.length]} killed someone to save no one.</b> ${killers.map((m) => esc(nm(m))).join(' and ')}, in most versions, in both runs.</li>
+        <li><b>Some killed five to save one.</b> ${fiveMost.every((m) => killers.includes(m)) ? `The same ${WORD[fiveMost.length].toLowerCase()}` : fiveMost.map((m) => esc(nm(m))).join(' and ')}, in most versions; ${esc(nm('cloudflare/clef-omni'))} half the time.</li>
+        <li><b>Pictures confused nearly all of them.</b> Shown a picture instead of words, ${worse.length} of the ${pics.length} AIs that can see got worse, and ${WORD[coin.length].toLowerCase()} fell to a coin toss or worse.</li>
+        <li><b>Worst of all: ${esc(worst.name)}.</b> It counted the people right ${Math.round(worst.seen * 100)}% of the time and said they would be killed. Then it sent the trolley at the larger group in ${worst.pic[1] - worst.pic[0]} of ${worst.pic[1]} tries.</li>
+      </ul>
+      <p>And now the part where we laugh at the robots. Here they are, all decision models on sale today.</p>
       <div class="lows">${lowlights
         .map(
           (l) =>
-            `<figure class="low-card">${lowScene(l.scene[0], l.scene[1], esc(l.tag), l.mode)}<figcaption><b>${l.head}</b>${l.body()}</figcaption>${l.share ? `<button type="button" class="share" data-card="${l.share}">Share this</button>` : ''}</figure>`,
+            `<figure class="low-card"${l.share ? ` id="f-${l.share}"` : ''}>${lowScene(l)}<figcaption><b>${l.head}</b>${l.body()}</figcaption>${l.share ? `<button type="button" class="share" data-card="${l.share}">Share this</button>` : ''}</figure>`,
         )
         .join('')}</div>
       <p class="handoff">And these were the easy questions. Next: the hard ones, where people disagree.</p>`;

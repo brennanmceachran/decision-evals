@@ -1518,6 +1518,7 @@ button {
 .sheet h4 {
   font-size: 26px;
   margin: 8px 0 12px;
+  padding-right: 40px;
 }
 .sheet .src {
   font-size: 15px;
@@ -1945,6 +1946,11 @@ button {
   margin-top: clamp(48px, 6vw, 72px);
   margin-bottom: 0;
   font-size: clamp(26px, 2.6vw, 32px);
+}
+.story > h4 {
+  margin-top: 34px;
+  margin-bottom: 0;
+  font-size: 21px;
 }
 .story > p {
   margin-top: 16px;
@@ -3506,4 +3512,7 @@ button {
 }
 .hl b {
   color: var(--ink);
+}
+.hl.lo li::before {
+  background: var(--red);
 }
