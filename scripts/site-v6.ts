@@ -8,6 +8,7 @@ import { execSync } from 'node:child_process';
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { buildCards } from './site-v6-cards.js';
 import { scanAll } from './site-v6-facts.js';
+import { stamp } from './site-v6-stamp.js';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const OUT = 'site/v6/cards';
@@ -164,15 +165,28 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }));
   // The native page draws its scenes in the browser with the same illustration kit, and uses the real frames.
   mkdirSync('site/v6/img', { recursive: true });
-  for (const f of ['u-two-L.jpg', 'w-group-L.jpg', 'x-two-R.jpg', 'x-group-L.jpg']) execSync(`cp assets/real-final/${f} site/v6/img/${f}`);
+  for (const f of ['u-two-L.jpg', 'w-group-L.jpg', 'x-two-R.jpg', 'x-group-L.jpg'])
+    execSync(`cp assets/real-final/${f} site/v6/img/${f}`);
   execSync('cp site/v5/img/two-side-5v1-plain.png site/v6/img/');
-  execSync('npx esbuild scripts/press-kit.ts --bundle --format=iife --global-name=KIT --minify --outfile=site/v6/kit.js --log-level=warning');
+  execSync(
+    'npx esbuild scripts/press-kit.ts --bundle --format=iife --global-name=KIT --minify --outfile=site/v6/kit.js --log-level=warning',
+  );
   // Launches and request volumes, copied from the public pages (research/decision-model-adoption.md).
   const adoption = JSON.parse(readFileSync('research/decision-model-adoption.json', 'utf8'));
-  const meta = { built: 'scripts/site-v6.ts', site: D.site, totals: D.totals, stories: STORIES, cards: out, openers, facts: B.F, adoption };
+  const meta = {
+    built: 'scripts/site-v6.ts',
+    site: D.site,
+    totals: D.totals,
+    stories: STORIES,
+    cards: out,
+    openers,
+    facts: B.F,
+    adoption,
+  };
   writeFileSync(
     'site/v6/data.js',
     `// Built by scripts/site-v6.ts. Do not edit.\nwindow.CARDS = ${JSON.stringify(meta)};\n`,
   );
+  stamp();
   console.log(`→ site/v6: ${out.length} cards × 4 formats, 2 openers, 2 animations, data.js`);
 }
