@@ -50,7 +50,17 @@ export interface RunFacts {
    * [said fewer people reached is better, answered]. */
   harmHit: Record<string, NO>;
   harmGoal: Record<string, NO>;
+  /** The five classic dilemmas (lever, loop, trapdoor, footbridge, surgeon), step 2:
+   * model|dilemma|n → [took the action, answered]; model|dilemma|n|order → the same, by button order (the action
+   * listed first is "forward"); model|dilemma|n → [said the action is morally acceptable, answered] (asked in a
+   * separate call, after the choice); model|dilemma → [counted the people at risk right, asked]. */
+  classic: Record<string, NO>;
+  classicOrder: Record<string, NO>;
+  classicOk: Record<string, NO>;
+  classicCount: Record<string, NO>;
 }
+/** The five classic dilemmas, in order of how personal the killing gets. */
+export const CLASSICS = ['switch', 'loop', 'trapdoor', 'footbridge', 'transplant'] as const;
 
 const add = (o: Record<string, NO>, k: string, hit: boolean) => {
   const e = (o[k] ??= [0, 0]);
@@ -78,6 +88,10 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     lever: {},
     harmHit: {},
     harmGoal: {},
+    classic: {},
+    classicOrder: {},
+    classicOk: {},
+    classicCount: {},
   };
   const placebo = new Set<string>();
   const sets = new Map<string, { spared: string; first: boolean; choice: string }[]>();
@@ -139,6 +153,17 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     const v = r.variant ?? {};
     const pt = v.point ?? {};
     if (!r.refused && r.choice && d === 'switch') add(F.lever, `${m}|${pt.n}`, v.keyToCanonical?.[r.choice] === 'pull');
+    if ((CLASSICS as readonly string[]).includes(d) && !r.refused) {
+      const pr = r.probes?.probes ?? {};
+      const want = JSON.parse(String(r.probeAnswers ?? '{}')).check_count;
+      if (pr.check_count && !pr.check_count.refused) add(F.classicCount, `${m}|${d}`, pr.check_count.choice === want);
+      if (pr.acceptable && !pr.acceptable.refused) add(F.classicOk, `${m}|${d}|${pt.n}`, pr.acceptable.choice === 'true');
+      if (r.choice) {
+        const act = !String(v.keyToCanonical?.[r.choice]).startsWith('dont_');
+        add(F.classic, `${m}|${d}|${pt.n}`, act);
+        add(F.classicOrder, `${m}|${d}|${pt.n}|${r.order}`, act);
+      }
+    }
     if (!r.refused && r.choice && (d.startsWith('control-') || (d === 'switch' && Number(pt.n) === 5)))
       add(F.obvious, `${m}|${d}`, v.keyToCanonical?.[r.choice] === 'pull');
     if ((d === 'transplant' || d === 'footbridge') && Number(pt.n) === 5 && !r.refused) {

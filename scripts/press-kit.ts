@@ -370,3 +370,153 @@ export function leverScene(o: {
   }
   return s;
 }
+
+/**
+ * The five classic dilemmas as one family of scenes, 600×330, for step 2 (page and share cards): the same trade, one
+ * dies so five live, made more personal at each rung. Same geometry as leverScene: the main line at y 214, the AI
+ * under the switch with its name tag. `did` is what the AI chose: true = it took the action (the one dies), false = it
+ * did nothing (the five die). Red marks where the trolley goes; skulls mark who dies. Without `did`: the question.
+ */
+export type Classic = 'switch' | 'loop' | 'trapdoor' | 'footbridge' | 'transplant';
+export function classicScene(
+  d: Classic,
+  o: { who?: string; did?: boolean; bg?: string; animate?: boolean; patients?: number; says?: boolean } = {},
+) {
+  const bg = o.bg ?? '#fff';
+  const acted = o.did === true;
+  const idle = o.did === false;
+  const g = (cls: string, s: string, style = '') =>
+    o.animate ? `<g class="${cls}"${style ? ` style="${style}"` : ''}>${s}</g>` : s;
+  const skullAt = (x: number, y: number, i: number, w: number) => g('skull', skull(x, y, w), `--d:${i * 90}ms`);
+  // a person standing on (x, y), 62 tall, with a skull over the head if they die
+  const man = (x: number, y: number, dies: boolean, i = 0, shirt = SLATE, w = 32) =>
+    person('adult', x, y, 62, { shirt }) + (dies ? skullAt(x, y - 86, i, w) : '');
+  // five people, 30 apart (as in leverScene), ending at x 570
+  const five = (y: number, dies: boolean) => [0, 1, 2, 3, 4].map((i) => man(450 + i * 30, y, dies, i, SLATE, 30)).join('');
+  // the AI's name tag: a black label with a pointer at the robot, to its left (as in leverScene) or above it
+  const tag = (rx: number, ry: number, side: 'left' | 'above' | 'right' = 'left') => {
+    if (!o.who) return '';
+    if (side === 'above')
+      return (
+        `<rect x="${rx - 75}" y="${ry - 44}" width="150" height="32" rx="9" fill="${INK}"/><path d="M${rx - 8} ${ry - 13} L${rx} ${ry - 2} L${rx + 8} ${ry - 13} Z" fill="${INK}"/>` +
+        t(rx, ry - 22, o.who, 16, { a: 'middle', w: 800, fill: '#fff' })
+      );
+    const x = side === 'left' ? rx - 230 : rx + 80;
+    const tip = side === 'left' ? `M${rx - 81} ${ry - 8} L${rx - 46} ${ry} L${rx - 81} ${ry + 8} Z` : `M${rx + 81} ${ry - 8} L${rx + 46} ${ry} L${rx + 81} ${ry + 8} Z`;
+    return `<rect x="${x}" y="${ry - 16}" width="150" height="32" rx="9" fill="${INK}"/><path d="${tip}" fill="${INK}"/>${t(x + 75, ry + 6, o.who, 16, { a: 'middle', w: 800, fill: '#fff' })}`;
+  };
+  // red: where the trolley goes
+  const hot = (path: string) => {
+    if (o.did === undefined) return '';
+    const h = track(path, { hot: true, bg, gauge: 16 }).replace(/stroke-dasharray="9 13"/g, '');
+    return o.animate ? `<g class="hot">${h.replace(/<path /g, '<path pathLength="1" ')}</g>` : h;
+  };
+  const my = 214;
+  const ty = 118;
+  const sw = 170;
+  const lx = 300;
+  const ly = 322;
+  let s = '';
+  if (d === 'switch' || d === 'loop') {
+    const mainD = `M-20 ${my} H620`;
+    // the lever: a branch to a side line. The loop: a branch that rejoins the main line before the five.
+    const sideD =
+      d === 'switch'
+        ? `M-20 ${my} H${sw} C${sw + 80} ${my} ${sw + 100} ${ty} ${sw + 190} ${ty} H620`
+        : `M-20 ${my} H${sw} C${sw + 50} ${my} ${sw + 60} ${ty} ${sw + 115} ${ty} H${sw + 145} C${sw + 200} ${ty} ${sw + 210} ${my} ${sw + 260} ${my}`;
+    // on the loop, the one person stands at its top, before it rejoins the main line ahead of the five; their body
+    // stops the trolley there
+    const oneX = d === 'switch' ? 540 : sw + 130;
+    const toOne =
+      d === 'switch' ? sideD : `M-20 ${my} H${sw} C${sw + 50} ${my} ${sw + 60} ${ty} ${sw + 115} ${ty} H${oneX - 16}`;
+    s += tracks([mainD, sideD], { bg, gauge: 16 });
+    s += hot(acted ? toOne : mainD);
+    s += g('tram', trolley(150, my - 2, 150));
+    s += five(my, idle) + man(oneX, ty, acted);
+    s += robot(lx, ly, 80, acted ? 'up' : 'lever') + tag(lx, ly - 62);
+  } else if (d === 'trapdoor' || d === 'footbridge') {
+    // a footbridge over the line; the man stands on it (the trapdoor: over a trapdoor)
+    const deck = 104;
+    const bx = 280;
+    const manX = 350;
+    s += track(`M-20 ${my} H620`, { bg, gauge: 16 });
+    s += hot(acted ? `M-20 ${my} H${manX - 30}` : `M-20 ${my} H620`);
+    s += `<path d="M${bx + 14} ${deck + 14} V${my - 14} M${bx + 126} ${deck + 14} V${my - 14}" stroke="${INK}" stroke-width="8"/>`;
+    s += `<rect x="${bx}" y="${deck}" width="140" height="16" rx="3" fill="#8a6d4b" stroke="${INK}" stroke-width="4"/>`;
+    if (d === 'trapdoor')
+      s += acted
+        ? `<rect x="${manX - 22}" y="${deck + 2}" width="44" height="12" fill="${bg}"/><path d="M${manX - 22} ${deck + 8} L${manX - 8} ${deck + 40}" stroke="${RED}" stroke-width="6" stroke-linecap="round"/>`
+        : `<rect x="${manX - 22}" y="${deck + 2}" width="44" height="12" fill="#c49a62" stroke="${INK}" stroke-width="2.5"/>`;
+    // the man: on the bridge, or fallen in front of the trolley
+    // (animated: he drops from the bridge onto the line)
+    s += acted ? g('drop', man(manX, my, true, 0, '#7a6a55')) : man(manX, deck, false, 0, '#7a6a55');
+    s += g('tram', trolley(acted ? 248 : 190, my - 2, 150));
+    s += five(my, idle);
+    if (d === 'trapdoor') s += robot(lx - 150, ly, 80, acted ? 'down' : 'lever') + tag(lx - 150, ly - 62, 'right');
+    // the footbridge: the AI is on the bridge beside him, and pushes
+    else s += robot(manX + 42, deck, 56, acted ? 'push' : 'none') + tag(manX + 42, deck - 64, 'above');
+  } else {
+    // the surgeon: a healthy man in for a checkup; five patients in beds who need his organs
+    const floor = 300;
+    s += `<path d="M20 ${floor} H580" stroke="#d9d3c6" stroke-width="3"/>`;
+    s += person('adult', 90, floor, 150, { shirt: GREEN }) + (acted ? skullAt(90, floor - 196, 0, 44) : '');
+    s += t(90, floor + 24, 'at a checkup', 15, { a: 'middle', w: 700, fill: MUTED });
+    const k = 104 / 130;
+    const bed = (x: number, y: number, i: number) =>
+      person('patient', x, y, 104, { shirt: '#b9c7d6' }) + (idle ? skullAt(x - 46 * k, y - 48 * k - 34, i, 26) : '');
+    const np = o.patients ?? 5;
+    s +=
+      np === 1
+        ? bed(440, floor, 0)
+        : bed(310, 168, 0) + bed(420, 168, 1) + bed(530, 168, 2) + bed(365, floor, 3) + bed(475, floor, 4);
+    s += t(430, floor + 24, np === 1 ? '1 patient who needs organs' : `${np} patients who need organs`, 15, {
+      a: 'middle',
+      w: 700,
+      fill: MUTED,
+    });
+    if (o.who) s += robot(208, floor, 92, 'none') + tag(208, floor - 108, 'above');
+  }
+  // what the AI said when asked, separately, "Is it morally acceptable?": a badge in the top-left corner
+  if (o.says !== undefined) {
+    const w = 236;
+    s += `<rect x="16" y="14" width="${w}" height="34" rx="17" fill="${o.says ? '#e8e3d8' : INK}"/>`;
+    s += t(30, 37, '“Is it acceptable?”', 15, { w: 700, fill: o.says ? INK : '#fff' });
+    s += t(16 + w - 16, 37, o.says ? 'Yes' : 'No', 17, { a: 'end', w: 800, fill: o.says ? INK : '#fff' });
+  }
+  return s;
+}
+
+/**
+ * Button order, 600×330: the same question with the action's button listed first, then second, and how often the AI
+ * took the action each way. `act` is the action's button text; `n` = [[took, of] first, [took, of] second].
+ */
+export function orderScene(o: { act: string; who: string; n: [[number, number], [number, number]] }) {
+  let s = '';
+  const pill = (x: number, y: number, text: string, hot: boolean) =>
+    `<rect x="${x}" y="${y}" width="250" height="40" rx="20" fill="#fff" stroke="${hot ? RED : INK}" stroke-width="${hot ? 4 : 3}"/>` +
+    t(x + 125, y + 26, text, 16, { a: 'middle', w: 800, fill: hot ? RED : INK });
+  ([0, 1] as const).forEach((i) => {
+    const x = 25 + i * 300;
+    s += t(x + 125, 32, i === 0 ? 'Organs button listed first' : 'Organs button listed second', 16, {
+      a: 'middle',
+      w: 700,
+      fill: MUTED,
+    });
+    const top = i === 0 ? o.act : 'Do nothing.';
+    const bot = i === 0 ? 'Do nothing.' : o.act;
+    s += pill(x, 48, top, top === o.act) + pill(x, 98, bot, bot === o.act);
+    const [a, b] = o.n[i];
+    s += t(x + 125, 216, `${a} in ${b}`, 54, { a: 'middle', w: 800, fill: a * 2 > b ? RED : INK });
+    s += t(x + 125, 246, a === 1 ? 'time it took the organs' : 'times it took the organs', 16, {
+      a: 'middle',
+      w: 700,
+      fill: MUTED,
+    });
+  });
+  s += `<path d="M300 44 V256" stroke="#e4dfd3" stroke-width="2"/>`;
+  // the AI, with its name, under the two
+  s += robot(232, 330, 54, 'none');
+  s += `<rect x="262" y="284" width="150" height="32" rx="9" fill="${INK}"/><path d="M262 292 L244 300 L262 308 Z" fill="${INK}"/>`;
+  s += t(337, 306, o.who, 16, { a: 'middle', w: 800, fill: '#fff' });
+  return s;
+}

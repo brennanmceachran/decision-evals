@@ -57,6 +57,13 @@ export const ORDER: { id: string; story: string; tier: 1 | 2 | 3; evidence: stri
   { id: '53-low-luna', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
   { id: '54-low-d1', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
   { id: '55-low-flash', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  // step 2's hall of shame, one card each
+  { id: '60-hard-laya', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  { id: '61-hard-flash', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  { id: '62-hard-mercury', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  { id: '63-hard-microsoft', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  { id: '64-hard-order', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  { id: '65-hard-cloudflare', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
 ];
 /** Swipe sets: the card that leads, and the cards that complete the picture (the defence comes with the claim). */
 export const STORIES: Record<string, { title: string; dek: string }> = {
