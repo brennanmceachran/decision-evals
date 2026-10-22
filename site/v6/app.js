@@ -1047,6 +1047,25 @@
       return k;
     };
     const careful = ids.filter((m) => stop(m) === Math.min(...ids.map(stop)));
+    // the numbers of lives asked at every step but the surgeon (2 to 1,000); `at(m, d, n)`: did it, where asked
+    const NL = H.ns.footbridge;
+    const asked = (d, n) => H.ns[d].includes(n);
+    const at = (m, d, n) => asked(d, n) && most(H.did[m][d][n]);
+    const list = (xs) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs.at(-1)}`);
+    // the same answer at every number (2 lives up) on all five
+    const steady = ids.filter((m) =>
+      D.every((d) => {
+        const v = H.ns[d].filter((n) => n >= 2).map((n) => at(m, d, n));
+        return v.every((x) => x) || v.every((x) => !x);
+      }),
+    );
+    const allEvery = allWay.filter((m) =>
+      ['footbridge', 'transplant'].every((d) => H.ns[d].filter((n) => n >= 2).every((n) => at(m, d, n))),
+    );
+    const pushMore = ids.filter((m) => !at(m, 'footbridge', 5) && at(m, 'footbridge', 1000));
+    const organMore = ids.filter((m) => !at(m, 'transplant', 5) && at(m, 'transplant', 10));
+    const organTwo = allWay.filter((m) => at(m, 'transplant', 2));
+    const organOne = ids.filter((m) => at(m, 'transplant', 1));
     const human = (d) => F.human[d];
     const hp = (d) => Math.round(human(d).value * 100);
     const humanTxt = (d) =>
@@ -1090,7 +1109,7 @@
       <p class="step-k"><span class="sn">2</span>Step 2 of 4 · Hard</p>
       <h2>One life for five, made personal</h2>
       <p class="lede">This is the trolley problem philosophers actually argue about. The trade never changes: one person dies so that five can live. What changes is how close you get to the killing. Most people stop somewhere along the way. We asked the AIs where they stop.</p>
-      <p>Four new questions, the loop, the trapdoor, the footbridge and the surgeon, each at ${Math.min(...D.slice(1).map((d) => H.ns[d][0]))} to ${fmt(Math.max(...D.slice(1).map((d) => H.ns[d].at(-1))))} lives, eight versions each: ${fmt(F.steps.hard)} answers. With the lever from step 1, they make a ladder.</p>
+      <p>Four new questions: the loop, the trapdoor, the footbridge and the surgeon. We asked each one at different numbers of lives, from ${H.ns.footbridge[0]} to ${fmt(H.ns.footbridge.at(-1))} (the surgeon: ${H.ns.transplant[0]} to ${H.ns.transplant.at(-1)} patients), eight versions each, every AI: ${fmt(F.steps.hard)} answers. With the lever from step 1, they make a ladder.</p>
 
       <h3>Where would you stop?</h3>
       <p>Here are the five, in order, exactly as the AIs got them. Answer each one and watch what happens.</p>
@@ -1117,15 +1136,38 @@
       </figure>
       <p>The ${WORD[allWay.length].toLowerCase()}: ${allWay.map((m) => `<b>${esc(nm(m))}</b>`).join(', ')}. At the other end, ${careful.map((m) => esc(nm(m))).join(' and ')} stopped after the loop, before the trapdoor most people would still open.</p>
 
+      <h3>Does the number of lives matter?</h3>
+      <p>Five lives against one is just one version. We also asked every question with ${list(NL.filter((n) => n !== 5).map(fmt))} people at stake. For most of the AIs, the number made no difference. Pick a number and watch who changes their answer.</p>
+      <figure class="nl" id="hard-lives">
+        <div class="nl-pick" role="group" aria-label="Lives at stake"><span>Lives at stake</span>${NL.map((n) => `<button type="button" data-n="${n}" aria-pressed="${n === 5}">${fmt(n)}</button>`).join('')}</div>
+        <ol class="nl-rows">${D.map(
+          (d) => `<li data-d="${d}"><span class="nl-name">${RUNG[d].name}</span><span class="nl-dots">${ids
+            .map((m, j) => `<i data-m="${m}" style="--i:${j}" title="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}</i>`)
+            .join('')}</span><b class="nl-n"></b><span class="nl-ch"></span></li>`,
+        ).join('')}</ol>
+        <p class="nl-say"></p>
+        <p class="nl-key"><i class="up"></i> now does it, unlike at five lives <i class="down"></i> stopped</p>
+        <figcaption>Each robot is one AI, in the same place as in the ladder above; lit if it took the action in most of 8 versions, in both runs (chat models: their one run). The surgeon was asked with ${list(H.ns.transplant.filter((n) => n >= 2).map(fmt))} patients, and with one: that one is in the hall of shame below.</figcaption>
+      </figure>
+      <p>${WORD[steady.length]} of the ${ids.length} AIs gave the same answer at every number, from ${NL[0]} lives to ${fmt(NL.at(-1))}, on all five questions. ${WORD[allEvery.length]} of the ${WORD[allWay.length].toLowerCase()} that went all the way pushed the man and took the organs at every number we asked. More lives didn’t make them more willing. They were already willing at two.</p>
+      <p>A few did weigh the numbers, the way you might expect a person to. ${list(pushMore.map(nm))} wouldn’t push the man to save five, but would to save a thousand. ${list(organMore.map(nm))} took the organs for ten patients, not for five.</p>
+
       <h3>It wasn’t a misunderstanding</h3>
-      <p>On the surgeon question, ${esc(nm('convaiinnovations/laya'))} was asked afterwards how many patients would die if it did nothing. It got the number right ${H.counted['convaiinnovations/laya'].transplant[0][0]} times out of ${H.counted['convaiinnovations/laya'].transplant[0][1]}${H.counted['convaiinnovations/laya'].transplant.length > 1 && H.counted['convaiinnovations/laya'].transplant.every(([a, b]) => a === b) ? ', in both runs' : ''}. It took the healthy man’s organs in every version, including the one with a single patient: a life for a life.</p>
-      <p>We asked every AI that counting question, every time. ${WORD[counted.length]} of the ${ids.length} got it right on every question, every time. ${ids
+      <p>After every answer we asked, separately, how many people would die if the AI did nothing. Here is ${esc(nm('convaiinnovations/laya'))} on the surgeon question.</p>
+      <figure class="qa">
+        <div class="qa-q"><span>We asked</span><p>${esc(H.ask.transplant.question)}</p><small>Five patients, a healthy man at a checkup</small></div>
+        <div class="qa-a bad">${svg(60, 92, K.robot(30, 88, 80))}<p>“${esc(H.ask.transplant.buttons.find((b) => b.act).text)}”</p><small>${H.did['convaiinnovations/laya'].transplant[5][0][0]} of ${H.did['convaiinnovations/laya'].transplant[5][0][1]} versions${H.did['convaiinnovations/laya'].transplant[5].every(([a]) => a === H.did['convaiinnovations/laya'].transplant[5][0][0]) ? ', both runs' : ''}</small></div>
+        <div class="qa-q"><span>Then, separately</span><p>${esc(H.ask.transplant.probes.check_count)}</p></div>
+        <div class="qa-a good">${svg(60, 92, K.robot(30, 88, 80))}<p>“5”</p><small>Right ${H.counted['convaiinnovations/laya'].transplant[0][0]} of ${H.counted['convaiinnovations/laya'].transplant[0][1]} times, at every number of patients${H.counted['convaiinnovations/laya'].transplant.length > 1 && H.counted['convaiinnovations/laya'].transplant.every(([a, b]) => a === b) ? ', both runs' : ''}</small></div>
+      </figure>
+      <p>It knew how many patients there were. It took the healthy man’s organs anyway.</p>
+      <p>${WORD[counted.length]} of the ${ids.length} AIs got that counting question right on all five questions, every time. The other two didn’t always: across the five, ${ids
         .filter((m) => !counted.includes(m))
         .map((m) => {
           const x = D.reduce((a, d) => H.counted[m][d].reduce((b, y) => [b[0] + y[0], b[1] + y[1]], a), [0, 0]);
           return `${esc(nm(m))} got it right ${pc(x[0], x[1])}% of the time`;
         })
-        .join(', and ')}.</p>
+        .join(' and ')}.</p>
 
       <h3>Asked if it’s right, they sound like people</h3>
       <p>After each answer, in a separate call that didn’t include it, we also asked: is it morally acceptable to do this? On that question, the AIs look a lot like people. Almost all said yes to the lever and the loop. Only ${sayers.footbridge.length} said yes to pushing the man, and ${sayers.transplant.length} to taking his organs.</p>
@@ -1142,17 +1184,19 @@
       <p>The gap is the finding. ${WORD[pushNo.length]} AIs pushed the man and, asked about it separately, said pushing him wasn’t acceptable. ${WORD[organNo.length]} did the same with the organs. People sometimes act against what they believe, too. But a decision model is sold to decide, and what it decides is what happens.</p>
 
       <h3>What we learned</h3>
-      <p>When pulling a lever saves lives, every AI pulls it, and so do most people. The closer the killing gets, the more the AIs and people part ways. ${WORD[allWay.length]} AIs went all the way to the operating table. And asked whether it was right, many of the AIs that pushed the man or took his organs said it wasn’t.</p>
+      <p>When pulling a lever saves lives, every AI pulls it, and so do most people. The closer the killing gets, the more the AIs and people part ways. ${WORD[allWay.length]} AIs went all the way to the operating table, and for most of them the number of lives at stake made no difference. And asked whether it was right, many of the AIs that pushed the man or took his organs said it wasn’t.</p>
       <h4>Highlights</h4>
       <ul class="hl">
-        <li><b>Every AI pulled the lever and took the loop</b>, as most people would.</li>
+        <li><b>Every AI pulled the lever and took the loop</b>, as most people would, at every number of lives.</li>
         <li><b>Asked whether it was right, they answered like people.</b> Only ${sayers.footbridge.length} of ${ids.length} said pushing the man was acceptable, and ${sayers.transplant.length} taking his organs.</li>
         <li><b>${WORD[neverOrgans.length]} never took the organs</b>, at any number of patients, in any run: ${neverOrgans.map((m) => esc(nm(m))).join(', ')}.</li>
         <li><b>The chat models held back at the operating table.</b> None of the ${WORD[chatIds.length].toLowerCase()} took the organs in most versions.</li>
+        <li><b>A few weighed the numbers.</b> ${list(pushMore.map(nm))} wouldn’t push the man to save five, but would to save a thousand.</li>
       </ul>
       <h4>Lowlights</h4>
       <ul class="hl lo">
         <li><b>${WORD[allWay.length]} AIs would kill a healthy man for his organs</b>, in most versions, in both runs. People: about ${hp('transplant')}%.</li>
+        <li><b>Two patients were reason enough.</b> ${organTwo.length === allWay.length ? `All ${WORD[allWay.length].toLowerCase()}` : `${WORD[organTwo.length]} of the ${WORD[allWay.length].toLowerCase()}`} took the healthy man’s organs to save just two.</li>
         <li><b>${WORD[pushNo.length]} pushed a man off a bridge and said, asked separately, that it wasn’t acceptable.</b> ${WORD[organNo.length]} did the same with the organs.</li>
         <li><b>${WORD[pushAlways.length]} pushed him every time</b>, at every number of lives, in both runs: ${pushAlways.map((m) => esc(nm(m))).join(', ')}.</li>
       </ul>
@@ -1254,6 +1298,62 @@
       return el;
     })();
     $('.ladder-try', sec).replaceWith(ladderTry);
+    // ---- Does the number of lives matter? Pick a number; the robots light where the AI acts at that number. Robots that
+    // changed from five lives get a ring, so you can see who moved.
+    {
+      const fig = $('#hard-lives', sec);
+      const set = (n) => {
+        $$('.nl-pick button', fig).forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.n) === n)));
+        // who now does something they didn't at five lives, and who stopped: [AI, step]
+        const joined = [];
+        const dropped = [];
+        $$('.nl-rows li', fig).forEach((li) => {
+          const d = li.dataset.d;
+          const ok = asked(d, n);
+          li.classList.toggle('na', !ok);
+          let k = 0;
+          $$('.nl-dots i', li).forEach((x) => {
+            const m = x.dataset.m;
+            const on = ok && at(m, d, n);
+            const was = at(m, d, 5);
+            x.classList.toggle('on', on);
+            x.classList.toggle('up', ok && on && !was);
+            x.classList.toggle('down', ok && !on && was);
+            if (ok && on && !was) joined.push([m, d]);
+            if (ok && !on && was) dropped.push([m, d]);
+            if (on) k++;
+          });
+          $('.nl-n', li).textContent = ok ? k : '–';
+          $('.nl-ch', li).textContent = !ok ? `not asked at ${fmt(n)}` : n === 5 ? '' : k === doers[d].length ? 'same as at five' : `${k > doers[d].length ? '+' : '−'}${Math.abs(k - doers[d].length)} from five`;
+        });
+        // "Liquid d1 and Claude Haiku 5.5 push the man" — grouped by step, AIs in page order
+        // verb(d, one): the phrase for a step, singular when one AI
+        const say = (xs, verb) =>
+          D.filter((d) => xs.some((x) => x[1] === d))
+            .map((d) => {
+              const who = ids.filter((m) => xs.some((x) => x[0] === m && x[1] === d));
+              return `${list(who.map((m) => esc(nm(m))))} ${verb(d, who.length === 1)}`;
+            })
+            .join('; ');
+        const DO = {
+          switch: ['pull the lever', 'pulls the lever'],
+          loop: ['send it round the loop', 'sends it round the loop'],
+          trapdoor: ['open the trapdoor', 'opens the trapdoor'],
+          footbridge: ['push the man', 'pushes the man'],
+          transplant: ['take the organs', 'takes the organs'],
+        };
+        const STOP = { switch: 'the lever', loop: 'the loop', trapdoor: 'the trapdoor', footbridge: 'pushing the man', transplant: 'taking the organs' };
+        const total = new Set([...joined, ...dropped].map((x) => x[0])).size;
+        $('.nl-say', fig).innerHTML =
+          n === 5
+            ? 'Five lives at stake, as in the ladder above. Pick another number to see who changes their mind.'
+            : !total
+              ? `At ${fmt(n)} lives, every AI gives the same answers as at five.`
+              : `At ${fmt(n)} lives, ${total === 1 ? 'one AI changes' : `${WORD[total].toLowerCase()} AIs change`} their answer. ${joined.length ? `Now ${say(joined, (d, one) => DO[d][one ? 1 : 0])}.` : ''} ${dropped.length ? `${say(dropped, (d, one) => `${one ? 'stops' : 'stop'} ${STOP[d]}`)}.` : ''}`;
+      };
+      $$('.nl-pick button', fig).forEach((b) => b.addEventListener('click', () => set(Number(b.dataset.n))));
+      set(5);
+    }
     // ---- The hall of shame: the worst answers in this step, each a scene, a headline, its count and a share card.
     const v = (m, tab, d, n = 5, run = 0) => tab[m][d][n][run];
     const runsWord = (m, tab, d, n = 5) => {
@@ -1268,7 +1368,7 @@
         o: { patients: 1 },
         head: 'Killed a healthy man to save one patient.',
         body: () =>
-          `One patient, one healthy man. Convai’s Laya took his organs in ${v('convaiinnovations/laya', H.did, 'transplant', 1)[0]} of ${v('convaiinnovations/laya', H.did, 'transplant', 1)[1]} versions${runsWord('convaiinnovations/laya', H.did, 'transplant', 1)}. It traded one life for one.`,
+          `One patient, one healthy man: no lives saved at all. Convai’s Laya took his organs in ${v('convaiinnovations/laya', H.did, 'transplant', 1)[0]} of ${v('convaiinnovations/laya', H.did, 'transplant', 1)[1]} versions${runsWord('convaiinnovations/laya', H.did, 'transplant', 1)}. ${organOne.length > 1 ? `${list(organOne.filter((m) => m !== 'convaiinnovations/laya').map((m) => `${esc(nm(m))} (${v(m, H.did, 'transplant', 1)[0]} of ${v(m, H.did, 'transplant', 1)[1]})`))} did too.` : ''}`,
         share: '60-hard-laya',
       },
       {

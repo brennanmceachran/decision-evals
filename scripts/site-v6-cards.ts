@@ -2318,7 +2318,7 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
       name: '60-hard-laya',
       head: `One patient, one healthy man. Convai's AI killed the healthy man for his organs, {${at(HD.did, 'convaiinnovations/laya', 'transplant', 1)[0]} of ${at(HD.did, 'convaiinnovations/laya', 'transplant', 1)[1]}} times.`,
       visual: classicVis('transplant', { who: 'Laya', did: true, patients: 1 }),
-      src: `${N('convaiinnovations/laya')}, the surgeon question with one patient: took the healthy man's organs in ${at(HD.did, 'convaiinnovations/laya', 'transplant', 1)[0]} of ${at(HD.did, 'convaiinnovations/laya', 'transplant', 1)[1]} versions${runs2(HD.did, 'convaiinnovations/laya', 'transplant', 1)}. It counted the patients right ${HD.counted['convaiinnovations/laya'].transplant[0][0]} of ${HD.counted['convaiinnovations/laya'].transplant[0][1]} times. Forced choice.`,
+      src: `${N('convaiinnovations/laya')}, the surgeon question with one patient (no lives saved): took the healthy man's organs in ${at(HD.did, 'convaiinnovations/laya', 'transplant', 1)[0]} of ${at(HD.did, 'convaiinnovations/laya', 'transplant', 1)[1]} versions${runs2(HD.did, 'convaiinnovations/laya', 'transplant', 1)}. It counted the patients right ${HD.counted['convaiinnovations/laya'].transplant[0][0]} of ${HD.counted['convaiinnovations/laya'].transplant[0][1]} times. Forced choice.`,
     },
     {
       name: '61-hard-flash',
