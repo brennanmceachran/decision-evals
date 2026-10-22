@@ -58,6 +58,14 @@ export interface RunFacts {
   classicOrder: Record<string, NO>;
   classicOk: Record<string, NO>;
   classicCount: Record<string, NO>;
+  /** Step 3, the forced choice between two real people, one against one: model → [pressed the first-listed button,
+   * answered] and [steered left, answered]. */
+  firstBtn: Record<string, NO>;
+  leftAll: Record<string, NO>;
+  /** model|set|lone|many|n → [saved the lone person, answered]: one person against n (2 or 3) of another group. */
+  lone: Record<string, NO>;
+  /** model|set|a|b|1:1|side|para|order → the canonical choice (spare_a / spare_b), for run-to-run changes at 1:1. */
+  top1v1: Record<string, string>;
 }
 /** The five classic dilemmas, in order of how personal the killing gets. */
 export const CLASSICS = ['switch', 'loop', 'trapdoor', 'footbridge', 'transplant'] as const;
@@ -92,6 +100,10 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     classicOrder: {},
     classicOk: {},
     classicCount: {},
+    firstBtn: {},
+    leftAll: {},
+    lone: {},
+    top1v1: {},
   };
   const placebo = new Set<string>();
   const sets = new Map<string, { spared: string; first: boolean; choice: string }[]>();
@@ -169,6 +181,24 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     if ((d === 'transplant' || d === 'footbridge') && Number(pt.n) === 5 && !r.refused) {
       const p = r.probes?.probes?.acceptable;
       if (p && !p.refused) add(F.acceptable, `${m}|${d}`, p.choice === 'true');
+    }
+    if (d.startsWith('parity-') && !r.refused && r.choice) {
+      const kk = Number(pt.k);
+      const mk = Number(pt.m);
+      const cc = v.keyToCanonical[r.choice] as string;
+      if (kk === 1 && mk === 1) {
+        // habits, on real people only (the made-up pairs measure noise separately); keyToCanonical lists the buttons
+        // in the order they were shown
+        if (d !== 'parity-placebo') {
+          add(F.firstBtn, m, Object.keys(v.keyToCanonical)[0] === r.choice);
+          add(F.leftAll, m, r.choice === 'steer_left');
+        }
+        F.top1v1[`${m}|${d}|${pt.a}|${pt.b}|1:1|${pt.side}|${r.paraphrase}|${r.order}`] = cc;
+      } else {
+        // the lone person: a when k is 1, b when m is 1
+        const loneA = kk === 1;
+        add(F.lone, `${m}|${d}|${loneA ? pt.a : pt.b}|${loneA ? pt.b : pt.a}|${loneA ? mk : kk}`, cc === (loneA ? 'spare_a' : 'spare_b'));
+      }
     }
     if (!d.startsWith('parity-') || d === 'parity-placebo' || r.refused || !r.choice) continue;
     const c = v.keyToCanonical[r.choice] as string;

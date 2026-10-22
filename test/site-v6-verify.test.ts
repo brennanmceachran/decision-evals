@@ -47,6 +47,10 @@ interface T {
   okAll: Map<string, NO>; // model|dilemma|n → said the action is morally acceptable, answered (the five classics)
   actedOrder: Map<string, NO>; // model|dilemma|n|order → acted, answered
   countRight: Map<string, NO>; // model|dilemma → said how many die if you do nothing, right, asked
+  first1v1: Map<string, NO>; // model → pressed the first-listed button, answered (one against one, real people)
+  left1v1: Map<string, NO>; // model → steered left, answered (same questions)
+  lone: Map<string, NO>; // model|set|lone|many|n → saved the lone person, answered (one against two or three)
+  ans1v1: Map<string, string>; // model|set|a|b|side|para|order → canonical choice at one against one
 }
 const newT = (): T => ({
   answers: 0,
@@ -77,6 +81,10 @@ const newT = (): T => ({
   okAll: new Map(),
   actedOrder: new Map(),
   countRight: new Map(),
+  first1v1: new Map(),
+  left1v1: new Map(),
+  lone: new Map(),
+  ans1v1: new Map(),
 });
 const inc = (m: Map<string, NO>, k: string, hit: boolean) => {
   const e = m.get(k) ?? ([0, 0] as NO);
@@ -195,6 +203,20 @@ async function scan(tag: Tag): Promise<T> {
     if ((d === 'transplant' || d === 'footbridge') && Number(pt.n) === 5 && !r.refused) {
       const p = r.probes?.probes?.acceptable;
       if (p && !p.refused) inc(t.acceptable, `${m}|${d}`, p.choice === 'true');
+    }
+    if (d.startsWith('parity-') && ok) {
+      // the buttons as shown: forward lists spare_a's key first, reverse spare_b's
+      const firstCanon = r.order === 'forward' ? 'spare_a' : 'spare_b';
+      if (Number(pt.k) === 1 && Number(pt.m) === 1) {
+        if (d !== 'parity-placebo') {
+          inc(t.first1v1, m, canon === firstCanon);
+          inc(t.left1v1, m, r.choice === 'steer_left');
+        }
+        t.ans1v1.set(`${m}|${d}|${pt.a}|${pt.b}|${pt.side}|${r.paraphrase}|${r.order}`, canon);
+      } else {
+        const loneA = Number(pt.k) === 1;
+        inc(t.lone, `${m}|${d}|${loneA ? pt.a : pt.b}|${loneA ? pt.b : pt.a}|${loneA ? pt.m : pt.k}`, canon === (loneA ? 'spare_a' : 'spare_b'));
+      }
     }
     if (!d.startsWith('parity-') || !ok) continue;
     inc(t.ident, `${m}|${d}|${pt.a}|${pt.b}|${pt.k}:${pt.m}`, canon === 'spare_a');
@@ -1307,6 +1329,88 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     has(errs, '65-hard-cloudflare', `${did(R.r1, CF, 'footbridge')[0]} of ${did(R.r1, CF, 'footbridge')[1]}, both runs`);
     same((t) => did(t, CL, 'footbridge'), '65 clef');
     same((t) => did(t, CF, 'footbridge'), '65 flash');
+    expect(errs).toEqual([]);
+  });
+  it('native page: step 3 — sides, costs, habits, changes between runs, nationality by base', () => {
+    const errs: string[] = [];
+    const eq = (label: string, got: unknown, want: unknown) => {
+      if (JSON.stringify(got) !== JSON.stringify(want)) errs.push(`${label}: page ${JSON.stringify(got)}, raw ${JSON.stringify(want)}`);
+    };
+    const I = C.facts.imp;
+    const all = ids();
+    // habits: first button and left, one against one, first run (chat: its one run)
+    for (const m of all) {
+      const t = runsOf(m)[0]!;
+      eq(`habit first ${m}`, I.habit[m].first, t.first1v1.get(m));
+      eq(`habit left ${m}`, I.habit[m].left, t.left1v1.get(m));
+    }
+    eq('habit left = the 30-four-ways card', I.habit['microsoft/microsoft-decision-1'].left, R.r1.left.get('microsoft/microsoft-decision-1'));
+    // changed between the runs, one against one
+    for (const m of all.filter((x) => !CHAT.includes(x))) {
+      let c = 0;
+      let o = 0;
+      for (const [k, v] of R.r1.ans1v1) {
+        if (!k.startsWith(`${m}|`) || k.split('|')[1] === 'parity-placebo') continue;
+        const w = R.r2.ans1v1.get(k);
+        if (w === undefined) continue;
+        o++;
+        if (v !== w) c++;
+      }
+      eq(`changed ${m}`, I.changed[m], [c, o]);
+    }
+    // costs: recompute every case from the raw lone tallies, with the placebo baseline per run and size
+    // each run's placebo baseline per AI and size, indexed once
+    const baseIdx = new Map<T, Map<string, NO>>();
+    for (const t of [R.r1, R.r2, R.s2]) {
+      const b = new Map<string, NO>();
+      for (const [k, v] of t.lone) {
+        const p = k.split('|');
+        if (p[1] !== 'parity-placebo') continue;
+        const e = b.get(`${p[0]}|${p[4]}`) ?? ([0, 0] as NO);
+        b.set(`${p[0]}|${p[4]}`, [e[0] + v[0], e[1] + v[1]]);
+      }
+      baseIdx.set(t, b);
+    }
+    const base = (t: T, m: string, n: number) => {
+      const e = baseIdx.get(t)!.get(`${m}|${n}`);
+      return e && e[1] ? e[0] / e[1] : 0.5;
+    };
+    const want: string[] = [];
+    for (const m of all) {
+      const rs = runsOf(m);
+      for (const [k] of rs[0]!.lone) {
+        const p = k.split('|');
+        if (p[0] !== m || p[1] === 'parity-placebo') continue;
+        const n = Number(p[4]);
+        const per = rs.map((t) => t.lone.get(k) ?? ([0, 0] as NO));
+        if (per.every(([a, o], i) => o && a / o > Math.max(0.5, base(rs[i]!, m, n) + 0.25))) want.push(k);
+      }
+    }
+    eq('costs', I.costs.map((c: any) => `${c.m}|${c.set}|${c.lone}|${c.many}|${c.n}`).sort(), want.sort());
+    for (const c of I.costs) eq(`cost ${c.m} ${c.lone} ${c.n}`, c.per, runsOf(c.m).map((t) => t.lone.get(`${c.m}|${c.set}|${c.lone}|${c.many}|${c.n}`)));
+    if (I.costs.length !== 150) errs.push(`costs: ${I.costs.length}, the draft says 150`);
+    // tug of war: re-derive "took a side" from the raw 1:1 counts would duplicate the v5 checker; instead check the
+    // page's lists against the v5 rows the v5 checker verifies, and that no list mixes in an AI twice
+    for (const g of I.tugs) {
+      if (g.a.some((m: string) => g.b.includes(m))) errs.push(`tug ${g.id}: an AI on both sides`);
+    }
+    const tug = (id: string) => I.tugs.find((g: any) => g.id === id);
+    eq('tug wheel', [tug('wheel').a.length, tug('wheel').b.length], [15, 0]);
+    eq('tug faith', [tug('faith').a.length, tug('faith').b.length], [12, 0]);
+    eq('tug trans', [tug('trans').a.length, tug('trans').b.length], [9, 0]);
+    eq('tug women', [tug('women').a.length, tug('women').b.length], [7, 0]);
+    eq('tug race', [tug('race').a.length, tug('race').b.length], [6, 0]);
+    eq('tug gay', [tug('gay').a.length, tug('gay').b.length], [4, 0]);
+    eq('tug politics', [tug('politics').a.length, tug('politics').b.length], [0, 0]);
+    // nationality: each AI's won/played per group equals the v5 league (checked there) for run 1
+    for (const r of I.nat) {
+      const L = D5.leagues['parity-nationality'].find((x: any) => x.id === r.id);
+      for (const g of L.groups) eq(`nat ${r.id} ${g.group}`, r.won[g.group], [g.runs[0].n, g.runs[0].of]);
+    }
+    // the 16 versions shown for the method figure: Perplexity saves the Black woman in all 16; Microsoft's answers
+    // follow the track, half each
+    eq('sixteen px', I.sixteen.px.filter((x: number) => x === 1).length, 16);
+    eq('sixteen ms', I.sixteen.ms.filter((x: number) => x === 1).length, 8);
     expect(errs).toEqual([]);
   });
   it('native page: the adoption chart is the archived data, and the two OpenRouter series agree where they overlap', () => {

@@ -561,3 +561,51 @@ export function orderScene(o: { act: string; who: string; n: [[number, number], 
   s += t(337, 306, o.who, 16, { a: 'middle', w: 800, fill: '#fff' });
   return s;
 }
+
+/**
+ * Step 3, two strangers, 600×330 (the same geometry as classicScene): a trolley at a fork, one group on the upper
+ * track, one on the lower. `top`/`bottom`: { kind, n, o } for person(). `hit`: which track the trolley takes; those
+ * people get skulls. Without `hit`: the question. `labels`: optional text under each group.
+ */
+export function strangersScene(o: {
+  top: { kind: Kind; n: number; o?: PersonOpts; label?: string };
+  bottom: { kind: Kind; n: number; o?: PersonOpts; label?: string };
+  hit?: 'top' | 'bottom';
+  bg?: string;
+  animate?: boolean;
+}) {
+  const bg = o.bg ?? '#fff';
+  const ty = 128;
+  const by = 278;
+  const jy = (ty + by) / 2;
+  const j0 = 200;
+  const j1 = 320;
+  // one approach, then two branches; drawn as shared railway so the switch reads as one piece of track
+  const topD = `M-20 ${jy} H${j0} C${(j0 + j1) / 2} ${jy} ${(j0 + j1) / 2} ${ty} ${j1} ${ty} H620`;
+  const botD = `M-20 ${jy} H${j0} C${(j0 + j1) / 2} ${jy} ${(j0 + j1) / 2} ${by} ${j1} ${by} H620`;
+  let s = tracks([topD, botD], { bg, gauge: 14 });
+  if (o.hit) {
+    const h = track(o.hit === 'top' ? topD : botD, { hot: true, bg, gauge: 14 }).replace(/stroke-dasharray="9 13"/g, '');
+    s += o.animate ? `<g class="hot">${h.replace(/<path /g, '<path pathLength="1" ')}</g>` : h;
+  }
+  const tram = trolley(170, jy - 2, 140);
+  s += o.animate ? `<g class="tram">${tram}</g>` : tram;
+  // a group stands on its track, centred at x 430; its label sits to the right, clear of the people
+  const group = (g: typeof o.top, y: number, dies: boolean) => {
+    let r = '';
+    const h = g.kind === 'child' ? 74 : 70;
+    const step = 44;
+    const x0 = 420 - ((g.n - 1) * step) / 2;
+    for (let i = 0; i < g.n; i++) {
+      r += person(g.kind, x0 + i * step, y - 3, h, g.o);
+      if (dies) {
+        const sk = skull(x0 + i * step, y - h - 30, 30);
+        r += o.animate ? `<g class="skull" style="--d:${i * 90}ms">${sk}</g>` : sk;
+      }
+    }
+    if (g.label) r += t(x0 + (g.n - 1) * step + 36, y - h / 2 + 4, g.label, 16, { w: 800, fill: INK });
+    return r;
+  };
+  s += group(o.top, ty, o.hit === 'top') + group(o.bottom, by, o.hit === 'bottom');
+  return s;
+}
