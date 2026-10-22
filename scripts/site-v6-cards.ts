@@ -724,33 +724,6 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
     };
   }
   cards.push({
-    name: '13-organs',
-    head:
-      tp.acting * 2 === tp.of
-        ? `Half the AIs would kill a man at his checkup to give five patients his organs. People: {8%}.`
-        : `{${pct(tp.acting, tp.of)}} of AIs would kill a man at his checkup to give five patients his organs. People: {8%}.`,
-    visual: versus(tp.acting, tp.of, 0.08, (y, h) => {
-      const fh = Math.min(h - 150, 300);
-      let s =
-        person('adult', 170, y + h - 44, fh, { shirt: GREEN }) +
-        t(170, y + h - 6, 'healthy man', 28, { a: 'middle', w: 700, fill: MUTED });
-      s += skull(170, y + h - 44 - fh - 52, Math.min(70, fh * 0.3));
-      s += t(330, y + h / 2 + 10, 'or', 52, { a: 'middle', w: 800, fill: MUTED });
-      const bh = Math.min(230, h * 0.46);
-      for (let i = 0; i < 5; i++)
-        s += person(
-          'patient',
-          520 + (i % 3) * 205 + (i < 3 ? 0 : 102),
-          y + (i < 3 ? h * 0.42 : h * 0.84),
-          Math.min(bh, 150),
-          { shirt: '#b9c7d6' },
-        );
-      s += t(780, y + h - 6, '5 patients who need organs', 28, { a: 'middle', w: 700, fill: MUTED });
-      return s;
-    }),
-    src: `${tp.acting} of ${tp.of} AIs chose "Take the man's organs" in most of 8 versions (run 1; run 2: ${tp.ids2.length}). None of the 3 chat AIs did. Humans: about 8% call it permissible (Mikhail 2007).`,
-  });
-  cards.push({
     name: '14-footbridge',
     head: `{${pct(fb.acting, fb.of)}} of AIs would push a man off a bridge to stop a trolley. People: {31%}.`,
     visual: versus(fb.acting, fb.of, 0.31, (y, h) => {
@@ -1794,14 +1767,6 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
   });
   cards.push({ ...cards.find((c) => c.name === '06-fork-age')!, name: '22b-you-age' });
 
-  // ---------------------------------------------------------------- other formats
-  for (const n of ['01-photo', '05-split', '09-fork-race', '13-organs', '11-samebase', '06-fork-age'])
-    cards.push({ ...cards.find((c) => c.name === n)!, name: `sq-${n}`, format: 'square' });
-  for (const n of ['01-photo', '06-fork-age', '05-split'])
-    cards.push({ ...cards.find((c) => c.name === n)!, name: `story-${n}`, format: 'story' });
-  for (const n of ['01-photo', '02-photo-group', '03-photo-live', '06-fork-age', '04-rule', '11-samebase'])
-    cards.push({ ...cards.find((c) => c.name === n)!, name: `x-${n}`, format: 'landscape' });
-
   // Every number the native page shows, in one place: the same values the cards draw, so the page, the images and the
   // independent checker all agree. `n`/`of` are counts; the page turns them into percentages.
   const F = {
@@ -2362,5 +2327,47 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
     },
   ];
   cards.push(...hardCards);
+  // Step 2's headline card: AIs that took the healthy man's organs at five patients, in most versions of every run they
+  // were in (the page's rule), against people. The single-run counts are on the card's proof line.
+  const orgBoth = Object.keys(F.hard.did).filter((m) =>
+    (F.hard.did[m].transplant[5] as [number, number][]).every(([a, b]) => b && a * 2 > b),
+  );
+  const orgRun = (i: number) =>
+    Object.keys(F.hard.did).filter((m) => {
+      const r = F.hard.did[m].transplant[5] as [number, number][];
+      const x = r[i] ?? r[0]!;
+      return x[0] * 2 > x[1];
+    }).length;
+  cards.push({
+    name: '13-organs',
+    head: `{${orgBoth.length} of ${Object.keys(F.hard.did).length}} AIs would kill a healthy man at his checkup to give five patients his organs. People: {8%}.`,
+    visual: (y, h) => {
+      const sh = h - 300;
+      const sw = Math.min(1000, (sh * 600) / 330);
+      const sc = (sw * 330) / 600;
+      let s = `<svg x="${(1080 - sw) / 2}" y="${y + (sh - sc) / 2}" width="${sw}" height="${sc}" viewBox="0 0 600 330">${classicScene('transplant', { did: true, ai: false, bg: PAPER })}</svg>`;
+      const bar = (yy: number, label: string, v: number, col: string, icon: string, txt: string) => {
+        let r = icon + t(150, yy + 30, label, 34, { w: 800 });
+        r += `<rect x="150" y="${yy + 46}" width="720" height="58" rx="12" fill="#e4dfd3"/><rect x="150" y="${yy + 46}" width="${Math.max(16, 720 * v)}" height="58" rx="12" fill="${col}"/>`;
+        r += t(1020, yy + 96, txt, 72, { w: 800, a: 'end', fill: col });
+        return r;
+      };
+      const by = y + sh + 30;
+      const n = Object.keys(F.hard.did).length;
+      s += bar(by, 'AIs', orgBoth.length / n, RED, robot(96, by + 108, 104), `${pct(orgBoth.length, n)}`);
+      s += bar(by + 140, 'People', 0.08, '#6b6f76', person('adult', 96, by + 248, 104, { shirt: '#8a8f97' }), '8%');
+      return s;
+    },
+    src: `${orgBoth.length} of ${Object.keys(F.hard.did).length} AIs chose "Take the man's organs" in most of 8 versions, in both runs (each run on its own: ${orgRun(0)} and ${orgRun(1)}). None of the 3 chat AIs did. People: about 8% call it permissible (Mikhail 2007).`,
+  });
+
+  // ---------------------------------------------------------------- other formats
+  for (const n of ['01-photo', '05-split', '09-fork-race', '13-organs', '11-samebase', '06-fork-age'])
+    cards.push({ ...cards.find((c) => c.name === n)!, name: `sq-${n}`, format: 'square' });
+  for (const n of ['01-photo', '06-fork-age', '05-split'])
+    cards.push({ ...cards.find((c) => c.name === n)!, name: `story-${n}`, format: 'story' });
+  for (const n of ['01-photo', '02-photo-group', '03-photo-live', '06-fork-age', '04-rule', '11-samebase'])
+    cards.push({ ...cards.find((c) => c.name === n)!, name: `x-${n}`, format: 'landscape' });
+
   return { cards, compose, photoVis, forkVis, PH, omniTwo, gem, GREEN, drawn, F };
 }

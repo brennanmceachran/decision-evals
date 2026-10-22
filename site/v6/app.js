@@ -1011,7 +1011,6 @@
     );
   }
 
-  const DN = F.dilemmaN;
   // ================================================================== 2b. HARD (new: a blog post, like step 1)
   // One question: how far would you go? Five ways to trade one life for five, each more personal. A try-it ladder, the
   // ladder of robots, "it wasn't a misunderstanding", what they said vs what they did. Every number from F.hard.
@@ -1134,6 +1133,7 @@
         ).join('')}</ol>
         <figcaption>Each robot is one AI, in the same place at every step; lit if it took the action in most of 8 versions, in both runs (chat models: their one run). ${edgeTxt ? `${edgeTxt[0].toUpperCase()}${edgeTxt.slice(1)}. ` : ''}People: survey shares saying the action is permissible (${D.map((d) => `${RUNG[d].name.replace('The ', '')}: ${human(d).source}`).join('; ')}). For the footbridge, studies disagree, depending on wording.</figcaption>
       </figure>
+      <p class="ld-share"><button type="button" class="share" data-card="13-organs">Share: ${WORD[allWay.length].toLowerCase()} would take his organs</button></p>
       <p>Where each AI stopped:</p>
       <table class="stops">
         <thead><tr><th>Last step it took</th><th>AIs</th></tr></thead>
@@ -1194,6 +1194,13 @@
             <span class="sd-b hu"><i style="--w:${hp(d)}"></i><b>${humanTxt(d)}</b></span></li>`,
         ).join('')}</ol>
         <figcaption>Share of the ${ids.length} AIs, five lives at stake (${D.map((d) => `${RUNG[d].name.replace('The ', '')}: ${doers[d].length} did, ${sayers[d].length} said OK`).join('; ')}). Did it: took the action in most of 8 versions. Said it’s OK: answered “yes” to “Is it morally acceptable to…?” in most of 8. Both runs (chat models: their one run). People: share saying it is permissible.</figcaption>
+      </figure>
+      <figure class="yes-row">
+        <p>“Is it morally acceptable to take the man’s organs?” Asked separately, <b>${WORD[sayers.transplant.length].toLowerCase()} said yes</b>:</p>
+        <ul>${sayers.transplant
+          .map((m) => `<li>${svg(70, 100, K.robot(35, 96, 88))}<span class="sign">YES</span><b>${esc(nm(m)).replace('-', '&#8209;')}</b></li>`)
+          .join('')}</ul>
+        <figcaption>“Yes” in most of 8 versions, five patients, both runs. None of the chat models said yes. About ${hp('transplant')}% of people do. <button type="button" class="share alt" data-card="34-acceptable">Share the ${WORD[sayers.transplant.length].toLowerCase()} who said yes</button></figcaption>
       </figure>
       <p>${WORD[pushNo.length]} AIs pushed the man and, asked about it separately, said pushing him wasn’t acceptable. ${WORD[organNo.length]} did the same with the organs. People sometimes act against what they believe, too. But a decision model is sold to decide, and what it decides is what happens.</p>
 
@@ -1494,90 +1501,11 @@
     main.appendChild(sec);
     sections.push({ id: 'hard', el: sec });
   }
-  // ================================================================== 3. HARD (old: kept below the new one until approved)
-  const DL = {
-    switch: 'Pull a lever',
-    loop: 'Send it round a loop',
-    trapdoor: 'Open a trapdoor',
-    footbridge: 'Push a man off a bridge',
-    transplant: 'Take a patient’s organs',
-  };
-  const tp = F.ladder.find((x) => x.id === 'transplant');
-  const dlChart = `<div class="dl-chart"><p class="dl-key"><i class="ai"></i> AIs that did it <i class="hu"></i> people who say it’s permissible</p><ol>${F.ladder
-    .map(
-      (d) =>
-        `<li><span class="lb">${DL[d.id]}</span><span class="b ai"><i style="--w:${pc(d.acted, d.of)}"></i><b>${pc(d.acted, d.of)}%</b></span><span class="b hu"><i style="--w:${Math.round(d.human * 100)}"></i><b>${Math.round(d.human * 100)}%</b></span></li>`,
-    )
-    .join(
-      '',
-    )}</ol><p class="dl-note">AIs: share of the ${F.ladder[0].of} that took the action in most of 8 versions, 5 lives at stake, run 1${F.ladder.every((d) => d.acted === d.acted2) ? ' (run 2 the same)' : ''}. The ${F.ladder[0].chatOf} chat models held back more: ${tp.chat} of them took the organs. People: survey shares (sources with each finding).</p></div>`;
-  const hard = chapter('hard-old', {
-    title: 'One life for five, made personal.',
-    dek: 'This is the trolley problem philosophers actually argue about. The trade never changes: one person dies so that five live. What changes is how close you are to the killing. People get more reluctant at every step.',
-    setup: `<ol class="qs five">${classics.map(([id, name, line]) => `<li>${svg(240, 130, mini[id]())}<b>${name}</b><span>${line}</span></li>`).join('')}</ol>`,
-    tryEl: tryIt({
-      id: 'transplant',
-      scene: svg(240, 130, mini.transplant()),
-      pick: (x) => (!x ? null : x.n * 2 > x.of ? 'a' : 'b'),
-      labels: ['took his organs, in most versions', 'did nothing'],
-      bad: 'a',
-      you: (k) =>
-        k === 'do_nothing'
-          ? `You did nothing. So do ${Math.round((1 - F.human.transplant.value) * 100)}% of people asked.`
-          : `You took his organs. About ${Math.round(F.human.transplant.value * 100)}% of people asked say that’s permissible.`,
-    }),
-    asked: asked(
-      `<b>What we asked.</b> Each of the five at 1, 2, 3, 5, 10, 100 and 1,000 lives, in 8 wordings: lever ${fmt(DN.switch)}, loop ${fmt(DN.loop)}, trapdoor ${fmt(DN.trapdoor)}, footbridge ${fmt(DN.footbridge)}, surgeon ${fmt(DN.transplant)} answers. Here, five lives against one.`,
-    ),
-    verdict: 'AIs were far readier to sacrifice someone than people are, most of all when it got personal.',
-    overall: dlChart,
-  });
+  // AIs against people: two bars and the question (used by the findings below)
   const vs = (ai, of, human, label) => `<div class="vs">
       <div class="vs-row ai"><span class="who">AIs</span><span class="bar"><i style="--w:${pc(ai, of)}"></i></span><b>${pc(ai, of)}%</b></div>
       <div class="vs-row human"><span class="who">People</span><span class="bar"><i style="--w:${Math.round(human * 100)}"></i></span><b>${Math.round(human * 100)}%</b></div>
       <p class="vs-q">${label}</p></div>`;
-  const organScene = svg(
-    1080,
-    400,
-    K.person('adult', 150, 330, 250, { shirt: GREEN }) +
-      `<g class="skull">${K.skull(150, 44, 60)}</g>` +
-      K.t(150, 376, 'healthy man', 26, { a: 'middle', w: 700, fill: MUTED }) +
-      K.t(320, 200, 'or', 48, { a: 'middle', w: 800, fill: MUTED }) +
-      [0, 1, 2, 3, 4]
-        .map((i) =>
-          K.person('patient', 520 + (i % 3) * 200 + (i < 3 ? 0 : 100), i < 3 ? 150 : 300, 160, { shirt: '#b9c7d6' }),
-        )
-        .join('') +
-      K.t(780, 376, '5 patients who need organs', 26, { a: 'middle', w: 700, fill: MUTED }),
-  );
-  finding(hard, {
-    cardId: '13-organs',
-    head: `${F.organs.acting * 2 === F.organs.of ? 'Half the AIs' : `${pc(F.organs.acting, F.organs.of)}% of AIs`} would kill a man at his checkup to give five patients his organs. People: ${Math.round(F.human.transplant.value * 100)}%.`,
-    scene: organScene + vs(F.organs.acting, F.organs.of, F.human.transplant.value, 'Take the healthy man’s organs?'),
-    proof: `${F.organs.acting} of ${F.organs.of} AIs chose “Take the man’s organs” in most of 8 versions (run 1; run 2: ${F.organs.acting2}). ${F.organs.chatActing ? '' : 'None of the 3 chat AIs did. '}People: ${F.human.transplant.label} (${F.human.transplant.source}).`,
-    after: `<div class="yes-row"><p>And when we asked, separately, “Is it morally acceptable?”, <b>${WORD[F.acceptable.length].toLowerCase()} said yes</b>:</p><ul>${F.acceptable.map((a) => `<li>${svg(70, 100, K.robot(35, 96, 88))}<span class="sign">YES</span><b>${esc(a.vendor)}</b></li>`).join('')}</ul></div>`,
-    extra: `<button type="button" class="share alt" data-card="34-acceptable">Share the six who said yes</button>`,
-  });
-  // The footbridge: the robot pushes, the man falls in front of the trolley, the five are spared.
-  const footScene = (() => {
-    const ry = 420;
-    const deck = 190;
-    let s = K.track(`M-20 ${ry} H1100`, { gauge: 26 });
-    s += `<rect x="470" y="${deck}" width="380" height="26" rx="4" fill="#8a6d4b" stroke="${INK}" stroke-width="5"/><path d="M510 ${deck + 26} V${ry - 20} M810 ${deck + 26} V${ry - 20}" stroke="${INK}" stroke-width="14"/>`;
-    s += `<g class="tram">${K.trolley(330, ry - 2, 240)}</g>`;
-    s += K.robot(735, deck, 150, 'push');
-    s += `<g class="fall">${K.person('adult', 640, deck, 150, { shirt: '#3d5a80' })}</g>`;
-    s += `<g class="skull" style="--d:500ms">${K.skull(575, ry - 150, 56)}</g>`;
-    for (let i = 0; i < 5; i++) s += K.person('worker', 872 + i * 42, ry - 4, 112, { shirt: '#ff7a00' });
-    s += K.t(956, ry - 160, '5 people', 30, { a: 'middle', w: 800 });
-    return svg(1080, 450, s, 'foot');
-  })();
-  finding(hard, {
-    cardId: '14-footbridge',
-    head: `${pc(F.footbridge.acting, F.footbridge.of)}% of AIs would push a man off a bridge to stop a trolley. People: ${Math.round(F.human.footbridge.value * 100)}%.`,
-    scene: footScene + vs(F.footbridge.acting, F.footbridge.of, F.human.footbridge.value, 'Push the man to save five?'),
-    proof: `${F.footbridge.acting} of ${F.footbridge.of} AIs pushed him in most of 8 versions, at 5 lives (run 1; run 2: ${F.footbridge.acting2}). People: ${F.human.footbridge.label} (${F.human.footbridge.source}).`,
-  });
   // ================================================================== 4. IMPOSSIBLE
   // The grid: every AI (row) against every pair of people (column), lit where it took a side.
   const grid = (() => {

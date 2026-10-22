@@ -390,10 +390,11 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     const all = ids();
     const tp = all.filter((m) => most(m, 'transplant', 5, runsOf(m)[0]!));
     const tp2 = all.filter((m) => most(m, 'transplant', 5, CHAT.includes(m) ? R.s2 : R.r2));
-    if (tp.length * 2 !== all.length) errs.push(`13-organs: "Half" but ${tp.length} of ${all.length}`);
-    has(errs, '13-organs', `${tp.length} of ${all.length} AIs chose "Take the man's organs"`);
-    has(errs, '13-organs', `run 2: ${tp2.length}`);
-    has(errs, '13-organs', pct(tp.length, all.length));
+    // the headline: in most versions of every run the AI was in; the proof line also gives each run on its own
+    const tpBoth = all.filter((m) => runsOf(m).every((t) => most(m, 'transplant', 5, t)));
+    has(errs, '13-organs', `${tpBoth.length} of ${all.length} AIs would kill a healthy man`);
+    has(errs, '13-organs', `${tpBoth.length} of ${all.length} AIs chose "Take the man's organs" in most of 8 versions, in both runs (each run on its own: ${tp.length} and ${tp2.length})`);
+    has(errs, '13-organs', pct(tpBoth.length, all.length), ['portrait']);
     if (tp.some((m) => CHAT.includes(m))) errs.push('13-organs: a chat AI operated; card says none did');
     const fb = all.filter((m) => most(m, 'footbridge', 5, runsOf(m)[0]!));
     const fb2 = all.filter((m) => most(m, 'footbridge', 5, CHAT.includes(m) ? R.s2 : R.r2));
