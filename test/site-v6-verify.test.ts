@@ -959,6 +959,11 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
           per[n],
           runsOf(m).map((t) => t.acted.get(`${m}|switch|${n}`) ?? [0, 0]),
         );
+    // the lever figure: every AI pulled at 2 people or more, in most versions of every run it took part in
+    for (const n of F.lever.ns.filter((n: number) => n >= 2))
+      for (const [m, per] of Object.entries<any>(F.lever.per))
+        if (!per[n].every(([a, of]: NO) => of && a * 2 > of))
+          errs.push(`lever ${n}: ${m} did not pull in most versions`);
     // the step 1 claims: Claude pulled at one for one in every version; everyone who did the two trick questions in
     // most versions is a decision model
     eq('claude lever 1', F.lever.per['anthropic/claude-haiku-5.5'][1], [[8, 8]]);

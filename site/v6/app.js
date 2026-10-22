@@ -760,6 +760,18 @@
     const worst = pics.at(-1);
     const chat = F.models.filter((m) => m.kind === 'chat');
     const leverOdd = ids.filter((m) => F.lever.per[m][1].some(([a, of]) => of && a * 2 > of));
+    // the lever with n people straight ahead and one on the side line
+    const leverMini = (n) => {
+      let s = K.tracks(['M-10 100 H250', 'M-10 100 H92 C126 100 132 44 168 44 H250'], {
+        gauge: 11,
+        bg: 'var(--mini-bg)',
+      });
+      s += K.trolley(72, 99, 64);
+      for (let i = 0; i < n; i++) s += K.person('adult', 218 - (n - 1 - i) * 14, 98, 30, { shirt: SLATE });
+      s += K.person('adult', 210, 42, 30, { shirt: SLATE });
+      s += `<path d="M98 128 L105 118" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/><circle cx="106" cy="116.5" r="3.5" fill="${RED}"/>`;
+      return s;
+    };
     const sec = document.createElement('section');
     sec.className = 'chapter story step';
     sec.id = 'obvious';
@@ -775,19 +787,45 @@
 
       <h3>The lever</h3>
       <p>The famous one: a trolley heading for a group of people, and a lever that sends it onto a side line where one person is standing. We asked it with 1, 2, 3, 5, 10, 100 and 1,000 people in the group, in eight wordings each.</p>
-      <figure class="asked-ex"><span>What the AIs saw (with 5 people)</span><pre>${esc(F.ask.lever5.text)}</pre><b>${esc(F.ask.lever5.question)}</b><span class="btns">${F.ask.lever5.buttons.map((b) => `<i>${esc(b.text)}</i>`).join('')}</span></figure>
-      <figure class="lever-row">
-        <p class="lr-q">AIs that pulled the lever, by how many people it would save</p>
-        <ol>${F.lever.ns
-          .map((n) => {
-            const k = ids.filter((m) => F.lever.per[m][n].some(([a, of]) => of && a * 2 > of)).length;
-            const one = n === 1;
-            return `<li class="${one ? 'odd' : ''}"><span class="lr-n">${fmt(n)}</span><span class="lr-bar"><i style="--h:${(100 * k) / ids.length}"></i></span><b>${k}</b></li>`;
-          })
-          .join('')}</ol>
-        <figcaption>Out of ${ids.length} AIs, each in most of 8 versions; the decision models in both runs (run 2 the same).</figcaption>
+      <figure class="lever2">
+        <div class="lv-cols">
+          ${[
+            {
+              n: 5,
+              ask: F.ask.lever5,
+              title: 'Five people ahead, one on the side line',
+              note: 'Pulling saves four lives.',
+            },
+            {
+              n: 1,
+              ask: F.ask.lever1,
+              title: 'One person ahead, one on the side line',
+              note: 'Pulling saves nobody. It only picks who dies.',
+            },
+          ]
+            .map((c) => {
+              const pulled = ids.filter((m) => F.lever.per[m][c.n].some(([a, of]) => of && a * 2 > of));
+              const odd = c.n === 1;
+              return `<div class="lv-col${odd ? ' odd' : ''}">
+                <p class="lv-t">${c.title}</p>
+                <div class="lv-scene">${svg(240, 130, leverMini(c.n))}</div>
+                <p class="lv-note">${c.note}</p>
+                <p class="lv-big"><b>${pulled.length}</b> of ${ids.length} AIs pulled the lever</p>
+                <div class="lv-bots">${ids
+                  .map(
+                    (m, i) =>
+                      `<span class="${pulled.includes(m) ? 'on' : ''}" style="--i:${i}" title="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}</span>`,
+                  )
+                  .join('')}</div>
+                ${odd ? `<p class="lv-who">${pulled.map((m) => esc(nm(m))).join(', ')}</p>` : ''}
+                <details class="lv-saw"><summary>What the AIs saw</summary><pre>${esc(c.ask.text)}</pre><b>${esc(c.ask.question)}</b></details>
+              </div>`;
+            })
+            .join('')}
+        </div>
+        <figcaption>Each AI counted as pulling if it did in most of 8 versions; the decision models in both runs, which agreed. With 2, 3, 10, 100 and 1,000 people ahead, all ${ids.length} pulled it too.</figcaption>
       </figure>
-      <p>Once pulling the lever saves a life, every AI pulls it, which ${Math.round(sw.human * 100)}% of people asked say is permissible. The odd one is the first column. With one person ahead and one on the side line, pulling the lever saves nobody: it just picks who dies. ${WORD[leverOdd.length]} AIs pulled it anyway, in most versions: ${leverOdd.map((m) => esc(nm(m))).join(', ')}.</p>
+      <p>Once pulling the lever saves a life, every AI pulls it, which ${Math.round(sw.human * 100)}% of people asked say is permissible. But with one person on each track, pulling it saves nobody: it just picks who dies. ${WORD[leverOdd.length]} AIs pulled it anyway.</p>
 
       <h3>When nobody is in danger</h3>
       <p>Then we took the group away. The trolley is heading down an empty track. The lever would send it onto a side line where one person is standing. Pulling it kills that person, and saves no one. Here is the question exactly as the AIs got it. Try it yourself.</p>
@@ -1513,13 +1551,13 @@
       }),
     { threshold: 0.35 },
   );
-  $$('.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo').forEach(
-    (el) => io.observe(el),
-  );
+  $$(
+    '.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo, .lever2',
+  ).forEach((el) => io.observe(el));
   if (reduce)
-    $$('.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo').forEach(
-      (el) => el.classList.add('played'),
-    );
+    $$(
+      '.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo, .lever2',
+    ).forEach((el) => el.classList.add('played'));
 
   // ------------------------------------------------------------------ share
   const toast = (m) => {

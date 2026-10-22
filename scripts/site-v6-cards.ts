@@ -1,6 +1,7 @@
 // site/v6 share cards: one image per finding, drawn as SVG from site/v5/data.js plus raw counts from
 // scripts/site-v6-facts.ts, rasterised with resvg. Each card also exports its numbers (`facts`) so the page and the
 // independent checker (test/site-v6-verify.test.ts) can confirm every figure on every image.
+import { textJobs } from '../src/final/jobs.js';
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 void mkdirSync;
@@ -1941,6 +1942,24 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
     }),
     // The questions as the AIs got them (v5's quiz: prompt, buttons and every AI's answer, both runs) for the try-its.
     ask: Object.fromEntries([
+      // the lever at one against one, exactly as sent (first wording, buttons in order): pulling saves nobody
+      [
+        'lever1',
+        (() => {
+          const j: any = textJobs().find(
+            (j: any) =>
+              j.meta.dilemma === 'switch' &&
+              j.meta.paraphrase === 0 &&
+              j.meta.order === 'forward' &&
+              j.variant!.point.n === 1,
+          )!;
+          return {
+            text: j.state.text,
+            question: j.main.instructions,
+            buttons: Object.values(j.main.criteria).map((t: any) => ({ text: t })),
+          };
+        })(),
+      ],
       // the lever at 5 lives and "kill five to save one", as the AIs got them (v5 carries the exact text)
       [
         'lever5',
