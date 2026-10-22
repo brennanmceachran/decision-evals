@@ -2123,6 +2123,21 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
       scene: [v.scene.right, v.scene.of],
       pic: [v.picture.right, v.picture.of],
       seen: D.image.models[m]?.perception ?? null,
+      // the harm check (no rule sentence), all runs pooled: says the people reached are hit; says fewer is better
+      hit: [FX.r1, FX.r2, FX.s2].reduce<[number, number]>(
+        (a, t) => {
+          const x = t.harmHit[m];
+          return x ? [a[0] + x[0], a[1] + x[1]] : a;
+        },
+        [0, 0],
+      ),
+      goal: [FX.r1, FX.r2, FX.s2].reduce<[number, number]>(
+        (a, t) => {
+          const x = t.harmGoal[m];
+          return x ? [a[0] + x[0], a[1] + x[1]] : a;
+        },
+        [0, 0],
+      ),
     })),
     wheel: { n: wc.n, of: wc.of },
     photos: {

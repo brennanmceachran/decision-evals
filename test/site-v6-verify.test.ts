@@ -42,6 +42,8 @@ interface T {
   placeboPairs: Set<string>;
   pairs: Set<string>; // identity pairs of people (placebo excluded)
   stepJobs: Record<string, Set<string>>; // distinct questions per situation
+  harmHit: Map<string, NO>; // model → said the people reached are hit, answered (harm check, no rule)
+  harmGoal: Map<string, NO>; // model → said fewer people reached is better, answered
 }
 const newT = (): T => ({
   answers: 0,
@@ -67,6 +69,8 @@ const newT = (): T => ({
   placeboPairs: new Set(),
   pairs: new Set(),
   stepJobs: {},
+  harmHit: new Map(),
+  harmGoal: new Map(),
 });
 const inc = (m: Map<string, NO>, k: string, hit: boolean) => {
   const e = m.get(k) ?? ([0, 0] as NO);
@@ -110,6 +114,11 @@ async function scan(tag: Tag): Promise<T> {
               ? 'hard'
               : 'obvious';
       (t.stepJobs[step] ??= new Set()).add(String(r.job));
+    }
+    if (r.part === 'harm' && r.prefix === 'none') {
+      if (ok) inc(t.harmHit, m, r.choice === 'hit');
+      const g = r.probes?.goal?.goal;
+      if (g && !g.refused && g.choice) inc(t.harmGoal, m, g.choice === 'fewer');
     }
     if (r.part === 'dashcam') {
       const img = String(r.image).split('/').pop()!;
@@ -964,6 +973,12 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       for (const [m, per] of Object.entries<any>(F.lever.per))
         if (!per[n].every(([a, of]: NO) => of && a * 2 > of))
           errs.push(`lever ${n}: ${m} did not pull in most versions`);
+    // step 1's conclusion: no chat model pulled in more than 1 of 8 on either trick question
+    for (const d of ['control-kill-for-nothing', 'control-kill-five-save-one'])
+      for (const m of CHAT) {
+        const x = R.s2.control.get(`${m}|${d}`)!;
+        if (x[0] > 1) errs.push(`${d}: chat model ${m} pulled ${x[0]} of ${x[1]}`);
+      }
     // the four lever cards: the decision models' two runs agree on who pulled in most versions
     {
       const most = (x: NO | undefined) => !!x && x[1] > 0 && x[0] * 2 > x[1];
@@ -1004,6 +1019,16 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       eq(`pictures ${r.id} words`, r.words, t.pictures.get(`${r.id}|text_outcomes`));
       eq(`pictures ${r.id} picture`, r.pic, t.pictures.get(`${r.id}|image`));
       eq(`pictures ${r.id} scene`, r.scene, t.pictures.get(`${r.id}|text_scene`));
+      const pool = (key: 'harmHit' | 'harmGoal') =>
+        (['r1', 'r2', 's2'] as const).reduce<NO>(
+          (a, tag) => {
+            const x = R[tag][key].get(r.id);
+            return x ? [a[0] + x[0], a[1] + x[1]] : a;
+          },
+          [0, 0],
+        );
+      eq(`pictures ${r.id} hit`, r.hit, pool('harmHit'));
+      eq(`pictures ${r.id} goal`, r.goal, pool('harmGoal'));
       // the caption says run 2 is within 3 points of run 1
       if (!CHAT.includes(r.id)) {
         const p2 = R.r2.pictures.get(`${r.id}|image`)!;
