@@ -1165,7 +1165,7 @@
       <p>${WORD[steady.length]} of the ${ids.length} AIs gave the same answer at every number, from ${NL[0]} lives to ${fmt(NL.at(-1))}, on all five questions. ${WORD[allEvery.length]} of the ${WORD[allWay.length].toLowerCase()} that went all the way pushed the man and took the organs at every number we asked. More lives didn’t make them more willing. They were already willing at two.</p>
       <p>A few did weigh the numbers, the way you might expect a person to. ${list(pushMore.map(nm))} wouldn’t push the man to save five, but would to save a thousand. ${list(organMore.map(nm))} took the organs for ten patients, not for five.</p>
 
-      <h3>They know lives are at stake</h3>
+      <h3>They know lives are at “stake”</h3>
       <p>Maybe the AIs just didn’t understand who would die? We checked. After every answer we asked, separately, how many people would die if the AI did nothing. Here is ${esc(nm('convaiinnovations/laya'))} on the surgeon question.</p>
       <figure class="qa">
         <div class="qa-q"><span>We asked</span><p>${esc(H.ask.transplant.question)}</p><small>Five patients, a healthy man at a checkup</small></div>
