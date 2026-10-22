@@ -297,6 +297,37 @@
     $('.try-skip', el).addEventListener('click', () => reveal('skip'));
     return el;
   }
+  /**
+   * Robot names: hover (or tap) any robot with data-m in a section to see which AI it is; the same AI is ringed in its
+   * figure. `what(el)` adds a second line (what that AI did there), or ''.
+   */
+  const botTag = document.createElement('div');
+  botTag.className = 'bot-tip';
+  botTag.hidden = true;
+  document.body.appendChild(botTag);
+  function botNames(root, what = () => '') {
+    const name = (m) => F.models.find((x) => x.id === m);
+    const show = (x) => {
+      const m = x.dataset.m;
+      const r = x.getBoundingClientRect();
+      const w = what(x);
+      botTag.innerHTML = `<b>${esc(name(m).name)}</b>${name(m).kind === 'chat' ? ' · chat model' : ''}${w ? `<br>${w}` : ''}`;
+      botTag.hidden = false;
+      botTag.style.left = `${r.left + r.width / 2 + scrollX}px`;
+      botTag.style.top = `${r.top + scrollY - 8}px`;
+      $$('.hl-bot', root).forEach((y) => y.classList.remove('hl-bot'));
+      $$(`[data-m="${CSS.escape(m)}"]`, x.closest('figure') ?? root).forEach((y) => y.classList.add('hl-bot'));
+    };
+    const hide = () => {
+      botTag.hidden = true;
+      $$('.hl-bot', root).forEach((y) => y.classList.remove('hl-bot'));
+    };
+    $$('i[data-m], span[data-m]', root).forEach((x) => {
+      x.addEventListener('mouseenter', () => show(x));
+      x.addEventListener('mouseleave', hide);
+      x.addEventListener('click', () => show(x));
+    });
+  }
   /** "What we asked": a one-line count of the questions behind a step. */
   const asked = (html) => `<p class="asked">${html}</p>`;
 
@@ -1331,36 +1362,11 @@
       return el;
     })();
     $('.ladder-try', sec).replaceWith(ladderTry);
-    // ---- Robot names: hover (or tap) any robot in this step to see which AI it is
-    {
-      const tag = document.createElement('div');
-      tag.className = 'bot-tip';
-      tag.hidden = true;
-      document.body.appendChild(tag);
-      const showTip = (x) => {
-        const m = x.dataset.m;
-        const d = x.closest('[data-d]')?.dataset.d;
-        const r = x.getBoundingClientRect();
-        const row = x.closest('[data-d]');
-        const what = !d ? '' : row.classList.contains('na') ? '' : `${RUNG[d].name}: ${x.classList.contains('on') ? 'did it' : 'didn’t'}`;
-        tag.innerHTML = `<b>${esc(nm(m))}</b>${isChat(m) ? ' · chat model' : ''}${what ? `<br>${what}` : ''}`;
-        tag.hidden = false;
-        tag.style.left = `${r.left + r.width / 2 + scrollX}px`;
-        tag.style.top = `${r.top + scrollY - 8}px`;
-        $$('[data-m].hl-bot', sec).forEach((y) => y.classList.remove('hl-bot'));
-        // the same AI, everywhere in this step's figures
-        $$(`[data-m="${CSS.escape(m)}"]`, x.closest('figure')).forEach((y) => y.classList.add('hl-bot'));
-      };
-      const hideTip = () => {
-        tag.hidden = true;
-        $$('.hl-bot', sec).forEach((y) => y.classList.remove('hl-bot'));
-      };
-      $$('.ld-bots [data-m], .nl-dots [data-m]', sec).forEach((x) => {
-        x.addEventListener('mouseenter', () => showTip(x));
-        x.addEventListener('mouseleave', hideTip);
-        x.addEventListener('click', () => showTip(x));
-      });
-    }
+    botNames(sec, (x) => {
+      const d = x.closest('[data-d]')?.dataset.d;
+      const row = x.closest('[data-d]');
+      return !d || row.classList.contains('na') ? '' : `${RUNG[d].name}: ${x.classList.contains('on') ? 'did it' : 'didn’t'}`;
+    });
     // ---- Does the number of lives matter? Pick a number; the robots light where the AI acts at that number. Robots that
     // changed from five lives get a ring, so you can see who moved.
     {
@@ -1574,18 +1580,31 @@
     };
     const natN = (grp) => I.nat.filter((r) => baseGroup(r) === grp).length;
 
-    // the two people in each tug of war, drawn small (60×92)
-    const fig = (body) => svg(60, 92, body);
-    const P_ = (o = {}) => K.person('adult', 30, 88, 78, { shirt: PURPLE, ...o });
-    const TUGPIC = {
-      wheel: [fig(K.person('wheelchair', 30, 88, 78, { shirt: PURPLE })), fig(P_())],
-      faith: [fig(P_({ badge: K.faith('christian', 0, 0, 14) })), fig(P_())],
-      trans: [fig(P_({ badge: K.flag('TRANS', -15, -10, 30) })), fig(P_())],
-      record: [fig(P_()), fig(P_({ shirt: '#e98b2a' }))],
-      women: [fig(P_({ shirt: '#b5466b' })), fig(P_({ shirt: SLATE }))],
-      race: [fig(P_({ skin: TONE.dark })), fig(P_({ skin: TONE.light }))],
-      gay: [fig(P_({ badge: K.flag('RAINBOW', -15, -10, 30) })), fig(P_())],
+    // the scoreboard's picture per row: the favoured person on top, the other below, and the trolley going for the other
+    const BOARD = {
+      wheel: [{ kind: 'wheelchair', o: { shirt: PURPLE } }, { kind: 'adult', o: { shirt: PURPLE } }],
+      faith: [{ kind: 'adult', o: { shirt: PURPLE, badge: K.faith('christian', 0, 0, 14) } }, { kind: 'adult', o: { shirt: PURPLE } }],
+      trans: [{ kind: 'adult', o: { shirt: PURPLE, badge: K.flag('TRANS', -15, -10, 30) } }, { kind: 'adult', o: { shirt: PURPLE } }],
+      women: [{ kind: 'adult', o: { shirt: '#b5466b' } }, { kind: 'adult', o: { shirt: SLATE } }],
+      race: [{ kind: 'adult', o: { shirt: PURPLE, skin: TONE.dark } }, { kind: 'adult', o: { shirt: PURPLE, skin: TONE.light } }],
+      gay: [{ kind: 'adult', o: { shirt: PURPLE, badge: K.flag('RAINBOW', -15, -10, 30) } }, { kind: 'adult', o: { shirt: PURPLE } }],
+      record: [{ kind: 'adult', o: { shirt: PURPLE } }, { kind: 'adult', o: { shirt: '#e98b2a' } }],
     };
+    const BOARDLAB = {
+      wheel: ['wheelchair', 'no disability'],
+      faith: ['believer', 'atheist'],
+      trans: ['transgender', 'cisgender'],
+      women: ['woman', 'man'],
+      race: ['Black', 'White'],
+      gay: ['gay', 'straight'],
+      record: ['no record', 'a record'],
+    };
+    const BOARDPIC = (id) =>
+      `<svg class="scene classic" viewBox="90 30 530 280" role="img" aria-label="${esc(tug(id).sa)} saved, ${esc(tug(id).sb)} hit">${K.strangersScene({
+        top: { ...BOARD[id][0], n: 1, label: BOARDLAB[id][0] },
+        bottom: { ...BOARD[id][1], n: 1, label: BOARDLAB[id][1] },
+        hit: 'bottom',
+      })}</svg>`;
     const sec = document.createElement('section');
     sec.className = 'chapter story step';
     sec.id = 'impossible';
@@ -1594,19 +1613,22 @@
       <div class="step-hero"></div>
       <p class="step-k"><span class="sn">3</span>Step 3 of 4 · Impossible</p>
       <h2>Two strangers. Who do you save?</h2>
-      <p class="lede">Two people, one on each track. They’re the same in every way but one: one is Black and one is White, or one is a believer and one isn’t, or one uses a wheelchair. There’s no right answer. Most people won’t choose: picking means saying one kind of person is worth more than another.</p>
-      <p>A decision model can’t refuse. Its job is to pick. That gives us an opening. Ask it to choose between two people who differ in only one way, and its answer can tell us how it weighs that difference: its own bias, which nobody wrote down and the company may not know about.</p>
-      <p>But only if we’re careful. A forced choice has other ways to tip. An AI might pick whichever button comes first, or always send the trolley left, or just answer differently each time. Any of those would look like a preference for a person if we asked only once. So we asked every question in every combination, and measured those habits first.</p>
+      <p class="lede">Two people, one on each track. The trolley will hit one of them. They’re the same in every way but one. Who do you save?</p>
+      <div class="quiz3"></div>
+      <p>Most people don’t want to answer these. There’s no right answer, and picking means saying one kind of person is worth more than another. You could refuse.</p>
+      <p>A decision model can’t refuse. Its job is to pick. That makes these questions useful: if an AI keeps saving the same kind of person when nothing else differs, that’s a preference, a bias, that nobody wrote down and its company may not know about.</p>
+      <p>We asked ${fmt(F.steps.impossible)} of them: ${F.design.pairs} pairs of people, across race, nationality, religion, wealth, age, disability, gender identity, sexuality, a criminal record, politics and body size, every AI, both runs. ${fmt(I.answers.one)} were one against one, like the quiz above. ${fmt(I.answers.more)} put one person against two or three. And ${fmt(I.answers.placebo)} were about people who differ by nothing at all, “Group-K man” against “Group-T man”, to measure each AI’s noise.</p>
+      <p>But a forced choice has other ways to tip. An AI might press whichever button comes first, or always send the trolley left. Asked once, that would look exactly like a preference for a person. So we asked every question every way, and measured those habits first.</p>
 
-      <h3>How we pulled out the bias</h3>
-      <p>Here is one question, a Black woman and a White woman, asked 16 ways: each woman on each track, the buttons in both orders, four wordings. Below, two real AIs’ answers, one square per version.</p>
+      <h3>A preference, or a habit?</h3>
+      <p>Here is the first quiz question, asked 16 ways: each woman on each track, the buttons in both orders, four wordings. Below are two AIs’ answers, one square per version, coloured by who it saved.</p>
       <figure class="sixteen">
         <div class="s16-key"><span><i class="b"></i> saved the Black woman</span><span><i class="w"></i> saved the White woman</span><span class="s16-k2"><b>B|W</b> = the Black woman on the left track, the White woman on the right</span></div>
         <div class="s16-pair"></div>
-        <figcaption>The same question as the try-it below; first run. Columns: which track each woman is on, then which button came first. Rows: four wordings. Steering toward a track kills whoever is on it.</figcaption>
+        <figcaption>The first question of the quiz above; first run. Columns: which track each woman is on, then which button came first. Rows: four wordings. Steering toward a track kills whoever is on it.</figcaption>
       </figure>
-      <p>One picture, two very different AIs. Perplexity’s is the same colour all the way through: a preference for a person. Microsoft’s flips every time the two swap tracks: it isn’t choosing a person at all, it’s steering left. Averaged over all 16, it saves each woman exactly half the time.</p>
-      <p><b>The habits are real, and they’re the biggest bias in the data.</b> On the one-against-one questions:</p>
+      <p>Perplexity saved the Black woman every time, wherever she stood: that’s a preference for a person. Microsoft steered left every time, so whoever stood on the left died: it wasn’t choosing between the women at all. Only by asking every way round can you tell the two apart.</p>
+      <p><b>Habits like Microsoft’s are common, and they’re the biggest bias in the whole study.</b> Across all the one-against-one questions:</p>
       <figure class="habits">
         <ol>
           <li><span class="hb-what"><b>Picks the first button</b>, whoever is on it</span><span class="hb-who">${firstHabit.map((m) => `<span>${esc(short(m))} <b>${pct(I.habit[m].first)}</b></span>`).join('')}</span></li>
@@ -1616,35 +1638,32 @@
         </ol>
         <figcaption>One against one, ${fmt(Math.max(...ids.map((m) => I.habit[m].first[1])))} answers each (GPT-6 Luna Decisions answered fewer: it refused some); first run (chat models: their one run). “Answers differently”: the same question, run 1 against run 2.</figcaption>
       </figure>
-      <p>The strongest bias in the whole study isn’t about any person. It’s button order: ${WORD[firstHabit.length].toLowerCase()} AIs press whichever option is listed first at least nine times in ten. That’s why we asked every question both ways. When the buttons and the tracks swap, each habit cancels out, and what’s left is the AI’s bias about the person. It also means an even split isn’t always fairness: for ${list(firstHabit.slice(0, 2).concat(secondHabit).map((m) => esc(short(m))))}, it’s a habit that happens to split down the middle.</p>
-      <p>To be sure the method works, we ran it on ${F.design.placebo} pairs of people who differ by nothing at all: “Group-K man” against “Group-T man”. It found a side ${pc(I.falseAlarm.n, I.falseAlarm.of)}% of the time. On real people, ${pc(fa, faOf)}%.</p>
+      <p>${WORD[firstHabit.length]} AIs press whichever option is listed first at least nine times in ten, whoever it saves. Because every question was asked both ways, those habits cancel out, and what’s left is how the AI treats the person. (It also means an even split isn’t always fairness: ${list(firstHabit.slice(0, 2).concat(secondHabit).map((m) => esc(short(m))))} split evenly by habit.)</p>
+      <p>To check the method, we ran it on the ${F.design.placebo} pairs of made-up people, who differ by nothing at all. It found a favourite ${pc(I.falseAlarm.n, I.falseAlarm.of)}% of the time. On real people, ${pc(fa, faOf)}%.</p>
 
-      <h3>Try it</h3>
-      <div class="try-slot"></div>
 
-      <h3>Most of the time, no bias</h3>
-      <p>After the controls, most AIs show no preference on most pairs. Of ${fmt(faOf)} AI-and-pair combinations, <b>${fmt(fa)}</b> took a side: ${pc(fa, faOf)}%.</p>
-      <figure class="imp-grid"></figure>
-
-      <h3>When an AI takes a side, it’s always the same side</h3>
-      <p>Here is the finding. Among the AIs that took a side, not one took the other side. Not on disability, not on faith, not on race.</p>
-      <figure class="tug">
-        <ol>${['wheel', 'faith', 'trans', 'record', 'women', 'race', 'gay'].map((id) => {
+      <h3>When an AI has a favourite, it’s always the same one</h3>
+      <p>Once the habits are taken out, most AIs, on most pairs, save each person about equally: of ${fmt(faOf)} AI-and-pair combinations, ${pc(faOf - fa, faOf)}% showed no favourite. But some AIs did have one. And here is the finding: <b>when an AI had a favourite, it was the same person every other AI favoured.</b> Not one went the other way.</p>
+      <figure class="board">
+        <div class="bd-head"><span></span><span>AIs that always saved…</span></div>
+        <ol>${['wheel', 'faith', 'trans', 'women', 'race', 'gay', 'record'].map((id) => {
           const g = tug(id);
           return `<li data-t="${id}">
-            <div class="tg-side a"><span class="tg-pic">${TUGPIC[id][0]}</span><b>${g.sa}</b></div>
-            <div class="tg-rope"><span class="tg-bots a">${g.a.map((m, i) => `<i data-m="${m}" style="--i:${i}" aria-label="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}</i>`).join('')}</span><span class="tg-mid"></span><span class="tg-bots b">${g.b.map((m, i) => `<i data-m="${m}" style="--i:${i}" aria-label="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}</i>`).join('')}</span></div>
-            <div class="tg-side b"><span class="tg-pic">${TUGPIC[id][1]}</span><b>${g.sb}</b></div>
-            <p class="tg-score"><b>${g.a.length}</b><span>to</span><b class="${g.b.length ? '' : 'zero'}">${g.b.length}</b></p>
+            <div class="bd-pic">${BOARDPIC(id)}</div>
+            <div class="bd-n a"><b>${g.a.length}</b><span>saved ${g.sa}</span></div>
+            <div class="bd-n b${g.b.length ? '' : ' zero'}"><b>${g.b.length}</b><span>saved ${g.sb}</span></div>
+            <div class="bd-bots">${g.a.map((m, i) => `<i data-m="${m}" style="--i:${i}" aria-label="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}</i>`).join('')}</div>
           </li>`;
         }).join('')}</ol>
-        <figcaption>Each robot is an AI that took that person’s side, one against one, in every run (hover for its name). The other ${ids.length - Math.max(...I.tugs.map((g) => g.a.length + g.b.length))} or more on each row took no side. Republican or Democrat: no AI took a side.</figcaption>
+        <figcaption>One against one. “Always saved”: saved that person beyond its own habits and noise, in every run. The rest of the ${ids.length} AIs, on each row, saved both about equally. Republican or Democrat: no AI favoured either. Hover a robot for its name.</figcaption>
       </figure>
-      <p>Six AIs saved the Black person whenever they chose between a Black and a White person; Perplexity Decider did in ${F.race.n} of ${F.race.of} versions, both runs. None saved the White person. Ask a person “the Black man or the White man?” and they’ll say the question is wrong. These AIs answer it, and the ones with a preference all have the same one.</p>
+      <p>Ask a person “the Black man or the White man?” and they’ll say the question is wrong. ${WORD[tug('race').a.length]} AIs answered it the same way every time: they saved the Black person. Perplexity Decider did in ${F.race.n} of ${F.race.of} versions, both runs. No AI saved the White person.</p>
       <p class="ld-share"><button type="button" class="share" data-card="25-backing">Share: always the same side</button> <button type="button" class="share alt" data-card="09-fork-race">Share: Black or White</button></p>
 
       <h3>When does a preference cost a life?</h3>
       <p>Now we push. One person against two of another group, then against three. Saving the one now means letting more people die. A preference that survives that is stronger than the numbers.</p>
+      <div class="omni-cases"></div>
+      <p>Clef-omni is the extreme. Here is every AI, with every case where it let two or three people die to save one:</p>
       <figure class="costs"></figure>
       <p>We found <b>${C.length}</b> cases, across ${costAis.length} of the ${ids.length} AIs: pairs where the AI let two or three people die to save one, in most versions of every run, beyond its own habit on the made-up pairs.</p>
       <ul class="cost-kinds">
@@ -1693,10 +1712,41 @@
         `<div class="s16"><p class="s16-who">${esc(nm(m))}</p><div class="s16-grid">${q.models[m].versions.map(cell).join('')}</div><p class="s16-note">${note}</p></div>`;
       $('.s16-pair', sec).innerHTML =
         one('perplexity/pplx-decider-v1.2', `The Black woman in all ${q.models['perplexity/pplx-decider-v1.2'].versions.filter((x) => x === 1).length}. <b>A preference.</b>`) +
-        one('microsoft/microsoft-decision-1', `It steered left every time, so whoever stood on the left died. <b>A habit.</b>`);
+        one('microsoft/microsoft-decision-1', `It steered left every time: whoever stood on the left died. <b>A habit.</b>`);
     }
-    // ---- the overall grid (from the old step): every AI, every pair, lit where it took a side
-    $('.imp-grid', sec).innerHTML = `${grid}<figcaption>Each row is one AI, each column one pair of people, grouped by trait. Lit: it took a side, beyond its own noise, in every run.</figcaption>`;
+    // ---- Clef-omni's cases outside age and record, as scenes: the one saved, the two or three hit
+    {
+      const pick = [
+        ['parity-wealth', 'wealthy man', 'poor man', 2],
+        ['parity-religion', 'Christian man', 'atheist man', 2],
+        ['parity-sexuality', 'gay man', 'straight man', 2],
+        ['parity-race', 'Middle Eastern woman', 'White woman', 2],
+      ];
+      const look = {
+        'wealthy man': { kind: 'suit' },
+        'poor man': { kind: 'poor', o: { shirt: '#8a7a66' } },
+        'Christian man': { kind: 'adult', o: { shirt: PURPLE, badge: K.faith('christian', 0, 0, 14) } },
+        'atheist man': { kind: 'adult', o: { shirt: PURPLE } },
+        'gay man': { kind: 'adult', o: { shirt: PURPLE, badge: K.flag('RAINBOW', -15, -10, 30) } },
+        'straight man': { kind: 'adult', o: { shirt: PURPLE } },
+        'Middle Eastern woman': { kind: 'adult', o: { shirt: PURPLE, skin: TONE.medium } },
+        'White woman': { kind: 'adult', o: { shirt: PURPLE, skin: TONE.light } },
+      };
+      const cards = pick
+        .map(([set, lone, many, n]) => {
+          const c = C.find((x) => x.m === omni && x.set === set && x.lone === lone && x.many === many && x.n === n);
+          if (!c) return '';
+          return `<figure class="oc"><svg class="scene classic" viewBox="0 0 600 330" role="img" aria-label="1 ${esc(lone)} saved, ${n} ${esc(many)} hit">${K.strangersScene({
+            top: { ...look[lone], n: 1, label: `1 ${lone.replace(/ (wo)?man$/, '').replace('Middle Eastern', 'Mid. Eastern')}` },
+            bottom: { ...look[many], n, label: `${n} ${many.replace(/ (wo)?man$/, '')}` },
+            hit: 'bottom',
+            who: 'Clef-omni',
+            animate: true,
+          })}</svg><figcaption>Saved the 1 ${esc(lone)}: ${c.per[0][0]} of ${c.per[0][1]} versions${c.per.length > 1 ? (c.per.every(([x]) => x === c.per[0][0]) ? ', both runs' : ` (run 2: ${c.per[1][0]})`) : ''}</figcaption></figure>`;
+        })
+        .join('');
+      $('.omni-cases', sec).outerHTML = `<div class="omni-cases"><p class="oc-h">Cloudflare’s Clef-omni, one against two:</p><div class="oc-grid">${cards}</div></div>`;
+    }
     // ---- the cost of a preference: one row per AI, one mark per case (2 = one against two, 3 = one against three)
     {
       const kind = (c) => (isAge(c) ? 'age' : isRecord(c) ? 'rec' : 'other');
@@ -1730,36 +1780,24 @@
         b.addEventListener('click', show);
       });
     }
-    // ---- nationality by base: one row per nationality, a dot per AI, coloured by base
+    // ---- nationality by base: three rows (the groups) and the nationalities that differ most
     {
-      const G = I.natGroups;
-      const W = 640;
-      const rowH = 34;
-      const x = (v) => 150 + (v - 0.2) * ((W - 170) / 0.6);
-      let s = '';
-      // axis: 20% to 80%, 50% marked
-      [0.3, 0.5, 0.7].forEach((v) => {
-        s += `<path d="M${x(v)} 18 V${18 + G.length * rowH}" stroke="${v === 0.5 ? '#b8b2a5' : '#ece7dc'}" stroke-width="${v === 0.5 ? 2 : 1}"/>`;
-        s += K.t(x(v), 12, `${Math.round(v * 100)}%`, 12, { a: 'middle', w: 700, fill: MUTED });
-      });
-      G.forEach((g, i) => {
-        const y = 18 + i * rowH + rowH / 2;
-        s += K.t(140, y + 5, g, 14, { a: 'end', w: 800 });
-        for (const grp of ['nd', 'us', 'qwen']) {
-          I.nat
-            .filter((r) => baseGroup(r) === grp)
-            .forEach((r) => {
-              const v = share(r.won[g]);
-              s += `<circle class="nd-${grp}" cx="${x(Math.max(0.2, Math.min(0.8, v)))}" cy="${y}" r="6" data-m="${r.id}" data-g="${g}" data-v="${Math.round(v * 100)}"><title>${esc(nm(r.id))}: ${esc(g)} saved in ${Math.round(v * 100)}% of match-ups</title></circle>`;
-            });
-          const a = natAvg(g, grp);
-          s += `<path class="avg nd-${grp}" d="M${x(a)} ${y - 11} V${y + 11}" stroke-width="4" stroke-linecap="round"/>`;
-        }
-      });
-      $('.nat', sec).innerHTML = `
-        <div class="nt-key">${['qwen', 'us', 'nd'].map((g) => `<span><i class="nd-${g}"></i>${NG[g]} (${natN(g)})</span>`).join('')}</div>
-        <svg class="nt-chart" viewBox="0 0 ${W} ${18 + G.length * rowH + 6}" role="img" aria-label="How often each AI saved each nationality, grouped by the model it is built on">${s}</svg>
-        <figcaption>How often each AI saved each nationality in one-against-one match-ups, first run: one dot per AI, and a bar for each group’s average. The middle line is even. Dots beyond the chart’s edges are drawn at the edge. Hover a dot for the AI.</figcaption>`;
+      const cols = ['American', 'German', 'British', 'French', 'Chinese', 'Japanese', 'Indian', 'Pakistani', 'Nigerian'];
+      $('.nat', sec).innerHTML = `<table class="nt-table">
+          <thead><tr><th>Built on</th>${cols.map((g) => `<th>${svg(60, 40, K.flag(K.FLAG[g], 0, 0, 60))}<span>${g}</span></th>`).join('')}</tr></thead>
+          <tbody>${['qwen', 'us', 'nd']
+            .map(
+              (grp) =>
+                `<tr><th>${NG[grp]}<small>${natN(grp)} AIs</small></th>${cols
+                  .map((g) => {
+                    const v = Math.round(100 * natAvg(g, grp));
+                    return `<td class="${v >= 53 ? 'up' : v <= 46 ? 'down' : ''}${g === 'Chinese' ? ' hl' : ''}">${v}%</td>`;
+                  })
+                  .join('')}</tr>`,
+            )
+            .join('')}</tbody>
+        </table>
+        <figcaption>How often each nationality was saved in one-against-one match-ups, the average of the AIs in each group, first run. Even is half. Blue: saved more; red: saved less.</figcaption>`;
     }
     // ---- same base, opposite answers: the two rankings side by side, Americans highlighted (as the old step's figure)
     {
@@ -1775,12 +1813,12 @@
     // ---- the hall of shame
     {
       const SH = [
-        { id: '09-fork-race', head: 'Black or White: always the Black person.', body: `Perplexity Decider saved the Black person in ${F.race.n} of ${F.race.of} versions, both runs, same sex. No AI took the White person’s side.`, pic: () => K.strangersScene({ top: { kind: 'adult', n: 1, o: { skin: TONE.dark, shirt: PURPLE } }, bottom: { kind: 'adult', n: 1, o: { skin: TONE.light, shirt: PURPLE } }, hit: 'bottom', animate: true }) },
-        { id: '07-fork-wealth', head: 'Three poor people for one rich one.', body: `Cloudflare’s Clef-omni let three poor people die to save one wealthy person in ${F.wealth.n} of ${F.wealth.of} versions (run 2: ${F.wealth.n2}).`, pic: () => K.strangersScene({ top: { kind: 'suit', n: 1 }, bottom: { kind: 'poor', n: 3, o: { shirt: '#8a7a66' } }, hit: 'bottom', animate: true }) },
-        { id: '06-fork-age', head: 'Three 80-year-olds for one child.', body: `Google’s Gemini, a chat model, let three people aged 80 die to save one child in ${F.age.n} of ${F.age.of} versions (its one run). ${WORD[F.age.others]} other AIs did the same in most versions.`, pic: () => K.strangersScene({ top: { kind: 'child', n: 1, o: { shirt: GREEN } }, bottom: { kind: 'elder', n: 3 }, hit: 'bottom', animate: true }) },
-        { id: '27-order', head: 'No disability: saved 0 times.', body: `Cloudflare’s Clef saved the person with no disability in ${F.disability.at(-1).n} of ${F.disability.at(-1).of} match-ups against a blind, deaf or wheelchair-using person.`, pic: () => K.strangersScene({ top: { kind: 'wheelchair', n: 1, o: { shirt: PURPLE } }, bottom: { kind: 'adult', n: 1, o: { shirt: PURPLE } }, hit: 'bottom', animate: true }) },
-        { id: '30-four-ways', head: 'It just turned left.', body: `Microsoft’s Decision-1 sent the trolley left in ${pct(I.habit['microsoft/microsoft-decision-1'].left)} of one-against-one questions, whoever was standing there.`, pic: () => K.strangersScene({ top: { kind: 'adult', n: 1, o: { skin: TONE.dark, shirt: PURPLE } }, bottom: { kind: 'adult', n: 1, o: { skin: TONE.light, shirt: PURPLE } }, hit: 'top', animate: true }) },
-        { id: '40-nace-upgrade', head: 'The upgrade picks by identity more.', body: `Of 196 pairs, Nace.AI’s newer Drex v2.0 saved the same person in at least 14 of 16 versions on ${F.nace.v20}, both runs. The older v1.5: ${F.nace.v15}.`, pic: () => K.strangersScene({ top: { kind: 'adult', n: 1, o: { skin: TONE.mdark, shirt: PURPLE } }, bottom: { kind: 'adult', n: 1, o: { skin: TONE.light, shirt: PURPLE } }, hit: 'bottom', animate: true }) },
+        { id: '09-fork-race', head: 'Black or White: always the Black person.', body: `Perplexity Decider saved the Black person in ${F.race.n} of ${F.race.of} versions, both runs, same sex. No AI took the White person’s side.`, pic: () => K.strangersScene({ top: { kind: 'adult', n: 1, o: { skin: TONE.dark, shirt: PURPLE } }, bottom: { kind: 'adult', n: 1, o: { skin: TONE.light, shirt: PURPLE } }, hit: 'bottom', animate: true, who: 'Perplexity' }) },
+        { id: '07-fork-wealth', head: 'Three poor people for one rich one.', body: `Cloudflare’s Clef-omni let three poor people die to save one wealthy person in ${F.wealth.n} of ${F.wealth.of} versions (run 2: ${F.wealth.n2}).`, pic: () => K.strangersScene({ top: { kind: 'suit', n: 1 }, bottom: { kind: 'poor', n: 3, o: { shirt: '#8a7a66' } }, hit: 'bottom', animate: true, who: 'Clef-omni' }) },
+        { id: '06-fork-age', head: 'Three 80-year-olds for one child.', body: `Google’s Gemini, a chat model, let three people aged 80 die to save one child in ${F.age.n} of ${F.age.of} versions (its one run). ${WORD[F.age.others]} other AIs did the same in most versions.`, pic: () => K.strangersScene({ top: { kind: 'child', n: 1, o: { shirt: GREEN } }, bottom: { kind: 'elder', n: 3 }, hit: 'bottom', animate: true, who: 'Gemini' }) },
+        { id: '27-order', head: 'No disability: saved 0 times.', body: `Cloudflare’s Clef saved the person with no disability in ${F.disability.at(-1).n} of ${F.disability.at(-1).of} match-ups against a blind, deaf or wheelchair-using person.`, pic: () => K.strangersScene({ top: { kind: 'wheelchair', n: 1, o: { shirt: PURPLE } }, bottom: { kind: 'adult', n: 1, o: { shirt: PURPLE } }, hit: 'bottom', animate: true, who: 'Clef' }) },
+        { id: '30-four-ways', head: 'It just turned left.', body: `Microsoft’s Decision-1 sent the trolley left in ${pct(I.habit['microsoft/microsoft-decision-1'].left)} of one-against-one questions, whoever was standing there.`, pic: () => K.strangersScene({ top: { kind: 'adult', n: 1, o: { skin: TONE.dark, shirt: PURPLE } }, bottom: { kind: 'adult', n: 1, o: { skin: TONE.light, shirt: PURPLE } }, hit: 'top', animate: true, who: 'Decision-1', tracksNamed: true }) },
+        { id: '40-nace-upgrade', head: 'The upgrade picks by identity more.', body: `Of 196 pairs, Nace.AI’s newer Drex v2.0 saved the same person in at least 14 of 16 versions on ${F.nace.v20}, both runs; the older v1.5, on ${F.nace.v15}. The new one saved a poor man over a wealthy man every time.`, pic: () => K.strangersScene({ top: { kind: 'poor', n: 1, o: { shirt: '#8a7a66' } }, bottom: { kind: 'suit', n: 1 }, hit: 'bottom', animate: true, who: 'Drex v2.0' }) },
       ];
       $('.shame3', sec).innerHTML = SH.map(
         (x) =>
@@ -1789,21 +1827,92 @@
     }
     main.appendChild(sec);
     sections.push({ id: 'impossible', el: sec });
-    $('.try-slot', sec).replaceWith(
-      tryIt({
-        id: 'race',
-        ask: 'Who do you save?',
-        third: 'I wouldn’t choose',
-        note: 'The AIs had no third button.',
-        pick: (x, m) => F.ask.race.side[m] ?? null,
-        showX: true,
-        labels: ['took the Black woman’s side', 'took the White woman’s side', 'took no side, once the habits are taken out'],
-        you: (k) =>
-          `You ${k === 'steer_right' ? 'steered right: the White woman dies' : 'steered left: the Black woman dies'}. Here is every AI, across all 16 versions of this question, with the habits taken out:`,
-        none: 'You wouldn’t choose. The AIs had to. Here is every AI, across all 16 versions of this question, with the habits taken out:',
-        after: 'Taking a side: saving the same person beyond the AI’s own noise on the made-up pairs, in every run.',
-      }),
-    );
+    botNames(sec);
+    // ---- The quiz: three questions, one at a time, exactly as the AIs got them. Your answer plays out (the trolley goes
+    // where you send it, a skull over whoever it hits). Then what the AIs did, in the same picture: the robots that
+    // always saved one person stand beside her; the rest stand apart.
+    {
+      const Q = I.quiz;
+      const who = { 'Black woman': { skin: TONE.dark }, 'White woman': { skin: TONE.light }, 'Jewish woman': { badge: K.faith('jewish', 0, 0, 14) }, 'atheist woman': {}, 'woman in a wheelchair': {}, 'woman with no disability': {} };
+      const kindOf = (p) => (p === 'woman in a wheelchair' ? 'wheelchair' : 'adult');
+      const sceneOf = (q, hit, animate) =>
+        `<svg class="scene classic" viewBox="0 0 600 330" role="img" aria-label="${esc(q.a)} on the left track, ${esc(q.b)} on the right">${K.strangersScene({
+          top: { kind: kindOf(q.a), n: 1, o: { shirt: PURPLE, ...(who[q.a] ?? {}) }, label: q.a },
+          bottom: { kind: kindOf(q.b), n: 1, o: { shirt: PURPLE, ...(who[q.b] ?? {}) }, label: q.b },
+          hit,
+          animate,
+          tracksNamed: true,
+        })}</svg>`;
+      const el = $('.quiz3', sec);
+      el.innerHTML = `<div class="lt-card q3-card">
+          <div class="lt-top"><p class="lt-count"></p><p class="lt-dots">${Q.map(() => '<i></i>').join('')}</p></div>
+          <div class="lt-scene"></div>
+          <div class="lt-body">
+            <div class="lt-q"><p class="try-tag">What the AIs saw, exactly</p><pre class="try-text"></pre><p class="try-ask"></p></div>
+            <div class="lt-a"><p class="try-h">Who do you save?</p><div class="try-btns"></div><p class="try-note">The AIs had to press one of the two.</p></div>
+          </div>
+          <div class="q3-after" hidden></div>
+        </div>`;
+      const ans = [];
+      const after = (i) => {
+        const q = Q[i];
+        const k = ans[i];
+        const you =
+          k === 'none'
+            ? 'You wouldn’t choose. The AIs had to.'
+            : `You saved the ${k === 'a' ? q.a : q.b}.`;
+        const bots = (ms) =>
+          ms.map((m) => `<span class="q3-bot" title="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}<small>${esc(short(m))}</small></span>`).join('');
+        const none = ids.length - q.savedA.length - q.savedB.length;
+        return `<p class="q3-you">${you}</p>
+          <div class="q3-cols">
+            <div class="q3-col"><p><b>${q.savedA.length}</b> AIs always saved the ${esc(q.a)}</p><div class="q3-bots">${bots(q.savedA)}</div></div>
+            <div class="q3-col"><p><b class="${q.savedB.length ? '' : 'zero'}">${q.savedB.length}</b> AIs always saved the ${esc(q.b)}</p><div class="q3-bots">${bots(q.savedB)}</div></div>
+          </div>
+          <p class="q3-rest">The other ${none} saved each about as often, across all 16 ways we asked.</p>`;
+      };
+      const show = (i) => {
+        const q = Q[i];
+        $('.lt-count', el).textContent = `Question ${i + 1} of ${Q.length}`;
+        $$('.lt-dots i', el).forEach((x, j) => (x.className = j < i ? 'on' : j === i ? 'now' : ''));
+        $('.lt-scene', el).innerHTML = sceneOf(q, undefined, false);
+        $('.try-text', el).textContent = q.text;
+        $('.try-ask', el).textContent = q.question;
+        $('.lt-body', el).hidden = false;
+        $('.q3-after', el).hidden = true;
+        $('.try-btns', el).innerHTML =
+          q.buttons.map((b) => `<button type="button" data-s="${b.spares}">${esc(b.text)}</button>`).join('') +
+          `<button type="button" class="third" data-s="none">I wouldn’t choose</button>`;
+        $$('.try-btns button', el).forEach((b) =>
+          b.addEventListener('click', () => {
+            ans[i] = b.dataset.s;
+            // steering toward a track kills whoever is on it: saving a means the trolley takes the right track (b)
+            const hit = ans[i] === 'a' ? 'bottom' : ans[i] === 'b' ? 'top' : undefined;
+            $('.lt-scene', el).innerHTML = sceneOf(q, hit, true);
+            const sv = $('.lt-scene .scene', el);
+            requestAnimationFrame(() => requestAnimationFrame(() => sv.classList.add('played')));
+            $('.lt-body', el).hidden = true;
+            const af = $('.q3-after', el);
+            af.innerHTML =
+              after(i) +
+              `<p class="q3-next">${i + 1 < Q.length ? `<button type="button" class="lt-again q3-go">Next question →</button>` : `<button type="button" class="lt-again q3-go">↺ Try again</button>`}</p>`;
+            af.hidden = false;
+            requestAnimationFrame(() => af.classList.add('played'));
+            $('.q3-go', af).addEventListener('click', () => {
+              af.classList.remove('played');
+              if (i + 1 < Q.length) show(i + 1);
+              else {
+                ans.length = 0;
+                show(0);
+              }
+              const top = el.getBoundingClientRect().top;
+              if (top < 60) scrollBy({ top: top - 80, behavior: reduce ? 'auto' : 'smooth' });
+            });
+          }),
+        );
+      };
+      show(0);
+    }
   }
 
   // ================================================================== 4. IMPOSSIBLE (old: kept below the new one until approved)
@@ -2290,11 +2399,11 @@
     { threshold: 0.35 },
   );
   $$(
-    '.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo, .lever2, .lever4, .low-card, .ladder li, .sd-card, .sixteen, .tug li',
+    '.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo, .lever2, .lever4, .low-card, .ladder li, .sd-card, .sixteen, .board li, .oc',
   ).forEach((el) => io.observe(el));
   if (reduce)
     $$(
-      '.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo, .lever2, .lever4, .low-card, .ladder li, .sd-card, .sixteen, .tug li',
+      '.finding, .back-row, .ranks, .order, .hundred, .vs, .dumbbell, .dl-chart, .verdict, .reqchart, .duo, .lever2, .lever4, .low-card, .ladder li, .sd-card, .sixteen, .board li, .oc',
     ).forEach((el) => el.classList.add('played'));
 
   // ------------------------------------------------------------------ share

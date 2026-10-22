@@ -573,6 +573,10 @@ export function strangersScene(o: {
   hit?: 'top' | 'bottom';
   bg?: string;
   animate?: boolean;
+  /** An AI at the switch, with its name on a tag. */
+  who?: string;
+  /** Name the tracks "left" (top) and "right" (bottom), as the question does. */
+  tracksNamed?: boolean;
 }) {
   const bg = o.bg ?? '#fff';
   const ty = 128;
@@ -590,12 +594,16 @@ export function strangersScene(o: {
   }
   const tram = trolley(170, jy - 2, 140);
   s += o.animate ? `<g class="tram">${tram}</g>` : tram;
+  if (o.tracksNamed) {
+    s += t(j1 + 4, ty - 26, 'left track', 14, { w: 800, fill: MUTED });
+    s += t(j1 + 4, by + 34, 'right track', 14, { w: 800, fill: MUTED });
+  }
   // a group stands on its track, centred at x 430; its label sits to the right, clear of the people
   const group = (g: typeof o.top, y: number, dies: boolean) => {
     let r = '';
     const h = g.kind === 'child' ? 74 : 70;
     const step = 44;
-    const x0 = 420 - ((g.n - 1) * step) / 2;
+    const x0 = 430 - ((g.n - 1) * step) / 2;
     for (let i = 0; i < g.n; i++) {
       r += person(g.kind, x0 + i * step, y - 3, h, g.o);
       if (dies) {
@@ -607,5 +615,13 @@ export function strangersScene(o: {
     return r;
   };
   s += group(o.top, ty, o.hit === 'top') + group(o.bottom, by, o.hit === 'bottom');
+  if (o.who) {
+    // the AI under the switch, its name tag to the left (as in leverScene)
+    const rx = j0 - 10;
+    const ry = 326;
+    s += robot(rx, ry, 64, o.hit === 'top' ? 'up' : o.hit === 'bottom' ? 'down' : 'lever');
+    s += `<rect x="${rx - 190}" y="${ry - 64}" width="140" height="30" rx="9" fill="${INK}"/><path d="M${rx - 51} ${ry - 57} L${rx - 30} ${ry - 49} L${rx - 51} ${ry - 41} Z" fill="${INK}"/>`;
+    s += t(rx - 120, ry - 43, o.who, 15, { a: 'middle', w: 800, fill: '#fff' });
+  }
   return s;
 }

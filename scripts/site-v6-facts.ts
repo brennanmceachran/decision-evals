@@ -66,6 +66,8 @@ export interface RunFacts {
   lone: Record<string, NO>;
   /** model|set|a|b|1:1|side|para|order → the canonical choice (spare_a / spare_b), for run-to-run changes at 1:1. */
   top1v1: Record<string, string>;
+  /** Step 3's answers by kind: one against one, one against two or three, made-up pairs (every row, refusals too). */
+  impN: Record<string, number>;
 }
 /** The five classic dilemmas, in order of how personal the killing gets. */
 export const CLASSICS = ['switch', 'loop', 'trapdoor', 'footbridge', 'transplant'] as const;
@@ -104,6 +106,7 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     leftAll: {},
     lone: {},
     top1v1: {},
+    impN: {},
   };
   const placebo = new Set<string>();
   const sets = new Map<string, { spared: string; first: boolean; choice: string }[]>();
@@ -181,6 +184,10 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     if ((d === 'transplant' || d === 'footbridge') && Number(pt.n) === 5 && !r.refused) {
       const p = r.probes?.probes?.acceptable;
       if (p && !p.refused) add(F.acceptable, `${m}|${d}`, p.choice === 'true');
+    }
+    if (d.startsWith('parity-')) {
+      const kind = d === 'parity-placebo' ? 'placebo' : Number(pt.k) === 1 && Number(pt.m) === 1 ? 'one' : 'more';
+      F.impN[kind] = (F.impN[kind] ?? 0) + 1;
     }
     if (d.startsWith('parity-') && !r.refused && r.choice) {
       const kk = Number(pt.k);

@@ -51,6 +51,7 @@ interface T {
   left1v1: Map<string, NO>; // model → steered left, answered (same questions)
   lone: Map<string, NO>; // model|set|lone|many|n → saved the lone person, answered (one against two or three)
   ans1v1: Map<string, string>; // model|set|a|b|side|para|order → canonical choice at one against one
+  impN: Record<string, number>; // step 3 rows: one against one, one against more, made-up pairs
 }
 const newT = (): T => ({
   answers: 0,
@@ -85,6 +86,7 @@ const newT = (): T => ({
   left1v1: new Map(),
   lone: new Map(),
   ans1v1: new Map(),
+  impN: {},
 });
 const inc = (m: Map<string, NO>, k: string, hit: boolean) => {
   const e = m.get(k) ?? ([0, 0] as NO);
@@ -203,6 +205,10 @@ async function scan(tag: Tag): Promise<T> {
     if ((d === 'transplant' || d === 'footbridge') && Number(pt.n) === 5 && !r.refused) {
       const p = r.probes?.probes?.acceptable;
       if (p && !p.refused) inc(t.acceptable, `${m}|${d}`, p.choice === 'true');
+    }
+    if (d.startsWith('parity-')) {
+      const kind = d === 'parity-placebo' ? 'placebo' : Number(pt.k) === 1 && Number(pt.m) === 1 ? 'one' : 'more';
+      t.impN[kind] = (t.impN[kind] ?? 0) + 1;
     }
     if (d.startsWith('parity-') && ok) {
       // the buttons as shown: forward lists spare_a's key first, reverse spare_b's
@@ -1338,6 +1344,10 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     };
     const I = C.facts.imp;
     const all = ids();
+    // every answer in the step, by kind, and they add up to the step's total
+    for (const k of ['one', 'more', 'placebo'])
+      eq(`answers ${k}`, I.answers[k], (R.r1.impN[k] ?? 0) + (R.r2.impN[k] ?? 0) + (R.s2.impN[k] ?? 0));
+    eq('answers add up', I.answers.one + I.answers.more + I.answers.placebo, C.facts.steps.impossible);
     // habits: first button and left, one against one, first run (chat: its one run)
     for (const m of all) {
       const t = runsOf(m)[0]!;

@@ -2260,6 +2260,44 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         natGroups: ['American', 'British', 'German', 'French', 'Italian', 'Brazilian', 'Japanese', 'Chinese', 'Indian', 'Pakistani', 'Nigerian'],
         sixteen: { px: sixteen('perplexity/pplx-decider-v1.2'), ms: sixteen('microsoft/microsoft-decision-1') },
         falseAlarm: D.attr.letterOut,
+        // the try-it: three pairs, exactly as the AIs got them (first wording, the first person on the left track,
+        // buttons in the first order), and which AIs always saved which person (the page's rule)
+        quiz: (
+          [
+            ['parity-race', 'Black woman', 'White woman'],
+            ['parity-religion', 'Jewish woman', 'atheist woman'],
+            ['parity-disability', 'woman in a wheelchair', 'woman with no disability'],
+          ] as const
+        ).map(([set, a, b]) => {
+          const j: any = textJobs().find(
+            (j: any) =>
+              j.meta.dilemma === set &&
+              j.meta.paraphrase === 0 &&
+              j.meta.order === 'forward' &&
+              j.variant!.point.k === 1 &&
+              j.variant!.point.m === 1 &&
+              j.variant!.point.a === a &&
+              j.variant!.point.b === b &&
+              j.variant!.point.side === 'a_left',
+          )!;
+          const P2 = D.scenarios.pairs.find((x: any) => x.set === set && x.pair === `${a}|${b}`);
+          return {
+            set,
+            a,
+            b,
+            text: j.state.text,
+            question: j.main.instructions,
+            // steer right spares a (on the left); steer left spares b
+            buttons: Object.entries(j.main.criteria).map(([k, t]: any) => ({ key: k, text: t, spares: j.keyToCanonical[k] === 'spare_a' ? 'a' : 'b' })),
+            savedA: P2.rows.filter((r: any) => r.how && r.picked > 0).map((r: any) => r.id),
+            savedB: P2.rows.filter((r: any) => r.how && r.picked < 0).map((r: any) => r.id),
+          };
+        }),
+        // every answer in the step, by kind, all runs
+        answers: ['one', 'more', 'placebo'].reduce(
+          (o, k) => ({ ...o, [k]: [FX.r1, FX.r2, FX.s2].reduce((a, t) => a + (t.impN[k] ?? 0), 0) }),
+          {} as Record<string, number>,
+        ),
       };
     })(),
     // Every vision AI: chose the fewer deaths in words and as a wordless picture (the same 17 scenes), and how often it
