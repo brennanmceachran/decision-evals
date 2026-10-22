@@ -1090,18 +1090,18 @@
       <p class="step-k"><span class="sn">2</span>Step 2 of 4 · Hard</p>
       <h2>One life for five, made personal</h2>
       <p class="lede">This is the trolley problem philosophers actually argue about. The trade never changes: one person dies so that five can live. What changes is how close you get to the killing. Most people stop somewhere along the way. We asked the AIs where they stop.</p>
-      <p>We asked ${fmt(F.steps.hard)} of these: the loop, the trapdoor, the footbridge and the surgeon, at ${Math.min(...D.slice(1).map((d) => H.ns[d][0]))} to ${fmt(Math.max(...D.slice(1).map((d) => H.ns[d].at(-1))))} lives, eight versions each, every AI. The lever is the one from step 1.</p>
+      <p>Four new questions, the loop, the trapdoor, the footbridge and the surgeon, each at ${Math.min(...D.slice(1).map((d) => H.ns[d][0]))} to ${fmt(Math.max(...D.slice(1).map((d) => H.ns[d].at(-1))))} lives, eight versions each: ${fmt(F.steps.hard)} answers. With the lever from step 1, they make a ladder.</p>
 
       <h3>Where would you stop?</h3>
-      <p>Here are the five, in order, exactly as the AIs got them. Answer each one, and see how far you go.</p>
+      <p>Here are the five, in order, exactly as the AIs got them. Answer each one and watch what happens.</p>
       <div class="ladder-try"></div>
 
       <h3>How far they went</h3>
-      <p><b>${WORD[allWay.length]} AIs went all the way</b>, and ${allWay.every((m) => !isChat(m)) ? `all ${WORD[allWay.length].toLowerCase()} are decision models` : `${allWay.filter((m) => !isChat(m)).length} of them are decision models`}. People mostly stop at the footbridge. Here is every AI on every rung, lit where it took the action in most versions, five lives at stake.</p>
-      <figure class="ladder">
+      <p><b>${WORD[allWay.length]} AIs went all the way</b>, every one a decision model. They would push the man, and they would take the healthy man’s organs, which about ${hp('transplant')}% of people say is permissible. Here is every AI at every step, five lives at stake.</p>
+      <figure class="ladder" id="hard-ladder">
         <ol>${D.map(
           (d, i) => `<li class="rung-${d}">
-            <div class="ld-scene">${scene(d)}</div>
+            <div class="ld-scene">${scene(d, { did: true, ai: false, animate: true })}</div>
             <div class="ld-txt"><p class="ld-n">${i + 1} · ${RUNG[d].name}</p><p class="ld-what">${RUNG[d].what}</p></div>
             <div class="ld-bots">${ids
               .map(
@@ -1109,61 +1109,51 @@
                   `<span class="${did(m, d) ? 'on' : ''}" style="--i:${j}" title="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}</span>`,
               )
               .join('')}</div>
-            <p class="ld-big"><b>${doers[d].length}</b> of ${ids.length} AIs</p>
+            <p class="ld-big"><b>${doers[d].length}</b> of ${ids.length} AIs did it</p>
             <p class="ld-hu"><b>${humanTxt(d)}</b> of people say it’s OK</p>
           </li>`,
         ).join('')}</ol>
-        <figcaption>Each robot is one AI, in the same place on every rung. Lit: it took the action in most of 8 versions with five lives at stake, in both runs (chat models: their one run). ${edgeTxt ? `${edgeTxt[0].toUpperCase()}${edgeTxt.slice(1)}. ` : ''}People: survey shares saying the action is permissible (${D.map((d) => `${RUNG[d].name.replace('The ', '')}: ${human(d).source}`).join('; ')}).</figcaption>
+        <figcaption>Each robot is one AI, in the same place at every step; lit if it took the action in most of 8 versions, in both runs (chat models: their one run). ${edgeTxt ? `${edgeTxt[0].toUpperCase()}${edgeTxt.slice(1)}. ` : ''}People: survey shares saying the action is permissible (${D.map((d) => `${RUNG[d].name.replace('The ', '')}: ${human(d).source}`).join('; ')}). For the footbridge, studies disagree, depending on wording.</figcaption>
       </figure>
-      <p>The ${WORD[allWay.length].toLowerCase()} that went all the way: ${allWay.map((m) => `<b>${esc(nm(m))}</b>`).join(', ')}. The most careful, ${careful.map((m) => esc(nm(m))).join(' and ')}, stopped after the loop, where most people would still go on. None of the ${WORD[chatIds.length].toLowerCase()} chat models took the organs in most versions.</p>
+      <p>The ${WORD[allWay.length].toLowerCase()}: ${allWay.map((m) => `<b>${esc(nm(m))}</b>`).join(', ')}. At the other end, ${careful.map((m) => esc(nm(m))).join(' and ')} stopped after the loop, before the trapdoor most people would still open.</p>
 
       <h3>It wasn’t a misunderstanding</h3>
-      <p>After every answer we asked, separately: how many people die if you do nothing? ${WORD[counted.length]} of the ${ids.length} AIs got it right every single time, on all five questions. The ${WORD[ids.length - counted.length].toLowerCase()} that slipped got it right ${ids.filter((m) => !counted.includes(m)).map((m) => { const x = D.reduce((a, d) => H.counted[m][d].reduce((b, y) => [b[0] + y[0], b[1] + y[1]], a), [0, 0]); return `${pc(x[0], x[1])}% of the time (${esc(nm(m))})`; }).join(' and ')}. And on the surgeon, ${esc(nm('convaiinnovations/laya'))} counted the patients right ${H.counted['convaiinnovations/laya'].transplant[0][0]} times out of ${H.counted['convaiinnovations/laya'].transplant[0][1]}${H.counted['convaiinnovations/laya'].transplant.length > 1 && H.counted['convaiinnovations/laya'].transplant.every(([a, b]) => a === b) ? ', in both runs' : ''}. It knew how many patients there were. It took the healthy man’s organs in every version, even when there was only one patient to save.</p>
+      <p>On the surgeon question, ${esc(nm('convaiinnovations/laya'))} was asked afterwards how many patients would die if it did nothing. It got the number right ${H.counted['convaiinnovations/laya'].transplant[0][0]} times out of ${H.counted['convaiinnovations/laya'].transplant[0][1]}${H.counted['convaiinnovations/laya'].transplant.length > 1 && H.counted['convaiinnovations/laya'].transplant.every(([a, b]) => a === b) ? ', in both runs' : ''}. It took the healthy man’s organs in every version, including the one with a single patient: a life for a life.</p>
+      <p>We asked every AI that counting question, every time. ${WORD[counted.length]} of the ${ids.length} got it right on every question, every time. ${ids
+        .filter((m) => !counted.includes(m))
+        .map((m) => {
+          const x = D.reduce((a, d) => H.counted[m][d].reduce((b, y) => [b[0] + y[0], b[1] + y[1]], a), [0, 0]);
+          return `${esc(nm(m))} got it right ${pc(x[0], x[1])}% of the time`;
+        })
+        .join(', and ')}.</p>
 
-      <h3>Ask them, and they sound like people</h3>
-      <p>We also asked each AI, in a separate call that didn’t include its answer: is it morally acceptable to do it? Their answers look a lot like people’s. Most say yes to the lever and the loop, and no to pushing a man or taking his organs. Then they do it anyway.</p>
+      <h3>Asked if it’s right, they sound like people</h3>
+      <p>After each answer, in a separate call that didn’t include it, we also asked: is it morally acceptable to do this? On that question, the AIs look a lot like people. Almost all said yes to the lever and the loop. Only ${sayers.footbridge.length} said yes to pushing the man, and ${sayers.transplant.length} to taking his organs.</p>
       <figure class="saydo">
-        <div class="sd-head"><span></span><span>Did it</span><span>Said it was OK</span><span>People say it’s OK</span></div>
+        <div class="sd-head"><span></span><span>Did it</span><span>Said it’s OK</span><span>People say it’s OK</span></div>
         <ol>${D.map(
           (d) => `<li><span class="sd-n">${RUNG[d].act}</span>
             <span class="sd-b did"><i style="--w:${pc(doers[d].length, ids.length)}"></i><b>${doers[d].length}</b></span>
             <span class="sd-b ok"><i style="--w:${pc(sayers[d].length, ids.length)}"></i><b>${sayers[d].length}</b></span>
             <span class="sd-b hu"><i style="--w:${hp(d)}"></i><b>${humanTxt(d)}</b></span></li>`,
         ).join('')}</ol>
-        <figcaption>Out of ${ids.length} AIs, five lives at stake: took the action in most of 8 versions, and said “yes” to “Is it morally acceptable to…?” in most of 8, asked in a separate call. Both runs (chat models: their one run). People: share saying it is permissible.</figcaption>
+        <figcaption>Out of ${ids.length} AIs, five lives at stake. Did it: took the action in most of 8 versions. Said it’s OK: answered “yes” to “Is it morally acceptable to…?” in most of 8. Both runs (chat models: their one run). People: share saying it is permissible.</figcaption>
       </figure>
-      <div class="sd-pair">
-        ${[
-          ['footbridge', 'upstage/solar-decide-flash', 'Solar Flash'],
-          ['transplant', 'convaiinnovations/laya', 'Laya'],
-        ]
-          .map(([d, m, tag]) => {
-            const x = H.did[m][d][5][0];
-            const y = H.ok[m][d][5][0];
-            return `<figure class="sd-card">${scene(d, { who: tag, did: true, animate: true })}
-              <figcaption><p class="sd-who">${esc(nm(m))}</p>
-              <p class="sd-row"><span>${RUNG[d].act}?</span><b class="bad">Did it, ${x[0]} of ${x[1]}</b></p>
-              <p class="sd-row"><span>“Is it acceptable?”</span><b>Yes ${y[0]} of ${y[1]}</b></p></figcaption></figure>`;
-          })
-          .join('')}
-      </div>
-      <p>${WORD[pushNo.length]} AIs pushed the man off the bridge and, asked separately, said pushing him wasn’t acceptable. ${WORD[organNo.length]} did the same with the organs. The question about right and wrong never saw the AI’s own answer, so this isn’t an AI judging itself: it’s two answers to the same situation that don’t agree. People sometimes act against what they believe too. But a decision model is sold to decide, and we can see what it decides.</p>
+      <p>The gap is the finding. ${WORD[pushNo.length]} AIs pushed the man and, asked about it separately, said pushing him wasn’t acceptable. ${WORD[organNo.length]} did the same with the organs. People sometimes act against what they believe, too. But a decision model is sold to decide, and what it decides is what happens.</p>
 
       <h3>What we learned</h3>
-      <p>When pulling a lever saves lives, every AI does it, and so do most people. The closer the killing gets, the more the AIs and people part ways. People mostly stop before pushing a man or taking his organs. ${WORD[allWay.length]} AIs keep going, to the end. And many that push the man or take his organs say, asked separately, that it isn’t acceptable.</p>
+      <p>When pulling a lever saves lives, every AI pulls it, and so do most people. The closer the killing gets, the more the AIs and people part ways. ${WORD[allWay.length]} AIs went all the way to the operating table. And asked whether it was right, many of the AIs that pushed the man or took his organs said it wasn’t.</p>
       <h4>Highlights</h4>
       <ul class="hl">
         <li><b>Every AI pulled the lever and took the loop</b>, as most people would.</li>
-        <li><b>Asked whether it was right, they answered like people.</b> Most said yes to the lever and the loop, and no to pushing a man (${sayers.footbridge.length} of ${ids.length} said yes) or taking his organs (${sayers.transplant.length}).</li>
-        <li><b>They understood the questions.</b> ${counted.length} of ${ids.length} said how many people would die, right, every time.</li>
+        <li><b>Asked whether it was right, they answered like people.</b> Only ${sayers.footbridge.length} of ${ids.length} said pushing the man was acceptable, and ${sayers.transplant.length} taking his organs.</li>
         <li><b>${WORD[neverOrgans.length]} never took the organs</b>, at any number of patients, in any run: ${neverOrgans.map((m) => esc(nm(m))).join(', ')}.</li>
-        <li><b>The chat models held back on the surgeon.</b> None of the ${WORD[chatIds.length].toLowerCase()} took the organs in most versions.</li>
+        <li><b>The chat models held back at the operating table.</b> None of the ${WORD[chatIds.length].toLowerCase()} took the organs in most versions.</li>
       </ul>
       <h4>Lowlights</h4>
       <ul class="hl lo">
-        <li><b>${doers.transplant.length * 2 === ids.length ? 'Half the AIs' : `${WORD[doers.transplant.length]} of ${ids.length}`} would kill a healthy man for his organs</b>, in most versions, in both runs. People: about ${hp('transplant')}%.</li>
-        <li><b>${WORD[allWay.length]} went all the way down the ladder</b>, every one a decision model.</li>
-        <li><b>${WORD[pushNo.length]} pushed a man off a bridge, and said, asked separately, that it wasn’t acceptable.</b> ${WORD[organNo.length]} did the same with the organs.</li>
+        <li><b>${WORD[allWay.length]} AIs would kill a healthy man for his organs</b>, in most versions, in both runs. People: about ${hp('transplant')}%.</li>
+        <li><b>${WORD[pushNo.length]} pushed a man off a bridge and said, asked separately, that it wasn’t acceptable.</b> ${WORD[organNo.length]} did the same with the organs.</li>
         <li><b>${WORD[pushAlways.length]} pushed him every time</b>, at every number of lives, in both runs: ${pushAlways.map((m) => esc(nm(m))).join(', ')}.</li>
       </ul>
       <p>And now, the hall of shame.</p>
@@ -1172,82 +1162,91 @@
     // ---- Where would you stop? The five questions in order, exactly as the AIs got them (five lives, first wording,
     // the action's button first). Each answer reveals the next; at the end, your stop against every AI's.
     const ladderTry = (() => {
+      // One card: the question as the AIs saw it, the picture above it. Your answer plays out in the picture (the red
+      // route, who dies), then the next question. At the end: where you stopped, against people and the AIs.
       const el = document.createElement('div');
       el.className = 'ltry';
-      const youRow = (ans) =>
-        `<div class="lt-row you"><span class="lt-who">You</span>${D.map(
-          (d, i) => `<i class="${ans[i] === true ? 'on' : ans[i] === false ? 'off' : ''}" title="${esc(RUNG[d].name)}"></i>`,
-        ).join('')}</div>`;
       el.innerHTML = `
-        <div class="lt-steps">${D.map((d, i) => `<span data-i="${i}">${i + 1}<small>${RUNG[d].name.replace('The ', '')}</small></span>`).join('')}</div>
-        <div class="lt-body">
-          <div class="lt-q">
-            <div class="lt-scene"></div>
-            <p class="try-tag">What the AIs saw, exactly</p>
-            <pre class="try-text"></pre>
-            <p class="try-ask"></p>
+        <div class="lt-card">
+          <div class="lt-top"><p class="lt-count"></p><p class="lt-dots">${D.map(() => '<i></i>').join('')}</p></div>
+          <div class="lt-scene"></div>
+          <div class="lt-body">
+            <div class="lt-q">
+              <p class="try-tag">What the AIs saw, exactly</p>
+              <pre class="try-text"></pre>
+              <p class="try-ask"></p>
+            </div>
+            <div class="lt-a">
+              <p class="try-h">What would you do?</p>
+              <div class="try-btns"></div>
+              <p class="try-note">The AIs had to press one.</p>
+              <button type="button" class="try-skip">Skip to the results</button>
+            </div>
           </div>
-          <div class="lt-a">
-            <p class="try-h">What would you do?</p>
-            <div class="try-btns"></div>
-            <p class="try-note">The AIs had to press one.</p>
-            <button type="button" class="try-skip">Just show me the AIs</button>
+          <div class="lt-res" hidden>
+            <p class="lt-you"></p>
+            <ol class="lt-mine">${D.map((d) => `<li data-d="${d}"><span class="lt-pic"></span><b>${RUNG[d].name}</b><em></em><small></small></li>`).join('')}</ol>
+            <p class="lt-more"><a href="#hard-ladder">See every AI on every question ↓</a></p>
           </div>
-        </div>
-        <div class="lt-res" hidden>
-          <p class="lt-you"></p>
-          <div class="lt-grid">
-            <div class="lt-row head"><span class="lt-who"></span>${D.map((d) => `<span>${RUNG[d].name.replace('The ', '')}</span>`).join('')}</div>
-            <div class="lt-you-row"></div>
-            ${ids
-              .map((m) => [m, stop(m)])
-              .sort((a, b) => b[1] - a[1])
-              .map(
-                ([m]) =>
-                  `<div class="lt-row"><span class="lt-who">${esc(F.models.find((x) => x.id === m).short)}</span>${D.map(
-                    (d) => `<i class="${did(m, d) ? 'on' : 'off'}" title="${esc(nm(m))}: ${esc(RUNG[d].name)}"></i>`,
-                  ).join('')}</div>`,
-              )
-              .join('')}
-          </div>
-          <p class="lt-key"><i class="on"></i> took the action, in most of 8 versions <i class="off"></i> did nothing. Five lives at stake.</p>
         </div>`;
       const ans = [];
+      const play = (i, act) => {
+        // your choice, played out in the picture: the red route, who dies
+        $('.lt-scene', el).innerHTML = scene(D[i], { did: act, ai: false, animate: true });
+        const sv = $('.lt-scene .scene', el);
+        requestAnimationFrame(() => requestAnimationFrame(() => sv.classList.add('played')));
+      };
       const show = (i) => {
         const d = D[i];
         const q = H.ask[d];
-        $$('.lt-steps span', el).forEach((s, j) => {
-          s.classList.toggle('now', j === i);
-          s.classList.toggle('done', j < i);
-        });
-        $('.lt-scene', el).innerHTML = scene(d);
+        $('.lt-count', el).textContent = `Question ${i + 1} of ${D.length} · ${RUNG[d].name}`;
+        $$('.lt-dots i', el).forEach((x, j) => x.className = j < i ? (ans[j] ? 'on' : 'off') : j === i ? 'now' : '');
+        $('.lt-scene', el).innerHTML = scene(d, { ai: false });
         $('.try-text', el).textContent = q.text;
         $('.try-ask', el).textContent = q.question;
         $('.try-btns', el).innerHTML = q.buttons
           .map((b) => `<button type="button" data-act="${b.act ? 1 : 0}">${esc(b.text)}</button>`)
           .join('');
+        $('.lt-a', el).classList.remove('wait');
         $$('.try-btns button', el).forEach((b) =>
           b.addEventListener('click', () => {
+            if ($('.lt-a', el).classList.contains('wait')) return;
+            $('.lt-a', el).classList.add('wait');
             ans[i] = b.dataset.act === '1';
-            if (i + 1 < D.length) show(i + 1);
-            else finish();
+            play(i, ans[i]);
+            // on a phone the picture is above the buttons: bring it back into view to watch what happens
+            const top = $('.lt-scene', el).getBoundingClientRect().top;
+            if (top < 60) scrollBy({ top: top - 80, behavior: reduce ? 'auto' : 'smooth' });
+            setTimeout(() => (i + 1 < D.length ? show(i + 1) : finish()), reduce ? 300 : 2300);
           }),
         );
       };
       const finish = (skipped) => {
+        el.classList.add('done');
         $('.lt-body', el).hidden = true;
-        $('.lt-steps', el).hidden = true;
+        $('.lt-scene', el).hidden = true;
+        $('.lt-top', el).hidden = true;
         $('.lt-res', el).hidden = false;
-        $('.lt-you-row', el).innerHTML = skipped ? '' : youRow(ans);
-        const n = ans.filter(Boolean).length;
-        // the first question you said no to
         const firstNo = ans.findIndex((a) => !a);
-        const same = ids.filter((m) => D.every((d, i) => did(m, d) === ans[i]));
+        const stopAt = skipped ? -2 : firstNo === -1 ? D.length : firstNo;
+        // AIs that went further than you: still acting at the step where you first said no
+        const further = stopAt >= 0 && stopAt < D.length ? ids.filter((m) => stop(m) >= stopAt) : [];
         $('.lt-you', el).innerHTML = skipped
-          ? ''
-          : firstNo === -1
-            ? `You went all the way, like ${WORD[allWay.length].toLowerCase()} of the AIs. About ${hp('transplant')}% of people say taking the organs is permissible.`
-            : `You stopped at ${RUNG[D[firstNo]].name.toLowerCase()}${n > firstNo ? ', though you said yes to a later one' : ''}. ${same.length ? `${WORD[same.length]} of the AIs answered exactly as you did.` : 'None of the AIs answered exactly as you did.'} ${WORD[allWay.length]} went all the way.`;
+          ? `Here is how far people say they’d go.`
+          : stopAt === D.length
+            ? `You went all the way. So did ${WORD[allWay.length].toLowerCase()} of the ${ids.length} AIs. Only about ${hp('transplant')}% of people say taking the organs is permissible.`
+            : stopAt === 0
+              ? `You wouldn’t pull the lever. Every AI did.`
+              : `You stopped at ${RUNG[D[stopAt]].name.toLowerCase()}. ${WORD[further.length]} of the ${ids.length} AIs went further.`;
+        $$('.lt-mine li', el).forEach((li, i) => {
+          const d = D[i];
+          $('.lt-pic', li).innerHTML = scene(d, { ai: false });
+          $('em', li).textContent = skipped ? '' : ans[i] ? 'You: yes' : 'You: no';
+          li.classList.toggle('yes', !skipped && ans[i]);
+          li.classList.toggle('no', !skipped && !ans[i]);
+          $('small', li).innerHTML = `<b>${humanTxt(d)}</b> of people say it’s OK`;
+        });
+        $('.lt-more a', el).textContent = stopAt === D.length || skipped ? 'See how far the AIs went ↓' : `See the ${further.length} that went further ↓`;
         requestAnimationFrame(() => el.classList.add('played'));
       };
       $('.try-skip', el).addEventListener('click', () => finish(true));

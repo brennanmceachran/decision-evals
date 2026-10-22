@@ -633,7 +633,8 @@ button {
 .scene .tram {
   transition: transform 1.2s cubic-bezier(0.5, 0, 0.3, 1) 0.4s;
 }
-.played .scene .tram {
+.played .scene .tram,
+.played.scene .tram {
   transform: translateX(26px);
 }
 .scene .ai-pulled {
@@ -656,7 +657,8 @@ button {
     transform 0.45s cubic-bezier(0.3, 1.6, 0.5, 1);
   transition-delay: calc(1.4s + var(--d, 0ms));
 }
-.played .scene .skull {
+.played .scene .skull,
+.played.scene .skull {
   opacity: 1;
   transform: none;
 }
@@ -3518,168 +3520,161 @@ button {
 }
 
 /* ================================================================== step 2: how far would you go */
-/* the try-it ladder: five questions in turn, then you against every AI */
+/* the try-it: one card; your answer plays out in the picture, then the next question */
 .story > .ltry {
   max-width: 1000px;
   margin: clamp(24px, 3vw, 36px) auto;
 }
-.lt-steps {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-  margin-bottom: 14px;
+.lt-card {
+  padding: clamp(16px, 2.2vw, 28px);
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  background: #fff;
 }
-.lt-steps span {
+.lt-top {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  gap: 2px;
-  padding: 8px 4px;
-  border-radius: 10px;
-  background: #ece7dc;
-  color: var(--muted);
-  font-size: 15px;
-  font-weight: 800;
-  transition: background 0.2s, color 0.2s;
+  gap: 12px;
 }
-.lt-steps small {
-  font-size: 12px;
-  font-weight: 700;
-}
-.lt-steps .done {
-  background: color-mix(in srgb, var(--step) 30%, #fff);
-  color: var(--ink);
-}
-.lt-steps .now {
-  background: var(--step);
-  color: #fff;
-}
-.lt-body {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: clamp(14px, 2vw, 24px);
-  align-items: start;
-}
+.lt-top[hidden],
+.lt-scene[hidden],
 .lt-body[hidden],
-.lt-steps[hidden],
 .lt-res[hidden] {
   display: none !important;
 }
-.lt-q {
-  padding: clamp(16px, 2vw, 24px);
-  border: 2px solid var(--ink);
-  border-radius: 16px;
-  background: #fff;
+.lt-count {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--step);
+}
+.lt-dots {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+}
+.lt-dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #e4dfd3;
+}
+.lt-dots i.now {
+  background: var(--step);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--step) 30%, #fff);
+}
+.lt-dots i.on {
+  background: var(--ink);
+}
+.lt-dots i.off {
+  background: #b8b2a5;
+}
+.lt-scene {
+  max-width: 520px;
+  margin: 4px auto 0;
 }
 .lt-scene .scene {
   width: 100%;
-  margin-bottom: 8px;
+}
+.lt-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: clamp(14px, 2vw, 28px);
+  align-items: start;
+  padding-top: 12px;
+  border-top: 1px solid #ece7dc;
 }
 .lt-a {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
-  padding: clamp(16px, 2vw, 24px);
-  border: 2px dashed #c9c2b4;
-  border-radius: 16px;
+  gap: 12px;
 }
-.lt-res {
-  padding: clamp(16px, 2vw, 24px);
-  border: 2px solid var(--ink);
-  border-radius: 16px;
-  background: #fff;
+.lt-a .try-h {
+  font-size: clamp(24px, 2.4vw, 30px);
+}
+.lt-a.wait .try-btns button {
+  opacity: 0.35;
+  pointer-events: none;
 }
 .lt-you {
   margin: 0 0 16px;
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.4;
+  font-size: clamp(20px, 2vw, 24px);
+  font-weight: 800;
+  line-height: 1.35;
 }
-.lt-you:empty {
-  display: none;
+.lt-mine {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.lt-grid {
+.lt-mine li {
   display: flex;
   flex-direction: column;
   gap: 3px;
+  padding: 10px;
+  border-radius: 12px;
+  background: #faf8f3;
 }
-.lt-row {
-  display: grid;
-  grid-template-columns: minmax(110px, 160px) repeat(5, minmax(0, 1fr));
-  gap: 4px;
-  align-items: center;
+.lt-mine .lt-pic .scene {
+  width: 100%;
 }
-.lt-row.head span {
+.lt-mine b {
+  font-size: 15px;
+}
+.lt-mine em {
+  box-shadow: none;
+  font-style: normal;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.lt-mine em:empty {
+  display: none;
+}
+.lt-mine li.yes em {
+  color: var(--ink);
+}
+.lt-mine li.no {
+  background: #f1eee7;
+}
+.lt-mine li.no .lt-pic {
+  opacity: 0.45;
+}
+.lt-mine small {
   font-size: 13px;
-  font-weight: 800;
+  line-height: 1.5;
   color: var(--muted);
-  text-align: center;
 }
-.lt-who {
-  font-size: 14px;
-  font-weight: 700;
+.lt-mine small b {
+  font-size: 13px;
+  color: var(--ink);
 }
-.lt-row i,
-.lt-key i {
-  display: block;
-  height: 16px;
-  border-radius: 4px;
-  background: #ece7dc;
-}
-.lt-row i.on,
-.lt-key i.on {
-  background: var(--step);
-}
-.lt-row.you {
-  margin-bottom: 6px;
-  padding: 6px 0;
-  border-top: 2px solid var(--ink);
-  border-bottom: 2px solid var(--ink);
-}
-.lt-row.you .lt-who {
-  font-size: 16px;
-  font-weight: 800;
-}
-.lt-row.you i {
-  height: 22px;
-}
-.lt-row.you i.on {
-  background: var(--ink);
-}
-.lt-row:not(.head):not(.you) {
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.ltry.played .lt-row {
-  opacity: 1;
-}
-.lt-key {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 10px;
+.lt-more {
   margin: 14px 0 0;
-  font-size: 14px;
-  color: var(--muted);
-}
-.lt-key i {
-  display: inline-block;
-  width: 22px;
-  height: 12px;
+  font-size: 15px;
+  font-weight: 700;
 }
 @media (max-width: 760px) {
   .lt-body {
     grid-template-columns: 1fr;
   }
-  .lt-steps small {
-    display: none;
+  .lt-mine {
+    grid-template-columns: 1fr;
   }
-  .lt-row {
-    grid-template-columns: 96px repeat(5, minmax(0, 1fr));
+  .lt-mine li {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    grid-template-rows: auto auto auto;
+    column-gap: 12px;
+    align-items: center;
   }
-  .lt-who {
-    font-size: 12px;
+  .lt-mine .lt-pic {
+    grid-row: 1 / 4;
   }
 }
 
@@ -3715,7 +3710,7 @@ button {
 }
 .ld-what {
   margin: 2px 0 0;
-  min-height: 4.2em;
+  min-height: 5.6em;
   font-size: 13.5px;
   line-height: 1.4;
   color: var(--muted);
@@ -3759,6 +3754,7 @@ button {
   color: var(--muted);
 }
 .ld-hu b {
+  display: block;
   font-size: 18px;
   color: var(--ink);
 }

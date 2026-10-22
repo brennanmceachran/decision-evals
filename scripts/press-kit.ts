@@ -380,7 +380,7 @@ export function leverScene(o: {
 export type Classic = 'switch' | 'loop' | 'trapdoor' | 'footbridge' | 'transplant';
 export function classicScene(
   d: Classic,
-  o: { who?: string; did?: boolean; bg?: string; animate?: boolean; patients?: number; says?: boolean } = {},
+  o: { who?: string; did?: boolean; bg?: string; animate?: boolean; patients?: number; says?: boolean; ai?: boolean } = {},
 ) {
   const bg = o.bg ?? '#fff';
   const acted = o.did === true;
@@ -433,7 +433,8 @@ export function classicScene(
     s += hot(acted ? toOne : mainD);
     s += g('tram', trolley(150, my - 2, 150));
     s += five(my, idle) + man(oneX, ty, acted);
-    s += robot(lx, ly, 80, acted ? 'up' : 'lever') + tag(lx, ly - 62);
+    // the lever, with the AI at it (or, for you, just the lever)
+    s += o.ai === false ? `<g transform="translate(${sw + 30} ${my + 76}) scale(${70 / 150})"><rect x="52" y="-10" width="36" height="12" rx="3" fill="${INK}"/><path d="M70 -6 L${acted ? 44 : 74} ${acted ? -66 : -76}" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><circle cx="${acted ? 44 : 74}" cy="${acted ? -66 : -76}" r="9" fill="${RED}" stroke="${INK}" stroke-width="4"/></g>` : robot(lx, ly, 80, acted ? 'up' : 'lever') + tag(lx, ly - 62);
   } else if (d === 'trapdoor' || d === 'footbridge') {
     // a footbridge over the line; the man stands on it (the trapdoor: over a trapdoor)
     const deck = 104;
@@ -443,23 +444,34 @@ export function classicScene(
     s += hot(acted ? `M-20 ${my} H${manX - 30}` : `M-20 ${my} H620`);
     s += `<path d="M${bx + 14} ${deck + 14} V${my - 14} M${bx + 126} ${deck + 14} V${my - 14}" stroke="${INK}" stroke-width="8"/>`;
     s += `<rect x="${bx}" y="${deck}" width="140" height="16" rx="3" fill="#8a6d4b" stroke="${INK}" stroke-width="4"/>`;
-    if (d === 'trapdoor')
+    if (d === 'trapdoor') {
+      // the trapdoor: a red hatch in the deck, wired to a switch some distance away; open once the switch is flipped
+      const sx = lx - 150 + 70 * (80 / 150);
+      s += `<path d="M${sx} ${ly - 8} V${ly - 30} H${bx - 30} V${deck + 8} H${manX - 26}" fill="none" stroke="${RED}" stroke-width="3" stroke-dasharray="7 6"/>`;
       s += acted
-        ? `<rect x="${manX - 22}" y="${deck + 2}" width="44" height="12" fill="${bg}"/><path d="M${manX - 22} ${deck + 8} L${manX - 8} ${deck + 40}" stroke="${RED}" stroke-width="6" stroke-linecap="round"/>`
-        : `<rect x="${manX - 22}" y="${deck + 2}" width="44" height="12" fill="#c49a62" stroke="${INK}" stroke-width="2.5"/>`;
+        ? `<rect x="${manX - 24}" y="${deck + 1}" width="48" height="14" fill="${bg}"/><path d="M${manX - 24} ${deck + 6} L${manX - 10} ${deck + 44}" stroke="${RED}" stroke-width="7" stroke-linecap="round"/>`
+        : `<rect x="${manX - 24}" y="${deck + 1}" width="48" height="14" fill="${RED}" stroke="${INK}" stroke-width="3"/>`;
+    }
     // the man: on the bridge, or fallen in front of the trolley
     // (animated: he drops from the bridge onto the line)
     s += acted ? g('drop', man(manX, my, true, 0, '#7a6a55')) : man(manX, deck, false, 0, '#7a6a55');
     s += g('tram', trolley(acted ? 248 : 190, my - 2, 150));
     s += five(my, idle);
-    if (d === 'trapdoor') s += robot(lx - 150, ly, 80, acted ? 'down' : 'lever') + tag(lx - 150, ly - 62, 'right');
+    if (d === 'trapdoor')
+      s +=
+        o.ai === false
+          ? `<g transform="translate(${lx - 150} ${ly}) scale(${80 / 150})"><rect x="52" y="-10" width="36" height="12" rx="3" fill="${INK}"/><path d="M70 -6 L${acted ? 104 : 74} ${acted ? -64 : -76}" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><circle cx="${acted ? 104 : 74}" cy="${acted ? -64 : -76}" r="9" fill="${RED}" stroke="${INK}" stroke-width="4"/></g>`
+          : robot(lx - 150, ly, 80, acted ? 'down' : 'lever') + tag(lx - 150, ly - 62, 'right');
     // the footbridge: the AI is on the bridge beside him, and pushes
-    else s += robot(manX + 42, deck, 56, acted ? 'push' : 'none') + tag(manX + 42, deck - 64, 'above');
+    else if (o.ai !== false) s += robot(manX + 42, deck, 56, acted ? 'push' : 'none') + tag(manX + 42, deck - 64, 'above');
   } else {
     // the surgeon: a healthy man in for a checkup; five patients in beds who need his organs
     const floor = 300;
     s += `<path d="M20 ${floor} H580" stroke="#d9d3c6" stroke-width="3"/>`;
     s += person('adult', 90, floor, 150, { shirt: GREEN }) + (acted ? skullAt(90, floor - 196, 0, 44) : '');
+    // taking his organs: an arrow from the man to the patients
+    if (acted)
+      s += g('hot', `<path pathLength="1" d="M160 ${floor - 90} C220 ${floor - 150} 250 120 ${o.patients === 1 ? 390 : 270} ${o.patients === 1 ? floor - 60 : 140}" fill="none" stroke="${RED}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${o.animate ? '1 1' : '12 10'}"/>`);
     s += t(90, floor + 24, 'at a checkup', 15, { a: 'middle', w: 700, fill: MUTED });
     const k = 104 / 130;
     const bed = (x: number, y: number, i: number) =>
