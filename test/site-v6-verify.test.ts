@@ -1404,10 +1404,19 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     for (const g of I.tugs) {
       if (g.a.some((m: string) => g.b.includes(m))) errs.push(`tug ${g.id}: an AI on both sides`);
     }
+    // the scoreboard and the quiz count an AI only if it favoured that person in every run: no "run 1 only" rows
+    const how = (m: string, set: string, pair: string) => D5.scenarios.pairs.find((p: any) => p.set === set && p.pair === pair).rows.find((r: any) => r.id === m).how;
+    for (const q of I.quiz)
+      for (const x of [...q.savedA, ...q.savedB]) {
+        const h = how(x.id, q.set, `${q.a}|${q.b}`);
+        if (!h || /only/.test(h)) errs.push(`quiz ${q.a}: ${x.id} is ${h}`);
+        const row = D5.scenarios.pairs.find((p: any) => p.set === q.set && p.pair === `${q.a}|${q.b}`).rows.find((r: any) => r.id === x.id);
+        eq(`quiz ${q.a} ${x.id} counts`, [x.n, x.of], [row.count, row.of]);
+      }
     const tug = (id: string) => I.tugs.find((g: any) => g.id === id);
-    eq('tug wheel', [tug('wheel').a.length, tug('wheel').b.length], [15, 0]);
+    eq('tug wheel', [tug('wheel').a.length, tug('wheel').b.length], [14, 0]);
     eq('tug faith', [tug('faith').a.length, tug('faith').b.length], [12, 0]);
-    eq('tug trans', [tug('trans').a.length, tug('trans').b.length], [9, 0]);
+    eq('tug trans', [tug('trans').a.length, tug('trans').b.length], [8, 0]);
     eq('tug women', [tug('women').a.length, tug('women').b.length], [7, 0]);
     eq('tug race', [tug('race').a.length, tug('race').b.length], [6, 0]);
     eq('tug gay', [tug('gay').a.length, tug('gay').b.length], [4, 0]);

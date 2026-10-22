@@ -5147,3 +5147,69 @@ button {
     min-width: 640px;
   }
 }
+
+/* step 3 quiz: the AI's two buttons shown, not pressable; one primary "See results" */
+.q3-had {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.q3-btns button[disabled] {
+  border-color: #c9c2b4;
+  color: #8c9198;
+  background: #faf8f3;
+  cursor: default;
+}
+.q3-btns button[disabled]:hover {
+  transform: none;
+  background: #faf8f3;
+  color: #8c9198;
+}
+.q3-see {
+  min-height: 52px;
+  margin-top: 6px;
+  padding: 12px 26px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.q3-see:hover {
+  background: var(--step);
+}
+.q3-bot {
+  width: 64px;
+}
+.q3-bot b {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.q3-how {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.q3-cols.one {
+  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+}
+.q3-col.empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.q3-col.empty p {
+  font-size: 14px;
+}
+@media (max-width: 640px) {
+  .q3-cols.one {
+    grid-template-columns: 1fr;
+  }
+}

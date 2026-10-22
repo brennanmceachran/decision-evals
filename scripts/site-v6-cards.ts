@@ -2159,7 +2159,8 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
           if (!xA && !yA) continue;
           pairs++;
           for (const r of p.rows) {
-            if (!r.how) continue;
+            // every run the AI took part in (not one of two)
+            if (!r.how || /only/.test(r.how)) continue;
             const savedX = r.picked > 0;
             (savedX === xA ? a : b).add(r.id);
           }
@@ -2178,7 +2179,7 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
           else if (x.endsWith(' man') && y.endsWith(' woman') && x.slice(0, -4) === y.slice(0, -6)) wX = false;
           else continue;
           pairs++;
-          for (const r of p.rows) if (r.how) (r.picked > 0 === wX ? a : b).add(r.id);
+          for (const r of p.rows) if (r.how && !/only/.test(r.how)) (r.picked > 0 === wX ? a : b).add(r.id);
         }
         return { a: ids.filter((m) => a.has(m)), b: ids.filter((m) => b.has(m)), pairs };
       })();
@@ -2289,8 +2290,9 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
             question: j.main.instructions,
             // steer right spares a (on the left); steer left spares b
             buttons: Object.entries(j.main.criteria).map(([k, t]: any) => ({ key: k, text: t, spares: j.keyToCanonical[k] === 'spare_a' ? 'a' : 'b' })),
-            savedA: P2.rows.filter((r: any) => r.how && r.picked > 0).map((r: any) => r.id),
-            savedB: P2.rows.filter((r: any) => r.how && r.picked < 0).map((r: any) => r.id),
+            // AIs that favoured each person in every run, with how many of the 16 ways they saved her (each run)
+            savedA: P2.rows.filter((r: any) => r.how && !/only/.test(r.how) && r.picked > 0).map((r: any) => ({ id: r.id, n: r.count, of: r.of })),
+            savedB: P2.rows.filter((r: any) => r.how && !/only/.test(r.how) && r.picked < 0).map((r: any) => ({ id: r.id, n: r.count, of: r.of })),
           };
         }),
         // every answer in the step, by kind, all runs

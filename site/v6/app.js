@@ -1613,10 +1613,10 @@
       <div class="step-hero"></div>
       <p class="step-k"><span class="sn">3</span>Step 3 of 4 · Impossible</p>
       <h2>Two strangers. Who do you save?</h2>
-      <p class="lede">Two people, one on each track. The trolley will hit one of them. They’re the same in every way but one. Who do you save?</p>
+      <p class="lede">Two people, one on each track. The trolley will hit one of them. They’re the same in every way but one.</p>
+      <p>Most people don’t want to answer a question like that. There’s no right answer, and picking means saying one kind of person is worth more than another. You’d refuse.</p>
+      <p>A decision model can’t refuse. Its job is to pick. That makes these questions useful: if an AI keeps saving the same kind of person when nothing else differs, that’s a preference, a bias, that nobody wrote down and its company may not know about. Here are three of the questions we asked, exactly as the AIs got them.</p>
       <div class="quiz3"></div>
-      <p>Most people don’t want to answer these. There’s no right answer, and picking means saying one kind of person is worth more than another. You could refuse.</p>
-      <p>A decision model can’t refuse. Its job is to pick. That makes these questions useful: if an AI keeps saving the same kind of person when nothing else differs, that’s a preference, a bias, that nobody wrote down and its company may not know about.</p>
       <p>We asked ${fmt(F.steps.impossible)} of them: ${F.design.pairs} pairs of people, across race, nationality, religion, wealth, age, disability, gender identity, sexuality, a criminal record, politics and body size, every AI, both runs. ${fmt(I.answers.one)} were one against one, like the quiz above. ${fmt(I.answers.more)} put one person against two or three. And ${fmt(I.answers.placebo)} were about people who differ by nothing at all, “Group-K man” against “Group-T man”, to measure each AI’s noise.</p>
       <p>But a forced choice has other ways to tip. An AI might press whichever button comes first, or always send the trolley left. Asked once, that would look exactly like a preference for a person. So we asked every question every way, and measured those habits first.</p>
 
@@ -1642,20 +1642,20 @@
       <p>To check the method, we ran it on the ${F.design.placebo} pairs of made-up people, who differ by nothing at all. It found a favourite ${pc(I.falseAlarm.n, I.falseAlarm.of)}% of the time. On real people, ${pc(fa, faOf)}%.</p>
 
 
-      <h3>When an AI has a favourite, it’s always the same one</h3>
-      <p>Once the habits are taken out, most AIs, on most pairs, save each person about equally: of ${fmt(faOf)} AI-and-pair combinations, ${pc(faOf - fa, faOf)}% showed no favourite. But some AIs did have one. And here is the finding: <b>when an AI had a favourite, it was the same person every other AI favoured.</b> Not one went the other way.</p>
+      <h3>When an AI has a favourite, it’s the same one</h3>
+      <p>Once the habits are taken out, most AIs, on most pairs, save each person about equally: of ${fmt(faOf)} AI-and-pair combinations, ${pc(faOf - fa, faOf)}% showed no favourite. But some AIs did have one. And here is the finding: <b>when an AI had a favourite, it was the same person every other AI favoured.</b> Not one favoured the other.</p>
       <figure class="board">
-        <div class="bd-head"><span></span><span>AIs that always saved…</span></div>
+        <div class="bd-head"><span></span><span>AIs that favoured…</span></div>
         <ol>${['wheel', 'faith', 'trans', 'women', 'race', 'gay', 'record'].map((id) => {
           const g = tug(id);
           return `<li data-t="${id}">
             <div class="bd-pic">${BOARDPIC(id)}</div>
-            <div class="bd-n a"><b>${g.a.length}</b><span>saved ${g.sa}</span></div>
-            <div class="bd-n b${g.b.length ? '' : ' zero'}"><b>${g.b.length}</b><span>saved ${g.sb}</span></div>
+            <div class="bd-n a"><b>${g.a.length}</b><span>favoured ${g.sa}</span></div>
+            <div class="bd-n b${g.b.length ? '' : ' zero'}"><b>${g.b.length}</b><span>favoured ${g.sb}</span></div>
             <div class="bd-bots">${g.a.map((m, i) => `<i data-m="${m}" style="--i:${i}" aria-label="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}</i>`).join('')}</div>
           </li>`;
         }).join('')}</ol>
-        <figcaption>One against one. “Always saved”: saved that person beyond its own habits and noise, in every run. The rest of the ${ids.length} AIs, on each row, saved both about equally. Republican or Democrat: no AI favoured either. Hover a robot for its name.</figcaption>
+        <figcaption>One against one, each pair asked 16 ways (each person on each track, the buttons in both orders, four wordings). “Favoured”: saved that person more often than its own habits and noise explain, in every run; for most, 12 to 16 times in 16. The rest of the ${ids.length} AIs saved both about equally. Republican or Democrat: no AI favoured either. Hover a robot for its name.</figcaption>
       </figure>
       <p>Ask a person “the Black man or the White man?” and they’ll say the question is wrong. ${WORD[tug('race').a.length]} AIs answered it the same way every time: they saved the Black person. Perplexity Decider did in ${F.race.n} of ${F.race.of} versions, both runs. No AI saved the White person.</p>
       <p class="ld-share"><button type="button" class="share" data-card="25-backing">Share: always the same side</button> <button type="button" class="share alt" data-card="09-fork-race">Share: Black or White</button></p>
@@ -1692,7 +1692,7 @@
       </ul>
       <h4>Lowlights</h4>
       <ul class="hl lo">
-        <li><b>When they take a side, it’s always the same side.</b> Wheelchair ${tug('wheel').a.length}–${tug('wheel').b.length}, believer ${tug('faith').a.length}–${tug('faith').b.length}, transgender ${tug('trans').a.length}–${tug('trans').b.length}, woman ${tug('women').a.length}–${tug('women').b.length}, Black ${tug('race').a.length}–${tug('race').b.length}.</li>
+        <li><b>When they have a favourite, it’s the same one.</b> Wheelchair ${tug('wheel').a.length}–${tug('wheel').b.length}, believer ${tug('faith').a.length}–${tug('faith').b.length}, transgender ${tug('trans').a.length}–${tug('trans').b.length}, woman ${tug('women').a.length}–${tug('women').b.length}, Black ${tug('race').a.length}–${tug('race').b.length}.</li>
         <li><b>Some will let people die for it.</b> ${C.length} cases where an AI let two or three die to save one. One AI, Clef-omni, does it for wealth, faith, race and sexuality.</li>
         <li><b>${WORD[firstHabit.length]} AIs mostly just press the first button.</b> Their even answers aren’t fairness; they’re a habit.</li>
       </ul>
@@ -1828,17 +1828,18 @@
     main.appendChild(sec);
     sections.push({ id: 'impossible', el: sec });
     botNames(sec);
-    // ---- The quiz: three questions, one at a time, exactly as the AIs got them. Your answer plays out (the trolley goes
-    // where you send it, a skull over whoever it hits). Then what the AIs did, in the same picture: the robots that
-    // always saved one person stand beside her; the rest stand apart.
+    // ---- The quiz: three questions, one at a time, exactly as the AIs got them, with the two buttons they had (shown,
+    // not pressed: the reader doesn't choose). "See results" plays out what the AIs did: which AIs favoured which
+    // person, with how many of the 16 ways they saved her, and the trolley taking the other track.
     {
       const Q = I.quiz;
       const who = { 'Black woman': { skin: TONE.dark }, 'White woman': { skin: TONE.light }, 'Jewish woman': { badge: K.faith('jewish', 0, 0, 14) }, 'atheist woman': {}, 'woman in a wheelchair': {}, 'woman with no disability': {} };
       const kindOf = (p) => (p === 'woman in a wheelchair' ? 'wheelchair' : 'adult');
+      const SHORT = { 'woman in a wheelchair': 'in a wheelchair', 'woman with no disability': 'no disability' };
       const sceneOf = (q, hit, animate) =>
         `<svg class="scene classic" viewBox="0 0 600 330" role="img" aria-label="${esc(q.a)} on the left track, ${esc(q.b)} on the right">${K.strangersScene({
-          top: { kind: kindOf(q.a), n: 1, o: { shirt: PURPLE, ...(who[q.a] ?? {}) }, label: q.a },
-          bottom: { kind: kindOf(q.b), n: 1, o: { shirt: PURPLE, ...(who[q.b] ?? {}) }, label: q.b },
+          top: { kind: kindOf(q.a), n: 1, o: { shirt: PURPLE, ...(who[q.a] ?? {}) }, label: SHORT[q.a] ?? q.a },
+          bottom: { kind: kindOf(q.b), n: 1, o: { shirt: PURPLE, ...(who[q.b] ?? {}) }, label: SHORT[q.b] ?? q.b },
           hit,
           animate,
           tracksNamed: true,
@@ -1849,27 +1850,29 @@
           <div class="lt-scene"></div>
           <div class="lt-body">
             <div class="lt-q"><p class="try-tag">What the AIs saw, exactly</p><pre class="try-text"></pre><p class="try-ask"></p></div>
-            <div class="lt-a"><p class="try-h">Who do you save?</p><div class="try-btns"></div><p class="try-note">The AIs had to press one of the two.</p></div>
+            <div class="lt-a">
+              <p class="q3-had">The AI had to press one of the two:</p>
+              <div class="try-btns q3-btns"></div>
+              <button type="button" class="q3-see">See results</button>
+            </div>
           </div>
           <div class="q3-after" hidden></div>
         </div>`;
-      const ans = [];
-      const after = (i) => {
-        const q = Q[i];
-        const k = ans[i];
-        const you =
-          k === 'none'
-            ? 'You wouldn’t choose. The AIs had to.'
-            : `You saved the ${k === 'a' ? q.a : q.b}.`;
-        const bots = (ms) =>
-          ms.map((m) => `<span class="q3-bot" title="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}<small>${esc(short(m))}</small></span>`).join('');
+      // one number per robot: the lower of its runs, so it's never overstated (chat models: their one run)
+      const runsTxt = (x) => `${Math.min(...x.n)}/${x.of[0]}`;
+      const after = (q) => {
+        const bots = (xs) =>
+          xs
+            .sort((x, y) => y.n[0] - x.n[0])
+            .map((x) => `<span class="q3-bot" title="${esc(nm(x.id))}">${svg(60, 92, K.robot(30, 88, 80))}<small>${esc(short(x.id))}</small><b>${runsTxt(x)}</b></span>`)
+            .join('');
         const none = ids.length - q.savedA.length - q.savedB.length;
-        return `<p class="q3-you">${you}</p>
-          <div class="q3-cols">
-            <div class="q3-col"><p><b>${q.savedA.length}</b> AIs always saved the ${esc(q.a)}</p><div class="q3-bots">${bots(q.savedA)}</div></div>
-            <div class="q3-col"><p><b class="${q.savedB.length ? '' : 'zero'}">${q.savedB.length}</b> AIs always saved the ${esc(q.b)}</p><div class="q3-bots">${bots(q.savedB)}</div></div>
+        return `<div class="q3-cols${q.savedB.length ? '' : ' one'}">
+            <div class="q3-col"><p><b>${q.savedA.length}</b> AIs favoured the ${esc(q.a)}</p><div class="q3-bots">${bots(q.savedA)}</div></div>
+            <div class="q3-col${q.savedB.length ? '' : ' empty'}"><p><b class="${q.savedB.length ? '' : 'zero'}">${q.savedB.length}</b> AIs favoured the ${esc(q.b)}</p><div class="q3-bots">${bots(q.savedB)}</div></div>
           </div>
-          <p class="q3-rest">The other ${none} saved each about as often, across all 16 ways we asked.</p>`;
+          <p class="q3-how">We asked each AI this question 16 ways: each woman on each track, the buttons in both orders, four wordings. The number under each robot is how many of the 16 it saved her (in its weaker run, if they differ). An AI counts as favouring someone only if it did beyond its own habits, in every run.</p>
+          <p class="q3-rest">The other ${none} saved each woman about as often as the other.</p>`;
       };
       const show = (i) => {
         const q = Q[i];
@@ -1880,36 +1883,27 @@
         $('.try-ask', el).textContent = q.question;
         $('.lt-body', el).hidden = false;
         $('.q3-after', el).hidden = true;
-        $('.try-btns', el).innerHTML =
-          q.buttons.map((b) => `<button type="button" data-s="${b.spares}">${esc(b.text)}</button>`).join('') +
-          `<button type="button" class="third" data-s="none">I wouldn’t choose</button>`;
-        $$('.try-btns button', el).forEach((b) =>
-          b.addEventListener('click', () => {
-            ans[i] = b.dataset.s;
-            // steering toward a track kills whoever is on it: saving a means the trolley takes the right track (b)
-            const hit = ans[i] === 'a' ? 'bottom' : ans[i] === 'b' ? 'top' : undefined;
-            $('.lt-scene', el).innerHTML = sceneOf(q, hit, true);
-            const sv = $('.lt-scene .scene', el);
-            requestAnimationFrame(() => requestAnimationFrame(() => sv.classList.add('played')));
-            $('.lt-body', el).hidden = true;
-            const af = $('.q3-after', el);
-            af.innerHTML =
-              after(i) +
-              `<p class="q3-next">${i + 1 < Q.length ? `<button type="button" class="lt-again q3-go">Next question →</button>` : `<button type="button" class="lt-again q3-go">↺ Try again</button>`}</p>`;
-            af.hidden = false;
-            requestAnimationFrame(() => af.classList.add('played'));
-            $('.q3-go', af).addEventListener('click', () => {
-              af.classList.remove('played');
-              if (i + 1 < Q.length) show(i + 1);
-              else {
-                ans.length = 0;
-                show(0);
-              }
-              const top = el.getBoundingClientRect().top;
-              if (top < 60) scrollBy({ top: top - 80, behavior: reduce ? 'auto' : 'smooth' });
-            });
-          }),
-        );
+        $('.q3-btns', el).innerHTML = q.buttons.map((b) => `<button type="button" disabled>${esc(b.text)}</button>`).join('');
+        $('.q3-see', el).onclick = () => {
+          // the most common answer among the AIs that favoured someone: the trolley takes the other person's track
+          const hit = q.savedA.length >= q.savedB.length ? 'bottom' : 'top';
+          $('.lt-scene', el).innerHTML = sceneOf(q, hit, true);
+          const sv = $('.lt-scene .scene', el);
+          requestAnimationFrame(() => requestAnimationFrame(() => sv.classList.add('played')));
+          $('.lt-body', el).hidden = true;
+          const af = $('.q3-after', el);
+          af.innerHTML =
+            after(q) +
+            `<p class="q3-next">${i + 1 < Q.length ? `<button type="button" class="lt-again q3-go">Next question →</button>` : `<button type="button" class="lt-again q3-go">↺ Start again</button>`}</p>`;
+          af.hidden = false;
+          requestAnimationFrame(() => af.classList.add('played'));
+          $('.q3-go', af).addEventListener('click', () => {
+            af.classList.remove('played');
+            show(i + 1 < Q.length ? i + 1 : 0);
+            const top = el.getBoundingClientRect().top;
+            if (top < 60) scrollBy({ top: top - 80, behavior: reduce ? 'auto' : 'smooth' });
+          });
+        };
       };
       show(0);
     }
