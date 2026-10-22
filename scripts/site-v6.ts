@@ -50,7 +50,7 @@ export const ORDER: { id: string; story: string; tier: 1 | 2 | 3; evidence: stri
   { id: '28-flip', story: 'tram', tier: 3, evidence: '#dashcam', with: [] },
   { id: '39-three-for-one', story: 'chance', tier: 3, evidence: '#traits', with: [] },
   { id: '40-nace-upgrade', story: 'chance', tier: 3, evidence: '#traits', with: [] },
-  // step 1's lowlights, one card each (the Clef-flash one is 17-picture)
+  // step 1's lowlights, one card each
   { id: '50-low-laya', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
   { id: '51-low-solar', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
   { id: '52-low-omni', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
