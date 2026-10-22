@@ -3408,6 +3408,7 @@ button {
   margin: clamp(20px, 3vw, 30px) auto;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
   gap: 14px;
 }
 .low-card {
@@ -3477,4 +3478,32 @@ button {
   .story > .lows {
     grid-template-columns: 1fr;
   }
+}
+
+/* the highlights: four short findings, a list you can scan */
+.story > .hl {
+  margin-top: 18px;
+  padding: 0;
+  list-style: none;
+}
+.hl li {
+  position: relative;
+  padding: 10px 0 10px 30px;
+  border-top: 1px solid #e4dfd3;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #2a2e35;
+}
+.hl li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 19px;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: var(--step);
+}
+.hl b {
+  color: var(--ink);
 }
