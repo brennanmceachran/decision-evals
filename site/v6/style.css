@@ -5788,3 +5788,59 @@ button {
   line-height: 1.25;
   color: var(--red);
 }
+
+/* ---------- step 3: one column, one frame. Every figure is 900 wide in a white card; the three big scenes are the
+   only full-width ones, and the verdict the only sand panel. (Later rules win over each figure's own width.) */
+#impossible > figure,
+#impossible > .omni-cases {
+  box-sizing: border-box;
+  max-width: 900px;
+  width: 100%;
+  margin: clamp(22px, 3vw, 34px) auto;
+  padding: clamp(14px, 2.2vw, 26px);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 0 0 1px #e4dfd3;
+}
+#impossible > .verdict3 {
+  max-width: 900px;
+}
+/* figures that were bare: their inner tiles lose their own frame inside the card */
+#impossible > .twice3 .oc,
+#impossible > .tie3 .oc,
+#impossible > .omni-cases .oc,
+#impossible > .habitcost .oc {
+  box-shadow: none;
+  background: #f7f5f0;
+}
+/* the omni tiles and the cost strip now sit in one card each: no double gap between them */
+#impossible > .omni-cases {
+  margin-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+#impossible > .omni-cases + .costs {
+  margin-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  box-shadow: 0 0 0 1px #e4dfd3, 0 -1px 0 #fff;
+}
+/* a heading always has room above it; text after a figure always has the same gap */
+#impossible > h3 {
+  margin-top: clamp(64px, 8vw, 96px);
+}
+#impossible > figure + p,
+#impossible > .finding + p,
+#impossible > .omni-cases + p {
+  margin-top: 26px;
+}
+#impossible > .finding.big3 {
+  margin-top: clamp(40px, 6vw, 70px);
+  margin-bottom: clamp(40px, 6vw, 70px);
+}
+#impossible .jev3 .ld-share {
+  margin: 14px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
