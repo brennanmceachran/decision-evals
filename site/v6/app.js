@@ -1628,7 +1628,6 @@
       <div class="verdict3">
         <p class="v-tag">What we found</p>
         <h3>Most AIs, on most pairs, had no favorite. Where one did, on race, faith, a wheelchair, sex, gender identity or sexuality, every AI chose the same person.</h3>
-        <ol class="v3-rows">${['wheel', 'faith', 'trans', 'women', 'race', 'gay'].map((id) => `<li><span class="v3-who">${esc(tug(id).sa.replace(/^an? /, ''))}</span><b>${tug(id).a.length}</b><span class="v3-vs">AIs</span><b class="zero">${tug(id).b.length}</b><span class="v3-who o">${esc(tug(id).sb.replace(/^an? /, ''))}</span></li>`).join('')}</ol>
         <p class="v3-more">A few let more people die for it. And the biggest bias of all wasn’t about people: it was which button came first. <a href="#impossible-how">How we know ↓</a></p>
       </div>
       <p id="impossible-how">We asked ${fmt(F.steps.impossible)} of these, across ${F.design.pairs} pairs of people and ${F.design.placebo} made-up pairs, every AI, both runs. Before we could read a single favorite, we had to rule out everything else that could tip a forced choice.</p>
