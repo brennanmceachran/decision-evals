@@ -5576,71 +5576,6 @@ button {
   border-left-color: #b9b1a2;
 }
 
-/* step 3: the verdict, right after the quiz */
-.story > .verdict3 {
-  max-width: 900px;
-  margin: clamp(26px, 4vw, 44px) auto;
-  padding: clamp(20px, 3vw, 36px);
-  border-radius: 22px;
-  background: var(--sand);
-}
-.verdict3 h3 {
-  margin: 0 0 18px;
-  font-size: clamp(24px, 2.8vw, 36px);
-  line-height: 1.12;
-}
-.v3-rows {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px 26px;
-}
-.v3-rows li {
-  display: grid;
-  grid-template-columns: 1fr auto auto auto 1fr;
-  gap: 10px;
-  align-items: baseline;
-  padding: 8px 0;
-  border-bottom: 1px solid #d9d2c4;
-}
-.v3-who {
-  font-size: 15px;
-  font-weight: 800;
-  text-align: right;
-}
-.v3-who.o {
-  text-align: left;
-  color: var(--muted);
-}
-.v3-rows b {
-  font-size: 30px;
-  line-height: 1;
-}
-.v3-rows b.zero {
-  color: var(--red);
-}
-.v3-vs {
-  font-size: 12px;
-  font-weight: 800;
-  color: var(--muted);
-}
-.v3-more {
-  margin: 18px 0 0;
-  font-size: 17px;
-  line-height: 1.5;
-}
-.v3-more a {
-  font-weight: 800;
-  color: inherit;
-}
-@media (max-width: 640px) {
-  .v3-rows {
-    grid-template-columns: 1fr;
-  }
-}
-
 .story > .twice3 {
   max-width: 900px;
   margin: clamp(18px, 3vw, 30px) auto;
@@ -5792,9 +5727,6 @@ button {
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 0 0 1px #e4dfd3;
-}
-#impossible > .verdict3 {
-  max-width: 900px;
 }
 /* figures that were bare: their inner tiles lose their own frame inside the card */
 #impossible > .twice3 .oc,

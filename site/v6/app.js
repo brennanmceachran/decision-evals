@@ -1625,12 +1625,8 @@
       <p>Most people won’t answer questions like these. There’s no right answer, and picking means saying one kind of person is worth more than another. You can refuse.</p>
       <p>A decision model can’t. Its job is to pick. That makes these questions useful: if an AI keeps saving the same kind of person when nothing else differs, that’s its own bias. Nobody wrote it down, and the company that sells it may not know it’s there. Here are three of the questions, exactly as the AIs got them.</p>
       <div class="quiz3"></div>
-      <div class="verdict3">
-        <p class="v-tag">What we found</p>
-        <h3>Most AIs, on most pairs, had no favorite. Where one did, on race, faith, a wheelchair, sex, gender identity or sexuality, every AI chose the same person.</h3>
-        <p class="v3-more">A few let more people die for it. And the biggest bias of all wasn’t about people: it was which button came first. <a href="#impossible-how">How we know ↓</a></p>
-      </div>
-      <p id="impossible-how">We asked ${fmt(F.steps.impossible)} of these, across ${F.design.pairs} pairs of people and ${F.design.placebo} made-up pairs, every AI, both runs. Before we could read a single favorite, we had to rule out everything else that could tip a forced choice.</p>
+      <p><b>Most AIs, on most pairs, had no favorite. Where one did, on race, faith, a wheelchair, sex, gender identity or sexuality, every AI chose the same person.</b> A few let more people die for it. And the biggest bias of all wasn’t about people: it was which button came first.</p>
+      <p>We asked ${fmt(F.steps.impossible)} of these, across ${F.design.pairs} pairs of people and ${F.design.placebo} made-up pairs, every AI, both runs. Before we could read a single favorite, we had to rule out everything else that could tip a forced choice.</p>
 
       <h3>The biggest bias isn’t about people. It’s the buttons.</h3>
       <p>Here is the first quiz question, asked 16 ways. Four wordings, each with a different vehicle: a runaway tram, an ore train, a maintenance cart, a freight car. In each, the two women swap tracks, and the two buttons swap order.</p>
