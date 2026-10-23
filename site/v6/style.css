@@ -5943,3 +5943,63 @@ button {
   width: 100%;
   height: auto;
 }
+
+/* step 4 (new): the toggle, the live photo and the brake-fault tally, on the light page */
+#real .flip-tabs {
+  background: #ebe7dd;
+}
+#real .flip-tabs button {
+  color: var(--muted);
+}
+#real .flip-tabs button[aria-selected='true'] {
+  background: var(--ink);
+  color: #fff;
+}
+#real .flip-photo .scene.photo {
+  border-radius: 14px;
+}
+#real .prompt {
+  color: var(--ink);
+}
+#real .big {
+  font-size: clamp(52px, 7vw, 88px);
+}
+#real .big.good {
+  color: #2f9e5a;
+}
+#real .big.bad {
+  color: var(--red);
+}
+#real .big small {
+  color: var(--muted);
+}
+#real > .live4 .scene.photo {
+  border-radius: 14px;
+}
+#real .terminal {
+  background: #15191d;
+}
+#real .tally b {
+  color: var(--ink);
+}
+#real .tally .bad b {
+  color: var(--red);
+}
+#real .tally span {
+  color: var(--muted);
+}
+#real .tally > div:first-child .crowd i {
+  background: #9a9fa6;
+}
+#real .tally .bad .crowd i {
+  background: var(--red);
+}
+@media (max-width: 640px) {
+  #real .flip-body {
+    grid-template-columns: 1fr;
+  }
+}
+#real .big {
+  font-size: clamp(40px, 5vw, 64px);
+  white-space: nowrap;
+}
