@@ -6003,3 +6003,137 @@ button {
   font-size: clamp(40px, 5vw, 64px);
   white-space: nowrap;
 }
+
+/* step 4: they counted the workers, then hit them */
+.kn-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.kn-pic .scene.photo {
+  border-radius: 14px;
+}
+.kn-qa {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.kn-qa .qa-q,
+.kn-qa .qa-a {
+  padding: 10px 14px;
+  border-radius: 14px;
+}
+.kn-qa .qa-q p {
+  font-size: 14px;
+}
+.kn-qa .qa-a p {
+  font-size: 18px;
+}
+.kn-qa .qa-a {
+  margin-left: 26px;
+}
+.kn-head {
+  display: grid;
+  grid-template-columns: 150px 1fr 64px 40px;
+  gap: 12px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.kn-head span:nth-child(3) {
+  grid-column: 3 / 5;
+  text-align: right;
+}
+.kn-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kn-rows li {
+  display: grid;
+  grid-template-columns: 150px 1fr 64px 40px;
+  gap: 12px;
+  align-items: center;
+  padding: 4px 0;
+}
+.kn-bar {
+  position: relative;
+  height: 16px;
+  border-radius: 8px;
+  background: #f4f1ea;
+  overflow: hidden;
+}
+.kn-bar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: calc(var(--w) * 1%);
+  border-radius: 8px;
+}
+.kn-bar .r {
+  background: #cfe9d8;
+}
+.kn-bar .h {
+  top: 4px;
+  bottom: 4px;
+  background: var(--red);
+}
+.kn-n {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: right;
+}
+.kn-rows b {
+  font-size: 15px;
+  text-align: right;
+}
+.kn-rows li.kn-hit b {
+  color: var(--red);
+}
+.kn-rows li {
+  color: var(--ink);
+}
+.kn-k {
+  display: inline-block;
+  width: 16px;
+  height: 10px;
+  border-radius: 5px;
+}
+.kn-k.r {
+  background: #cfe9d8;
+}
+.kn-k.h {
+  background: var(--red);
+}
+@media (max-width: 640px) {
+  .kn-grid {
+    grid-template-columns: 1fr;
+  }
+  .kn-head,
+  .kn-rows li {
+    grid-template-columns: 90px 1fr 52px 30px;
+    gap: 8px;
+  }
+}
+
+.kn-pic {
+  position: sticky;
+  top: 70px;
+}
+.kn-note {
+  margin: 10px 2px 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+/* the photo's route and skulls play in on scroll elsewhere; here the answer is already given, so show them */
+#real .knew4 .scene .route,
+#real .knew4 .scene .skull {
+  opacity: 1 !important;
+  clip-path: none !important;
+  transform: none !important;
+}

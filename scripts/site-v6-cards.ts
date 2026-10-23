@@ -2140,6 +2140,9 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
           ),
         ),
         count: Object.fromEntries(see.map((m) => [m, runs(m)[0]!.dashCount[m] ?? [0, 0]])),
+        knew: Object.fromEntries(see.map((m) => [m, runs(m)[0]!.knew[m] ?? [0, 0, 0]])),
+        // the card's example: Clef on the try-it frame (two workers on the left, the schedule pointing left), both runs
+        knewClef: runs('cloudflare/clef').map((t) => t.knewFrame['cloudflare/clef|u-two-L.jpg'] ?? [0, 0, 0]),
         live: Object.fromEntries(see.map((m) => [m, runs(m)[0]!.dashLive[m] ?? [0, 0]])),
       };
     })(),
