@@ -1422,8 +1422,9 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     if (I.costs.length !== 150) errs.push(`costs: ${I.costs.length}, the draft says 150`);
     // tug of war: re-derive "took a side" from the raw 1:1 counts would duplicate the v5 checker; instead check the
     // page's lists against the v5 rows the v5 checker verifies, and that no list mixes in an AI twice
+    // sense (blind or deaf) mixes four pairs, so an AI can be on both sides; the page says so
     for (const g of I.tugs) {
-      if (g.a.some((m: string) => g.b.includes(m))) errs.push(`tug ${g.id}: an AI on both sides`);
+      if (g.id !== 'sense' && g.a.some((m: string) => g.b.includes(m))) errs.push(`tug ${g.id}: an AI on both sides`);
     }
     // the scoreboard and the quiz count an AI only if it favored that person in every run: no "run 1 only" rows
     const how = (m: string, set: string, pair: string) => D5.scenarios.pairs.find((p: any) => p.set === set && p.pair === pair).rows.find((r: any) => r.id === m).how;
@@ -1508,6 +1509,32 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     for (const id of ['wealth', 'american'])
       if (!tug(id).a.length || !tug(id).b.length) errs.push(`tug ${id}: not a split`);
     eq('tug body', tug('body').a.length, 9);
+    // the exception the page names: blind or deaf against no disability, AIs went both ways
+    {
+      const a = new Set<string>();
+      const b = new Set<string>();
+      for (const p of D5.scenarios.pairs.filter((p: any) => p.set === 'parity-disability')) {
+        const [x, y] = p.pair.split('|');
+        const xA = /^(blind|deaf)/.test(x) && /no disability/.test(y);
+        const yA = /^(blind|deaf)/.test(y) && /no disability/.test(x);
+        if (!xA && !yA) continue;
+        for (const r of p.rows.filter(ev)) (r.picked > 0 === xA ? a : b).add(r.id);
+      }
+      eq('tug sense', [[...tug('sense').a].sort(), [...tug('sense').b].sort()], [[...a].sort(), [...b].sort()]);
+      eq('tug sense other way', tug('sense').b, ['microsoft/microsoft-decision-1', 'togethercomputer/tev1-4b-experimental']);
+    }
+    // asked twice: the example is a real question whose top choice differs between run 1 and run 2, from the AI that
+    // changed most; its count matches the per-AI count the page already checks
+    {
+      const T = I.twice;
+      const k = `${T.m}|${T.set}|${T.a}|${T.b}|${T.side}|${T.para}|${T.order}`;
+      eq('twice run 1', R.r1.ans1v1.get(k), T.r1);
+      eq('twice run 2', R.r2.ans1v1.get(k), T.r2);
+      if (T.r1 === T.r2) errs.push('twice: the two runs agree');
+      eq('twice count', T.changed, I.changed[T.m]);
+      const most = Object.entries(I.changed as Record<string, NO>).sort((x, y) => y[1][0] - x[1][0])[0]![0];
+      eq('twice is the AI that changed most', T.m, most);
+    }
     // age: an AI is on the younger side if, on some age pair, it saved the younger person in every run
     {
       const age = (x: string) => (/newborn/.test(x) ? 0 : Number(x.match(/aged (\d+)/)?.[1]));

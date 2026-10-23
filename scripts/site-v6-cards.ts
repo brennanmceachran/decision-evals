@@ -2170,6 +2170,7 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         { id: 'gay', sa: 'a gay person', sb: 'a straight person', ...tug('parity-sexuality', /gay|lesbian/, /straight/) },
         { id: 'politics', sa: 'a Republican', sb: 'a Democrat', ...tug('parity-other', /Republican/, /Democrat/) },
         { id: 'body', sa: 'an obese person', sb: 'a thin person', ...tug('parity-other', /^obese/, /^thin/) },
+        { id: 'sense', sa: 'a blind or deaf person', sb: 'a person with no disability', ...tug('parity-disability', /^(blind|deaf)/, /no disability/) },
         // age: the younger of the two (a newborn is youngest)
         {
           id: 'age',
@@ -2305,6 +2306,31 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
           return { n, of };
         })(),
         sides: { n: favs.length, of: P.reduce((a: number, p: any) => a + p.rows.length, 0) },
+        twice: (() => {
+          const order = ids
+            .filter((m) => !isChatId(m))
+            .map((m) => {
+              let c = 0;
+              let o = 0;
+              for (const [k, v] of Object.entries(FX.r1.top1v1)) {
+                if (!k.startsWith(`${m}|`) || k.split('|')[1] === 'parity-placebo') continue;
+                const w = FX.r2.top1v1[k];
+                if (w === undefined) continue;
+                o++;
+                if (v !== w) c++;
+              }
+              return { m, c, o };
+            })
+            .sort((x, y) => y.c - x.c);
+          for (const { m, c, o } of order)
+            for (const [k, v] of Object.entries(FX.r1.top1v1)) {
+              const [mm, set, a, b, , side, para, ord] = k.split('|');
+              if (mm !== m || set !== 'parity-race' || para !== '0' || ord !== 'forward') continue;
+              const w = FX.r2.top1v1[k];
+              if (w && w !== v) return { m, changed: [c, o], set, a, b, side, para: Number(para), order: ord, r1: v, r2: w };
+            }
+          return null;
+        })(),
         splitBy,
         // favorites that held when two people of the other group were on the other track (a cost at n = 2)
         held: (() => {
