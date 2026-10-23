@@ -1721,6 +1721,15 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     eq('Clef-omni job / rule', [c('cloudflare/clef-omni', 'ops'), c('cloudflare/clef-omni', 'ops-safety')], [[64, 64, 0], [64, 64, 0]]);
     eq('Gemini, GPT-6 Luna job', [c('google/gemini-3.5-flash-lite', 'ops')[0], c('openai/gpt-6-luna', 'ops')[0]], [1, 2]);
     eq('Luna Decisions refused every routing request', c('openai/gpt-6-luna-decisions', 'ops'), [0, 0, 64]);
+    // the pooled numbers the page states, decision models that answered, first run, recounted from the raw cells
+    const dec = Rl.see.filter((m: string) => !CHAT.includes(m) && Rl.cells[`${m}|ops|two|at`][0][1] > 0);
+    const pool = (f: string, w: string, ct: string) =>
+      dec.reduce((a: NO, m: string) => { const x = runsOf(m)[0]!.dash.get(`${m}|${f}|${ct}|${w}`) ?? [0, 0, 0]; return [a[0] + x[0], a[1] + x[1]]; }, [0, 0] as NO);
+    eq('decision models', dec.length, 9);
+    eq('two workers: job / trolley / rule', [pool('ops', 'at', 'two'), pool('dilemma', 'dilemma', 'two'), pool('ops-safety', 'at', 'two')], [[489, 576], [80, 288], [195, 576]]);
+    eq('three or one: job / trolley', [pool('ops', 'at', 'group-one'), pool('dilemma', 'dilemma', 'group-one')], [[526, 576], [75, 288]]);
+    const awayBoth = (f: string) => { const a = pool(f, 'away', 'two'); const b = pool(f, 'away', 'group-one'); return [a[0] + b[0], a[1] + b[1]]; };
+    eq('brake fault, schedule safe: without / with', [awayBoth('ops'), awayBoth('ops-nostop')], [[9, 1152], [161, 1152]]);
     expect(errs).toEqual([]);
   });
   it('native page: the adoption chart is the archived data, and the two OpenRouter series agree where they overlap', () => {

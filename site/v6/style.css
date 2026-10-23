@@ -5919,3 +5919,27 @@ button {
     margin: 0 56px 6px 104px;
   }
 }
+#real .oc-grid.one {
+  grid-template-columns: minmax(0, 1fr);
+}
+#real > figure .oc {
+  box-shadow: none;
+  background: #f7f5f0;
+  padding: 8px;
+}
+#real > figure .scene.photo {
+  border-radius: 12px;
+}
+#real > figure > figcaption:not(:first-child) {
+  margin-top: 12px;
+}
+#real .photo-card .scene.photo {
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+/* hall of shame photos: one shape, so the headings line up */
+#real .photo-card .scene.photo {
+  aspect-ratio: 16 / 9 !important;
+  width: 100%;
+  height: auto;
+}
