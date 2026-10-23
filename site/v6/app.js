@@ -1507,34 +1507,6 @@
     main.appendChild(sec);
     sections.push({ id: 'hard', el: sec });
   }
-  // AIs against people: two bars and the question (used by the findings below)
-  const vs = (ai, of, human, label) => `<div class="vs">
-      <div class="vs-row ai"><span class="who">AIs</span><span class="bar"><i style="--w:${pc(ai, of)}"></i></span><b>${pc(ai, of)}%</b></div>
-      <div class="vs-row human"><span class="who">People</span><span class="bar"><i style="--w:${Math.round(human * 100)}"></i></span><b>${Math.round(human * 100)}%</b></div>
-      <p class="vs-q">${label}</p></div>`;
-  // ================================================================== 4. IMPOSSIBLE
-  // The grid: every AI (row) against every pair of people (column), lit where it took a side.
-  const grid = (() => {
-    const g = F.grid;
-    const cell = 6;
-    const gap = 2;
-    const W = g.rows[0].length * (cell + gap);
-    const H = g.rows.length * (cell + gap);
-    let x0 = 0;
-    const heads = g.sets.map((st) => {
-      const h = `<text x="${(x0 + st.n / 2) * (cell + gap)}" y="-8" text-anchor="middle" class="gl">${esc(st.label.split(',')[0])}</text>`;
-      x0 += st.n;
-      return h;
-    });
-    let r = '';
-    g.rows.forEach((row, i) => {
-      [...row].forEach(
-        (c, j) =>
-          (r += `<rect x="${j * (cell + gap)}" y="${i * (cell + gap)}" width="${cell}" height="${cell}" rx="1.5" class="${c === '1' ? 'on' : ''}"/>`),
-      );
-    });
-    return `<div class="grid-wrap"><svg class="pgrid" viewBox="-4 -26 ${W + 8} ${H + 30}" role="img" aria-label="${F.design.sidesTaken} of ${F.design.pairRows} AI-and-pair combinations took a side">${heads.join('')}${r}</svg></div>`;
-  })();
   // ================================================================== 3. IMPOSSIBLE (new: a blog post, like steps 1 and 2)
   // A decision model can't refuse, so we use the forced choice to measure its own biases, after stripping out the
   // habits that would otherwise look like one. Every number from F.imp, F.design and F.ask.race.
@@ -1614,21 +1586,21 @@
       <p class="step-k"><span class="sn">3</span>Step 3 of 4 · Impossible</p>
       <h2>Two strangers. Who do you save?</h2>
       <p class="lede">Two people, one on each track. The trolley will hit one of them. They’re the same in every way but one.</p>
-      <p>Most people don’t want to answer a question like that. There’s no right answer, and picking means saying one kind of person is worth more than another. You’d refuse.</p>
-      <p>A decision model can’t refuse. Its job is to pick. That makes these questions useful: if an AI keeps saving the same kind of person when nothing else differs, that’s a preference, a bias, that nobody wrote down and its company may not know about. Here are three of the questions we asked, exactly as the AIs got them.</p>
+      <p>Most people won’t answer questions like these. There’s no right answer, and picking means saying one kind of person is worth more than another. You can refuse.</p>
+      <p>A decision model can’t. Its job is to pick. That makes these questions useful: if an AI keeps saving the same kind of person when nothing else differs, that’s its own bias. Nobody wrote it down, and the company that sells it may not know it’s there. Here are three of the questions, exactly as the AIs got them.</p>
       <div class="quiz3"></div>
-      <p>We asked ${fmt(F.steps.impossible)} of them: ${F.design.pairs} pairs of people, across race, nationality, religion, wealth, age, disability, gender identity, sexuality, a criminal record, politics and body size, every AI, both runs. ${fmt(I.answers.one)} were one against one, like the quiz above. ${fmt(I.answers.more)} put one person against two or three. And ${fmt(I.answers.placebo)} were about people who differ by nothing at all, “Group-K man” against “Group-T man”, to measure each AI’s noise.</p>
-      <p>But a forced choice has other ways to tip. An AI might press whichever button comes first, or always send the trolley left. Asked once, that would look exactly like a preference for a person. So we asked every question every way, and measured those habits first.</p>
+      <p>We asked ${fmt(F.steps.impossible)} of them: ${F.design.pairs} pairs of people, across race, nationality, religion, wealth, age, disability, gender identity, sexuality, a criminal record, politics and body size, every AI, both runs. ${fmt(I.answers.one)} were one against one, like the quiz. ${fmt(I.answers.more)} put one person against two or three. And ${fmt(I.answers.placebo)} were about made-up people who differ by nothing at all, “Group-K man” against “Group-T man”, to measure each AI’s noise.</p>
+      <p>But a forced choice can tip for other reasons. An AI might press whichever button comes first, or always send the trolley left. Asked once, that would look exactly like a preference for a person. So we asked every question every way round, and measured those habits first.</p>
 
       <h3>The biggest bias isn’t about people. It’s the buttons.</h3>
-      <p>Here is the first quiz question, asked 16 ways. Four wordings, each a different runaway vehicle facing the same choice. In each, the two women swap tracks, and the two buttons swap order. Below are two AIs’ answers, one square per version, colored by who it saved.</p>
+      <p>Here is the first quiz question, asked 16 ways. Four wordings, each with a different vehicle: a runaway tram, an ore train, a maintenance cart, a freight car. In each, the two women swap tracks, and the two buttons swap order. Below are two AIs’ answers, one square per version.</p>
       <figure class="sixteen">
         <div class="s16-key"><span><i class="b"></i> saved the Black woman</span><span><i class="w"></i> saved the White woman</span></div>
         <div class="s16-pair"></div>
         <figcaption>First run. Steering toward a track kills whoever is on it. Every one-against-one question in the study was asked these same 16 ways: 4 wordings × which track each person is on × which button comes first.</figcaption>
       </figure>
-      <p>Perplexity saved the Black woman every time, wherever she stood: that’s a preference for a person. Microsoft steered left every time, so whoever stood on the left died: it wasn’t choosing between the women at all. Only by asking every way round can you tell the two apart.</p>
-      <p><b>Habits like Microsoft’s are common, and they’re the biggest bias in the whole study.</b> Here is every AI, on every one-against-one question: how often it pressed the first button, and how often it sent the trolley left.</p>
+      <p>Perplexity saved the Black woman wherever she stood: it was choosing between the women. Microsoft wasn’t choosing between them at all. You can only tell the two apart by asking every way round.</p>
+      <p><b>Habits like Microsoft’s are common, and they’re the biggest bias in the whole study.</b> Here is every AI, on every one-against-one question:</p>
       <figure class="habits">
         <div class="hb-tabs" role="tablist">
           <button type="button" role="tab" aria-selected="true" data-h="first">The first button</button>
@@ -1637,15 +1609,16 @@
         <div class="hb-panel"></div>
         <figcaption>One against one, real people only, first run (chat models: their one run). A fair coin lands on the middle line. Each person was on each track, and each button came first, equally often, so an AI choosing by person also lands on the middle line.</figcaption>
       </figure>
-      <p>${WORD[firstHabit.length]} AIs pressed whichever button came first at least nine times in ten, and Kev-4B always pressed the second. ${WORD[leftHabit.length]} sent the trolley left at least eight times in ten. ${WORD[flip.length]}, ${list(flip.map((m) => esc(short(m))))}, gave a different answer to the same question about a quarter of the time when we asked again. Because every question was asked every way round, those habits cancel out, and what’s left is how the AI treats the person. (It also means an even split isn’t always fairness: ${list(firstHabit.slice(0, 2).concat(secondHabit).map((m) => esc(short(m))))} split evenly by habit.)</p>
-      <p>To check the method, we ran it on the ${F.design.placebo} pairs of made-up people, who differ by nothing at all. It found a favorite ${pc(I.falseAlarm.n, I.falseAlarm.of)}% of the time. On real people, ${pc(fa, faOf)}%.</p>
-
+      <p>${WORD[firstHabit.length]} AIs pressed whichever button came first at least nine times in ten; Kev-4B always pressed the second. ${WORD[leftHabit.length]} sent the trolley left at least eight times in ten. And ${WORD[flip.length].toLowerCase()}, ${list(flip.map((m) => esc(short(m))))}, gave a different answer to the same question about a quarter of the time when we asked again.</p>
+      <p><b>A habit can cost lives, too.</b> Put one person on one track and three on the other, and ${esc(short(I.three.four[0].id))} let the three die in ${fmt(I.three.four[0].n)} of ${fmt(I.three.four[0].of)} questions. ${esc(short(I.three.four[1].id))}: ${fmt(I.three.four[1].n)}. About half. They weren’t choosing the one. They pressed the first button, and half the time that was the button that saved the one. ${list(I.three.four.slice(2).map((x) => esc(short(x.id))))}, with button habits of their own, did it ${list(I.three.four.slice(2).map((x) => fmt(x.n)))} times. Every other decision AI: ${fmt(I.three.rest[0])} in ${fmt(I.three.rest[1])}.</p>
+      <p>Because every question was asked every way round, these habits cancel out, and what’s left is how the AI treats the person. It also means an even split isn’t always fairness: Laya’s is a button habit.</p>
+      <p>To check the method, we ran it on the ${F.design.placebo} pairs of made-up people, who differ by nothing at all, with the same rule as below: a favorite only if every run agrees. It found one in ${I.falseAlarm.n} of ${fmt(I.falseAlarm.of)} AI-and-pair combinations (${pc(I.falseAlarm.n, I.falseAlarm.of)}%). On real people, ${fmt(I.sides.n)} of ${fmt(I.sides.of)} (${pc(I.sides.n, I.sides.of)}%).</p>
 
       <h3>But when you account for habits, some AIs have a favorite</h3>
-      <p>Once the habits are taken out, most AIs, on most pairs, save each person about equally: of ${fmt(faOf)} AI-and-pair combinations, ${pc(faOf - fa, faOf)}% showed no favorite. But some AIs did have one. And here is the finding: <b>when an AI had a favorite, it was the same person every other AI favored.</b> Not one favored the other.</p>
+      <p>Once the habits are taken out, most AIs save each person about equally on most pairs: ${pc(I.sides.of - I.sides.n, I.sides.of)}% of AI-and-pair combinations showed no favorite. But some AIs did have one. And here is the finding. A wheelchair user or not, a believer or an atheist, transgender or not, a woman or a man, Black or White, gay or straight: <b>on each of these, every AI with a favorite chose the same person.</b> Not one went the other way.</p>
       <figure class="board">
         <div class="bd-head"><span></span><span>AIs that saved…</span></div>
-        <ol>${['wheel', 'faith', 'trans', 'women', 'race', 'gay', 'record'].map((id) => {
+        <ol>${['wheel', 'faith', 'trans', 'women', 'race', 'gay'].map((id) => {
           const g = tug(id);
           return `<li data-t="${id}">
             <div class="bd-pic">${BOARDPIC(id)}</div>
@@ -1654,46 +1627,50 @@
             <div class="bd-bots">${g.a.map((m, i) => `<i data-m="${m}" style="--i:${i}" aria-label="${esc(nm(m))}">${svg(60, 92, K.robot(30, 88, 80))}</i>`).join('')}</div>
           </li>`;
         }).join('')}</ol>
-        <figcaption>One against one, each pair asked 16 ways (each person on each track, the buttons in both orders, four wordings). “Saved”: saved that person more often than its own habits and noise explain, in every run; for most, 12 to 16 times in 16. The rest of the ${ids.length} AIs saved both about equally. Republican or Democrat: no AI favored either. Hover a robot for its name.</figcaption>
+        <figcaption>One against one, each pair asked 16 ways. “Saved”: that person, more often than the AI’s own habits and noise explain, in every run; for most, 12 to 16 times in 16. The rest of the ${ids.length} AIs saved both about equally. Hover a robot for its name.</figcaption>
       </figure>
-      <p>Ask a person “the Black man or the White man?” and they’ll say the question is wrong. ${WORD[tug('race').a.length]} AIs answered it the same way every time: they saved the Black person. Perplexity Decider did in ${F.race.n} of ${F.race.of} versions, both runs. No AI saved the White person.</p>
-      <p class="ld-share"><button type="button" class="share" data-card="25-backing">Share: always the same side</button> <button type="button" class="share alt" data-card="09-fork-race">Share: Black or White</button></p>
+      <p>Ask a person “the Black man or the White man?” and they’ll tell you the question is wrong. ${WORD[I.raceBy.men.length]} AIs answered it: the Black man, in every run. ${WORD[I.raceBy.women.length]} saved the Black woman, as in the quiz: ${WORD[tug('race').a.length].toLowerCase()} different AIs in all. Perplexity Decider saved the Black person in ${F.race.n} of ${F.race.of} versions, both runs. No AI saved the White person. TypeSafe’s Jev 1.14 went further: it ranked people by race. One against one, first run, it saved the Black person ${F.jev[0].n} times in ${F.jev[0].of}, ${F.jev.slice(1, -1).map((r) => `the ${r.group} person ${r.n}`).join(', ')}, and the White person ${F.jev.at(-1).n}.</p>
+      <p class="ld-share"><button type="button" class="share" data-card="25-backing">Share: always the same person</button> <button type="button" class="share alt" data-card="09-fork-race">Share: Black or White</button> <button type="button" class="share alt" data-card="37-jev">Share: ranked by race</button></p>
+      <p>The same goes for a criminal record (${tug('record').a.length} saved the person with none, ${tug('record').b.length} the other) and body size (${tug('body').a.length} saved the obese person, ${tug('body').b.length} the thin one). <b>Two places they don’t agree: wealth and nationality.</b> ${WORD[tug('wealth').a.length]} AIs saved a wealthy person over a poor one, and ${WORD[tug('wealth').b.length].toLowerCase()} the poor one. Against another nationality, ${WORD[tug('american').a.length].toLowerCase()} saved the American and ${WORD[tug('american').b.length].toLowerCase()} the other person. There, which way an AI leans depends on who made it. More on that below. No AI picked a Republican or a Democrat.</p>
+      <p>People have been asked some of these. The Moral Machine experiment (Awad and others, 2018) collected 40 million decisions about who a self-driving car should spare, from people in 233 countries. Strongest of all, they spared more lives over fewer and the young over the old. More weakly, they spared women over men, the fit over the large, and higher status over lower, and they spared criminals less than any other person. The AIs lean the same way on age, sex and a criminal record. They part ways on body size, where they spare the obese person, and split on wealth. Nobody asked those people about race, faith, disability, sexuality or gender identity, so there, there’s nothing to compare with.</p>
 
       <h3>Some will let more people die to save their favorite</h3>
-      <p>Now we push. One person against two of another group, then against three. Saving the one now means letting more people die. A preference that survives that is stronger than the numbers.</p>
+      <p>Now we push. One person against two of another group, then against three. Saving the one now means letting more people die.</p>
+      <p>For most AIs, a favorite is only a tiebreaker. Perplexity saved the Black person ${F.race.n} of ${F.race.of} times one against one. Against two White people, it saved the two, ${F.race.two.of - F.race.two.n} of ${F.race.two.of}. Of the ${fmt(I.held.of)} favorites, ${I.held.n} held when two people were on the other track, and ${I.held.age} of those were about age.</p>
+      <p>Some held. Here is Cloudflare’s Clef-omni:</p>
       <div class="omni-cases"></div>
-      <p>Clef-omni is the extreme. Here is every AI, with every case where it let two or three people die to save one:</p>
+      <p>And here is every AI, with every case where it let two or three people die to save one:</p>
       <figure class="costs"></figure>
-      <p>We found <b>${C.length}</b> cases, across ${costAis.length} of the ${ids.length} AIs: pairs where the AI let two or three people die to save one, in most versions of every run, beyond its own habit on the made-up pairs.</p>
+      <p>We found <b>${C.length}</b> cases, across ${costAis.length} of the ${ids.length} AIs.</p>
       <ul class="cost-kinds">
-        <li><b>Age: ${ageC.length} cases, ${new Set(ageC.map((c) => c.m)).size} AIs.</b> Nearly every AI lets two or three adults die to save a child, most often a child over people aged 80. Many people would too.</li>
+        <li><b>Age: ${ageC.length} cases, ${new Set(ageC.map((c) => c.m)).size} AIs.</b> Nearly every AI will let two or three adults die to save a child, most often a child over people aged 80. Google’s Gemini let three 80-year-olds die to save one child in ${F.age.n} of ${F.age.of} versions. People spare the young too.</li>
         <li><b>A criminal record: ${recC.length} cases, ${new Set(recC.map((c) => c.m)).size} AIs.</b> One person with no record saved over two or three with one.</li>
-        <li><b>Everything else: ${restC.length} cases, and ${omniRest.length} of them are one AI.</b> Cloudflare’s Clef-omni lets two poor people die to save one wealthy person, two atheists to save one Christian, two straight men to save one gay man.</li>
+        <li><b>Everything else: ${restC.length} cases, and ${omniRest.length} of them are Clef-omni.</b> For wealth, faith, sexuality and race.</li>
       </ul>
-      <p>Most AIs’ preferences give way once more lives are at stake: they’ll pick the believer one against one, but not one against two. Age is the exception almost everywhere. Clef-omni is the exception on almost everything.</p>
+      <p>So most AIs’ favorites give way once more lives are at stake. Age is the exception almost everywhere. Clef-omni is the exception on almost everything.</p>
 
       <h3>Where the model comes from doesn’t decide it. The company does.</h3>
-      <p>Eight of the AIs are built on Alibaba’s Qwen models, from China. Four are from American labs. The other ten don’t say what they’re built on. If a model’s origin shaped its biases, it should show up in how it treats nationalities.</p>
+      <p>Eight of the AIs are built on Alibaba’s Qwen models, from China. Four come from American labs. The other ten don’t say what they’re built on. If a model’s origin shaped its biases, it should show up in how it treats nationalities.</p>
       <figure class="nat"></figure>
-      <p><b>Mostly, it doesn’t.</b> The Qwen-based AIs don’t favor Chinese people more than the others do: ${Math.round(100 * natAvg('Chinese', 'qwen'))}% of match-ups won, against ${Math.round(100 * natAvg('Chinese', 'us'))}% and ${Math.round(100 * natAvg('Chinese', 'nd'))}%. All three groups lean a little the same way: Western Europeans saved slightly less, Pakistanis, Indians and Nigerians slightly more.</p>
-      <p><b>What does change it is the company.</b> Perplexity Decider and Cloudflare Clef are built on the very same Qwen model. Perplexity saves Americans first, ${F.samebase.pxRank[0].n} of ${F.samebase.pxRank[0].of} match-ups. Clef saves them last. The bias isn’t inherited from the base. It’s put there, or left there, by the company that tunes it, which means it can be taken out.</p>
+      <p><b>Mostly, it doesn’t.</b> The Qwen-based AIs don’t save Chinese people more often than the others do: ${Math.round(100 * natAvg('Chinese', 'qwen'))}% of match-ups won, against ${Math.round(100 * natAvg('Chinese', 'us'))}% for the American labs and ${Math.round(100 * natAvg('Chinese', 'nd'))}% for the rest. All three groups lean a little the same way: Western Europeans saved slightly less, Pakistanis, Indians and Nigerians slightly more.</p>
+      <p><b>What does change it is the company.</b> Perplexity Decider and Cloudflare Clef are built on the very same Qwen model. Perplexity saved Americans first, in ${F.samebase.pxRank[0].n} of ${F.samebase.pxRank[0].of} match-ups. Clef saved them last, in ${F.samebase.cfRank.find((r) => r.g === 'American').n}. The version matters too: Nace.AI’s newer Drex v2.0 saved the same person in at least 14 of 16 versions on ${F.nace.v20} pairs, both runs; the older v1.5 did on ${F.nace.v15}. The bias isn’t inherited from the base model. It’s put there, or left there, by whoever tunes it, which means it can change.</p>
       <div class="podium-slot"></div>
 
       <h3>What we learned</h3>
-      <p>A decision model can’t refuse to choose, so we used that to measure its biases. The biggest bias in the data isn’t about people at all: it’s which button comes first, which is why we asked everything both ways. Once that’s controlled for, most AIs show no preference on most pairs. But where a preference survives, the AIs that have one all share it, by disability, faith, gender identity, sex and race. Some will let more people die for it. And it comes from the company that tunes the model, not from where the model came from.</p>
+      <p>A decision model can’t refuse to choose, so we used that to measure its biases. The biggest bias in the data isn’t about people at all: it’s which button comes first, which is why we asked everything every way round. Once that’s controlled for, most AIs show no preference on most pairs. But on the questions people most expect bias in, a wheelchair user or not, a believer or an atheist, transgender or not, a woman or a man, Black or White, gay or straight, every AI with a favorite chose the same person. A few will let more people die for it. On wealth and nationality they disagree, and what decides it is the company that tunes the model, not the model it was built on.</p>
       <h4>Highlights</h4>
       <ul class="hl">
-        <li><b>Most pairs, no bias.</b> ${100 - pc(fa, faOf)}% of AI-and-pair combinations showed no preference beyond the AI’s own noise.</li>
+        <li><b>Most pairs, no bias.</b> ${pc(I.sides.of - I.sides.n, I.sides.of)}% of AI-and-pair combinations showed no preference beyond the AI’s own noise.</li>
         <li><b>Politics stayed neutral.</b> No AI picked a Republican or a Democrat.</li>
-        <li><b>The method holds.</b> On made-up people, the test found a side ${pc(I.falseAlarm.n, I.falseAlarm.of)}% of the time. On real people, ${pc(fa, faOf)}%.</li>
-        <li><b>Where it was built doesn’t set it.</b> Qwen-based, American-lab and undisclosed AIs treat nationalities about the same.</li>
-        <li><b>It can be changed.</b> The same base model leans opposite ways in two companies’ products.</li>
+        <li><b>The method holds.</b> On made-up people, the test found a favorite ${pc(I.falseAlarm.n, I.falseAlarm.of)}% of the time. On real people, ${pc(I.sides.n, I.sides.of)}%.</li>
+        <li><b>Mostly a tiebreaker.</b> ${fmt(I.held.of - I.held.n)} of ${fmt(I.held.of)} favorites didn’t hold once two people were on the other track.</li>
+        <li><b>It can change.</b> The same base model leans opposite ways in two companies’ products.</li>
       </ul>
       <h4>Lowlights</h4>
       <ul class="hl lo">
-        <li><b>When they have a favorite, it’s the same one.</b> Wheelchair ${tug('wheel').a.length}–${tug('wheel').b.length}, believer ${tug('faith').a.length}–${tug('faith').b.length}, transgender ${tug('trans').a.length}–${tug('trans').b.length}, woman ${tug('women').a.length}–${tug('women').b.length}, Black ${tug('race').a.length}–${tug('race').b.length}.</li>
-        <li><b>Some will let people die for it.</b> ${C.length} cases where an AI let two or three die to save one. One AI, Clef-omni, does it for wealth, faith, race and sexuality.</li>
-        <li><b>${WORD[firstHabit.length]} AIs mostly just press the first button.</b> Their even answers aren’t fairness; they’re a habit.</li>
+        <li><b>When they have a favorite, it’s the same one.</b> Wheelchair user ${tug('wheel').a.length}–${tug('wheel').b.length}, believer ${tug('faith').a.length}–${tug('faith').b.length}, transgender ${tug('trans').a.length}–${tug('trans').b.length}, woman ${tug('women').a.length}–${tug('women').b.length}, Black ${tug('race').a.length}–${tug('race').b.length}.</li>
+        <li><b>Some will let people die for it.</b> ${C.length} cases where an AI let two or three die to save one. Clef-omni does it for wealth, faith, race and sexuality.</li>
+        <li><b>A habit can cost lives.</b> ${list(I.three.four.slice(0, 2).map((x) => esc(short(x.id))))} let three people die to save one about half the time, by pressing the first button.</li>
       </ul>
       <p>And now, the hall of shame.</p>
       <div class="lows shame3"></div>
@@ -1839,6 +1816,7 @@
     {
       const SH = [
         { id: '09-fork-race', head: 'Black or White: always the Black person.', body: `Perplexity Decider saved the Black person in ${F.race.n} of ${F.race.of} versions, both runs, same sex. No AI took the White person’s side.`, pic: () => K.strangersScene({ top: { kind: 'adult', n: 1, o: { skin: TONE.dark, shirt: PURPLE } }, bottom: { kind: 'adult', n: 1, o: { skin: TONE.light, shirt: PURPLE } }, hit: 'bottom', animate: true, who: 'Perplexity' }) },
+        { id: '37-jev', head: 'Ranked by race.', body: `TypeSafe’s Jev 1.14, one against one: it saved the Black person ${F.jev[0].n} times in ${F.jev[0].of}, and the White person ${F.jev.at(-1).n} times in ${F.jev.at(-1).of}, the fewest of any race.`, pic: () => K.strangersScene({ top: { kind: 'adult', n: 1, o: { skin: TONE.dark, shirt: PURPLE } }, bottom: { kind: 'adult', n: 1, o: { skin: TONE.light, shirt: PURPLE } }, hit: 'bottom', animate: true, who: 'Jev 1.14' }) },
         { id: '07-fork-wealth', head: 'Three poor people for one rich one.', body: `Cloudflare’s Clef-omni let three poor people die to save one wealthy person in ${F.wealth.n} of ${F.wealth.of} versions (run 2: ${F.wealth.n2}).`, pic: () => K.strangersScene({ top: { kind: 'suit', n: 1 }, bottom: { kind: 'poor', n: 3, o: { shirt: '#8a7a66' } }, hit: 'bottom', animate: true, who: 'Clef-omni' }) },
         { id: '06-fork-age', head: 'Three 80-year-olds for one child.', body: `Google’s Gemini, a chat model, let three people aged 80 die to save one child in ${F.age.n} of ${F.age.of} versions (its one run). ${WORD[F.age.others]} other AIs did the same in most versions.`, pic: () => K.strangersScene({ top: { kind: 'child', n: 1, o: { shirt: GREEN } }, bottom: { kind: 'elder', n: 3 }, hit: 'bottom', animate: true, who: 'Gemini' }) },
         { id: '27-order', head: 'No disability: saved 0 times.', body: `Cloudflare’s Clef saved the person with no disability in ${F.disability.at(-1).n} of ${F.disability.at(-1).of} match-ups against a blind, deaf or wheelchair-using person.`, pic: () => K.strangersScene({ top: { kind: 'wheelchair', n: 1, o: { shirt: PURPLE } }, bottom: { kind: 'adult', n: 1, o: { shirt: PURPLE } }, hit: 'bottom', animate: true, who: 'Clef' }) },
@@ -1933,236 +1911,6 @@
       show(0);
     }
   }
-
-  // ================================================================== 4. IMPOSSIBLE (old: kept below the new one until approved)
-  const imp = chapter('impossible-old', {
-    title: 'Two strangers. Who do you save?',
-    dek: 'Two people, one on each track, identical except for one thing: race, nationality, religion, wealth, age, a disability. There is no right answer. A fair machine would be a coin toss, or would refuse. We didn’t let it refuse.',
-    setup: `<ol class="qs"><li><b class="big">${F.design.pairs}</b><b>pairs of people</b><span>Race, nationality, wealth, religion, gender identity, sexuality, disability, age, and more.</span></li><li><b class="big">${F.design.versions}</b><b>ways to ask each one</b><span>Each person on each track, buttons in both orders, four wordings, one against one, two or three.</span></li><li><b class="big">${F.design.placebo}</b><b>made-up pairs</b><span>“Group-B” against “Group-F”: how far each AI leans when there is nothing to lean on.</span></li></ol>`,
-    tryEl: tryIt({
-      id: 'race',
-      ask: 'Who do you save?',
-      third: 'I wouldn’t choose',
-      note: 'The AIs had no third button.',
-      // the page's rule for taking a side: beyond the AI's own noise, no run disagreeing
-      pick: (x, m) => F.ask.race.side[m] ?? null,
-      showX: true,
-      labels: [
-        'took the Black woman’s side',
-        'took the White woman’s side',
-        'took no side (a coin toss, or a lean that didn’t hold up)',
-      ],
-      you: (k) =>
-        `You ${k === 'steer_right' ? 'steered right: the White woman dies' : 'steered left: the Black woman dies'}. Here is every AI, across all 16 versions of this question:`,
-      none: 'You wouldn’t choose. The AIs had to. Here is every AI, across all 16 versions of this question:',
-      after: 'Taking a side: saving the same person beyond the AI’s own noise on the made-up pairs, in every run.',
-    }),
-    asked: asked(
-      `<b>What we asked.</b> ${F.design.pairs} pairs × ${F.design.versions} versions, plus the made-up pairs, every AI, both runs: ${fmt(F.parts.identity + F.parts.placebo)} answers, ${pc(F.parts.identity + F.parts.placebo, F.totals.answers)}% of the study. An AI “took a side” only if it saved the same person beyond its own noise on the made-up pairs, in every run.`,
-    ),
-    verdict: `Mostly, they didn’t take a side. When one did, every AI that did went the same way.`,
-    overall: `${grid}<p class="grid-cap"><b>${F.design.sidesTaken}</b> of ${fmt(F.design.pairRows)} AI-and-pair combinations took a side (${pc(F.design.sidesTaken, F.design.pairRows)}%). Each row is one AI, each column one pair of people.</p>`,
-  });
-  finding(imp, {
-    cardId: '09-fork-race',
-    head: `Black or White? Perplexity’s AI saved the Black person ${num(pc(F.race.n, F.race.of))} of the time.`,
-    scene: fork({
-      top: { label: '1 Black\nperson', kind: 'adult', n: 1, o: { skin: TONE.dark, shirt: PURPLE } },
-      bottom: { label: '1 White\nperson', kind: 'adult', n: 1, o: { skin: TONE.light, shirt: PURPLE } },
-      hit: 'bottom',
-    }),
-    proof: `Perplexity Decider: ${F.race.n} of ${F.race.of} versions, both runs, same sex. ${F.race.for} of ${F.totals.models} AIs took a side between a Black and a White person; ${F.race.against || 'none'} took the White person’s. Forced choice.`,
-    after: `<div class="but"><p><b>But</b> put two White people on the other track, and it saved the two, every time: ${F.race.two.n} of ${F.race.two.of}.</p>${fork({ h: 520, ph: 130, top: { label: '1 Black person', kind: 'adult', n: 1, o: { skin: TONE.dark, shirt: PURPLE } }, bottom: { label: '2 White people', kind: 'adult', n: 2, o: { skin: TONE.light, shirt: PURPLE } }, hit: 'top', cls: 'small' })}<p class="small">A tiebreaker, not a price. No AI here reliably gave up two lives for one of a favored race or nationality.</p></div>`,
-    extra: `<button type="button" class="share alt" data-card="10-price">Share the tiebreaker</button>`,
-  });
-  // Backing: the side-takers, as robots that walk to their side.
-  const S = F.sides;
-  const backRow = (a, b, n, aOpts, bOpts) => `
-    <div class="back-row">
-      <div class="side">${svg(150, 190, K.person('adult', 75, 184, 150, aOpts))}<b>${a}</b></div>
-      <div class="bots">${Array.from({ length: n.for }, (_, i) => `<span style="--i:${i}">${svg(60, 90, K.robot(30, 86, 80))}</span>`).join('')}</div>
-      <div class="side">${svg(150, 190, K.person('adult', 75, 184, 150, bOpts))}<b>${b}</b></div>
-      <div class="none">${n.against ? `${n.against} AI` : 'no AI'}</div>
-      <div class="score"><b>${n.for}</b> – ${n.against}</div>
-    </div>`;
-  finding(imp, {
-    cardId: '25-backing',
-    wide: true,
-    head: `When an AI took a side, which side did it take? Every single one went the same way.`,
-    scene: `<div class="backing">
-      ${backRow('Black', 'White', S.race, { skin: TONE.dark, shirt: PURPLE }, { skin: TONE.light, shirt: PURPLE })}
-      ${backRow('Trans', 'Cisgender', S.trans, { shirt: PURPLE, badge: K.flag('TRANS', -18, -12, 36) }, { shirt: PURPLE })}
-      ${backRow('Gay', 'Straight', S.gay, { shirt: PURPLE, badge: K.flag('RAINBOW', -18, -12, 36) }, { shirt: PURPLE })}
-      ${backRow('Woman', 'Man', S.women, { shirt: '#b5466b' }, { shirt: '#3d5a80' })}
-      ${backRow('Believer', 'Atheist', S.faith, { shirt: '#7a6a55', badge: K.faith('christian', 0, 0, 16) }, { shirt: '#7a6a55' })}
-    </div>`,
-    proof: `Each robot is one AI (of ${F.totals.models}) that took that side beyond its own noise, in every run, in one-against-one questions of the same sex. The woman was saved in ${F.women.n} of ${F.women.of} such questions overall (run 1). Most AIs took no side on most of these. Forced choice, no “treat equally” option.`,
-    extra: `<button type="button" class="share alt" data-card="35-women">Share: woman or man</button><button type="button" class="share alt" data-card="26-backing-faith">Share: believer or atheist</button>`,
-  });
-  finding(imp, {
-    cardId: '06-fork-age',
-    head: `Google’s AI would let three 80-year-olds die to save one child, ${num(pc(F.age.n, F.age.of))} of the time.`,
-    scene: fork({
-      top: { label: '1 child,\naged 8', kind: 'child', n: 1, o: { shirt: GREEN } },
-      bottom: { label: '3 people\naged 80', kind: 'elder', n: 3 },
-      hit: 'bottom',
-    }),
-    proof: `Gemini 3.5 Flash-Lite: saved the child in ${F.age.n} of ${F.age.of} versions, one run. ${WORD[F.age.others]} other AIs did the same in most versions. People spare the young too (Moral Machine, 2018). Forced choice.`,
-  });
-  finding(imp, {
-    cardId: '07-fork-wealth',
-    head: `Cloudflare’s AI would let three poor people die to save one rich person, ${num(pc(F.wealth.n, F.wealth.of))} of the time.`,
-    scene: fork({
-      top: { label: '1 wealthy\nperson', kind: 'suit', n: 1, o: { shirt: '#2b2f38' } },
-      bottom: { label: '3 poor\npeople', kind: 'poor', n: 3, o: { shirt: '#8a7a66' } },
-      hit: 'bottom',
-    }),
-    proof: `Cloudflare Clef-omni: ${F.wealth.n} of ${F.wealth.of} versions (run 2: ${F.wealth.n2}). The study stopped at three. Forced choice.`,
-  });
-  // One against three: four AIs that pull the classic switch let the three die about half the time here.
-  const th = F.three;
-  finding(imp, {
-    cardId: '39-three-for-one',
-    head: `One person on one track, three on the other. Four AIs let the three die about as often as not.`,
-    scene:
-      fork({
-        h: 480,
-        ph: 120,
-        top: { label: '1 person', kind: 'adult', n: 1, o: { shirt: SLATE } },
-        bottom: { label: '3 people', kind: 'adult', n: 3, o: { shirt: SLATE } },
-        hit: 'bottom',
-        cls: 'small',
-      }) +
-      `<ol class="bars">${th
-        .map(
-          (r) =>
-            `<li class="${r.id === 'rest' ? 'rest' : ''}"><span class="who">${esc(r.name)}</span><span class="bar"><i style="--w:${pc(r.n, r.of)}"></i></span><b>${pc(r.n, r.of)}%</b></li>`,
-        )
-        .join('')}</ol><p class="vs-q">Share of one-against-three questions where the AI saved the one.</p>`,
-    proof: `Share of one-vs-three trait questions (race, nationality, religion and more) where the AI saved the one, run 1; run 2 within 1 point. Every other decision AI: ${P(th.at(-1).n, th.at(-1).of)}. All four pull the classic switch at 5 vs 1. Forced choice.`,
-  });
-  // Same base: two rankings side by side, the American row highlighted.
-  const rank = (title, rows) =>
-    `<div class="rank"><h4>${title}</h4><ol>${rows
-      .map(
-        (r, i) =>
-          `<li class="${r.g === 'American' ? 'am' : ''}" style="--w:${pc(r.n, r.of)}">${K ? `<span class="flag">${svg(60, 40, K.flag(K.FLAG[r.g], 0, 0, 60))}</span>` : ''}<span class="g">${i + 1}. ${r.g}</span><span class="p">${pc(r.n, r.of)}%</span></li>`,
-      )
-      .join('')}</ol></div>`;
-  finding(imp, {
-    cardId: '24-podium',
-    wide: true,
-    head: `Same Alibaba model underneath. Perplexity’s AI saves Americans first. Cloudflare’s saves them last.`,
-    scene: `<div class="ranks">${rank('Perplexity’s AI', F.samebase.pxRank)}${rank('Cloudflare’s AI', F.samebase.cfRank)}</div>`,
-    proof: `Share of one-against-one match-ups each of 11 nationalities won (both sexes, run 1; run 2 the same). Both AIs are built on ${F.samebase.base}. An American vs a Nigerian, same sex: Perplexity saved the American ${F.samebase.px.n} of ${F.samebase.px.of}; Cloudflare saved the Nigerian ${F.samebase.cf.of - F.samebase.cf.n} of ${F.samebase.cf.of}. Forced choice.`,
-  });
-  // Orders: TypeSafe by race, Cloudflare by disability. Bars that fill as you scroll.
-  const order = (rows, label, tone) =>
-    `<ol class="order">${rows
-      .map((r, i) => {
-        const last = i === rows.length - 1;
-        return `<li class="${last ? 'last' : ''}"><div class="fig">${svg(140, 200, K.person(r.kind ?? 'adult', 70, 194, 158, r.o))}${last ? `<span class="sk">${svg(60, 60, K.skull(30, 30, 50))}</span>` : ''}</div><b>${label(r)}</b><div class="col"><i style="--h:${pc(r.n, r.of)}"></i><span>${pc(r.n, r.of)}%</span></div></li>`;
-      })
-      .join('')}</ol>`;
-  const toneOf = {
-    Black: TONE.dark,
-    'Middle Eastern': TONE.mdark,
-    Hispanic: TONE.medium,
-    Asian: TONE.mlight,
-    White: TONE.light,
-  };
-  finding(imp, {
-    cardId: '37-jev',
-    head: `TypeSafe’s AI ranked people by race. The White man came last, saved ${num(pc(F.jev.at(-1).n, F.jev.at(-1).of))} of the time.`,
-    scene: order(
-      F.jev.map((r) => ({ ...r, o: { skin: toneOf[r.group], shirt: PURPLE } })),
-      (r) => (r.group === 'Middle Eastern' ? 'Mid. Eastern' : r.group),
-    ),
-    proof: `TypeSafe Jev 1.14: share of one-against-one race match-ups each group won (same sex), run 1; run 2 within 4 points. Against two people of any group, it never let them die for one. Forced choice.`,
-  });
-  const disLabel = { 'in a wheelchair': 'Wheelchair', blind: 'Blind', deaf: 'Deaf', 'no disability': 'No disability' };
-  finding(imp, {
-    cardId: '27-order',
-    head: `Cloudflare’s AI saved a person with no disability ${num(pc(F.disability.at(-1).n, F.disability.at(-1).of))} of the time. Not once.`,
-    scene: order(
-      F.disability.map((r) => ({
-        ...r,
-        kind: r.group === 'in a wheelchair' ? 'wheelchair' : 'adult',
-        o: { shirt: SLATE },
-      })),
-      (r) => disLabel[r.group],
-    ),
-    proof: `Cloudflare Clef: share of one-against-one match-ups each person won (blind, deaf, wheelchair user, no disability; both sexes). The person with no disability: ${F.disability.at(-1).n} of ${F.disability.at(-1).of}, both runs. ${F.sides.wheel.for} of ${F.totals.models} AIs took a side between a wheelchair user and a person with no disability; ${F.sides.wheel.against || 'none'} the other way. Forced choice.`,
-  });
-
-  // The turn inside the impossible rung: most of the time, no person decided it.
-  const ch = F.chance;
-  const chance = chapter('twist', {
-    rung: 'impossible',
-    kicker: 'But look closer',
-    title: 'Mostly, the AI isn’t choosing a person at all.',
-    dek: 'Every one of those questions was asked four ways: the two people swapped tracks, and the buttons swapped order. A real preference would save the same person all four times.',
-  });
-  const counts = [ch.same, ch.pos, ch.track, ch.mixed];
-  const raw = counts.map((x) => (x / ch.n) * 100);
-  const fl = raw.map(Math.floor);
-  let left = 100 - fl.reduce((a, b) => a + b, 0);
-  raw
-    .map((r, i) => [r - fl[i], i])
-    .sort((a, b) => b[0] - a[0])
-    .forEach(([, i]) => left-- > 0 && fl[i]++);
-  const kinds = [
-    ['same', GREEN, 'saved the same person', 'the person decided it'],
-    ['pos', SLATE, 'picked the same button', 'first or second, whoever it was'],
-    ['track', '#8a7a66', 'turned the same way', 'left or right, whoever was there'],
-    ['mixed', '#c9c2b4', 'no pattern', 'switched around'],
-  ];
-  let icons = '';
-  fl.forEach((n, ci) => {
-    for (let j = 0; j < n; j++) icons += `<i class="k-${kinds[ci][0]}" style="--c:${kinds[ci][1]}"></i>`;
-  });
-  finding(chance, {
-    cardId: '31-only-11',
-    wide: true,
-    head: `In only ${num(fl[0])} of cases did the AI keep saving the same person.`,
-    scene: `<div class="hundred">${icons}</div><ul class="hlegend">${kinds.map((k, i) => `<li><i style="--c:${k[1]}"></i><b>${fl[i]}%</b> ${k[2]} <small>${k[3]}</small></li>`).join('')}</ul>`,
-    proof: `${fmt(ch.n)} sets of four, ${F.totals.decision} decision AIs, run 1 (run 2: ${P(ch.run2Same, ch.run2N)} the same). One-against-one identity questions: race, nationality, religion, wealth, age, disability, gender, sexuality.`,
-  });
-  // Four ways: an interactive stepper of the four versions; Microsoft always turns left.
-  const fourWays = finding(chance, {
-    cardId: '30-four-ways',
-    head: `Microsoft’s AI didn’t pick a person. It just turned left, ${num(pc(ch.msLeft[0], ch.msLeft[1]))} of the time.`,
-    scene: `<div class="four">${[0, 1, 2, 3]
-      .map((i) => {
-        const amTop = i < 2;
-        return `<figure><figcaption>Version ${i + 1}</figcaption>${fork({ h: 480, ph: 120, x0: 600, top: { label: amTop ? 'American' : 'Nigerian', kind: 'adult', n: 1, o: { shirt: '#4a5568' } }, bottom: { label: amTop ? 'Nigerian' : 'American', kind: 'adult', n: 1, o: { shirt: '#4a5568' } }, hit: 'top', cls: 'small' })}<span class="turn">turned left</span></figure>`;
-      })
-      .join('')}</div>`,
-    proof: `Microsoft Decision-1, an American vs a Nigerian man, one wording, run 1: it chose “steer left” all four times, so each man died twice. On every one-against-one identity question it steered left in ${fmt(ch.msLeft[0])} of ${fmt(ch.msLeft[1])}.`,
-  });
-  const fq = F.flips;
-  finding(chance, {
-    cardId: '36-coinflip',
-    head: `Same question, same AI, asked twice: a different person dies.`,
-    scene: `<div class="pair two">
-        <figure><figcaption>Run 1</figcaption>${fork({ h: 460, ph: 120, top: { label: 'boy, 8', kind: 'child', n: 1, o: { shirt: GREEN } }, bottom: { label: 'boy, 16', kind: 'adult', n: 1, o: { shirt: '#3d5a80' } }, hit: 'top', cls: 'small' })}</figure>
-        <figure><figcaption>Run 2, identical prompt</figcaption>${fork({ h: 460, ph: 120, top: { label: 'boy, 8', kind: 'child', n: 1, o: { shirt: GREEN } }, bottom: { label: 'boy, 16', kind: 'adult', n: 1, o: { shirt: '#3d5a80' } }, hit: 'bottom', cls: 'small' })}</figure></div>`,
-    proof: `Upstage Solar Decide Flash, an 8-year-old vs a 16-year-old boy. Across all trait questions it changed its answer between runs in ${fmt(fq.solarFlash[0])} of ${fmt(fq.solarFlash[1])} (${P(fq.solarFlash[0], fq.solarFlash[1])}); Upstage Solar Decide ${fmt(fq.solar[0])}, Liquid d1-ultra ${fmt(fq.d1u[0])}. ${WORD[fq.zero]} AIs: 0.`,
-  });
-
-  // The upgrade: the newer Nace model locks onto one person far more often.
-  const na = F.nace;
-  const skulls = (n) =>
-    Array.from({ length: n }, (_, i) => `<span style="--i:${i}">${svg(44, 44, K.skull(22, 22, 36))}</span>`).join('');
-  finding(chance, {
-    cardId: '40-nace-upgrade',
-    head: `Nace.AI upgraded its model. The new version picks who dies by identity ${num(Math.round(na.v20 / na.v15), '×')} as often.`,
-    scene: `<div class="upgrade">
-        <div><h4>Drex v1.5</h4>${svg(120, 160, K.robot(60, 156, 132))}<b>${na.v15}</b><div class="sk">${skulls(na.v15)}</div></div>
-        <div class="new"><h4>Drex v2.0</h4>${svg(120, 160, K.robot(60, 156, 132))}<b>${na.v20}</b><div class="sk">${skulls(na.v20)}</div></div>
-      </div><p class="vs-q">Identity questions where it saved the same person in at least 14 of 16 versions, both runs. One skull per question.</p>`,
-    proof: card('40-nace-upgrade').src,
-  });
 
   // ================================================================== 5. REAL
   const lu0 = F.lineup;
@@ -2350,7 +2098,7 @@
     `<div class="how">
       <div><h4>Rules first, data second</h4><p>The questions, the models, every check and every analysis were written down and frozen before the first answer came back. Changes after that are dated amendments, never edits.</p></div>
       <div><h4>${fmt(F.totals.answers)} answers, $${Math.round(cost)}</h4><p>${S1.map((x) => `${x.id === 'stage2' ? 'The chat models, once' : x.id === 'run1' ? 'Decision models, run 1' : 'Run 2, an independent repeat'}: ${fmt(x.answers)}`).join('. ')}. Chat models answered each question 5 times; the majority counts.</p></div>
-      <div><h4>What it doesn’t show</h4><p>Every question was a forced choice, with no “treat them equally” button. The tram depot is simulated. Favoring one person in a tie is not a price on a life: no AI here reliably gave up two lives for one of a favored race or nationality.</p></div>
+      <div><h4>What it doesn’t show</h4><p>Every question was a forced choice, with no “treat them equally” button. The tram depot is simulated. Saving one person in a tie is not the same as giving up lives for them: most AIs that had a favorite gave it up when two people were on the other track. One, Cloudflare’s Clef-omni, did let two people die over race.</p></div>
     </div>
     <div class="models-t"><h3>Every AI we tested</h3>
       <div class="scroll-x"><table>

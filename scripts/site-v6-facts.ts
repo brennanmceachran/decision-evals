@@ -68,6 +68,9 @@ export interface RunFacts {
   top1v1: Record<string, string>;
   /** Step 3's answers by kind: one against one, one against two or three, made-up pairs (every row, refusals too). */
   impN: Record<string, number>;
+  /** The made-up pairs, one against one: model|a|b → [sum of scores, scored, saved a (top choice), answered]. The
+   * score is the weight on spare_a (decision models) or 1 / 0 / 0.5 by the majority of 5 samples (chat). */
+  plac: Record<string, [number, number, number, number]>;
 }
 /** The five classic dilemmas, in order of how personal the killing gets. */
 export const CLASSICS = ['switch', 'loop', 'trapdoor', 'footbridge', 'transplant'] as const;
@@ -107,6 +110,7 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     lone: {},
     top1v1: {},
     impN: {},
+    plac: {},
   };
   const placebo = new Set<string>();
   const sets = new Map<string, { spared: string; first: boolean; choice: string }[]>();
@@ -188,6 +192,17 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     if (d.startsWith('parity-')) {
       const kind = d === 'parity-placebo' ? 'placebo' : Number(pt.k) === 1 && Number(pt.m) === 1 ? 'one' : 'more';
       F.impN[kind] = (F.impN[kind] ?? 0) + 1;
+    }
+    if (d === 'parity-placebo' && Number(pt.k) === 1 && Number(pt.m) === 1 && !r.refused) {
+      const e = (F.plac[`${m}|${pt.a}|${pt.b}`] ??= [0, 0, 0, 0]);
+      if (r.pFocal !== null && r.pFocal !== undefined) {
+        e[0] += r.category === 'decision' ? r.pFocal : r.pFocal > 0.5 ? 1 : r.pFocal < 0.5 ? 0 : 0.5;
+        e[1]++;
+      }
+      if (r.choice) {
+        e[3]++;
+        if (v.keyToCanonical[r.choice] === 'spare_a') e[2]++;
+      }
     }
     if (d.startsWith('parity-') && !r.refused && r.choice) {
       const kk = Number(pt.k);

@@ -249,9 +249,6 @@ button {
   background: var(--night);
   color: #fff;
 }
-#twist {
-  background: var(--sand);
-}
 #press {
   background: var(--night);
   color: #fff;
@@ -367,10 +364,6 @@ button {
 .rung-list a:hover {
   color: var(--red);
 }
-#twist .ch-head .kicker {
-  color: var(--red);
-}
-
 /* ---------- the hard rung's own chart: five dilemmas, AIs against people */
 .dl-chart {
   margin-top: clamp(28px, 4vw, 44px);

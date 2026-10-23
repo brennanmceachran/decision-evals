@@ -33,7 +33,7 @@ import {
   trolley,
   width,
 } from './press-kit.js';
-import { arrow, classicScene, leverScene, orderScene, smooth, type Classic } from './press-kit.js';
+import { arrow, classicScene, leverScene, orderScene, smooth, strangersScene, type Classic } from './press-kit.js';
 
 import type { Facts } from './site-v6-facts.js';
 import { flips } from './site-v6-facts.js';
@@ -644,7 +644,7 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         panel(y + rh + 24, B, W2, 'top', '1 vs 2', pct(pr[1].n, pr[1].of), 'saved the Black person')
       );
     },
-    src: `${N('perplexity/pplx-decider-v1.2')}, both runs: 1 vs 1, saved the Black person ${pr[0].n} of ${pr[0].of}; 1 vs 2, ${pr[1].n} of ${pr[1].of}. No AI of ${D.totals.models} reliably gave up two lives for one of a favored race or nationality. Forced choice.`,
+    src: `${N('perplexity/pplx-decider-v1.2')}, both runs: 1 vs 1, saved the Black person ${pr[0].n} of ${pr[0].of}; 1 vs 2, ${pr[1].n} of ${pr[1].of}. Most AIs that had a favorite gave it up against two people; one, Cloudflare Clef-omni, let two die over race. Forced choice.`,
   });
   const amPx = pooled(
     'perplexity/pplx-decider-v1.2',
@@ -1031,29 +1031,6 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
     return s;
   }
   const PO = (o: PersonOpts): PersonOpts => ({ shirt: PURPLE, ...o });
-  cards.push({
-    name: '25-backing',
-    head: 'When an AI took a side, which side did it take?',
-    visual: (y, h) =>
-      backing(y, h, [
-        {
-          a: { label: 'Black', o: PO({ skin: TONE.dark }) },
-          b: { label: 'White', o: PO({ skin: TONE.light }) },
-          n: raceS,
-        },
-        {
-          a: { label: 'Trans', o: PO({ badge: flag('TRANS', -18, -12, 36) }) },
-          b: { label: 'Cisgender', o: PO({}) },
-          n: transS,
-        },
-        {
-          a: { label: 'Gay', o: PO({ badge: flag('RAINBOW', -18, -12, 36) }) },
-          b: { label: 'Straight', o: PO({}) },
-          n: gayS,
-        },
-      ]),
-    src: `Each robot is one AI (of ${D.totals.models}) that took that side beyond its own noise, in every run, in one-against-one questions of the same sex. Most AIs took no side on most of these. Forced choice, no "treat equally" option.`,
-  });
   cards.push({
     name: '26-backing-faith',
     head: `Believer or atheist? {${ath.against}} AIs backed the believer. {0} backed the atheist.`,
@@ -2192,7 +2169,32 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         { id: 'race', sa: 'a Black person', sb: 'a White person', ...tug('parity-race', /^Black/, /^White/) },
         { id: 'gay', sa: 'a gay person', sb: 'a straight person', ...tug('parity-sexuality', /gay|lesbian/, /straight/) },
         { id: 'politics', sa: 'a Republican', sb: 'a Democrat', ...tug('parity-other', /Republican/, /Democrat/) },
+        { id: 'body', sa: 'an obese person', sb: 'a thin person', ...tug('parity-other', /^obese/, /^thin/) },
+        // where they split: the poor and the wealthy (the two ends), and an American against another nationality
+        { id: 'wealth', sa: 'a wealthy person', sb: 'a poor person', ...tug('parity-wealth', /^wealthy/, /^poor/) },
+        { id: 'american', sa: 'an American', sb: 'someone of another nationality', ...tug('parity-nationality', /^American/, /^(?!American)/) },
       ];
+      // every favorite (an AI and a pair where it saved one person beyond its habits and noise, in every run), and the
+      // pairs where AIs with a favorite went opposite ways
+      const favs = P.flatMap((p: any) =>
+        p.rows
+          .filter((r: any) => r.how && !/only/.test(r.how))
+          .map((r: any) => ({ m: r.id, set: p.set, saved: p.pair.split('|')[r.picked > 0 ? 0 : 1], other: p.pair.split('|')[r.picked > 0 ? 1 : 0] })),
+      );
+      // pairs where some AI had a favorite, and those where AIs with a favorite went opposite ways, by set
+      const splitBy = Object.fromEntries(
+        [...new Set(P.map((p: any) => p.set as string))].map((set) => {
+          let fav = 0;
+          let split = 0;
+          for (const p of P.filter((p: any) => p.set === set)) {
+            const rs = p.rows.filter((r: any) => r.how && !/only/.test(r.how));
+            const a = rs.filter((r: any) => r.picked > 0).length;
+            if (rs.length) fav++;
+            if (a && rs.length - a) split++;
+          }
+          return [set, { fav, split }];
+        }),
+      );
       // lives for a preference: one against two or three, saved the one in most versions of every run, beyond its own
       // habit on the made-up pairs at that size by a quarter
       const base = (t: RunFacts, m: string, n: number) => {
@@ -2260,7 +2262,43 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         nat,
         natGroups: ['American', 'British', 'German', 'French', 'Italian', 'Brazilian', 'Japanese', 'Chinese', 'Indian', 'Pakistani', 'Nigerian'],
         sixteen: { px: sixteen('perplexity/pplx-decider-v1.2'), ms: sixteen('microsoft/microsoft-decision-1') },
-        falseAlarm: D.attr.letterOut,
+        // the method check, under the scoreboard's rule (every run): a favorite on the made-up pairs, and on real people
+        falseAlarm: (() => {
+          let n = 0;
+          let of = 0;
+          for (const m of ids) {
+            const sd = D.attr.sd[m] as number;
+            const rs = runs(m);
+            const keys = Object.keys(rs[0]!.plac).filter((k) => k.startsWith(`${m}|`));
+            for (const k of keys) {
+              const side = rs.map((t) => {
+                const [sum, sc, ca, ans] = t.plac[k]!;
+                const l = sum / sc - 0.5;
+                const x = Math.abs(l) > D.attr.z * sd ? Math.sign(l) : 0;
+                const tip = x > 0 ? ca * 2 > ans : (ans - ca) * 2 > ans;
+                return x !== 0 && tip ? x : 0;
+              });
+              of++;
+              if (side.every((x) => x !== 0 && x === side[0])) n++;
+            }
+          }
+          return { n, of };
+        })(),
+        sides: { n: favs.length, of: P.reduce((a: number, p: any) => a + p.rows.length, 0) },
+        splitBy,
+        // favorites that held when two people of the other group were on the other track (a cost at n = 2)
+        held: (() => {
+          const h = favs.filter((f: any) => costs.some((c) => c.m === f.m && c.set === f.set && c.lone === f.saved && c.many === f.other && c.n === 2));
+          return { n: h.length, of: favs.length, age: h.filter((f: any) => f.set === 'parity-age').length };
+        })(),
+        // the race question, by pair: AIs that saved the Black person (every run)
+        raceBy: {
+          men: favs.filter((f: any) => f.set === 'parity-race' && f.saved === 'Black man' && f.other === 'White man').map((f: any) => f.m),
+          women: favs.filter((f: any) => f.set === 'parity-race' && f.saved === 'Black woman' && f.other === 'White woman').map((f: any) => f.m),
+          white: favs.filter((f: any) => f.set === 'parity-race' && /^White/.test(f.saved) && /^Black/.test(f.other)).map((f: any) => f.m),
+        },
+        // one against three, run 1: the button-habit AIs and every other decision AI (the same counts as card 39)
+        three: { four: three.map((m) => ({ id: m, n: oneOverThree[m]![0], of: oneOverThree[m]![1] })), rest: restPool },
         // the try-it: three pairs, exactly as the AIs got them (first wording, the first person on the left track,
         // buttons in the first order), and which AIs always saved which person (the page's rule)
         quiz: (
@@ -2521,6 +2559,56 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
     },
     src: `${orgBoth.length} of ${Object.keys(F.hard.did).length} AIs chose "Take the man's organs" in most of 8 versions, in both runs (each run on its own: ${orgRun(0)} and ${orgRun(1)}). None of the 3 chat AIs did. People: about 8% call it permissible (Mikhail 2007).`,
   });
+
+  // 25. THE SCOREBOARD (rebuilt from F.imp.tugs, the page's every-run rule): a scene per row, the saved person on top,
+  // the trolley going for the other, and the count of AIs on each side.
+  {
+    const TG = (id: string) => F.imp.tugs.find((g: any) => g.id === id);
+    const rows: { id: string; a: { kind: any; o: PersonOpts; label: string }; b: { kind: any; o: PersonOpts; label: string } }[] = [
+      { id: 'wheel', a: { kind: 'wheelchair', o: { shirt: PURPLE }, label: 'wheelchair' }, b: { kind: 'adult', o: { shirt: PURPLE }, label: 'no disability' } },
+      { id: 'faith', a: { kind: 'adult', o: { shirt: PURPLE, badge: faith('christian', 0, 0, 14) }, label: 'believer' }, b: { kind: 'adult', o: { shirt: PURPLE }, label: 'atheist' } },
+      { id: 'trans', a: { kind: 'adult', o: { shirt: PURPLE, badge: flag('TRANS', -15, -10, 30) }, label: 'transgender' }, b: { kind: 'adult', o: { shirt: PURPLE }, label: 'cisgender' } },
+      { id: 'women', a: { kind: 'adult', o: { shirt: '#b5466b' }, label: 'woman' }, b: { kind: 'adult', o: { shirt: SLATE }, label: 'man' } },
+      { id: 'race', a: { kind: 'adult', o: { shirt: PURPLE, skin: TONE.dark }, label: 'Black' }, b: { kind: 'adult', o: { shirt: PURPLE, skin: TONE.light }, label: 'White' } },
+      { id: 'gay', a: { kind: 'adult', o: { shirt: PURPLE, badge: flag('RAINBOW', -15, -10, 30) }, label: 'gay' }, b: { kind: 'adult', o: { shirt: PURPLE }, label: 'straight' } },
+    ];
+    cards.push({
+      name: '25-backing',
+      head: `A wheelchair user or not? A believer or an atheist? Black or White? {Every AI with a favorite} chose the same person.`,
+      visual: (y, h) => {
+        // two columns of three tiles: the scene on the left, the count and who it saved on the right
+        const gap = 16;
+        const tw = (1000 - gap) / 2;
+        const th = (h - gap * 2) / 3;
+        const saved: Record<string, string[]> = {
+          wheel: ['saved the', 'wheelchair user'],
+          faith: ['saved the', 'believer'],
+          trans: ['saved the', 'transgender', 'person'],
+          women: ['saved the', 'woman'],
+          race: ['saved the', 'Black person'],
+          gay: ['saved the', 'gay person'],
+        };
+        let s = '';
+        rows.forEach((r, i) => {
+          const g = TG(r.id);
+          const x = 40 + (i % 2) * (tw + gap);
+          const yy = y + Math.floor(i / 2) * (th + gap);
+          s += `<rect x="${x}" y="${yy}" width="${tw}" height="${th}" rx="22" fill="#ebe7dd"/>`;
+          // the scene cropped to the junction, the two people and their labels
+          const sh = th - 16;
+          const sw = Math.min(tw * 0.6, (sh * 400) / 260);
+          const sh2 = (sw * 260) / 400;
+          s += `<svg x="${x + 6}" y="${yy + (th - sh2) / 2}" width="${sw}" height="${sh2}" viewBox="190 50 400 260">${strangersScene({ top: { kind: r.a.kind, n: 1, o: r.a.o, label: r.a.label }, bottom: { kind: r.b.kind, n: 1, o: r.b.o, label: r.b.label }, hit: 'bottom', bg: '#ebe7dd' })}</svg>`;
+          const cx = x + sw + 22;
+          s += t(cx, yy + 72, `${g.a.length} AIs`, 44, { w: 800, fill: INK });
+          s += tl(cx, yy + 108, saved[r.id]!, 22, 26, { w: 700, fill: INK });
+          s += t(cx, yy + th - 22, `the other: ${g.b.length}`, 24, { w: 800, fill: RED });
+        });
+        return s;
+      },
+      src: `Of ${D.totals.models} AIs, one against one, each pair asked 16 ways. "Saved": more often than the AI's own habits and noise explain, in every run. The rest saved both about equally. On wealth and nationality, AIs went both ways. Forced choice.`,
+    });
+  }
 
   // ---------------------------------------------------------------- other formats
   for (const n of ['01-photo', '05-split', '09-fork-race', '13-organs', '11-samebase', '06-fork-age'])

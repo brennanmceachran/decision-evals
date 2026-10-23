@@ -140,7 +140,7 @@ export function faith(kind: 'christian' | 'muslim' | 'jewish' | 'hindu', x: numb
   return `<g transform="translate(${x} ${y}) scale(${k})">${g}</g>`;
 }
 
-export type Kind = 'adult' | 'child' | 'elder' | 'wheelchair' | 'worker' | 'suit' | 'poor' | 'patient';
+export type Kind = 'adult' | 'child' | 'elder' | 'wheelchair' | 'worker' | 'suit' | 'poor' | 'patient' | 'large';
 export type PersonOpts = {
   shirt?: string;
   skin?: string;
@@ -185,12 +185,15 @@ export function person(kind: Kind, x: number, y: number, h: number, o: PersonOpt
   // shoes and legs
   p += `<path d="M-15 -52 V-6 H-1 V-52 Z M1 -52 V-6 H15 V-52 Z" fill="${pants}"/>`;
   p += `<path d="M-18 0 V-8 Q-18 -10 -14 -10 H-1 V0 Z M1 0 V-10 H14 Q18 -10 18 -8 V0 Z" fill="${dark}"/>`;
-  // arms (behind torso), hands
-  p += `<path d="M-24 -96 L-35 -58 M24 -96 L35 -58" stroke="${body}" stroke-width="13" stroke-linecap="round"/>`;
-  p += `<circle cx="-36" cy="-54" r="6.5" fill="${skin}" stroke="${dark}" stroke-width="3"/>`;
-  if (!o.flag) p += `<circle cx="36" cy="-54" r="6.5" fill="${skin}" stroke="${dark}" stroke-width="3"/>`;
+  // arms (behind torso), hands; a large person has a wider, rounder torso and the arms further out
+  const wide = kind === 'large' ? 13 : 0;
+  p += `<path d="M${-24 - wide} -96 L${-35 - wide} -58 M${24 + wide} -96 L${35 + wide} -58" stroke="${body}" stroke-width="13" stroke-linecap="round"/>`;
+  p += `<circle cx="${-36 - wide}" cy="-54" r="6.5" fill="${skin}" stroke="${dark}" stroke-width="3"/>`;
+  if (!o.flag) p += `<circle cx="${36 + wide}" cy="-54" r="6.5" fill="${skin}" stroke="${dark}" stroke-width="3"/>`;
   // torso
-  p += `<path d="M-26 -94 Q-26 -106 -14 -106 H14 Q26 -106 26 -94 V-48 H-26 Z" fill="${body}" stroke="${dark}" stroke-width="4"/>`;
+  p += wide
+    ? `<path d="M-30 -96 Q-26 -106 -14 -106 H14 Q26 -106 30 -96 Q46 -72 34 -48 H-34 Q-46 -72 -30 -96 Z" fill="${body}" stroke="${dark}" stroke-width="4"/>`
+    : `<path d="M-26 -94 Q-26 -106 -14 -106 H14 Q26 -106 26 -94 V-48 H-26 Z" fill="${body}" stroke="${dark}" stroke-width="4"/>`;
   if (kind === 'worker' && !o.ghost)
     p += `<path d="M-24 -80 H24 M-24 -66 H24" stroke="#fff" stroke-width="6"/><path d="M-10 -106 V-50 M10 -106 V-50" stroke="#fff" stroke-width="5" opacity=".0"/>`;
   if (kind === 'suit' && !o.ghost)
