@@ -5324,3 +5324,254 @@ button {
     font-size: 10px;
   }
 }
+
+/* step 3: a habit can cost lives (Laya's scene beside one bar per AI) */
+.story > .habitcost,
+.story > .fa-bars,
+.story > .jev3,
+.story > .mm,
+.story > .tie3 {
+  max-width: 900px;
+  margin: clamp(18px, 3vw, 30px) auto;
+}
+.hc-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+}
+.hc-h {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.hc-row,
+.fa-row {
+  display: grid;
+  grid-template-columns: 150px 1fr 48px;
+  gap: 12px;
+  align-items: center;
+  padding: 5px 0;
+}
+.hc-who,
+.fa-who {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.hc-row.rest .hc-who {
+  color: var(--muted);
+}
+.hc-bar,
+.fa-bar {
+  height: 22px;
+  border-radius: 6px;
+  background: #ebe7dd;
+  overflow: hidden;
+}
+.hc-bar i,
+.fa-bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 6px;
+  background: var(--red);
+  transition: width 0.9s cubic-bezier(0.3, 0.9, 0.3, 1);
+}
+.hc-row.rest .hc-bar i {
+  background: #9a9fa6;
+}
+.hc-bars.played .hc-bar i,
+.played .hc-bars .hc-bar i,
+.fa-bars.played .fa-bar i {
+  width: calc(var(--w) * 1%);
+}
+.hc-row b,
+.fa-row b {
+  font-size: 18px;
+  text-align: right;
+}
+.habitcost figcaption,
+.fa-bars figcaption,
+.jev3 figcaption,
+.mm figcaption {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* the method check: two bars */
+.story > .fa-bars {
+  max-width: 720px;
+  padding: clamp(14px, 2vw, 22px);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 0 0 1px #e4dfd3;
+}
+.fa-row {
+  grid-template-columns: 210px 1fr 56px;
+}
+.fa-who small {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.fa-bar i {
+  background: #9a9fa6;
+}
+.fa-row.real .fa-bar i {
+  background: var(--step);
+}
+.fa-row b {
+  font-size: 24px;
+}
+
+/* the board: the split rows, robots on both sides */
+.bd-but {
+  margin: 18px 0 0;
+  padding-top: 12px;
+  border-top: 2px solid var(--ink);
+  font-size: 15px;
+  font-weight: 800;
+}
+.board li {
+  grid-template-areas: 'pic a b' 'pic bots bots2';
+}
+.bd-bots.a {
+  grid-area: bots;
+}
+.bd-bots.b {
+  grid-area: bots2;
+}
+.board li:not(.split) .bd-bots.a {
+  grid-column: 2 / 4;
+}
+.board li.split .bd-n.b {
+  color: var(--ink);
+}
+@media (max-width: 640px) {
+  .board li {
+    grid-template-areas: 'pic pic' 'a b' 'bots bots2';
+  }
+}
+
+/* Jev: the ranking */
+.story > .jev3 {
+  max-width: 600px;
+  padding: clamp(14px, 2vw, 24px);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 0 0 1px #e4dfd3;
+}
+.jev3 .order .col span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+}
+.jev3 .order .last .col i {
+  background: var(--red);
+}
+
+/* people and the AIs */
+.mm-t {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.mm-t th,
+.mm-t td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e4dfd3;
+  text-align: left;
+  vertical-align: top;
+}
+.mm-t thead th {
+  font-size: 13px;
+  color: var(--muted);
+  border-bottom: 2px solid var(--ink);
+}
+.mm-t tbody th {
+  font-weight: 800;
+  width: 26%;
+}
+.mm-v {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  background: #ebe7dd;
+}
+.mm-t tr.same .mm-v {
+  background: #dcefe2;
+  color: #1d6b3a;
+}
+.mm-t tr.opposite .mm-v {
+  background: #fbe4e1;
+  color: var(--red);
+}
+.mm-t tr.none td,
+.mm-t tr.none th {
+  color: var(--muted);
+}
+@media (max-width: 640px) {
+  .hc-grid {
+    grid-template-columns: 1fr;
+  }
+  .hc-row {
+    grid-template-columns: 110px 1fr 40px;
+  }
+  .fa-row {
+    grid-template-columns: 120px 1fr 44px;
+  }
+  .mm-t {
+    font-size: 13px;
+  }
+  .mm-t thead th:last-child,
+  .mm-t td:last-child {
+    display: none;
+  }
+}
+
+.jev3 .order .fig .scene {
+  height: clamp(80px, 9vw, 110px);
+}
+.jev3 .order .sk .scene {
+  height: 36px;
+}
+.jev3 .order b {
+  margin: 4px 0 8px;
+  font-size: clamp(13px, 1.3vw, 16px);
+}
+.jev3 .order .col {
+  height: clamp(90px, 10vw, 120px);
+  width: min(100%, 76px);
+}
+.jev3 .order .col span {
+  font-size: 18px;
+}
+.jev3 .order b {
+  white-space: nowrap;
+  min-height: 1.3em;
+}
+/* the verdict also as a colored edge on the AIs' cell, so it survives on phones where the tag column is hidden */
+.mm-t td:nth-child(3) {
+  border-left: 4px solid #e4dfd3;
+  padding-left: 10px;
+}
+.mm-t tr.same td:nth-child(3) {
+  border-left-color: #2f9e5a;
+}
+.mm-t tr.opposite td:nth-child(3) {
+  border-left-color: var(--red);
+}
+.mm-t tr.split td:nth-child(3) {
+  border-left-color: #b9b1a2;
+}
