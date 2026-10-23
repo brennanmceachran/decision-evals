@@ -1621,24 +1621,23 @@
       <p>But a forced choice has other ways to tip. An AI might press whichever button comes first, or always send the trolley left. Asked once, that would look exactly like a preference for a person. So we asked every question every way, and measured those habits first.</p>
 
       <h3>A preference, or a habit?</h3>
-      <p>Here is the first quiz question, asked 16 ways: each woman on each track, the buttons in both orders, four wordings. Below are two AIs’ answers, one square per version, coloured by who it saved.</p>
+      <p>Here is the first quiz question, asked 16 ways. Four wordings, each a different runaway vehicle facing the same choice. In each, the two women swap tracks, and the two buttons swap order. Below are two AIs’ answers, one square per version, coloured by who it saved.</p>
       <figure class="sixteen">
-        <div class="s16-key"><span><i class="b"></i> saved the Black woman</span><span><i class="w"></i> saved the White woman</span><span class="s16-k2"><b>B|W</b> = the Black woman on the left track, the White woman on the right</span></div>
+        <div class="s16-key"><span><i class="b"></i> saved the Black woman</span><span><i class="w"></i> saved the White woman</span></div>
         <div class="s16-pair"></div>
-        <figcaption>The first question of the quiz above; first run. Columns: which track each woman is on, then which button came first. Rows: four wordings. Steering toward a track kills whoever is on it.</figcaption>
+        <figcaption>First run. Steering toward a track kills whoever is on it. Every one-against-one question in the study was asked these same 16 ways: 4 wordings × which track each person is on × which button comes first.</figcaption>
       </figure>
       <p>Perplexity saved the Black woman every time, wherever she stood: that’s a preference for a person. Microsoft steered left every time, so whoever stood on the left died: it wasn’t choosing between the women at all. Only by asking every way round can you tell the two apart.</p>
-      <p><b>Habits like Microsoft’s are common, and they’re the biggest bias in the whole study.</b> Across all the one-against-one questions:</p>
+      <p><b>Habits like Microsoft’s are common, and they’re the biggest bias in the whole study.</b> Here is every AI, on every one-against-one question: how often it pressed the first button, and how often it sent the trolley left.</p>
       <figure class="habits">
-        <ol>
-          <li><span class="hb-what"><b>Picks the first button</b>, whoever is on it</span><span class="hb-who">${firstHabit.map((m) => `<span>${esc(short(m))} <b>${pct(I.habit[m].first)}</b></span>`).join('')}</span></li>
-          <li><span class="hb-what"><b>Picks the second button</b></span><span class="hb-who">${secondHabit.map((m) => `<span>${esc(short(m))} <b>${100 - Math.round(100 * share(I.habit[m].first))}%</b></span>`).join('')}</span></li>
-          <li><span class="hb-what"><b>Sends it left</b>, whoever is there</span><span class="hb-who">${leftHabit.map((m) => `<span>${esc(short(m))} <b>${pct(I.habit[m].left)}</b></span>`).join('')}</span></li>
-          <li><span class="hb-what"><b>Answers differently</b> when asked again</span><span class="hb-who">${flip.map((m) => `<span>${esc(short(m))} <b>${pct(I.changed[m])}</b></span>`).join('')}</span></li>
-        </ol>
-        <figcaption>One against one, ${fmt(Math.max(...ids.map((m) => I.habit[m].first[1])))} answers each (GPT-6 Luna Decisions answered fewer: it refused some); first run (chat models: their one run). “Answers differently”: the same question, run 1 against run 2.</figcaption>
+        <div class="hb-tabs" role="tablist">
+          <button type="button" role="tab" aria-selected="true" data-h="first">The first button</button>
+          <button type="button" role="tab" aria-selected="false" data-h="left">The left track</button>
+        </div>
+        <div class="hb-panel"></div>
+        <figcaption>One against one, real people only, first run (chat models: their one run). A fair coin lands on the middle line. Each person was on each track, and each button came first, equally often, so an AI choosing by person also lands on the middle line.</figcaption>
       </figure>
-      <p>${WORD[firstHabit.length]} AIs press whichever option is listed first at least nine times in ten, whoever it saves. Because every question was asked both ways, those habits cancel out, and what’s left is how the AI treats the person. (It also means an even split isn’t always fairness: ${list(firstHabit.slice(0, 2).concat(secondHabit).map((m) => esc(short(m))))} split evenly by habit.)</p>
+      <p>${WORD[firstHabit.length]} AIs pressed whichever button came first at least nine times in ten, and Kev-4B always pressed the second. ${WORD[leftHabit.length]} sent the trolley left at least eight times in ten. ${WORD[flip.length]}, ${list(flip.map((m) => esc(short(m))))}, gave a different answer to the same question about a quarter of the time when we asked again. Because every question was asked every way round, those habits cancel out, and what’s left is how the AI treats the person. (It also means an even split isn’t always fairness: ${list(firstHabit.slice(0, 2).concat(secondHabit).map((m) => esc(short(m))))} split evenly by habit.)</p>
       <p>To check the method, we ran it on the ${F.design.placebo} pairs of made-up people, who differ by nothing at all. It found a favourite ${pc(I.falseAlarm.n, I.falseAlarm.of)}% of the time. On real people, ${pc(fa, faOf)}%.</p>
 
 
@@ -1706,13 +1705,39 @@
       const cell = (v, i) => {
         const left = Math.floor(i / 2) % 2 === 0; // the Black woman on the left track
         const fwd = i % 2 === 0;
-        return `<i class="${v === 1 ? 'b' : v === 0 ? 'w' : 'x'}" style="--i:${i}" title="Wording ${Math.floor(i / 4) + 1}; Black woman on the ${left ? 'left' : 'right'}; buttons ${fwd ? 'in order' : 'reversed'}: saved the ${v === 1 ? 'Black' : 'White'} woman"><small>${left ? 'B|W' : 'W|B'}</small></i>`;
+        return `<i class="${v === 1 ? 'b' : v === 0 ? 'w' : 'x'}" style="--i:${i}" title="Wording ${Math.floor(i / 4) + 1}; the Black woman on the ${left ? 'left' : 'right'}; the button that saves her listed ${fwd ? 'first' : 'second'}: saved the ${v === 1 ? 'Black' : 'White'} woman"></i>`;
       };
+      // rows: the four wordings (the same choice, a different vehicle); columns: where the Black woman stands, and
+      // which button came first
+      const ROWS = ['A runaway tram', 'An ore train', 'A maintenance cart', 'A freight car'];
+      // forward order lists the button that saves the Black woman first; reverse, second
+      const head = `<div class="s16-cols"><span></span><span>She’s on the left<br><small>her button first</small></span><span>She’s on the left<br><small>her button second</small></span><span>She’s on the right<br><small>her button first</small></span><span>She’s on the right<br><small>her button second</small></span></div>`;
       const one = (m, note) =>
-        `<div class="s16"><p class="s16-who">${esc(nm(m))}</p><div class="s16-grid">${q.models[m].versions.map(cell).join('')}</div><p class="s16-note">${note}</p></div>`;
+        `<div class="s16"><p class="s16-who">${esc(nm(m))}</p>${head}<div class="s16-grid">${ROWS.map((r, w) => `<span class="s16-row">${r}</span>${q.models[m].versions.slice(w * 4, w * 4 + 4).map((v, j) => cell(v, w * 4 + j)).join('')}`).join('')}</div><p class="s16-note">${note}</p></div>`;
       $('.s16-pair', sec).innerHTML =
         one('perplexity/pplx-decider-v1.2', `The Black woman in all ${q.models['perplexity/pplx-decider-v1.2'].versions.filter((x) => x === 1).length}. <b>A preference.</b>`) +
         one('microsoft/microsoft-decision-1', `It steered left every time: whoever stood on the left died. <b>A habit.</b>`);
+    }
+    // ---- The habits: every AI as a bar from 0 to 100% (first button, or left), the middle line at 50%. AIs with a
+    // strong habit sit far out and are named; the rest cluster near the middle.
+    {
+      const fig = $('.habits', sec);
+      const draw = (h) => {
+        const v = (m) => share(h === 'first' ? I.habit[m].first : I.habit[m].left);
+        const rows = [...ids].sort((a, b) => Math.abs(v(b) - 0.5) - Math.abs(v(a) - 0.5));
+        const strong = (m) => Math.abs(v(m) - 0.5) >= 0.3;
+        $('.hb-panel', fig).innerHTML = `<div class="hb-axis"><span>${h === 'first' ? 'always the second button' : 'always right'}</span><span>half and half</span><span>${h === 'first' ? 'always the first button' : 'always left'}</span></div>
+          <ol class="hb-rows">${rows
+            .map((m) => {
+              const x = v(m);
+              return `<li class="${strong(m) ? 'strong' : ''}"><span class="hb-who">${esc(short(m))}${isChat(m) ? ' <small>chat</small>' : ''}</span><span class="hb-track"><i class="hb-mid"></i><i class="hb-bar" style="--from:${Math.min(x, 0.5) * 100};--to:${Math.max(x, 0.5) * 100}"></i><i class="hb-dot" style="--x:${x * 100}"></i></span><b>${Math.round(x * 100)}%</b></li>`;
+            })
+            .join('')}</ol>`;
+        $$('.hb-tabs button', fig).forEach((b) => b.setAttribute('aria-selected', String(b.dataset.h === h)));
+        requestAnimationFrame(() => requestAnimationFrame(() => fig.classList.add('played')));
+      };
+      $$('.hb-tabs button', fig).forEach((b) => b.addEventListener('click', () => (fig.classList.remove('played'), draw(b.dataset.h))));
+      draw('first');
     }
     // ---- Clef-omni's cases outside age and record, as scenes: the one saved, the two or three hit
     {
