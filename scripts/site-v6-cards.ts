@@ -2119,6 +2119,30 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
       };
     })(),
     // Step 3, two strangers. Everything the impossible step shows, per AI, each run.
+    // Step 4, the dashcam: per AI, every condition, first run (chat: its one run), and the two checks
+    real: (() => {
+      const ids: string[] = D.models.map((m: any) => m.id);
+      const runs = (m: string) => (isChatId(m) ? [FX.s2] : [FX.r1, FX.r2]);
+      const see = ids.filter((m) => runs(m)[0]!.dashCount[m] || Object.keys(runs(m)[0]!.dash).some((k) => k.startsWith(`${m}|`)));
+      const cell = (m: string, framing: string, content: string, sched: string) =>
+        runs(m).map((t) => t.dash[`${m}|${framing}|${content}|${sched}`] ?? ([0, 0, 0] as [number, number, number]));
+      const C = ['ops', 'dilemma', 'ops-config', 'ops-safety', 'ops-nostop'];
+      const S = ['at', 'away', 'none', 'dilemma'];
+      return {
+        see,
+        cells: Object.fromEntries(
+          see.flatMap((m) =>
+            C.flatMap((f) =>
+              ['two', 'group-one', 'empty'].flatMap((c) =>
+                S.filter((x) => (f === 'dilemma') === (x === 'dilemma')).map((x) => [`${m}|${f}|${c}|${x}`, cell(m, f, c, x)]),
+              ),
+            ),
+          ),
+        ),
+        count: Object.fromEntries(see.map((m) => [m, runs(m)[0]!.dashCount[m] ?? [0, 0]])),
+        live: Object.fromEntries(see.map((m) => [m, runs(m)[0]!.dashLive[m] ?? [0, 0]])),
+      };
+    })(),
     imp: (() => {
       const ids: string[] = D.models.map((m: any) => m.id);
       const runs = (m: string) => (isChatId(m) ? [FX.s2] : [FX.r1, FX.r2]);
@@ -2488,8 +2512,9 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
       head: `Cloudflare's AI killed five to save one, {whenever that button came first}.`,
       visual: sceneVis({ main: 1, side: 5, who: 'Clef-omni', sent: 'side', mode: 'words' }),
       src: (() => {
-        const o = F.imp.ctlOrder['cloudflare/clef-omni|control-kill-five-save-one'];
-        return `${N('cloudflare/clef-omni')}, told in words: one person on the main line, five on the side line. Pulled the lever onto the five in ${o[0].first[0]} of ${o[0].first[1]} versions with "pull" listed first, ${o[0].second[0]} of ${o[0].second[1]} with it second (run 2: ${o[1].first[0]} and ${o[1].second[0]}).`;
+        const o = F.imp.ctlOrder['cloudflare/clef-omni|control-kill-five-save-one'] as { first: number[]; second: number[] }[];
+        const [a, z] = [o[0]!, o[1] ?? o[0]!];
+        return `${N('cloudflare/clef-omni')}, told in words: one person on the main line, five on the side line. Pulled the lever onto the five in ${a.first[0]} of ${a.first[1]} versions with "pull" listed first, ${a.second[0]} of ${a.second[1]} with it second (run 2: ${z.first[0]} and ${z.second[0]}).`;
       })(),
     },
     {
