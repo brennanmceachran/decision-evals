@@ -5641,11 +5641,6 @@ button {
   }
 }
 
-/* the three big findings, full width as on the old page */
-.story > .finding.big3 {
-  max-width: 1080px;
-  margin: clamp(30px, 5vw, 60px) auto;
-}
 .story > .twice3 {
   max-width: 900px;
   margin: clamp(18px, 3vw, 30px) auto;
@@ -5654,10 +5649,6 @@ button {
   margin-top: 10px;
   font-size: 14px;
   color: var(--muted);
-}
-.f-head .hl3 {
-  color: var(--red);
-  white-space: nowrap;
 }
 
 /* step 3: the careful ones. Four columns (the last step each AI took on step 2's ladder), one dot per AI, height =
@@ -5833,10 +5824,6 @@ button {
 #impossible > .finding + p,
 #impossible > .omni-cases + p {
   margin-top: 26px;
-}
-#impossible > .finding.big3 {
-  margin-top: clamp(40px, 6vw, 70px);
-  margin-bottom: clamp(40px, 6vw, 70px);
 }
 #impossible .jev3 .ld-share {
   margin: 14px 0 0;

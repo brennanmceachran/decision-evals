@@ -1674,7 +1674,6 @@
         <ol>${SPLIT.map(boardRow).join('')}</ol>
         <figcaption>One against one, each pair asked 16 ways. “Saved”: that person, more often than the AI’s own habits and noise explain, in every run. The rest of the ${ids.length} AIs saved both about equally. Nationality: an American against any of 10 others. Disability is the wheelchair: against a blind or deaf person, ${list(tug('sense').b.map((m) => esc(short(m))))} saved the person with no disability at least once. Hover a robot for its name.</figcaption>
       </figure>
-      <div class="big3" data-big="race"></div>
       <p>Ask a person “the Black man or the White man?” and they’ll tell you the question is wrong. ${WORD[I.raceBy.men.length]} AIs saved the Black man, in every run; none saved the White man. TypeSafe’s Jev 1.14 went further, and ranked people by race:</p>
       <figure class="jev3"></figure>
       <p>People have been asked some of these. In the Moral Machine experiment, people from 233 countries made 40 million choices about who a self-driving car should spare. Where they were asked the same thing, here is how the AIs compare:</p>
@@ -1688,10 +1687,7 @@
       <h3>Some will let more people die to save their favorite</h3>
       <p>Now we push. One person against two of another group, then against three. Saving the one now means letting more people die. For most AIs, a favorite is only a tiebreaker. Here is Perplexity, the AI that always saved the Black person:</p>
       <figure class="tie3"></figure>
-      <p>Most favorites are like that: ${fmt(I.held.of - I.held.n)} of ${fmt(I.held.of)} gave way once two people were on the other track. Of the ${I.held.n} that held, ${I.held.age} were about age, the one place most AIs will let more people die:</p>
-      <div class="big3" data-big="age"></div>
-      <p>And one AI held on to almost everything:</p>
-      <div class="big3" data-big="wealth"></div>
+      <p>Most favorites are like that: ${fmt(I.held.of - I.held.n)} of ${fmt(I.held.of)} gave way once two people were on the other track. Of the ${I.held.n} that held, ${I.held.age} were about age, the one place most AIs will let more people die: Google’s Gemini let three 80-year-olds die to save one child in ${F.age.n} of ${F.age.of} versions. And one AI held on to almost everything. Cloudflare’s Clef-omni let three poor people die to save one rich one in ${F.wealth.n} of ${F.wealth.of} (run 2: ${F.wealth.n2}).</p>
       <p>Here is every AI, with every case where it let two or three people die to save one:</p>
       <figure class="costs"></figure>
       <p>We found <b>${C.length}</b> cases, across ${costAis.length} of the ${ids.length} AIs.</p>
@@ -1724,7 +1720,7 @@
       <ul class="hl lo">
         <li><b>When they have a favorite, it’s the same one.</b> Wheelchair user ${tug('wheel').a.length}–${tug('wheel').b.length}, believer ${tug('faith').a.length}–${tug('faith').b.length}, transgender ${tug('trans').a.length}–${tug('trans').b.length}, woman ${tug('women').a.length}–${tug('women').b.length}, Black ${tug('race').a.length}–${tug('race').b.length}.</li>
         <li><b>The careful ones pick the most.</b> Clef had a favorite on ${fav('cloudflare/clef')} of ${F.design.pairs} pairs, and Perplexity on ${fav('perplexity/pplx-decider-v1.2')}.</li>
-        <li><b>Some will let people die for it.</b> ${C.length} cases where an AI let two or three die to save one. Clef-omni does it for wealth, faith, race and sexuality.</li>
+        <li><b>Some will let people die for it.</b> ${C.length} cases where an AI let two or three die to save one. Google’s Gemini let three 80-year-olds die for one child, ${F.age.n} of ${F.age.of}. Cloudflare’s Clef-omni let three poor people die for one rich one, ${F.wealth.n} of ${F.wealth.of}, and does it for faith, race and sexuality too.</li>
         <li><b>A habit can cost lives.</b> ${list(I.three.four.slice(0, 2).map((x) => esc(short(x.id))))} let three people die to save one about half the time, by pressing the first button. Every other decision AI: ${Math.round((100 * I.three.rest[0]) / I.three.rest[1])} times in 100.</li>
       </ul>
       <p>And now, the hall of shame.</p>
@@ -1928,33 +1924,6 @@
           <figure class="oc"><svg class="scene classic" viewBox="0 0 600 330" role="img" aria-label="Perplexity saves the Black person">${K.strangersScene({ top: { ...B, n: 1, label: '1 Black' }, bottom: { ...W, n: 1, label: '1 White' }, hit: 'bottom', who: 'Perplexity', animate: true })}</svg><figcaption>One against one: saved the Black person, ${F.race.tie.n} of ${F.race.tie.of} versions</figcaption></figure>
           <figure class="oc"><svg class="scene classic" viewBox="0 0 600 330" role="img" aria-label="Perplexity saves the two White people">${K.strangersScene({ top: { ...B, n: 1, label: '1 Black' }, bottom: { ...W, n: 2, label: '2 White' }, hit: 'top', who: 'Perplexity', animate: true })}</svg><figcaption>One against two: saved the two, ${F.race.two.of - F.race.two.n} of ${F.race.two.of} versions</figcaption></figure>
         </div>`;
-    }
-    // ---- the three big findings: a headline over a full-width scene, as on the old page (and its share card)
-    {
-      const BIG = {
-        race: {
-          card: '09-fork-race',
-          head: `Black or White? Perplexity’s AI saved the Black person <span class="hl3">${F.race.n} of ${F.race.of}</span> times.`,
-          scene: fork({ top: { label: '1 Black\nperson', kind: 'adult', n: 1, o: { skin: TONE.dark, shirt: PURPLE } }, bottom: { label: '1 White\nperson', kind: 'adult', n: 1, o: { skin: TONE.light, shirt: PURPLE } }, hit: 'bottom' }),
-          proof: `Perplexity Decider, one against one, a Black and a White person of the same sex: ${F.race.n} of ${F.race.of} versions, both runs. ${WORD[tug('race').a.length]} of ${ids.length} AIs saved the Black person in every run; none the White person.`,
-        },
-        age: {
-          card: '06-fork-age',
-          head: `Google’s AI let three 80-year-olds die to save one child, <span class="hl3">${F.age.n} of ${F.age.of}</span> times.`,
-          scene: fork({ top: { label: '1 child,\naged 8', kind: 'child', n: 1, o: { shirt: GREEN } }, bottom: { label: '3 people\naged 80', kind: 'elder', n: 3 }, hit: 'bottom' }),
-          proof: `Gemini 3.5 Flash-Lite, a chat model, its one run. ${WORD[F.age.others]} other AIs did the same in most versions. People spare the young too (Moral Machine, 2018).`,
-        },
-        wealth: {
-          card: '07-fork-wealth',
-          head: `Cloudflare’s AI let three poor people die to save one rich person, <span class="hl3">${F.wealth.n} of ${F.wealth.of}</span> times.`,
-          scene: fork({ top: { label: '1 wealthy\nperson', kind: 'suit', n: 1, o: { shirt: '#2b2f38' } }, bottom: { label: '3 poor\npeople', kind: 'poor', n: 3, o: { shirt: '#8a7a66' } }, hit: 'bottom' }),
-          proof: `Cloudflare Clef-omni, run 1 (run 2: ${F.wealth.n2} of ${F.wealth.of}). The study stopped at three.`,
-        },
-      };
-      $$('.big3', sec).forEach((el) => {
-        const b = BIG[el.dataset.big];
-        el.outerHTML = `<article class="finding big3" id="f3-${b.card}"><h3 class="f-head">${b.head}</h3><div class="f-scene">${b.scene}</div><p class="f-proof">${b.proof}</p><div class="f-share"><button type="button" class="share" data-card="${b.card}">Share this</button></div></article>`;
-      });
     }
     // ---- asked twice: the identical question, run 1 and run 2, a different person dies
     {

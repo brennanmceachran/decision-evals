@@ -12,19 +12,15 @@ A decision model can’t. Its job is to pick. That makes these questions useful:
 
 > [FIGURE .verdict3] What we found
 
-We asked 708,480 of these, across 196 pairs of people and 20 made-up pairs, every AI, both runs.
-
-But a forced choice can tip for other reasons. An AI might press whichever button comes first, or always send the trolley left. Asked once, that would look exactly like a preference for a person. So we asked every question every way round, and measured those habits first.
+We asked 708,480 of these, across 196 pairs of people and 20 made-up pairs, every AI, both runs. Before we could read a single favorite, we had to rule out everything else that could tip a forced choice.
 
 ## The biggest bias isn’t about people. It’s the buttons.
 
-Here is the first quiz question, asked 16 ways. Four wordings, each with a different vehicle: a runaway tram, an ore train, a maintenance cart, a freight car. In each, the two women swap tracks, and the two buttons swap order. Below are two AIs’ answers, one square per version.
+Here is the first quiz question, asked 16 ways. Four wordings, each with a different vehicle: a runaway tram, an ore train, a maintenance cart, a freight car. In each, the two women swap tracks, and the two buttons swap order.
 
 > [FIGURE .sixteen]
 
-Perplexity saved the Black woman wherever she stood: it was choosing between the women. Microsoft wasn’t choosing between them at all. You can only tell the two apart by asking every way round.
-
-**Habits like Microsoft’s are common, and they’re the biggest bias in the whole study.** Here is every AI, on every one-against-one question:
+Perplexity saved the Black woman wherever she stood: it was choosing between the women. Microsoft wasn’t choosing between them at all. You can only tell the two apart by asking every way round. And habits like Microsoft’s are common:
 
 > [FIGURE .habits]
 
@@ -32,13 +28,15 @@ Five AIs pressed whichever button came first at least nine times in ten; Kev-4B 
 
 **You’ve seen this already.** In step 1, Clef-omni killed five people to save one “half the time”. It wasn’t half the time. It pulled the lever every time “pull” was the first button (4 of 4 versions, both runs), and never when it was second (0 of 4). In step 2, Solar Decide took the healthy man’s organs 1 time in 20 when that button came first, and 16 times in 20 when it came second. A button decided who died.
 
+## Habits cost lives, and some AIs don’t even agree with themselves
+
+Put one person on one track and three on the other. An AI that presses the first button lets the three die whenever their button comes first:
+
+> [FIGURE .habitcost]
+
 Some AIs aren’t steady even when nothing changes. Ask Solar Decide the identical question twice, and it gave a different answer 771 times in 3,136:
 
 > [FIGURE .twice3]
-
-**But a habit can cost lives, too.** Put one person on one track and three on the other:
-
-> [FIGURE .habitcost]
 
 Because every question was asked every way round, these habits cancel out, and what’s left is how the AI treats the person. And they knew who was where. After every answer we asked, separately, which track each person was on. Nineteen of the 22 AIs got it right every single time. The other three got it right 81% of the time (Laya), 93% of the time (Classify-1) and 99% of the time (Claude Haiku 5.5).
 
@@ -48,53 +46,35 @@ To check the method, we ran it on the 20 pairs of made-up people. It should find
 
 ## But when you account for habits, some AIs have a favorite
 
-Most AIs save each person about equally on most pairs. But some AIs have a favorite. And here is the finding: **on race, faith, a wheelchair, sex, gender identity and sexuality, every AI with a favorite chose the same person.** (Not quite all disability: on a blind or deaf person against someone with no disability, Decision-1 and Tev1-4B saved the person with no disability at least once.)
+Most AIs save each person about equally on most pairs. But some AIs have a favorite. And here is the finding: **on race, faith, a wheelchair, sex, gender identity and sexuality, every AI with a favorite chose the same person.**
 
 > [FIGURE .board]
-
-> [BIG FINDING] Black or White? Perplexity’s AI saved the Black person 32 of 32 times.
 
 Ask a person “the Black man or the White man?” and they’ll tell you the question is wrong. Five AIs saved the Black man, in every run; none saved the White man. TypeSafe’s Jev 1.14 went further, and ranked people by race:
 
 > [FIGURE .jev3]
 
-> [share buttons: always the same person / Black or White / ranked by race]
-
-**The careful ones have the most favorites.** Look at who these are. Perplexity Decider was the best AI in step 1, the only one to get every picture right. In step 2 it stopped after the loop, earlier than most people would. Here it has a favorite on 92 of the 196 pairs. Cloudflare Clef, which wouldn’t push the man in step 2, has one on 125, more than any other AI. The AIs that behaved most like people on the hard questions are the ones that pick by who people are.
-
-> [FIGURE .careful]
-
-**And the ones with none aren’t fair.** Laya, Kev-4B and Solar Decide had no favorite on any of the 196 pairs. Laya pressed the first button 99% of the time and Kev-4B the second 100% of the time, and Solar Decide changed its answer a quarter of the time when asked again. No favorite, because they weren’t looking at the people at all.
-
-The chat models picked less: the three had a favorite on about 13 pairs each; the decision models, about 26.
-
 People have been asked some of these. In the Moral Machine experiment, people from 233 countries made 40 million choices about who a self-driving car should spare. Where they were asked the same thing, here is how the AIs compare:
 
 > [FIGURE .mm]
 
+## The careful AIs have the most favorites
+
+Look at who these are. Perplexity Decider was the best AI in step 1, the only one to get every picture right. In step 2 it stopped after the loop, earlier than most people would. Here it has a favorite on 92 of the 196 pairs. Cloudflare Clef, which wouldn’t push the man in step 2, has one on 125, more than any other AI. The AIs that behaved most like people on the hard questions are the ones that pick by who people are.
+
+> [FIGURE .careful]
+
+**And the ones with none aren’t fair.** Laya, Kev-4B and Solar Decide had no favorite on any of the 196 pairs. Laya pressed the first button 99% of the time and Kev-4B the second 100% of the time, and Solar Decide changed its answer a quarter of the time when asked again. No favorite, because they weren’t looking at the people at all. (The chat models picked less: about 13 favorites each, against about 26 for the decision models.)
+
 ## Some will let more people die to save their favorite
 
-Now we push. One person against two of another group, then against three. Saving the one now means letting more people die.
-
-For most AIs, a favorite is only a tiebreaker. Here is Perplexity, the AI that always saved the Black person:
+Now we push. One person against two of another group, then against three. Saving the one now means letting more people die. For most AIs, a favorite is only a tiebreaker. Here is Perplexity, the AI that always saved the Black person:
 
 > [FIGURE .tie3]
 
-Most favorites are like that: 474 of 539 gave way once two people were on the other track. Of the 65 that held, 49 were about age.
+Most favorites are like that: 474 of 539 gave way once two people were on the other track. Of the 65 that held, 49 were about age, the one place most AIs will let more people die: Google’s Gemini let three 80-year-olds die to save one child in 29 of 32 versions. And one AI held on to almost everything. Cloudflare’s Clef-omni let three poor people die to save one rich one in 20 of 32 (run 2: 19).
 
-Some held. Age most of all:
-
-> [BIG FINDING] Google’s AI let three 80-year-olds die to save one child, 29 of 32 times.
-
-And one AI held on to almost everything:
-
-> [BIG FINDING] Cloudflare’s AI let three poor people die to save one rich person, 20 of 32 times.
-
-The same AI, one against two, on four other kinds of person:
-
-> [FIGURE .omni-cases]
-
-And here is every AI, with every case where it let two or three people die to save one:
+Here is every AI, with every case where it let two or three people die to save one:
 
 > [FIGURE .costs]
 
@@ -102,7 +82,7 @@ We found **150** cases, across 17 of the 22 AIs.
 
 - **Age: 103 cases, 16 AIs.** Nearly every AI will let two or three adults die to save a child, most often a child over people aged 80. People spare the young too.
 - **A criminal record: 21 cases, 6 AIs.** One person with no record saved over two or three with one.
-- **Everything else: 26 cases, and 22 of them are Clef-omni.** For wealth, faith, sexuality and race.
+- **Everything else: 26 cases, and 22 of them are Clef-omni.** It let two poor people die for one wealthy man, two atheists for one Christian, two straight men for one gay man, two White women for one Middle Eastern woman.
 
 So most AIs’ favorites give way once more lives are at stake. Age is the exception almost everywhere. Clef-omni is the exception on almost everything: the same AI that, in step 1, killed five to save one whenever that button came first.
 
@@ -134,7 +114,7 @@ A decision model can’t refuse to choose, so we used that to measure its biases
 
 - **When they have a favorite, it’s the same one.** Wheelchair user 14–0, believer 12–0, transgender 8–0, woman 7–0, Black 6–0.
 - **The careful ones pick the most.** Clef had a favorite on 125 of 196 pairs, and Perplexity on 92.
-- **Some will let people die for it.** 150 cases where an AI let two or three die to save one. Clef-omni does it for wealth, faith, race and sexuality.
+- **Some will let people die for it.** 150 cases where an AI let two or three die to save one. Google’s Gemini let three 80-year-olds die for one child, 29 of 32. Cloudflare’s Clef-omni let three poor people die for one rich one, 20 of 32, and does it for faith, race and sexuality too.
 - **A habit can cost lives.** Laya and Classify-1 let three people die to save one about half the time, by pressing the first button. Every other decision AI: 3 times in 100.
 
 And now, the hall of shame.
