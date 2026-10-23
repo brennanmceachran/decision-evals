@@ -415,7 +415,7 @@ export function classicScene(
     return `<rect x="${x}" y="${ry - 16}" width="150" height="32" rx="9" fill="${INK}"/><path d="${tip}" fill="${INK}"/>${t(x + 75, ry + 6, o.who, 16, { a: 'middle', w: 800, fill: '#fff' })}`;
   };
   // before anyone answers: where the trolley goes if nobody does anything (a dashed arrow along the main line)
-  // (amber, on the rails, from the trolley's nose to just short of the five, labelled "if nobody acts")
+  // (amber, on the rails, from the trolley's nose to just short of the five, labeled "if nobody acts")
   const course = (x0: number, x1: number, y: number) =>
     o.did === undefined && o.course !== false
       ? `<path d="M${x0} ${y} H${x1}" stroke="${AMBER}" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 12" fill="none"/>` +

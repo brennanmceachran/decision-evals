@@ -1404,7 +1404,7 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     for (const g of I.tugs) {
       if (g.a.some((m: string) => g.b.includes(m))) errs.push(`tug ${g.id}: an AI on both sides`);
     }
-    // the scoreboard and the quiz count an AI only if it favoured that person in every run: no "run 1 only" rows
+    // the scoreboard and the quiz count an AI only if it favored that person in every run: no "run 1 only" rows
     const how = (m: string, set: string, pair: string) => D5.scenarios.pairs.find((p: any) => p.set === set && p.pair === pair).rows.find((r: any) => r.id === m).how;
     for (const q of I.quiz)
       for (const x of [...q.savedA, ...q.savedB]) {

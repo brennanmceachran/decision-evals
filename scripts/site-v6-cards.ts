@@ -644,7 +644,7 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         panel(y + rh + 24, B, W2, 'top', '1 vs 2', pct(pr[1].n, pr[1].of), 'saved the Black person')
       );
     },
-    src: `${N('perplexity/pplx-decider-v1.2')}, both runs: 1 vs 1, saved the Black person ${pr[0].n} of ${pr[0].of}; 1 vs 2, ${pr[1].n} of ${pr[1].of}. No AI of ${D.totals.models} reliably gave up two lives for one of a favoured race or nationality. Forced choice.`,
+    src: `${N('perplexity/pplx-decider-v1.2')}, both runs: 1 vs 1, saved the Black person ${pr[0].n} of ${pr[0].of}; 1 vs 2, ${pr[1].n} of ${pr[1].of}. No AI of ${D.totals.models} reliably gave up two lives for one of a favored race or nationality. Forced choice.`,
   });
   const amPx = pooled(
     'perplexity/pplx-decider-v1.2',
@@ -1280,7 +1280,7 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
     name: '31-only-11',
     head: `Swap which track each person is on. In only {${pct(S1.same, S1.n)}} of cases did the AI keep saving the same person.`,
     visual: (y, h) => {
-      // 100 people icons, each one set of four versions; colour = what decided it
+      // 100 people icons, each one set of four versions; color = what decided it
       const cats = [
         { n: S1.same, col: GREEN, label: 'saved the same person', sub: 'the person decided it' },
         { n: S1.pos, col: '#3d5a80', label: 'picked the same button', sub: 'first or second, whoever it was' },
@@ -2290,7 +2290,7 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
             question: j.main.instructions,
             // steer right spares a (on the left); steer left spares b
             buttons: Object.entries(j.main.criteria).map(([k, t]: any) => ({ key: k, text: t, spares: j.keyToCanonical[k] === 'spare_a' ? 'a' : 'b' })),
-            // AIs that favoured each person in every run, with how many of the 16 ways they saved her (each run)
+            // AIs that favored each person in every run, with how many of the 16 ways they saved her (each run)
             savedA: P2.rows.filter((r: any) => r.how && !/only/.test(r.how) && r.picked > 0).map((r: any) => ({ id: r.id, n: r.count, of: r.of })),
             savedB: P2.rows.filter((r: any) => r.how && !/only/.test(r.how) && r.picked < 0).map((r: any) => ({ id: r.id, n: r.count, of: r.of })),
           };
