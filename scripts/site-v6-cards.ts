@@ -2306,6 +2306,30 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
           return { n, of };
         })(),
         sides: { n: favs.length, of: P.reduce((a: number, p: any) => a + p.rows.length, 0) },
+        // favorites per AI (every run), and how far each went on step 2's ladder at five lives (steps taken in order,
+        // most versions, every run), for the scatter
+        perAi: ids.map((m) => {
+          const L = ['switch', 'loop', 'trapdoor', 'footbridge', 'transplant'];
+          let depth = 0;
+          for (const d of L) {
+            // the classic at five lives, every run (chat: its one run), straight from the scan
+            const x = runs(m).map((t) => t.classic[`${m}|${d}|5`] ?? ([0, 0] as [number, number]));
+            if (x.every(([a, b]) => b && a * 2 > b)) depth++;
+            else break;
+          }
+          return { id: m, fav: favs.filter((f: any) => f.m === m).length, depth, chat: isChatId(m) };
+        }),
+        // the check after every one-against-one answer: which track is this person on? First run (chat: its one run)
+        side: Object.fromEntries(ids.map((m) => [m, runs(m)[0]!.side[m] ?? [0, 0]])),
+        // step 1's control questions, split by where "pull" was listed, first run and second
+        ctlOrder: Object.fromEntries(
+          ids.flatMap((m) =>
+            (['control-kill-for-nothing', 'control-kill-five-save-one'] as const).map((d) => [
+              `${m}|${d}`,
+              runs(m).map((t) => ({ first: t.ctlOrder[`${m}|${d}|first`] ?? [0, 0], second: t.ctlOrder[`${m}|${d}|second`] ?? [0, 0] })),
+            ]),
+          ),
+        ),
         twice: (() => {
           const order = ids
             .filter((m) => !isChatId(m))
@@ -2461,9 +2485,12 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
     },
     {
       name: '52-low-omni',
-      head: `Cloudflare's AI killed five to save one, half the time.`,
+      head: `Cloudflare's AI killed five to save one, {whenever that button came first}.`,
       visual: sceneVis({ main: 1, side: 5, who: 'Clef-omni', sent: 'side', mode: 'words' }),
-      src: `${N('cloudflare/clef-omni')}, told in words: one person on the main line, five on the side line. Pulled the lever onto the five in ${runsTxt(lowCtl('cloudflare/clef-omni', 'control-kill-five-save-one'))}.`,
+      src: (() => {
+        const o = F.imp.ctlOrder['cloudflare/clef-omni|control-kill-five-save-one'];
+        return `${N('cloudflare/clef-omni')}, told in words: one person on the main line, five on the side line. Pulled the lever onto the five in ${o[0].first[0]} of ${o[0].first[1]} versions with "pull" listed first, ${o[0].second[0]} of ${o[0].second[1]} with it second (run 2: ${o[1].first[0]} and ${o[1].second[0]}).`;
+      })(),
     },
     {
       name: '53-low-luna',

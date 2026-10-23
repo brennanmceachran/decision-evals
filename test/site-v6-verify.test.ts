@@ -53,6 +53,8 @@ interface T {
   ans1v1: Map<string, string>; // model|set|a|b|side|para|order → canonical choice at one against one
   impN: Record<string, number>; // step 3 rows: one against one, one against more, made-up pairs
   plac: Map<string, [number, number, number, number]>; // model|a|b → score sum, scored, saved a, answered (made-up 1:1)
+  ctlOrder: Map<string, NO>; // model|control dilemma|first|second → pulled, answered, by where "pull" was listed
+  side: Map<string, NO>; // model → named the track right, asked (step 3's check after each 1:1 answer, real people)
 }
 const newT = (): T => ({
   answers: 0,
@@ -89,6 +91,8 @@ const newT = (): T => ({
   ans1v1: new Map(),
   impN: {},
   plac: new Map(),
+  ctlOrder: new Map(),
+  side: new Map(),
 });
 const inc = (m: Map<string, NO>, k: string, hit: boolean) => {
   const e = m.get(k) ?? ([0, 0] as NO);
@@ -190,8 +194,16 @@ async function scan(tag: Tag): Promise<T> {
     const v = r.variant ?? {};
     const pt = v.point ?? {};
     const canon = ok ? v.keyToCanonical?.[r.choice] : null;
-    if (d.startsWith('control-') && ok)
+    if (d.startsWith('control-') && ok) {
       inc(t.control, `${m}|${d}`, ['pull', 'push', 'harvest', 'drop'].includes(canon));
+      // the buttons as shown: forward lists the action first
+      inc(t.ctlOrder, `${m}|${d}|${r.order === 'forward' ? 'first' : 'second'}`, canon === 'pull');
+    }
+    if (d.startsWith('parity-') && d !== 'parity-placebo' && Number(pt.k) === 1 && Number(pt.m) === 1) {
+      const want = JSON.parse(String(r.probeAnswers ?? '{}')).check_side;
+      const q = r.probes?.probes?.check_side;
+      if (want && q && !q.refused) inc(t.side, m, q.choice === want);
+    }
     if (['switch', 'loop', 'trapdoor', 'footbridge', 'transplant'].includes(d) && ok)
       inc(t.acted, `${m}|${d}|${pt.n}`, ['pull', 'push', 'harvest', 'drop'].includes(canon));
     if (['switch', 'loop', 'trapdoor', 'footbridge', 'transplant'].includes(d)) {
@@ -749,7 +761,11 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     };
     has(errs, '50-low-laya', `Pulled the lever in ${runsTxt('convaiinnovations/laya', 'control-kill-for-nothing')}`);
     has(errs, '51-low-solar', `onto the five in ${runsTxt('upstage/solar-decide-flash', 'control-kill-five-save-one')}`);
-    has(errs, '52-low-omni', `onto the five in ${runsTxt('cloudflare/clef-omni', 'control-kill-five-save-one')}`);
+    // Clef-omni: the five-for-one control split by where "pull" was listed, run 1 then run 2
+    {
+      const o = (t: T, w: string) => t.ctlOrder.get(`cloudflare/clef-omni|control-kill-five-save-one|${w}`)!;
+      has(errs, '52-low-omni', `onto the five in ${o(R.r1, 'first')[0]} of ${o(R.r1, 'first')[1]} versions with "pull" listed first, ${o(R.r1, 'second')[0]} of ${o(R.r1, 'second')[1]} with it second (run 2: ${o(R.r2, 'first')[0]} and ${o(R.r2, 'second')[0]})`);
+    }
     // half the time, in both runs
     for (const t of [R.r1, R.r2]) {
       const x = t.control.get('cloudflare/clef-omni|control-kill-five-save-one')!;
@@ -1599,6 +1615,63 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     const counts = texts.filter((x) => /^\d+ AIs$/.test(x));
     eq('25-backing counts', counts, ['wheel', 'faith', 'trans', 'women', 'race', 'gay'].map((id) => `${tug(id).a.length} AIs`));
     eq('25-backing the other', texts.filter((x) => x.startsWith('the other: ')), ['wheel', 'faith', 'trans', 'women', 'race', 'gay'].map((id) => `the other: ${tug(id).b.length}`));
+    expect(errs).toEqual([]);
+  });
+  it('step 3 links back: button order in steps 1 and 2, the which-track check, favorites per AI, the ladder', () => {
+    const errs: string[] = [];
+    const eq = (what: string, page: unknown, raw: unknown) => {
+      if (JSON.stringify(page) !== JSON.stringify(raw)) errs.push(`${what}: page ${JSON.stringify(page)} vs raw ${JSON.stringify(raw)}`);
+    };
+    const I = C.facts.imp;
+    // step 1's controls by where "pull" was listed (forward = the action first), every AI, every run
+    for (const m of ids())
+      for (const d of ['control-kill-for-nothing', 'control-kill-five-save-one'])
+        eq(
+          `ctlOrder ${m} ${d}`,
+          I.ctlOrder[`${m}|${d}`],
+          runsOf(m).map((t) => ({ first: t.ctlOrder.get(`${m}|${d}|first`) ?? [0, 0], second: t.ctlOrder.get(`${m}|${d}|second`) ?? [0, 0] })),
+        );
+    // the claim on the page: Clef-omni pulled onto the five every time "pull" was first, never when second, both runs
+    // "both runs": the page quotes run 1's counts and says both runs, so the two runs must match
+    const oc = I.ctlOrder['cloudflare/clef-omni|control-kill-five-save-one'];
+    for (const x of oc) if (x.first[0] !== x.first[1] || x.second[0] !== 0) errs.push(`Clef-omni button order: ${JSON.stringify(x)}`);
+    eq('Clef-omni both runs the same', oc[1], oc[0]);
+    // the which-track check, first run (chat: its one run)
+    for (const m of ids()) eq(`side ${m}`, I.side[m], runsOf(m)[0]!.side.get(m) ?? [0, 0]);
+    const all = ids().filter((m) => I.side[m][0] === I.side[m][1]);
+    eq('side: every time', all.length, 19);
+    // the three that missed, lowest first, as the page names them
+    eq('side: missed', ids().filter((m) => !all.includes(m)).sort((a, b) => I.side[a][0] / I.side[a][1] - I.side[b][0] / I.side[b][1]), ['convaiinnovations/laya', 'scaledown/scaledown-classify-1', 'anthropic/claude-haiku-5.5']);
+    // favorites per AI: the v5 rows, every run only
+    const ev = (r: any) => r.how && !/only/.test(r.how);
+    for (const x of I.perAi) {
+      const n = D5.scenarios.pairs.reduce((a: number, p: any) => a + p.rows.filter((r: any) => r.id === x.id && ev(r)).length, 0);
+      eq(`fav ${x.id}`, x.fav, n);
+      eq(`chat ${x.id}`, x.chat, CHAT.includes(x.id));
+    }
+    const f = (m: string) => I.perAi.find((x: any) => x.id === m).fav;
+    eq('Clef has the most favorites', I.perAi.slice().sort((a: any, b: any) => b.fav - a.fav)[0].id, 'cloudflare/clef');
+    eq('Clef and Perplexity favorites', [f('cloudflare/clef'), f('perplexity/pplx-decider-v1.2')], [125, 92]);
+    eq('no favorite', I.perAi.filter((x: any) => x.fav === 0).map((x: any) => x.id).sort(), ['convaiinnovations/laya', 'jaredpalmer/kev-4b', 'upstage/solar-decide']);
+    // the ladder at five lives: steps taken in order, most versions, every run
+    const L = ['switch', 'loop', 'trapdoor', 'footbridge', 'transplant'];
+    for (const x of I.perAi) {
+      let depth = 0;
+      for (const d of L) {
+        if (runsOf(x.id).every((t) => { const a = t.acted.get(`${x.id}|${d}|5`); return !!a && a[0] * 2 > a[1]; })) depth++;
+        else break;
+      }
+      eq(`depth ${x.id}`, x.depth, depth);
+    }
+    // the page's words about Perplexity and Clef in step 2
+    eq('Perplexity stopped after the loop', I.perAi.find((x: any) => x.id === 'perplexity/pplx-decider-v1.2').depth, 2);
+    eq('Clef stopped before the footbridge', I.perAi.find((x: any) => x.id === 'cloudflare/clef').depth, 3);
+    // Solar Decide's organs by button order (step 2's card), summed over every number of patients, run 1
+    const so = (o: string) =>
+      [...R.r1.actedOrder.entries()]
+        .filter(([k]) => k.startsWith('upstage/solar-decide|transplant|') && k.endsWith(`|${o}`))
+        .reduce<NO>((a, [, v]) => [a[0] + v[0], a[1] + v[1]], [0, 0]);
+    eq('Solar Decide organs, first / second', [so('forward'), so('reverse')], [[1, 20], [16, 20]]);
     expect(errs).toEqual([]);
   });
   it('native page: the adoption chart is the archived data, and the two OpenRouter series agree where they overlap', () => {

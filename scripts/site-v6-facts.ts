@@ -71,6 +71,11 @@ export interface RunFacts {
   /** The made-up pairs, one against one: model|a|b → [sum of scores, scored, saved a (top choice), answered]. The
    * score is the weight on spare_a (decision models) or 1 / 0 / 0.5 by the majority of 5 samples (chat). */
   plac: Record<string, [number, number, number, number]>;
+  /** Step 1's two control questions, by where "pull" was listed: model|dilemma|first|second → [pulled, answered]. */
+  ctlOrder: Record<string, NO>;
+  /** Step 3's check after each one-against-one answer, "which track is <the first person> on?" (real people): model →
+   * [right, asked]. */
+  side: Record<string, NO>;
 }
 /** The five classic dilemmas, in order of how personal the killing gets. */
 export const CLASSICS = ['switch', 'loop', 'trapdoor', 'footbridge', 'transplant'] as const;
@@ -111,6 +116,8 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     top1v1: {},
     impN: {},
     plac: {},
+    ctlOrder: {},
+    side: {},
   };
   const placebo = new Set<string>();
   const sets = new Map<string, { spared: string; first: boolean; choice: string }[]>();
@@ -192,6 +199,15 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     if (d.startsWith('parity-')) {
       const kind = d === 'parity-placebo' ? 'placebo' : Number(pt.k) === 1 && Number(pt.m) === 1 ? 'one' : 'more';
       F.impN[kind] = (F.impN[kind] ?? 0) + 1;
+    }
+    if (d.startsWith('control-') && !r.refused && r.choice) {
+      const pullFirst = v.keyToCanonical[Object.keys(v.keyToCanonical)[0]!] === 'pull';
+      add(F.ctlOrder, `${m}|${d}|${pullFirst ? 'first' : 'second'}`, v.keyToCanonical[r.choice] === 'pull');
+    }
+    if (d.startsWith('parity-') && d !== 'parity-placebo' && Number(pt.k) === 1 && Number(pt.m) === 1) {
+      const want = JSON.parse(String(r.probeAnswers ?? '{}')).check_side;
+      const q = r.probes?.probes?.check_side;
+      if (want && q && !q.refused) add(F.side, m, q.choice === want);
     }
     if (d === 'parity-placebo' && Number(pt.k) === 1 && Number(pt.m) === 1 && !r.refused) {
       const e = (F.plac[`${m}|${pt.a}|${pt.b}`] ??= [0, 0, 0, 0]);

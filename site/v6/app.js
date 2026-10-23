@@ -876,10 +876,12 @@
         mode: 'words',
         scene: { main: 1, side: 5, sent: 'side' },
         alt: 'One on the main line, five on the side line. The AI sent the trolley at the five.',
-        head: 'Killed five to save one, half the time.',
+        head: 'Killed five to save one, when that button came first.',
         share: '52-low-omni',
-        body: () =>
-          `Cloudflare’s Clef-omni pulled the lever onto the five in ${runsTxt(fiveQ, 'cloudflare/clef-omni')}.`,
+        body: () => {
+          const o = F.imp.ctlOrder['cloudflare/clef-omni|control-kill-five-save-one'][0];
+          return `Cloudflare’s Clef-omni pulled the lever onto the five in ${o.first[0]} of ${o.first[1]} versions when “pull” was the first button, and ${o.second[0]} of ${o.second[1]} when it was second. More on button order in step 3.`;
+        },
       },
       {
         m: 'cloudflare/clef-flash',
@@ -1014,7 +1016,7 @@
       <h4>Lowlights</h4>
       <ul class="hl lo">
         <li><b>${WORD[killers.length]} killed someone to save no one.</b> ${killers.map((m) => esc(nm(m))).join(' and ')}, in most versions, in both runs.</li>
-        <li><b>Some killed five to save one.</b> ${fiveMost.every((m) => killers.includes(m)) ? `The same ${WORD[fiveMost.length].toLowerCase()}` : fiveMost.map((m) => esc(nm(m))).join(' and ')}, in most versions; ${esc(nm('cloudflare/clef-omni'))} half the time.</li>
+        <li><b>Some killed five to save one.</b> ${fiveMost.every((m) => killers.includes(m)) ? `The same ${WORD[fiveMost.length].toLowerCase()}` : fiveMost.map((m) => esc(nm(m))).join(' and ')}, in most versions; ${esc(nm('cloudflare/clef-omni'))} whenever “pull” was the first button, and never when it was second.</li>
         <li><b>Pictures confused nearly all of them.</b> Shown a picture instead of words, ${worse.length} of the ${pics.length} AIs that can see got worse, and ${WORD[coin.length].toLowerCase()} fell to a coin toss or worse.</li>
         <li><b>Worst of all: ${esc(worst.name)}.</b> It counted the people right ${Math.round(worst.seen * 100)}% of the time and said they would be killed. Then it sent the trolley at the larger group in ${worst.pic[1] - worst.pic[0]} of ${worst.pic[1]} tries.</li>
       </ul>
@@ -1530,6 +1532,23 @@
       .filter((m) => I.changed[m] && share(I.changed[m]) >= 0.15)
       .sort((a, b) => share(I.changed[b]) - share(I.changed[a]));
     const tug = (id) => I.tugs.find((g) => g.id === id);
+    // favorites per AI, the which-track check, and the two button-order callbacks to steps 1 and 2
+    const fav = (m) => I.perAi.find((x) => x.id === m).fav;
+    const noFav = I.perAi.filter((x) => x.fav === 0).map((x) => x.id);
+    const favAvg = (chat) => {
+      const xs = I.perAi.filter((x) => x.chat === chat);
+      return xs.reduce((a, x) => a + x.fav, 0) / xs.length;
+    };
+    const sideAll = ids.filter((m) => I.side[m][1] && I.side[m][0] === I.side[m][1]);
+    const sideMiss = ids.filter((m) => !sideAll.includes(m)).sort((a, b) => share(I.side[a]) - share(I.side[b]));
+    const omniCtl = I.ctlOrder['cloudflare/clef-omni|control-kill-five-save-one'][0];
+    const solarOrg = { first: [0, 0], second: [0, 0] };
+    for (const n of F.hard.ns.transplant)
+      for (const [k, tab] of [['first', F.hard.first], ['second', F.hard.second]]) {
+        const x = tab['upstage/solar-decide'].transplant[n][0];
+        solarOrg[k][0] += x[0];
+        solarOrg[k][1] += x[1];
+      }
     const fa = F.design.sidesTaken;
     const faOf = F.design.pairRows;
     // the cost of a preference, grouped
@@ -1602,7 +1621,7 @@
       <div class="step-hero"></div>
       <p class="step-k"><span class="sn">3</span>Step 3 of 4 · Impossible</p>
       <h2>Two strangers. Who do you save?</h2>
-      <p class="lede">Two people, one on each track. The trolley will hit one of them. They’re the same in every way but one.</p>
+      <p class="lede">Two people, one on each track. They’re the same in every way but one: one is Black and one is White, or one is a believer and one isn’t, or one uses a wheelchair. The trolley will hit one of them. Who do you save?</p>
       <p>Most people won’t answer questions like these. There’s no right answer, and picking means saying one kind of person is worth more than another. You can refuse.</p>
       <p>A decision model can’t. Its job is to pick. That makes these questions useful: if an AI keeps saving the same kind of person when nothing else differs, that’s its own bias. Nobody wrote it down, and the company that sells it may not know it’s there. Here are three of the questions, exactly as the AIs got them.</p>
       <div class="quiz3"></div>
@@ -1612,7 +1631,7 @@
         <ol class="v3-rows">${['wheel', 'faith', 'trans', 'women', 'race', 'gay'].map((id) => `<li><span class="v3-who">${esc(tug(id).sa.replace(/^an? /, ''))}</span><b>${tug(id).a.length}</b><span class="v3-vs">AIs</span><b class="zero">${tug(id).b.length}</b><span class="v3-who o">${esc(tug(id).sb.replace(/^an? /, ''))}</span></li>`).join('')}</ol>
         <p class="v3-more">A few let more people die for it. And the biggest bias of all wasn’t about people: it was which button came first. <a href="#impossible-how">How we know ↓</a></p>
       </div>
-      <p id="impossible-how">We asked ${fmt(F.steps.impossible)} of them: ${F.design.pairs} pairs of people, across race, nationality, religion, wealth, age, disability, gender identity, sexuality, a criminal record, politics and body size, every AI, both runs. ${fmt(I.answers.one)} were one against one, like the quiz. ${fmt(I.answers.more)} put one person against two or three. And ${fmt(I.answers.placebo)} were about made-up people who differ by nothing at all, “Group-K man” against “Group-T man”, to measure each AI’s noise.</p>
+      <p id="impossible-how">We asked ${fmt(F.steps.impossible)} of these, across ${F.design.pairs} pairs of people and ${F.design.placebo} made-up pairs, every AI, both runs.</p>
       <p>But a forced choice can tip for other reasons. An AI might press whichever button comes first, or always send the trolley left. Asked once, that would look exactly like a preference for a person. So we asked every question every way round, and measured those habits first.</p>
 
       <h3>The biggest bias isn’t about people. It’s the buttons.</h3>
@@ -1632,12 +1651,14 @@
         <div class="hb-panel"></div>
         <figcaption>One against one, real people only, first run (chat models: their one run). A fair coin lands on the middle line. Each person was on each track, and each button came first, equally often, so an AI choosing by person also lands on the middle line.</figcaption>
       </figure>
-      <p>${WORD[firstHabit.length]} AIs pressed whichever button came first at least nine times in ten; Kev-4B always pressed the second. ${WORD[leftHabit.length]} sent the trolley left at least eight times in ten. Because every question was asked every way round, these habits cancel out, and what’s left is how the AI treats the person.</p>
-      <p>Some AIs aren’t steady even with nothing changed. Ask ${esc(short(I.twice.m))} the identical question twice, in two runs, and it gave a different answer ${fmt(I.twice.changed[0])} times in ${fmt(I.twice.changed[1])}:</p>
+      <p>${WORD[firstHabit.length]} AIs pressed whichever button came first at least nine times in ten; Kev-4B always pressed the second. ${WORD[leftHabit.length]} sent the trolley left at least eight times in ten.</p>
+      <p><b>You’ve seen this already.</b> In step 1, Clef-omni killed five people to save one “half the time”. It wasn’t half the time. It pulled the lever every time “pull” was the first button (${omniCtl.first[0]} of ${omniCtl.first[1]} versions, both runs), and never when it was second (${omniCtl.second[0]} of ${omniCtl.second[1]}). In step 2, Solar Decide took the healthy man’s organs ${solarOrg.first[0]} time${solarOrg.first[0] === 1 ? '' : 's'} in ${solarOrg.first[1]} when that button came first, and ${solarOrg.second[0]} times in ${solarOrg.second[1]} when it came second. A button decided who died.</p>
+      <p>Some AIs aren’t steady even when nothing changes. Ask ${esc(short(I.twice.m))} the identical question twice, and it gave a different answer ${fmt(I.twice.changed[0])} times in ${fmt(I.twice.changed[1])}:</p>
       <figure class="twice3"></figure>
       <p><b>But a habit can cost lives, too.</b> Put one person on one track and three on the other:</p>
       <figure class="habitcost"></figure>
-      <p>To check the method, we ran it on the ${F.design.placebo} pairs of made-up people, who differ by nothing at all. It should find almost nothing there, and it did:</p>
+      <p>Because every question was asked every way round, these habits cancel out, and what’s left is how the AI treats the person. And they knew who was where. After every answer we asked, separately, which track each person was on. ${WORD[sideAll.length]} of the ${ids.length} AIs got it right every single time. The other three got it right ${list(sideMiss.map((m) => `${pct(I.side[m])} of the time (${esc(short(m))})`))}.</p>
+      <p>To check the method, we ran it on the ${F.design.placebo} pairs of made-up people. It should find almost nothing there, and it did:</p>
       <figure class="fa-bars">
         <div class="fa-row"><span class="fa-who">Made-up people<small>“Group-K man” or “Group-T man”</small></span><span class="fa-bar"><i style="--w:${pc(I.falseAlarm.n, I.falseAlarm.of)}"></i></span><b>${pc(I.falseAlarm.n, I.falseAlarm.of)}%</b></div>
         <div class="fa-row real"><span class="fa-who">Real people<small>race, faith, age and the rest</small></span><span class="fa-bar"><i style="--w:${pc(I.sides.n, I.sides.of)}"></i></span><b>${pc(I.sides.n, I.sides.of)}%</b></div>
@@ -1657,6 +1678,10 @@
       <p>Ask a person “the Black man or the White man?” and they’ll tell you the question is wrong. ${WORD[I.raceBy.men.length]} AIs saved the Black man, in every run; none saved the White man. TypeSafe’s Jev 1.14 went further, and ranked people by race:</p>
       <figure class="jev3"></figure>
       <p class="ld-share"><button type="button" class="share" data-card="25-backing">Share: always the same person</button> <button type="button" class="share alt" data-card="09-fork-race">Share: Black or White</button> <button type="button" class="share alt" data-card="37-jev">Share: ranked by race</button></p>
+      <p><b>The careful ones have the most favorites.</b> Look at who these are. Perplexity Decider was the best AI in step 1, the only one to get every picture right. In step 2 it stopped after the loop, earlier than most people would. Here it has a favorite on ${fav('perplexity/pplx-decider-v1.2')} of the ${F.design.pairs} pairs. Cloudflare Clef, which wouldn’t push the man in step 2, has one on ${fav('cloudflare/clef')}, more than any other AI. The AIs that behaved most like people on the hard questions are the ones that pick by who people are.</p>
+      <figure class="careful"></figure>
+      <p><b>And the ones with none aren’t fair.</b> ${list(noFav.map((m) => esc(short(m))))} had no favorite on any of the ${F.design.pairs} pairs. Laya pressed the first button ${pct(I.habit['convaiinnovations/laya'].first)} of the time and Kev-4B the second ${pct([I.habit['jaredpalmer/kev-4b'].first[1] - I.habit['jaredpalmer/kev-4b'].first[0], I.habit['jaredpalmer/kev-4b'].first[1]])} of the time, and Solar Decide changed its answer a quarter of the time when asked again. No favorite, because they weren’t looking at the people at all.</p>
+      <p>The chat models picked less: the three had a favorite on about ${Math.round(favAvg(true))} pairs each; the decision models, about ${Math.round(favAvg(false))}.</p>
       <p>People have been asked some of these. In the Moral Machine experiment, people from 233 countries made 40 million choices about who a self-driving car should spare. Where they were asked the same thing, here is how the AIs compare:</p>
       <figure class="mm"></figure>
 
@@ -1679,7 +1704,7 @@
         <li><b>A criminal record: ${recC.length} cases, ${new Set(recC.map((c) => c.m)).size} AIs.</b> One person with no record saved over two or three with one.</li>
         <li><b>Everything else: ${restC.length} cases, and ${omniRest.length} of them are Clef-omni.</b> For wealth, faith, sexuality and race.</li>
       </ul>
-      <p>So most AIs’ favorites give way once more lives are at stake. Age is the exception almost everywhere. Clef-omni is the exception on almost everything.</p>
+      <p>So most AIs’ favorites give way once more lives are at stake. Age is the exception almost everywhere. Clef-omni is the exception on almost everything: the same AI that, in step 1, killed five to save one whenever that button came first.</p>
 
       <h3>Where the model comes from doesn’t decide it. The company does.</h3>
       <p>Eight of the AIs are built on Alibaba’s Qwen models, from China. Four come from American labs. The other ten don’t say what they’re built on. If a model’s origin shaped its biases, it should show up in how it treats nationalities.</p>
@@ -1689,18 +1714,20 @@
       <div class="podium-slot"></div>
 
       <h3>What we learned</h3>
-      <p>A decision model can’t refuse to choose, so we used that to measure its biases. The biggest bias in the data isn’t about people at all: it’s which button comes first, which is why we asked everything every way round. Once that’s controlled for, most AIs show no preference on most pairs. But on the questions people most expect bias in, a wheelchair user or not, a believer or an atheist, transgender or not, a woman or a man, Black or White, gay or straight, every AI with a favorite chose the same person. A few will let more people die for it. On wealth and nationality they disagree, and what decides it is the company that tunes the model, not the model it was built on.</p>
+      <p>A decision model can’t refuse to choose, so we used that to measure its biases. The biggest bias in the data isn’t about people at all: it’s which button comes first, and it explains some of what you saw in steps 1 and 2. Once that’s controlled for, most AIs show no preference on most pairs. But on race, faith, a wheelchair, sex, gender identity and sexuality, every AI with a favorite chose the same person. A few will let more people die for it. The most careful AIs on the hard questions had the most favorites, and the ones with none were on autopilot. On wealth and nationality the AIs disagree, and what decides it is the company that tunes the model.</p>
       <h4>Highlights</h4>
       <ul class="hl">
         <li><b>Most pairs, no bias.</b> ${pc(I.sides.of - I.sides.n, I.sides.of)}% of AI-and-pair combinations showed no preference beyond the AI’s own noise.</li>
         <li><b>Politics stayed neutral.</b> No AI picked a Republican or a Democrat.</li>
+        <li><b>They knew who was where.</b> ${WORD[sideAll.length]} of ${ids.length} named every person’s track correctly, every time.</li>
         <li><b>The method holds.</b> On made-up people, the test found a favorite ${pc(I.falseAlarm.n, I.falseAlarm.of)}% of the time. On real people, ${pc(I.sides.n, I.sides.of)}%.</li>
         <li><b>Mostly a tiebreaker.</b> ${fmt(I.held.of - I.held.n)} of ${fmt(I.held.of)} favorites didn’t hold once two people were on the other track.</li>
-        <li><b>It can change.</b> The same base model leans opposite ways in two companies’ products.</li>
+
       </ul>
       <h4>Lowlights</h4>
       <ul class="hl lo">
         <li><b>When they have a favorite, it’s the same one.</b> Wheelchair user ${tug('wheel').a.length}–${tug('wheel').b.length}, believer ${tug('faith').a.length}–${tug('faith').b.length}, transgender ${tug('trans').a.length}–${tug('trans').b.length}, woman ${tug('women').a.length}–${tug('women').b.length}, Black ${tug('race').a.length}–${tug('race').b.length}.</li>
+        <li><b>The careful ones pick the most.</b> Clef had a favorite on ${fav('cloudflare/clef')} of ${F.design.pairs} pairs, and Perplexity on ${fav('perplexity/pplx-decider-v1.2')}.</li>
         <li><b>Some will let people die for it.</b> ${C.length} cases where an AI let two or three die to save one. Clef-omni does it for wealth, faith, race and sexuality.</li>
         <li><b>A habit can cost lives.</b> ${list(I.three.four.slice(0, 2).map((x) => esc(short(x.id))))} let three people die to save one about half the time, by pressing the first button. Every other decision AI: ${Math.round((100 * I.three.rest[0]) / I.three.rest[1])} times in 100.</li>
       </ul>
@@ -1944,6 +1971,37 @@
       const scene = (c, label) =>
         `<figure class="oc"><svg class="scene classic" viewBox="0 0 600 330" role="img" aria-label="${label}">${K.strangersScene({ top: { kind: 'adult', n: 1, o: { skin: tone(top), shirt: PURPLE }, label: top }, bottom: { kind: 'adult', n: 1, o: { skin: tone(bottom), shirt: PURPLE }, label: bottom }, hit: hitOf(c), who: short(T.m), animate: true })}</svg><figcaption>${label}: the ${esc(hitOf(c) === 'top' ? top : bottom)} dies</figcaption></figure>`;
       $('.twice3', sec).innerHTML = `<div class="oc-grid">${scene(T.r1, 'Run 1')}${scene(T.r2, 'Run 2, the identical question')}</div><figcaption>${esc(nm(T.m))}, one against one, the same wording, tracks and button order in both runs. Across all one-against-one questions it changed its answer ${fmt(T.changed[0])} times in ${fmt(T.changed[1])}${flip.filter((m) => m !== T.m).length ? `; ${list(flip.filter((m) => m !== T.m).map((m) => `${esc(short(m))} ${fmt(I.changed[m][0])}`))}` : ''}.</figcaption>`;
+    }
+    // ---- the careful ones: every AI as a dot. Across: how far it went on step 2's ladder at five lives. Up: pairs where
+    // it had a favorite here. A few are named; hover any dot for its name.
+    {
+      const COLS = [
+        [2, 'the loop'],
+        [3, 'the trapdoor'],
+        [4, 'the footbridge'],
+        [5, 'the surgeon'],
+      ];
+      const top = Math.ceil(Math.max(...I.perAi.map((x) => x.fav)) / 50) * 50;
+      // the two at the top are named on the chart; the three with none, in a note under their columns
+      const NAMED = { 'perplexity/pplx-decider-v1.2': 'Perplexity', 'cloudflare/clef': 'Clef' };
+      const ZERO = { 'convaiinnovations/laya': 'Laya', 'jaredpalmer/kev-4b': 'Kev-4B', 'upstage/solar-decide': 'Solar Decide' };
+      const cols = COLS.map(([d, label]) => {
+        const xs = I.perAi.filter((x) => x.depth === d).sort((a, b) => b.fav - a.fav);
+        // dots at the same height sit side by side
+        const seen = {};
+        const dots = xs
+          .map((x) => {
+            const k = Math.round(x.fav / 4);
+            const j = (seen[k] = (seen[k] ?? -1) + 1);
+            const named = NAMED[x.id];
+            return `<span class="cf-dot${named ? ' named' : ''}${ZERO[x.id] ? ' zero' : ''}${x.chat ? ' chat' : ''}" data-m="${x.id}" style="--y:${(100 * x.fav) / top};--j:${j}" aria-label="${esc(nm(x.id))}: ${x.fav}">${named ? `<span class="cf-lab">${named} <b>${x.fav}</b></span>` : ''}</span>`;
+          })
+          .join('');
+        const zeros = xs.filter((x) => ZERO[x.id]).map((x) => ZERO[x.id]);
+        return `<div class="cf-col"><div class="cf-plot">${dots}</div><p class="cf-x">${label}<small>${xs.length} AI${xs.length === 1 ? '' : 's'}</small></p>${zeros.length ? `<p class="cf-zero">${list(zeros)}: none</p>` : ''}</div>`;
+      }).join('');
+      const ticks = [0, top / 2, top].map((v) => `<span style="--y:${(100 * v) / top}">${v}</span>`).join('');
+      $('.careful', sec).innerHTML = `<div class="cf-wrap"><p class="cf-ylab">Pairs where it had a favorite (of ${F.design.pairs})</p><div class="cf-chart"><div class="cf-ticks">${ticks}</div><div class="cf-cols">${cols}</div></div><p class="cf-xlab">How far it went on step 2’s ladder (five lives): the last step it took</p></div><figcaption>Each dot is one AI. Hollow: a chat model. Red: the three with no favorite at all. The ladder: the lever, the loop, the trapdoor, pushing the man off the footbridge, the surgeon taking a healthy man’s organs; most versions, every run. Favorites: one against one, every run.</figcaption>`;
     }
     main.appendChild(sec);
     sections.push({ id: 'impossible', el: sec });
