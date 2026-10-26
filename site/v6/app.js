@@ -2109,7 +2109,7 @@
       <figure class="knew4"></figure>
       <p>It wasn’t one AI. Below, only the requests where each AI then counted both tracks correctly, and how many of those it still sent at the workers.</p>
       <figure class="knewall4"></figure>
-      <p>Seven decision models counted the workers correctly and hit them almost every time. Gemini counted them correctly too, and hit them once. Claude Haiku is the one exception worth noting: it counted correctly only ${R4.knew['anthropic/claude-haiku-5.5'][1]} times in ${R4.knew['anthropic/claude-haiku-5.5'][2]}, so for Claude, not seeing them is part of the story.</p>
+      <p>Seven decision models counted the workers correctly and still hit them almost every time. <b>Two chat models did the opposite.</b> Gemini and GPT-6 Luna counted the workers correctly too, and sent the tram at them once each. Seeing the workers wasn’t what decided it. The third chat model, Claude Haiku, is different again: it counted correctly only ${R4.knew['anthropic/claude-haiku-5.5'][1]} times in ${R4.knew['anthropic/claude-haiku-5.5'][2]}, and when it did, it hit them ${R4.knew['anthropic/claude-haiku-5.5'][0]} times.</p>
 
       <h3>The same picture, two framings</h3>
       <p>We showed every AI the same frames twice. Once as a trolley problem: “a runaway tram… it will hit everyone on the track it takes. What do you do?” And once as a routing request from the depot, with the schedule pointing at the workers.</p>
@@ -2190,16 +2190,21 @@
           </div>
         </div>
         <figcaption>Cloudflare Clef, this frame, the schedule pointing at the workers: it counted both tracks correctly in ${k[0][1]} of ${k[0][2]} requests and sent the tram at the workers in ${k[0][0]} of them${both ? ', both runs' : ''}. Each question was its own call.</figcaption>`;
-      const rows = [...see].filter((m) => R4.knew[m][2]).sort((a, b) => R4.knew[b][0] - R4.knew[a][0] || R4.knew[b][1] - R4.knew[a][1]);
-      $('.knewall4', sec).innerHTML = `<div class="kn-head"><span></span><span>Counted both tracks correctly</span><span>…and still hit them</span></div>
-        <ol class="kn-rows">${rows
-          .map((m) => {
-            const [h, r, n] = R4.knew[m];
-            return `<li class="${h * 2 > r ? 'kn-hit' : ''}"><span class="hb-who">${esc(short(m))}${isChat(m) ? ' <small>chat</small>' : ''}</span><span class="kn-bar"><i class="r" style="--w:${(100 * r) / n}"></i><i class="h" style="--w:${(100 * h) / n}"></i></span><span class="kn-n">${r} of ${n}</span><b>${h}</b></li>`;
-          })
-          .join('')}</ol>
-        <p class="fr-key"><span><i class="kn-k r"></i> counted both tracks correctly</span><span><i class="kn-k h"></i> …and still sent the tram at the workers</span></p>
-        <figcaption>Two workers on one track, nobody on the other, the schedule pointing at the workers, ${R4.knew[rows[0]][2]} requests each, first run (chat models: their one run). GPT-6 Luna Decisions refused every request.</figcaption>`;
+      // one number per AI: of the requests where it then counted both tracks correctly, how many it still sent at the
+      // workers. Decision models, then the chat models, each sorted by that share.
+      const sh = (m) => (R4.knew[m][1] ? R4.knew[m][0] / R4.knew[m][1] : 0);
+      const grp = (chat) => see.filter((m) => R4.knew[m][2] && isChat(m) === chat).sort((a, b) => sh(b) - sh(a) || R4.knew[b][1] - R4.knew[a][1]);
+      const row = (m) => {
+        const [h, r, n] = R4.knew[m];
+        const miss = r < 0.9 * n ? `<small>counted correctly only ${r} of ${n}</small>` : '';
+        return `<li class="${h <= 0.05 * r ? 'kn-ok' : 'kn-hit'}"><span class="hb-who">${esc(short(m))}${miss}</span><span class="kn-bar"><i class="h" style="--w:${(100 * h) / r}"></i></span><b>${h} of ${r}</b></li>`;
+      };
+      $('.knewall4', sec).innerHTML = `<p class="kn-q">Of the requests where it counted both tracks correctly, how many did it still send at the workers?</p>
+        <p class="kn-g">Decision models</p>
+        <ol class="kn-rows">${grp(false).map(row).join('')}</ol>
+        <p class="kn-g">Chat models</p>
+        <ol class="kn-rows">${grp(true).map(row).join('')}</ol>
+        <figcaption>Two workers on one track, nobody on the other, the schedule pointing at the workers, ${R4.knew[grp(false)[0]][2]} requests each, first run (chat models: their one run). Counted correctly: asked separately, after each answer, how many people were on each track. GPT-6 Luna Decisions refused every request.</figcaption>`;
     }
     // ---- the two framings: one row per AI, a dot for each (share that hit the workers)
     {

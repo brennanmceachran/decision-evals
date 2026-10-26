@@ -6137,3 +6137,42 @@ button {
   clip-path: none !important;
   transform: none !important;
 }
+/* the strip, one number per AI, in two groups */
+.kn-q {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 800;
+}
+.kn-g {
+  margin: 16px 0 4px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.knewall4 .kn-rows li {
+  grid-template-columns: 170px 1fr 76px;
+}
+.knewall4 .hb-who small {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.knewall4 .kn-bar .h {
+  top: 0;
+  bottom: 0;
+}
+.knewall4 .kn-rows b {
+  font-size: 15px;
+  white-space: nowrap;
+}
+.knewall4 .kn-rows li.kn-ok b {
+  color: #2f9e5a;
+}
+@media (max-width: 640px) {
+  .knewall4 .kn-rows li {
+    grid-template-columns: 100px 1fr 64px;
+  }
+}
