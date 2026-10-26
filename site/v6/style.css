@@ -6176,3 +6176,149 @@ button {
     grid-template-columns: 100px 1fr 64px;
   }
 }
+.kn-sub {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+/* the framings: two columns of plain bars */
+.fw-head,
+.fw-rows li {
+  display: grid;
+  grid-template-columns: 150px 1fr 1fr;
+  gap: 18px;
+  align-items: center;
+}
+.fw-head {
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+.fw-head span:nth-child(2) {
+  color: #4b5058;
+}
+.fw-head span:nth-child(3) {
+  color: var(--red);
+}
+.fw-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fw-rows li {
+  padding: 6px 0;
+  border-bottom: 1px solid #f0ece3;
+}
+.fw-cell {
+  display: grid;
+  grid-template-columns: 1fr 60px;
+  gap: 10px;
+  align-items: center;
+}
+.fw-bar {
+  height: 12px;
+  border-radius: 6px;
+  background: #f4f1ea;
+  overflow: hidden;
+}
+.fw-bar i {
+  display: block;
+  height: 100%;
+  width: calc(var(--w) * 1%);
+  border-radius: 6px;
+}
+.fw-cell.trolley .fw-bar i {
+  background: #8c9198;
+}
+.fw-cell.job .fw-bar i {
+  background: var(--red);
+}
+.fw-cell b {
+  font-size: 13px;
+  text-align: right;
+  white-space: nowrap;
+}
+.fw-cell.job b {
+  color: var(--red);
+}
+.fw-cell.off b {
+  grid-column: 1 / 3;
+  text-align: left;
+  color: var(--muted);
+}
+/* one AI, both framings side by side */
+.tw-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.tw {
+  padding: 12px;
+  border-radius: 16px;
+  background: #f7f5f0;
+}
+.tw-h {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+}
+.tw.good .tw-h {
+  color: #2f9e5a;
+}
+.tw.bad .tw-h {
+  color: var(--red);
+}
+.tw-q {
+  margin: 6px 0 10px;
+  min-height: 3em;
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.4;
+}
+.tw .scene.photo {
+  border-radius: 12px;
+}
+.tw .scene .route,
+.tw .scene .skull {
+  opacity: 1 !important;
+  clip-path: none !important;
+  transform: none !important;
+}
+.tw-n {
+  margin: 10px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.tw-n b {
+  display: block;
+  font-size: clamp(30px, 3.6vw, 44px);
+  line-height: 1;
+}
+.tw.good .tw-n b {
+  color: #2f9e5a;
+}
+.tw.bad .tw-n b {
+  color: var(--red);
+}
+@media (max-width: 640px) {
+  .fw-head,
+  .fw-rows li {
+    grid-template-columns: 82px 1fr 1fr;
+    gap: 8px;
+  }
+  .fw-cell {
+    grid-template-columns: 1fr;
+  }
+  .fw-cell b {
+    text-align: left;
+  }
+  .tw-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.tw .tw-q {
+  color: var(--ink);
+}

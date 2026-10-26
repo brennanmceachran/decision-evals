@@ -2200,59 +2200,47 @@
         return `<li class="${h <= 0.05 * r ? 'kn-ok' : 'kn-hit'}"><span class="hb-who">${esc(short(m))}${miss}</span><span class="kn-bar"><i class="h" style="--w:${(100 * h) / r}"></i></span><b>${h} of ${r}</b></li>`;
       };
       $('.knewall4', sec).innerHTML = `<p class="kn-q">Of the requests where it counted both tracks correctly, how many did it still send at the workers?</p>
+        <p class="kn-sub">We sent each AI this request ${R4.knew[grp(false)[0]][2]} times: four depots, the workers on either side, four ways of writing the log, both button orders. After each answer, we asked it to count the people on each track.</p>
         <p class="kn-g">Decision models</p>
         <ol class="kn-rows">${grp(false).map(row).join('')}</ol>
         <p class="kn-g">Chat models</p>
         <ol class="kn-rows">${grp(true).map(row).join('')}</ol>
         <figcaption>Two workers on one track, nobody on the other, the schedule pointing at the workers, ${R4.knew[grp(false)[0]][2]} requests each, first run (chat models: their one run). Counted correctly: asked separately, after each answer, how many people were on each track. GPT-6 Luna Decisions refused every request.</figcaption>`;
     }
-    // ---- the two framings: one row per AI, a dot for each (share that hit the workers)
+    // ---- the two framings: per AI, two numbers side by side (how often it hit the workers, out of its requests)
     {
-      $('.frames4', sec).innerHTML = `<div class="hb-axis"><span>never hit them</span><span>half</span><span>always hit them</span></div>
-        <ol class="fr-rows">${byJob
-          .map((m) => {
-            const a = cell(m, 'dilemma', 'dilemma');
-            const b = cell(m, 'ops');
-            const pa = share(a) * 100;
-            const pb = share(b) * 100;
-            const refused = !b[1];
-            return `<li${refused ? ' class="off"' : ''}><span class="hb-who">${esc(short(m))}${isChat(m) ? ' <small>chat</small>' : ''}</span><span class="fr-track"><i class="fr-gap" style="--a:${Math.min(pa, pb)};--b:${Math.max(pa, pb)}"></i><i class="fr-dot trolley" style="--x:${pa}" title="As a trolley problem: ${a[0]} of ${a[1]}"></i>${refused ? '' : `<i class="fr-dot job" style="--x:${pb}" title="As a routing job: ${b[0]} of ${b[1]}"></i>`}</span><b>${refused ? 'refused' : `${b[0]}/${b[1]}`}</b></li>`;
-          })
-          .join('')}</ol>
-        <p class="fr-key"><span><i class="fr-dot trolley"></i> as a trolley problem</span><span><i class="fr-dot job"></i> as a routing job</span></p>
-        <figcaption>Two workers on one track, nobody on the other. Routing job: the schedule pointing at the workers; the number is how many of ${of(dec[0], 'ops')} requests hit them. Trolley problem: the same frames, no schedule. First run (chat models: their one run).</figcaption>`;
+      const row = (m) => {
+        const a = cell(m, 'dilemma', 'dilemma');
+        const b = cell(m, 'ops');
+        const bar = (x, cls) => (x[1] ? `<span class="fw-cell ${cls}"><span class="fw-bar"><i style="--w:${share(x) * 100}"></i></span><b>${x[0]} of ${x[1]}</b></span>` : `<span class="fw-cell ${cls} off"><b>refused all</b></span>`);
+        return `<li><span class="hb-who">${esc(short(m))}${isChat(m) ? ' <small>chat</small>' : ''}</span>${bar(a, 'trolley')}${bar(b, 'job')}</li>`;
+      };
+      const order = [...see].sort((a, b) => share(cell(b, 'ops')) - share(cell(a, 'ops')) || share(cell(b, 'dilemma', 'dilemma')) - share(cell(a, 'dilemma', 'dilemma')));
+      $('.frames4', sec).innerHTML = `<p class="kn-q">How often each AI sent the tram at the two workers</p>
+        <div class="fw-head"><span></span><span>Asked as a trolley problem</span><span>Asked as a routing job</span></div>
+        <ol class="fw-rows">${order.map(row).join('')}</ol>
+        <figcaption>Two workers on one track, nobody on the other, the same frames both ways. Trolley problem: ${of(dec[0], 'dilemma', 'dilemma')} requests each, no schedule. Routing job: ${of(dec[0], 'ops')} requests each, the schedule pointing at the workers. First run (chat models: their one run).</figcaption>`;
     }
-    // ---- one AI, the same frame, both framings: a toggle the reader flips (the two-workers scene, first run)
+    // ---- one AI, the same frame, both framings, side by side (the two-workers scene, first run)
     {
       const m = 'perplexity/pplx-decider-v1.2';
       const d = cell(m, 'dilemma', 'dilemma');
       const r = cell(m, 'ops');
-      const el = $('.pair4', sec);
-      el.innerHTML = `<div class="flip" data-mode="dilemma">
-          <div class="flip-tabs" role="tablist" aria-label="Wording">
-            <button type="button" role="tab" aria-selected="true" data-mode="dilemma">As a trolley problem</button>
-            <button type="button" role="tab" aria-selected="false" data-mode="routing">As a routing job</button>
+      $('.pair4', sec).innerHTML = `<div class="tw-grid">
+          <div class="tw good">
+            <p class="tw-h">Asked as a trolley problem</p>
+            <p class="tw-q">“A runaway tram… it will hit everyone on the track it takes. What do you do?”</p>
+            ${photo(F.photos.two, { crop: [150, 200, 980, 520], safe: true })}
+            <p class="tw-n"><b>${d[1] - d[0]} of ${d[1]}</b> spared the workers</p>
           </div>
-          <div class="flip-body">
-            <div class="flip-photo">
-              <div class="when dilemma">${photo(F.photos.two, { crop: [150, 200, 980, 520], safe: true })}</div>
-              <div class="when routing">${photo(F.photos.two, { crop: [150, 200, 980, 520] })}</div>
-            </div>
-            <div class="flip-copy">
-              <p class="when dilemma prompt">“A runaway tram… it will hit everyone on the track it takes. What do you do?”</p>
-              <p class="when routing prompt">“Route request for T7 at SW-2: choose a direction.”</p>
-              <p class="when dilemma big good">${d[1] - d[0]} of ${d[1]}<small>spared the workers</small></p>
-              <p class="when routing big bad">${r[0]} of ${r[1]}<small>hit the workers</small></p>
-            </div>
+          <div class="tw bad">
+            <p class="tw-h">Asked as a routing job</p>
+            <p class="tw-q">“Route request for T7 at SW-2: choose a direction.”</p>
+            ${photo(F.photos.two, { crop: [150, 200, 980, 520] })}
+            <p class="tw-n"><b>${r[0]} of ${r[1]}</b> hit the workers</p>
           </div>
         </div>
-        <figcaption>Perplexity Decider, two workers on one track and nobody on the other, the same frames both ways. First run.</figcaption>`;
-      $$('.flip-tabs button', el).forEach((b) =>
-        b.addEventListener('click', () => {
-          $('.flip', el).dataset.mode = b.dataset.mode;
-          $$('.flip-tabs button', el).forEach((x) => x.setAttribute('aria-selected', String(x === b)));
-        }),
-      );
+        <figcaption>Perplexity Decider, the same frames both ways: two workers on one track, nobody on the other. First run.</figcaption>`;
     }
     // ---- three or one: Clef, this exact frame
     {
