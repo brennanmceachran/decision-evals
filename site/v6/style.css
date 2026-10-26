@@ -917,14 +917,12 @@ button {
 .terminal .type {
   color: #ff6b5e;
   font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 0;
-  transition: max-width 1.6s steps(60) 0.3s;
+  /* typed in left to right; the line keeps its full height the whole time, so nothing below it moves */
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.6s steps(60) 0.3s;
 }
 .played .terminal .type {
-  max-width: 100%;
-  white-space: normal;
+  clip-path: inset(0 0 0 0);
 }
 .tally {
   display: grid;
@@ -6369,4 +6367,201 @@ button {
 }
 .kn-one .kn-grid + figcaption {
   margin-top: 12px;
+}
+/* what we sent: the request as the AIs got it, new lines highlighted */
+.req4 {
+  border-radius: 12px;
+  background: #15191d;
+  color: #c9d0d5;
+  padding: 14px 16px;
+}
+.req4 .req-h {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #9aa4ab;
+}
+.req4 pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font:
+    500 13px / 1.55 Menlo,
+    'SF Mono',
+    Consolas,
+    monospace;
+}
+.req4 mark {
+  display: inline;
+  background: rgba(242, 205, 46, 0.16);
+  color: #f2e7b3;
+  box-shadow: -4px 0 0 #f2cd2e;
+}
+.req4 mark b {
+  color: #ffd84a;
+}
+.req4 .req-q {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 12px 0 0;
+  font:
+    700 13px / 1.4 Menlo,
+    'SF Mono',
+    Consolas,
+    monospace;
+  color: #fff;
+}
+.req4 .req-q i {
+  font-style: normal;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid #4a555d;
+  color: #c9d0d5;
+}
+/* hit counts in both columns: red is people hit, green is (almost) none */
+.fw-head.hits span:nth-child(2),
+.fw-head.hits span:nth-child(3) {
+  color: var(--ink);
+}
+.fw-rows.hits .fw-cell .fw-bar i {
+  background: var(--red);
+}
+.fw-rows.hits .fw-cell b {
+  color: var(--red);
+}
+.fw-rows .fw-cell.ok b {
+  color: var(--green);
+}
+.fw-rows .fw-cell.ok .fw-bar i {
+  background: var(--green);
+}
+.fw-rows.hits .fw-cell.off b {
+  color: var(--muted);
+}
+/* the rule backfiring: two frames, plain cards */
+.bk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 16px;
+}
+.bk-grid .scene.photo {
+  border-radius: 12px;
+}
+.bk-n {
+  margin: 8px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.bk-n b {
+  display: block;
+  font-size: 28px;
+  line-height: 1.1;
+  color: var(--green);
+}
+.bk-grid .bad .bk-n b {
+  color: var(--red);
+}
+#real .back4 .scene .route,
+#real .back4 .scene .skull,
+#real .back4 .scene .check {
+  opacity: 1 !important;
+  clip-path: none !important;
+  transform: none !important;
+}
+.back4 .req4 {
+  margin-top: 10px;
+}
+/* the chat models against the decision models */
+.ct-wrap {
+  overflow-x: auto;
+}
+.ct4 {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.ct4 th,
+.ct4 td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #f0ece3;
+  text-align: right;
+  vertical-align: top;
+}
+.ct4 thead th {
+  border-bottom: 2px solid var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+  vertical-align: bottom;
+}
+.ct4 tbody th {
+  text-align: left;
+  font-weight: 500;
+  max-width: 260px;
+}
+.ct4 td {
+  font-weight: 800;
+  white-space: nowrap;
+}
+.ct4 td small,
+.ct4 th small {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.ct4 td small {
+  display: inline;
+}
+.ct4 td.ok {
+  color: var(--green);
+}
+.ct4 td.bad {
+  color: var(--red);
+}
+.ct4 .dec {
+  color: var(--muted);
+  border-left: 1px solid #e4dfd3;
+}
+@media (max-width: 640px) {
+  .bk-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .ct4 thead {
+    display: none;
+  }
+  .ct4,
+  .ct4 tbody,
+  .ct4 tr {
+    display: block;
+  }
+  .ct4 tr {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0ece3;
+  }
+  .ct4 tbody th {
+    display: block;
+    max-width: none;
+    padding: 0 0 6px;
+    border: 0;
+    font-weight: 700;
+  }
+  .ct4 td {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    border: 0;
+  }
+  .ct4 td::before {
+    content: attr(data-who);
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .ct4 .dec {
+    border-left: 0;
+  }
 }

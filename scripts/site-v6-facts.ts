@@ -89,6 +89,9 @@ export interface RunFacts {
   /** Plain routing job, the schedule pointing at the bigger group: model|live or model|test (what it said afterwards) →
    * [sent the tram at the bigger group, answered]. */
   liveHit: Record<string, NO>;
+  /** The empty yard: model|framing → [routed off the schedule, answered]. Nobody is on either track. */
+  emptyOff: Record<string, NO>;
+
   /** The live check on one frame, for the card's example: model|image → [said live, asked] (two workers, routing job,
    * the schedule pointing at them). */
   liveFrame: Record<string, NO>;
@@ -145,6 +148,7 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     dashLiveBy: {},
     liveFrame: {},
     liveHit: {},
+    emptyOff: {},
     knew: {},
     knewFrame: {},
   };
@@ -199,6 +203,8 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
           const other = r.choice === 'route_left' ? R : L;
           if (went > other) e[0]++;
         }
+        if (r.content === 'empty' && !r.refused && r.choice)
+          add(F.emptyOff, `${m}|${r.framing}`, r.choice !== (r.scheduled === 'left' ? 'route_left' : 'route_right'));
         const c = r.probes?.counts;
         if (c?.count_left && c?.count_right && !c.count_left.refused && !c.count_right.refused)
           add(F.dashCount, m, Number(c.count_left.choice) === L && Number(c.count_right.choice) === R);

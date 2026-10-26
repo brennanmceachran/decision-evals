@@ -1,9 +1,12 @@
 // site/v6 share cards: one image per finding, drawn as SVG from site/v5/data.js plus raw counts from
 // scripts/site-v6-facts.ts, rasterised with resvg. Each card also exports its numbers (`facts`) so the page and the
 // independent checker (test/site-v6-verify.test.ts) can confirm every figure on every image.
-import { textJobs } from '../src/final/jobs.js';
+import { dashcamJobs, textJobs } from '../src/final/jobs.js';
+import { FINAL_SUBJECTS } from '../src/final/subjects.js';
+import { createHash } from 'node:crypto';
+import { realTrials } from '../src/real-study.js';
 import { CLASSICS, type RunFacts } from './site-v6-facts.js';
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 void mkdirSync;
 void rmSync;
@@ -2155,6 +2158,47 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         ),
         // plain routing job, the schedule pointing at the bigger group: [hit them, answered], by what it said afterwards
         liveHit: Object.fromEntries(see.flatMap((m) => ['live', 'test'].map((x) => [`${m}|${x}`, runs(m)[0]!.liveHit[`${m}|${x}`] ?? [0, 0]]))),
+        // the empty yard, every framing: [left the schedule, answered]
+        emptyOff: Object.fromEntries(
+          see.flatMap((m) => ['ops', 'ops-config', 'ops-safety', 'ops-nostop'].map((f) => [`${m}|${f}`, runs(m)[0]!.emptyOff[`${m}|${f}`] ?? [0, 0]])),
+        ),
+        // the requests as the AIs got them, for the frame the backfire and fault photos use (plain log, schedule left,
+        // the action's button first): the plain request, with the safety rule, with the brake fault
+        sent: Object.fromEntries(
+          ['ops', 'ops-safety', 'ops-nostop'].map((f) => {
+            const t = realTrials({ stimuli: 'final' }).find(
+              (r) => r.framing === f && r.image.endsWith('x-two-R.jpg') && r.wording === 0 && r.scheduled === 'left' && r.order === 'forward',
+            )!;
+            return [f, { text: t.text, question: t.question, buttons: Object.values(t.criteria) }];
+          }),
+        ),
+        // what one plain routing request cost, from the run caches (the main call only; a chat model's answer was five
+        // samples, so one call is a fifth of it). Gateway prices as charged during the runs, October 2026.
+        cost: (() => {
+          const jobs = dashcamJobs().filter((j) => j.meta.framing === 'ops');
+          const sha = (x: string) => createHash('sha256').update(x).digest('hex');
+          return Object.fromEntries(
+            see.map((m) => {
+              const s = FINAL_SUBJECTS.find((x) => x.id === m)!;
+              const ns = s.category !== 'decision' ? 'stage2' : m.startsWith('perplexity/') ? 'pplx12-a' : 'stage1';
+              let sum = 0;
+              let n = 0;
+              // median time to answer, ms. Clean for decision models (one call, timed around the request). A chat
+              // model's five samples were timed together, from before our own rate limiter, so its time is not shown.
+              const lat: number[] = [];
+              for (const j of jobs) {
+                const key = `final1|${s.id}|${s.route}|${s.host ?? ''}|${(s.gatewayOnly ?? []).join(',')}|${j.id}|main|${JSON.stringify(j.main)}`;
+                const f = `.cache/final/${ns}/${sha(key).slice(0, 32)}.json`;
+                if (!existsSync(f)) continue;
+                const rec = JSON.parse(readFileSync(f, 'utf8'));
+                sum += rec.costUsd / (s.category === 'decision' ? 1 : 5);
+                lat.push(rec.latencyMs);
+                n++;
+              }
+              return [m, { per1000: n ? (1000 * sum) / n : null, n, ms: n ? lat.sort((x, y) => x - y)[Math.floor(n / 2)]! : null }];
+            }),
+          );
+        })(),
         liveClef: runs('cloudflare/clef').map((t) => t.liveFrame['cloudflare/clef|u-two-L.jpg'] ?? [0, 0]),
       };
     })(),
