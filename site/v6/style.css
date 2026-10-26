@@ -245,10 +245,6 @@ button {
 .chapter:nth-of-type(odd) {
   background: var(--paper);
 }
-#real-old {
-  background: var(--night);
-  color: #fff;
-}
 #press {
   background: var(--night);
   color: #fff;
@@ -280,9 +276,6 @@ button {
   padding: clamp(56px, 8vw, 112px) var(--pad) clamp(44px, 6vw, 72px);
   background: var(--ink);
   color: #fff;
-}
-#real-old .rung-head {
-  background: #1b252d;
 }
 .rung-in {
   max-width: var(--measure);
@@ -583,7 +576,6 @@ button {
   line-height: 1.55;
   color: #50555c;
 }
-#real-old .f-proof,
 #press .f-proof {
   color: #aab3b9;
 }
@@ -762,9 +754,6 @@ button {
 }
 .bad {
   color: var(--red);
-}
-#real-old .good {
-  color: #3ed183;
 }
 
 /* ---------- dumbbell: every AI, two wordings */
@@ -2444,9 +2433,6 @@ button {
   border-radius: 16px;
   background: var(--sand);
 }
-#real-old .qs li {
-  background: var(--night2);
-}
 .qs .scene {
   width: 100%;
   max-width: 200px;
@@ -2656,9 +2642,6 @@ button {
   border-left: 4px solid var(--amber);
   font-size: 16px;
   color: #3a3f46;
-}
-#real-old .asked {
-  color: #c9d0d5;
 }
 .asked b {
   color: inherit;
