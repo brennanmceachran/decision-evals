@@ -5973,9 +5973,6 @@ button {
 #real .big small {
   color: var(--muted);
 }
-#real > .live4 .scene.photo {
-  border-radius: 14px;
-}
 #real .terminal {
   background: #15191d;
 }
@@ -6134,7 +6131,10 @@ button {
 #real .knew4 .scene .route,
 #real .knew4 .scene .skull,
 #real .group4 .scene .route,
-#real .group4 .scene .skull {
+#real .group4 .scene .skull,
+#real .livebars4 .scene .route,
+#real .livebars4 .scene .skull,
+#real .livebars4 .scene .bubble {
   opacity: 1 !important;
   clip-path: none !important;
   transform: none !important;
@@ -6337,4 +6337,14 @@ button {
 .qa-a.real {
   color: #3d4a8c;
   background: #eff1fa;
+}
+/* the live card: Claude's answer over the frame, then the chart */
+.lv-pic {
+  margin-bottom: 28px;
+}
+.lv-pic .scene.photo {
+  border-radius: 12px;
+}
+.lv-pic .kn-note {
+  margin-top: 10px;
 }
