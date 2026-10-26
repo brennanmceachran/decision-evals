@@ -6322,3 +6322,12 @@ button {
 .tw .tw-q {
   color: var(--ink);
 }
+.fw-head small {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.pair4 > .kn-q {
+  margin-bottom: 12px;
+}
