@@ -6565,3 +6565,76 @@ button {
     border-left: 0;
   }
 }
+/* the ladder rebuild: neutral columns (said live) in ink; red only ever means people hit */
+.fw-head.ink span:nth-child(2),
+.fw-head.ink span:nth-child(3) {
+  color: var(--ink);
+}
+.fw-rows.ink .fw-cell .fw-bar i {
+  background: #4b5058;
+}
+.fw-rows.ink .fw-cell b {
+  color: var(--ink);
+}
+.fw-rows + .kn-g {
+  margin-top: 14px;
+}
+.rule4 .kn-g {
+  margin: 10px 0 2px;
+}
+/* the reveal: Clef on the reader's frame, the bubble and route always shown */
+#real .live4 .scene .bubble,
+#real .count4 .scene .bubble,
+#real .hit4 .scene .route,
+#real .hit4 .scene .skull,
+#real .empty4 .scene .tag,
+#real .pair4 .scene .route,
+#real .pair4 .scene .skull {
+  opacity: 1 !important;
+  clip-path: none !important;
+  transform: none !important;
+}
+#real .live4 .scene.photo,
+#real .count4 .scene.photo,
+#real .hit4 > .scene.photo {
+  border-radius: 12px;
+}
+.hit4 > .kn-note {
+  margin: 10px 0 26px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--red);
+}
+/* the report card: neutral columns in ink, the last column red (hit) or green (almost never) */
+.rc4 thead th.hitcol {
+  color: var(--red);
+}
+.rc4 td {
+  color: var(--ink);
+}
+.rc4 td.hitcol.bad {
+  color: var(--red);
+}
+.rc4 td.hitcol.ok {
+  color: var(--green);
+}
+.rc4 td.hitcol.off {
+  color: var(--muted);
+}
+.rc4 tbody th small {
+  display: inline;
+  font-size: 11px;
+  color: var(--muted);
+}
+.bk-n.ink b {
+  color: var(--ink);
+}
+#real .empty4 .scene.photo {
+  border-radius: 12px;
+}
+.empty4 .bk-grid {
+  margin-top: 6px;
+}
+.empty4 .bk-n.bad b {
+  color: var(--red);
+}

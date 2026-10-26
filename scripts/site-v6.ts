@@ -174,7 +174,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }));
   // The native page draws its scenes in the browser with the same illustration kit, and uses the real frames.
   mkdirSync('site/v6/img', { recursive: true });
-  for (const f of ['u-two-L.jpg', 'w-group-L.jpg', 'x-two-R.jpg', 'x-group-L.jpg'])
+  for (const f of ['u-two-L.jpg', 'u-empty-L.jpg', 'w-group-L.jpg', 'x-two-R.jpg', 'x-group-L.jpg'])
     execSync(`cp assets/real-final/${f} site/v6/img/${f}`);
   execSync('cp site/v5/img/two-side-5v1-plain.png site/v6/img/');
   execSync(

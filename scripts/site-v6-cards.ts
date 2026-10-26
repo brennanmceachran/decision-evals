@@ -2199,6 +2199,10 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
             }),
           );
         })(),
+        // the report card: the request the reader answered, per AI: said live, counted right, hit the workers
+        card: Object.fromEntries(
+          see.flatMap((m) => ['live', 'count', 'hit'].map((x) => [`${m}|${x}`, runs(m)[0]!.card[`${m}|${x}`] ?? [0, 0]])),
+        ),
         liveClef: runs('cloudflare/clef').map((t) => t.liveFrame['cloudflare/clef|u-two-L.jpg'] ?? [0, 0]),
       };
     })(),
@@ -2524,6 +2528,8 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
       two: { ...PH.two, img: 'img/u-two-L.jpg', safe: TWO_EMPTY },
       group: { ...PH.group, img: 'img/w-group-L.jpg' },
       wet: { ...PH.wet, img: 'img/x-two-R.jpg', safe: WET_EMPTY },
+      // the try-it depot with nobody in it, for the brake fault's empty-yard check: the free bay is the right track
+      empty: { img: 'img/u-empty-L.jpg', rails: TWO_EMPTY, heads: [] as [number, number][], focus: 620 },
       xg: { ...XG, img: 'img/x-group-L.jpg' },
     },
   };

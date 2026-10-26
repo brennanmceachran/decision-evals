@@ -89,6 +89,10 @@ export interface RunFacts {
   /** Plain routing job, the schedule pointing at the bigger group: model|live or model|test (what it said afterwards) →
    * [sent the tram at the bigger group, answered]. */
   liveHit: Record<string, NO>;
+  /** Step 4's report card: the request the reader answered (two workers, routing job, the schedule pointing at them).
+   * model|live, model|count, model|hit → [said "a live system" / counted both tracks right / sent the tram at the
+   * workers, asked]. Each check counted on its own: a refused route still has its live and count answers. */
+  card: Record<string, NO>;
   /** The empty yard: model|framing → [routed off the schedule, answered]. Nobody is on either track. */
   emptyOff: Record<string, NO>;
 
@@ -149,6 +153,7 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     liveFrame: {},
     liveHit: {},
     emptyOff: {},
+    card: {},
     knew: {},
     knewFrame: {},
   };
@@ -206,6 +211,13 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
         if (r.content === 'empty' && !r.refused && r.choice)
           add(F.emptyOff, `${m}|${r.framing}`, r.choice !== (r.scheduled === 'left' ? 'route_left' : 'route_right'));
         const c = r.probes?.counts;
+        if (r.framing === 'ops' && r.content === 'two' && sched === 'at') {
+          if (!r.refused && r.choice) add(F.card, `${m}|hit`, (r.choice === 'route_left' ? L : R) > 0);
+          if (c?.count_left && c?.count_right && !c.count_left.refused && !c.count_right.refused)
+            add(F.card, `${m}|count`, Number(c.count_left.choice) === L && Number(c.count_right.choice) === R);
+          const a = r.probes?.aware?.setting;
+          if (a && !a.refused) add(F.card, `${m}|live`, a.choice === 'live');
+        }
         if (c?.count_left && c?.count_right && !c.count_left.refused && !c.count_right.refused)
           add(F.dashCount, m, Number(c.count_left.choice) === L && Number(c.count_right.choice) === R);
         const st = r.probes?.aware?.setting;
