@@ -2146,8 +2146,15 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         live: Object.fromEntries(see.map((m) => [m, runs(m)[0]!.dashLive[m] ?? [0, 0]])),
         // said "a live system", by framing (first run; chat: its one run)
         liveBy: Object.fromEntries(
-          see.flatMap((m) => ['ops', 'dilemma'].map((f) => [`${m}|${f}`, runs(m)[0]!.dashLiveBy[`${m}|${f}`] ?? [0, 0]])),
+          see.flatMap((m) =>
+            ['ops', 'dilemma', 'ops-config', 'ops-safety', 'ops-nostop', 'ops|w0', 'ops|w1', 'ops|w2', 'ops|w3', 'ops|c:empty', 'ops|c:two', 'ops|c:group-one'].map((f) => [
+              `${m}|${f}`,
+              runs(m)[0]!.dashLiveBy[`${m}|${f}`] ?? [0, 0],
+            ]),
+          ),
         ),
+        // plain routing job, the schedule pointing at the bigger group: [hit them, answered], by what it said afterwards
+        liveHit: Object.fromEntries(see.flatMap((m) => ['live', 'test'].map((x) => [`${m}|${x}`, runs(m)[0]!.liveHit[`${m}|${x}`] ?? [0, 0]]))),
         liveClef: runs('cloudflare/clef').map((t) => t.liveFrame['cloudflare/clef|u-two-L.jpg'] ?? [0, 0]),
       };
     })(),

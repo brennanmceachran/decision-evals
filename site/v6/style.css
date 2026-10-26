@@ -6129,12 +6129,16 @@ button {
 }
 /* the photo's route and skulls play in on scroll elsewhere; here the answer is already given, so show them */
 #real .knew4 .scene .route,
+#real .knewall4 .scene .route,
+#real .knewall4 .scene .skull,
 #real .knew4 .scene .skull,
 #real .group4 .scene .route,
 #real .group4 .scene .skull,
 #real .livebars4 .scene .route,
 #real .livebars4 .scene .skull,
-#real .livebars4 .scene .bubble {
+#real .livebars4 .scene .bubble,
+#real .three4 .scene .route,
+#real .three4 .scene .skull {
   opacity: 1 !important;
   clip-path: none !important;
   transform: none !important;
@@ -6347,4 +6351,22 @@ button {
 }
 .lv-pic .kn-note {
   margin-top: 10px;
+}
+/* a close-up at the top of a chart's card */
+.kn-one {
+  margin-bottom: 30px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid #ece7dc;
+}
+.kn-one .scene.photo {
+  border-radius: 12px;
+}
+.kn-one .kn-note {
+  margin-top: 10px;
+}
+.kn-one > .kn-q {
+  margin-bottom: 12px;
+}
+.kn-one .kn-grid + figcaption {
+  margin-top: 12px;
 }
