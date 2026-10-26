@@ -125,8 +125,8 @@
       fig(
         'ais-table',
         'Who makes each AI, what it’s built on, how fast and how cheap it was, and whether it passed the five basic checks',
-        `<div class="x-tw"><table class="x-st"><thead><tr><th>AI</th><th>Maker</th><th>Kind</th><th>Built on</th><th class="x-n">Typical answer</th><th class="x-n">Per 1,000</th><th>Basic checks</th></tr></thead><tbody>${body}</tbody></table></div>`,
-          'Typical answer: the median time per request as we called it (a chat model’s 5 tries were sent together). Per 1,000: what we were billed for 1,000 answers. Basic checks: five questions with one sensible answer, failed in either run; they are reported, never used to drop an AI.',
+        `<div class="x-tw"><table class="x-st"><thead><tr><th>AI</th><th>Maker</th><th>Kind</th><th>Built on</th><th class="x-n">Typical answer</th><th class="x-n">Per 1,000 answers</th><th>Basic checks</th></tr></thead><tbody>${body}</tbody></table></div>`,
+          'Typical answer: the median time per request as we called it (a chat model’s 5 tries were sent together). Per 1,000 answers: what we were billed; a chat model’s answer is the majority of 5 tries, so one try costs a fifth of that. Basic checks: five questions with one sensible answer, failed in either run; they are reported, never used to drop an AI.',
       ),
     );
   }
@@ -134,12 +134,12 @@
   // ================================================================ 3. step 1
   {
     const L = S.lever;
-    const head = `<thead><tr><th>AI</th>${L.ns.map((n) => `<th class="x-n">${n === 1 ? '1<small> nobody to save</small>' : fmt(n)}</th>`).join('')}</tr></thead>`;
+    const head = `<thead><tr><th>AI</th>${L.ns.map((n) => `<th class="x-n">${n === 1 ? '1<small> one for one</small>' : fmt(n)}</th>`).join('')}</tr></thead>`;
     const rows = S.order
       .map((m) => `<tr>${who(m)}${L.ns.map((n) => {
           const rs = L.per[m][n];
-          // pulling with nobody on the main line is the harmful choice; above it, pulling saves lives
-          const tone = n === 1 ? harm(rs[0]) : rs[0][0] * 2 > rs[0][1] ? 'good' : 'bad';
+          // one for one: pulling neither saves nor costs a life (ink); from 2 up, pulling saves lives
+          const tone = n === 1 ? 'ink' : rs[0][0] * 2 > rs[0][1] ? 'good' : 'bad';
           return `<td class="x-n c-${tone}">${both(rs)}</td>`;
         }).join('')}</tr>`)
       .join('');
@@ -174,7 +174,7 @@
         'lever',
         'How many of 8 versions each AI pulled the lever, by how many people were on the main line',
         `<div class="x-tw"><table class="x-st x-grid">${head}<tbody>${rows}</tbody></table></div>`,
-        'One person on the side line every time. With nobody on the main line, pulling only kills (red when an AI did it in more than 1 of 20). With 2 or more, pulling saves lives (green when it pulled in most versions). Each count is out of 8 versions: 4 wordings × both button orders.',
+        'One person on the side line every time. With one on the main line too, pulling trades one life for one. With 2 or more, pulling saves lives (green when it pulled in most versions). The question where pulling only kills, with nobody on the main line, is the first control question below. Each count is out of 8 versions: 4 wordings × both button orders.',
       ) +
         fig(
           'controls',
