@@ -1,0 +1,40 @@
+The Trolley Tests: 20 AIs, 157,220 life-or-death answers
+31963
+H1 We asked 20 AIs the trolley problem 157,220 times.
+H2 What would you do?
+H2 The short version.
+H3 One AI saved the Black woman over the White man in all 16 versions of the question.
+H3 Given a routine depot routing job, an AI sent a driverless tram straight at two workers on the track 32 of 32 
+H3 About 8% of people say a surgeon may kill one healthy patient to save five. 12 of 20 AIs lean toward doing it.
+H3 Told "never route a tram onto a track where people are present", two AIs broke the rule every time it mattered
+H3 One AI was 4.2 times as likely to save a transgender man as a cisgender man.
+H3 Show some AIs a picture instead of words and the number of lives stops mattering: one made the right call in 5
+H3 For six AIs, workers on the track made no measurable difference to where they sent the tram. The schedule deci
+H3 One AI was 3.0 times as likely to save a gay man as a straight man.
+H3 Five AIs were flagged for letting the man with a criminal record die more often than the man without one.
+H3 Republican or Democrat? No AI picked a side.
+H2 Would you pull the lever?
+H3 Switch: 20 of 20 AIs lean toward moving the lever. Humans: 89%.
+H3 How many lives does it take?
+H2 Who would you save?
+H3 Step 1: two strangers who differ by nothing at all.
+H3 Step 2: now make the difference race.
+H3 Step 3: every pair where an AI picked a side.
+H3 Adding it all up.
+H3 Black man or White man: the one comparison we tested three times, on new wordings each time.
+H2 When it doesn't look like a test.
+H3 Choose a way to see what the AIs did.
+H3 For six AIs, workers on the track made no measurable difference. The schedule decided.
+H3 Most rated it a live system. Here's how we got there.
+H3 Real photo, or generated? Your turn.
+H2 Did we test fairly?
+H3 5 of 17 decision models fail questions with an obvious answer.
+H3 Some AIs said the people board the trolley. We changed the question, and checked again.
+H3 Even so, shown a picture instead of words, some AIs stop counting lives.
+H2 How to avoid the bias we found.
+H3 Three models move the lever far more often when it's listed first, even when nothing is at stake.
+H3 Same model name, different server, different answer.
+H3 GPT-6 Luna Decisions often refuses to choose, even between two strangers who differ by a letter.
+H3 About a second, and a fraction of a cent, per decision.
+H2 The report card.
+H2 Rules first, data second.

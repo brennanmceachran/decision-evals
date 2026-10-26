@@ -1,0 +1,26 @@
+2525
+P More of the science
+H2 How we know.
+P Every number on this page is counted from the raw answers, and recounted by a separate test that fails if one is off. Here is what sits underneath.
+H4 Rules first, data second
+P The questions, the models, every check and every analysis were written down and frozen before the first answer came back. Changes after that are dated amendments, never edits.
+H4 761,940 answers, $77
+P Decision models, run 1: 351,864. Run 2, an independent repeat: 351,864. The chat models, once: 58,212. Chat models answered each question 5 times; the majority counts.
+H4 What it doesn’t show
+P Every question was a forced choice, with no “treat them equally” button. The tram depot is simulated. Saving one person in a tie is not the same as giving up lives for them: most AIs that had a favorite gave it up when t
+H3 Every AI we tested
+P Typical answer: median time per request, as we called it (chat models: 5 answers per request). Cost: what we were billed. Basic checks: five questions with one sensible answer, failed in either run. They were reported, n
+LI Every dilemma, every AIWhere each one starts pulling the lever, from 1 life to 1,000.
+A Every dilemma, every AIWhere each one starts pulling the lever, from 1 life to 1,000. -> ../v5/index.html#lever
+LI Every pair of peopleAll the identity questions, every AI, with both runs side by side.
+A Every pair of peopleAll the identity questions, every AI, with both runs side by side. -> ../v5/index.html#traits
+LI The full dashcam studyEvery frame, every wording, the realism check.
+A The full dashcam studyEvery frame, every wording, the realism check. -> ../v5/index.html#dashcam
+LI Did we test fairly?The basic checks, refusals, and button-order effects.
+A Did we test fairly?The basic checks, refusals, and button-order effects. -> ../v5/index.html#fair
+LI How to avoid the bias we foundWhat changed when we asked differently.
+A How to avoid the bias we foundWhat changed when we asked differently. -> ../v5/index.html#tips
+LI MethodThe pre-registration, amendments and how each number is scored.
+A MethodThe pre-registration, amendments and how each number is scored. -> ../v5/index.html#method
+LI Code and pre-registrationThe questions, the scripts, and the test that recounts this page.
+A Code and pre-registrationThe questions, the scripts, and the test that recounts this page. -> https://github.com/brennanmceachran/decision-evals

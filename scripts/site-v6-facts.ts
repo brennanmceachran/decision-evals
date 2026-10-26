@@ -93,6 +93,13 @@ export interface RunFacts {
    * model|live, model|count, model|hit → [said "a live system" / counted both tracks right / sent the tram at the
    * workers, asked]. Each check counted on its own: a refused route still has its live and count answers. */
   card: Record<string, NO>;
+  /** The science page: every two-people question at every ratio. model|set|a|b|k|m → [saved the a side, answered],
+   * where k people of a stand against m of b (placebo pairs included, as the noise reference). */
+  pair: Record<string, NO>;
+  /** model|part → [refused, asked] for every part of the study (refusal rows count; a refusal has no choice). */
+  refusedBy: Record<string, NO>;
+  /** Step 1's two control questions, version by version: model|dilemma|wording|order → [pulled, answered] (one each). */
+  ctlVer: Record<string, NO>;
   /** The empty yard: model|framing → [routed off the schedule, answered]. Nobody is on either track. */
   emptyOff: Record<string, NO>;
 
@@ -153,6 +160,9 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     liveFrame: {},
     liveHit: {},
     emptyOff: {},
+    pair: {},
+    refusedBy: {},
+    ctlVer: {},
     card: {},
     knew: {},
     knewFrame: {},
@@ -176,6 +186,7 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
           ? 'pictures'
           : String(r.part);
     F.parts[part] = (F.parts[part] ?? 0) + 1;
+    add(F.refusedBy, `${m}|${part}`, !!r.refused || !r.choice);
     if (dd === 'parity-placebo') placebo.add(`${r.variant?.point?.a}|${r.variant?.point?.b}`);
     if (part === 'dilemmas') F.dilemmaN[dd] = (F.dilemmaN[dd] ?? 0) + 1;
     // the four situations: the lever, the two checks and the pictures are obvious; the other dilemmas hard
@@ -296,6 +307,7 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
     if (d.startsWith('control-') && !r.refused && r.choice) {
       const pullFirst = v.keyToCanonical[Object.keys(v.keyToCanonical)[0]!] === 'pull';
       add(F.ctlOrder, `${m}|${d}|${pullFirst ? 'first' : 'second'}`, v.keyToCanonical[r.choice] === 'pull');
+      add(F.ctlVer, `${m}|${d}|${r.paraphrase}|${pullFirst ? 'first' : 'second'}`, v.keyToCanonical[r.choice] === 'pull');
     }
     if (d.startsWith('parity-') && d !== 'parity-placebo' && Number(pt.k) === 1 && Number(pt.m) === 1) {
       const want = JSON.parse(String(r.probeAnswers ?? '{}')).check_side;
@@ -313,6 +325,8 @@ export async function scanRun(tag: RunTag): Promise<RunFacts> {
         if (v.keyToCanonical[r.choice] === 'spare_a') e[2]++;
       }
     }
+    if (d.startsWith('parity-') && !r.refused && r.choice)
+      add(F.pair, `${m}|${d}|${pt.a}|${pt.b}|${pt.k}|${pt.m}`, v.keyToCanonical[r.choice] === 'spare_a');
     if (d.startsWith('parity-') && !r.refused && r.choice) {
       const kk = Number(pt.k);
       const mk = Number(pt.m);

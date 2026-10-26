@@ -1,0 +1,61 @@
+Appendix: identity findings in full · final study
+31057
+H1 Appendix: every finding, every model.
+H2 Where the models agree
+H3 Agreement map: questions where at least 4 decision models take a side
+H2 Gender identity
+H3 transgender man or cisgender man?
+H3 transgender woman or cisgender woman?
+H3 nonbinary person or cisgender person?
+H2 Sexuality
+H3 gay man or straight man?
+H3 lesbian woman or straight woman?
+H2 Criminal record, body and politics
+H3 man with no criminal record or man with a criminal record?
+H3 woman with no criminal record or woman with a criminal record?
+H3 obese man or thin man?
+H3 obese woman or thin woman?
+H3 Republican man or Democrat man?
+H3 Republican woman or Democrat woman?
+H2 A woman or a man of the same race
+H3 Saved the woman, of 80 woman-vs-man questions (same race)
+H2 Every trade, every model
+H3 Cloudflare Clef-omni 23 cases · baseline 54/1280, run 2 54/1280
+H3 Together Tev1-4B 8 cases · baseline 25/1280, run 2 27/1280
+H3 Cloudflare Clef 7 cases · baseline 3/1280, run 2 3/1280
+H3 Nace Drex v2.0 6 cases · baseline 0/1280, run 2 0/1280
+H3 Liquid d1 6 cases · baseline 1/1280, run 2 0/1280
+H3 Nace Drex v1.5 6 cases · baseline 62/1280, run 2 62/1280
+H3 Microsoft Decision-1 5 cases · baseline 0/1280, run 2 0/1280
+H3 Cloudflare Clef-flash 4 cases · baseline 100/1280, run 2 100/1280
+H3 GPT-6 Luna Decisions 4 cases · baseline 51/1278, run 2 51/1278
+H3 Respan Span-02 3 cases · baseline 0/1280, run 2 0/1280
+H3 Liquid d1-ultra 3 cases · baseline 15/1280, run 2 10/1280
+H3 Perplexity Decider 2 cases · baseline 2/1280, run 2 2/1280
+H3 ScaleDown Classify-1 1 case · baseline 578/1280, run 2 579/1280
+H3 TypeSafe Jev 1.14 1 case · baseline 0/1280, run 2 0/1280
+H3 Gemini 3.5 Flash-Lite chat, one run · 10 cases · baseline 79/1280
+H3 GPT-6 Luna chat, one run · 4 cases · baseline 64/1280
+H3 Claude Haiku 5.5 chat, one run · 3 cases · baseline 23/1280
+H2 Red flags, every model
+H3 Eleven kinds of failure, one row per model
+H2 Acting vs judging, both directions
+H3 Did it, then called it wrong
+H3 Held back, then called it acceptable
+H2 Who refuses
+H3 GPT-6 Luna Decisions: refused, by kind of question
+H2 Same base model, different products
+H3 Built on Alibaba Qwen3.8-27B
+H3 Built on Alibaba Qwen3.5-9B
+H3 Built on Alibaba Qwen3.5-4B
+H2 Every dilemma, every number of lives
+H3 Transplant: kill 1 healthy man for his organs
+H2 Control questions, version by version
+H3 Convai Laya
+H3 ScaleDown Classify-1
+H3 Cloudflare Clef-flash
+H3 Cloudflare Clef-omni
+H3 Upstage Solar Decide
+H3 Upstage Solar Decide Flash
+H3 Claude Haiku 5.5 chat, one run
+H2 Every race and nationality question, every model

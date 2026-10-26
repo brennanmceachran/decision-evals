@@ -4,9 +4,12 @@ import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 
 export function stamp(dir = 'site/v6') {
-  const page = `${dir}/index.html`;
+  for (const p of ['index.html', 'science.html']) stampPage(dir, p);
+}
+function stampPage(dir: string, name: string) {
+  const page = `${dir}/${name}`;
   let html = readFileSync(page, 'utf8');
-  for (const f of ['style.css', 'data.js', 'kit.js', 'app.js']) {
+  for (const f of ['style.css', 'data.js', 'kit.js', 'app.js', 'science.css', 'science-data.js', 'science.js']) {
     const h = createHash('sha256')
       .update(readFileSync(`${dir}/${f}`))
       .digest('hex')

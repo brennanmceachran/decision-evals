@@ -1,0 +1,61 @@
+The Trolley Tests: 22 AIs, 761,940 life-or-death answers
+46210
+H1 We asked 22 AIs the trolley problem 761,940 times.
+H2 What would you do?
+H2 The short version.
+H3 One AI saved the Black woman over the White woman in all 16 versions of the question, in both runs.
+H3 Given a routine depot routing job, an AI sent a driverless tram straight at two workers on the track 61 of 64 
+H3 About 8% of people say a surgeon may kill one healthy patient to save five. 11 of 22 AIs chose to in most vers
+H3 Told "never route a tram onto a track where people are present", one AI broke the rule every time it mattered.
+H3 Two AIs saved a transgender man over a cisgender man in all 16 versions of the question, in both runs.
+H3 Show some AIs a picture instead of words and the number of lives stops mattering: one made the call that kills
+H3 For eight AIs, workers on the track made no measurable difference to where they sent the tram. The schedule de
+H3 Two AIs saved a gay man over a straight man in all 16 versions of the question, in both runs.
+H3 Seven AIs passed the pre-registered strong-lean test for letting the man with a criminal record die to save a 
+H3 Republican or Democrat? No AI picked a side.
+H2 Headlines, with the proof attached.
+H3 Cloudflare's AIs drove a tram into workers they could see. Every time.
+H3 Asked as a trolley problem, it spared the workers. Asked as a routing job, it hit them.
+H3 Claude thought the camera feed was real. It hit the workers anyway.
+H3 Told never to route a tram at people, Cloudflare's AI did it every time.
+H3 Black people won the tiebreak. No AI would let two White people die for one.
+H3 Black or White, trans or cis, gay or straight: when an AI took a side, it was 36 to 0.
+H3 Same Alibaba model underneath. One saves Americans first. The other saves them last.
+H3 Five AIs saved Americans last of 11 nationalities. One saved them first.
+H3 Atheist or believer? Not one AI took the atheist's side.
+H3 Microsoft's AI saved the 80-year-old over the 35-year-old. Every time.
+H3 Cloudflare's AI never once saved the person without a disability.
+H3 Cloudflare's AI would let three poor people die to save one rich person.
+H3 Google's Gemini would let three 80-year-olds die to save one 8-year-old.
+H3 Half the AIs would kill a man at his checkup to give five patients his organs.
+H3 Nobody was in danger. Convai's AI pulled the lever onto a person anyway.
+H3 In words, Cloudflare's AI saved the most lives every time. In pictures, it mostly didn't.
+H2 Would you pull the lever?
+H3 Switch: 22 of 22 AIs chose moving the lever in most versions. Humans: 89%.
+H3 How many lives does it take?
+H2 Who would you save?
+H3 Step 1: two strangers who differ by nothing at all.
+H3 Step 2: now make the difference race.
+H3 Step 3: every question where an AI picked a side.
+H3 Step 4: who each AI saves first, and who it saves last.
+H3 13 AIs value one Black person above one White person. The highest: 1 = 1.6. Two the other way.
+H3 593 sides picked. 556 of them the same side as most other AIs.
+H3 Adding it all up.
+H3 Black man or White man: the same question, asked in two independent runs.
+H2 When it doesn't look like a test.
+H3 Choose a way to see what the AIs did.
+H3 1,158 of 1,536 trams sent at workers the AI could see. Five AIs did it every single time.
+H3 For eight AIs, workers on the track made no measurable difference. The schedule decided.
+H3 Most called it a live system. Here's how we got there.
+H3 Real photo, or generated? Your turn.
+H2 Did we test fairly?
+H3 5 of 19 decision models, sold for automated decisions, get questions with one obvious answer wrong.
+H3 Some AIs said the people board the trolley. One sentence in the question changes that for most.
+H3 The same scenes, as a picture: 20 of 68 right calls for Clef-flash. In words: 68 of 68.
+H2 How to avoid the bias we found.
+H3 Five models move the lever far more often when it's listed first, even when nothing is at stake.
+H3 Same model name, different server, different answer.
+H3 GPT-6 Luna Decisions often refuses to choose, even between two strangers who differ by a letter.
+H3 Under a second, and a fraction of a cent, per decision.
+H2 The report card.
+H2 Rules first, data second.

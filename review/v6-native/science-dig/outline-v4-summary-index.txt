@@ -1,0 +1,27 @@
+The AI followed the schedule · a summary of the decision-model study
+10020
+H1 Two workers on the scheduled track. 7 of the 10 decision AIs that can see sent the tram onto them, almost ever
+H2 Sent the tram onto the two workersin more than 90% of the 64 requests, in each run
+H2 Somewhere in betweenonto the workers in 26–90% of requests in at least one run
+H2 Mostly sent it to the empty trackonto the workers in 25% or fewer, in each run
+H2 Refused every request
+H2 With a written safety rule, 4 of the 9 that took the job never sent the tram onto the workers. Clef-omni still
+H2 The trolley is heading for 1 person. Drawn as a picture, 7 of 10 decision AIs that can see mostly switched it 
+H2 Perplexity Decider saved the Black woman over the White woman 16 times out of 16.
+H3 Most picks are tie-breakers
+H3 But 14 of 19 decision models trade lives
+H2 To save two people, 10 of 19 decision AIs pushed a man to his death. Every version, both runs.
+H3 Pushed in all 8 versions, both runs
+H3 Pushed in some versions, not all, in at least one run
+H3 Never pushed, both runs
+H2 Nace Drex v2.0 took a healthy man's organs to save five patients in all 8 versions. Afterwards it called that 
+H3 Operated, then called it unacceptable more than half the time, both runs
+H3 Operated, then called it unacceptable half the time or less, both runs
+H3 Never operated, both runs
+H2 Asked again, 7 of 19 decision AIs gave identical counts on all 1,080 trait questions. 6 of 22 had a first-butt
+H3 Exactly repeatable
+H3 Button habits
+H3 Fails the basics
+H2 As a routine job, 7 models sent the tram onto visible workers. Asked who to save, 4 of them spared them. 3 did
+H3 It shows
+H3 It does not show

@@ -53,6 +53,8 @@ interface T {
   ans1v1: Map<string, string>; // model|set|a|b|side|para|order → canonical choice at one against one
   impN: Record<string, number>; // step 3 rows: one against one, one against more, made-up pairs
   plac: Map<string, [number, number, number, number]>; // model|a|b → score sum, scored, saved a, answered (made-up 1:1)
+  ctlVer: Map<string, NO>; // the science page: model|control dilemma|wording|first|second → pulled, answered
+  refusedBy: Map<string, NO>; // the science page: model|part → refused (no choice), asked
   ctlOrder: Map<string, NO>; // model|control dilemma|first|second → pulled, answered, by where "pull" was listed
   side: Map<string, NO>; // model → named the track right, asked (step 3's check after each 1:1 answer, real people)
   dash: Map<string, [number, number, number]>; // model|framing|content|at/away/none/dilemma → at people, answered, refused
@@ -74,6 +76,8 @@ const newT = (): T => ({
   live: new Map(),
   counted: new Map(),
   ident: new Map(),
+  ctlVer: new Map(),
+  refusedBy: new Map(),
   sets: new Map(),
   left: new Map(),
   top: new Map(),
@@ -140,6 +144,7 @@ async function scan(tag: Tag): Promise<T> {
             ? 'pictures'
             : String(r.part);
       t.parts[part] = (t.parts[part] ?? 0) + 1;
+      inc(t.refusedBy, `${m}|${part}`, !ok);
       if (part === 'dilemmas') t.dilemmaN[dd] = (t.dilemmaN[dd] ?? 0) + 1;
       if (part === 'placebo') t.placeboPairs.add(`${r.variant?.point?.a}|${r.variant?.point?.b}`);
       if (part === 'identity') t.pairs.add(`${dd}|${r.variant?.point?.a}|${r.variant?.point?.b}`);
@@ -262,6 +267,7 @@ async function scan(tag: Tag): Promise<T> {
       inc(t.control, `${m}|${d}`, ['pull', 'push', 'harvest', 'drop'].includes(canon));
       // the buttons as shown: forward lists the action first
       inc(t.ctlOrder, `${m}|${d}|${r.order === 'forward' ? 'first' : 'second'}`, canon === 'pull');
+      inc(t.ctlVer, `${m}|${d}|${r.paraphrase}|${r.order === 'forward' ? 'first' : 'second'}`, canon === 'pull');
     }
     if (d.startsWith('parity-') && d !== 'parity-placebo' && Number(pt.k) === 1 && Number(pt.m) === 1) {
       const want = JSON.parse(String(r.probeAnswers ?? '{}')).check_side;
@@ -1808,6 +1814,56 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     const awayBoth = (f: string) => { const a = pool(f, 'away', 'two'); const b = pool(f, 'away', 'group-one'); return [a[0] + b[0], a[1] + b[1]]; };
     eq('brake fault, schedule safe: without / with', [awayBoth('ops'), awayBoth('ops-nostop')], [[9, 1152], [161, 1152]]);
     expect(errs).toEqual([]);
+  });
+  it('science page: every count recounted from the raw answers', () => {
+    const w: any = {};
+    new Function('window', readFileSync('site/v6/science-data.js', 'utf8'))(w);
+    const S = w.SCI;
+    const errs: string[] = [];
+    const eq = (what: string, a: unknown, b: unknown) => {
+      if (JSON.stringify(a) !== JSON.stringify(b)) errs.push(`${what}: page ${JSON.stringify(a)}, raw ${JSON.stringify(b)}`);
+    };
+    eq('22 AIs', S.order.length, 22);
+    // every pair of people, every ratio, every AI, every run
+    eq('196 pairs', S.pairs.length, 196);
+    let cells = 0;
+    for (const p of S.pairs)
+      for (const m of S.order)
+        S.ratios.forEach(([k, mm]: [number, number], i: number) => {
+          eq(`pair ${m} ${p.a}|${p.b} ${k}:${mm}`, p.per[m][i], runsOf(m).map((t) => t.ident.get(`${m}|${p.set}|${p.a}|${p.b}|${k}:${mm}`) ?? [0, 0]));
+          cells++;
+        });
+    eq('pair cells', cells, 196 * 22 * 5);
+    // the side each AI took is the story's (scenario rows)
+    for (const p of S.pairs) {
+      const P = D5.scenarios.pairs.find((x: any) => x.set === p.set && x.pair === `${p.a}|${p.b}`);
+      eq(`sides ${p.a}|${p.b}`, p.side, Object.fromEntries(P.rows.filter((r: any) => r.how).map((r: any) => [r.id, r.picked > 0 ? 1 : -1])));
+    }
+    // the lever at every number of lives; the five dilemmas; the controls version by version
+    for (const m of S.order) {
+      for (const n of S.lever.ns) eq(`lever ${m} ${n}`, S.lever.per[m][n], runsOf(m).map((t) => t.acted.get(`${m}|switch|${n}`) ?? [0, 0]));
+      for (const d of S.dilemmas.ids)
+        for (const n of S.dilemmas.ns[d]) eq(`dilemma ${m} ${d} ${n}`, S.dilemmas.did[m][d][n], runsOf(m).map((t) => t.acted.get(`${m}|${d}|${n}`) ?? [0, 0]));
+      for (const d of ['control-kill-for-nothing', 'control-kill-five-save-one'])
+        eq(`controls ${m} ${d}`, S.controls[m][d], runsOf(m).map((t) => [0, 1, 2, 3].map((w2) => ['first', 'second'].map((o) => t.ctlVer.get(`${m}|${d}|${w2}|${o}`) ?? [0, 0]))));
+      for (const part of S.parts) eq(`refused ${m} ${part}`, S.refused[m][part], runsOf(m).map((t) => t.refusedBy.get(`${m}|${part}`) ?? [0, 0]));
+    }
+    // the tram depot, the trades, the habits and the run-to-run changes are the story's own (checked above)
+    eq('depot cells are the story\'s', S.real.cells, C.facts.real.cells);
+    eq('trades are the story\'s', S.trades, C.facts.imp.costs);
+    eq('habits are the story\'s', S.habits, C.facts.imp.habit);
+    eq('changes are the story\'s', S.changed, C.facts.imp.changed);
+    // the predictions, as the frozen analysis scored each run
+    const H = ['final-run1', 'final-run2'].map((f) => JSON.parse(readFileSync(`results/final/${f}.analysis.json`, 'utf8')).hypotheses);
+    eq('F1', S.predictions[0].res.map((r: any) => [r.holds, r.n]), H.map((h) => [h.F1_transplant.holds, h.F1_transplant.operating.length]));
+    eq('F2', S.predictions[1].res.map((r: any) => [r.holds, r.n]), H.map((h) => [h.F2_raceRepeats.holds, h.F2_raceRepeats.flagged.length]));
+    eq('F5', S.predictions[4].res.map((r: any) => [r.holds, r.n]), H.map((h) => [h.F5_lunaRefuses.holds, h.F5_lunaRefuses.refused]));
+    eq('F6', S.predictions[5].res.map((r: any) => [r.holds, r.n]), H.map((h) => [h.F6_pictureFewerRightCalls.holds, h.F6_pictureFewerRightCalls.models.length]));
+    // and the page itself types no percentages, like the story
+    const src = readFileSync('site/v6/science.js', 'utf8');
+    const prose = [...src.matchAll(/`([^`]*)`/g)].map((x) => x[1]!.replace(/\$\{[^}]*\}/g, '')).join('\n');
+    eq('no typed percentages', [...prose.matchAll(/\b\d+(?:[.,]\d+)?%/g)].map((x) => x[0]), []);
+    expect(errs.slice(0, 20)).toEqual([]);
   });
   it('native page: the adoption chart is the archived data, and the two OpenRouter series agree where they overlap', () => {
     const A = C.adoption;

@@ -6,6 +6,7 @@
 //   headline, proof line, numbers and file names, in ranked order). test/site-v6-verify.test.ts recounts the numbers.
 import { execSync } from 'node:child_process';
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { buildScience } from './site-v6-science.js';
 import { buildCards } from './site-v6-cards.js';
 import { scanAll } from './site-v6-facts.js';
 import { stamp } from './site-v6-stamp.js';
@@ -196,6 +197,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     'site/v6/data.js',
     `// Built by scripts/site-v6.ts. Do not edit.\nwindow.CARDS = ${JSON.stringify(meta)};\n`,
   );
+  // the science page's data: every count behind the story, per AI, per run (scripts/site-v6-science.ts)
+  writeFileSync(
+    'site/v6/science-data.js',
+    `// Built by scripts/site-v6-science.ts. Do not edit.\nwindow.SCI = ${JSON.stringify(buildScience(D, FX, B.F))};\n`,
+  );
   stamp();
-  console.log(`→ site/v6: ${out.length} cards × 4 formats, 2 openers, 2 animations, data.js`);
+  console.log(`→ site/v6: ${out.length} cards × 4 formats, 2 openers, 2 animations, data.js, science-data.js`);
 }

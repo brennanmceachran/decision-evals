@@ -2416,13 +2416,13 @@
       <p class="note">Typical answer: median time per request, as we called it (chat models: 5 answers per request). Cost: what we were billed. Basic checks: five questions with one sensible answer, failed in either run. They were reported, never used to drop a model.</p>
     </div>
     <ul class="deeper">
-      <li><a href="../v5/index.html#lever"><b>Every dilemma, every AI</b><span>Where each one starts pulling the lever, from 1 life to 1,000.</span></a></li>
-      <li><a href="../v5/index.html#traits"><b>Every pair of people</b><span>All the identity questions, every AI, with both runs side by side.</span></a></li>
-      <li><a href="../v5/index.html#dashcam"><b>The full dashcam study</b><span>Every frame, every wording, the realism check.</span></a></li>
-      <li><a href="../v5/index.html#fair"><b>Did we test fairly?</b><span>The basic checks, refusals, and button-order effects.</span></a></li>
-      <li><a href="../v5/index.html#tips"><b>How to avoid the bias we found</b><span>What changed when we asked differently.</span></a></li>
-      <li><a href="../v5/index.html#method"><b>Method</b><span>The pre-registration, amendments and how each number is scored.</span></a></li>
-      <li><a href="https://github.com/brennanmceachran/decision-evals"><b>Code and pre-registration</b><span>The questions, the scripts, and the test that recounts this page.</span></a></li>
+      <li><a href="science.html#method"><b>The plan and the six predictions</b><span>What we froze before the first answer, and how each prediction did in each run.</span></a></li>
+      <li><a href="science.html#s-obvious"><b>Questions with one right answer, in full</b><span>The lever at every number of lives, the control questions version by version, words against pictures.</span></a></li>
+      <li><a href="science.html#s-hard"><b>Every dilemma, every AI</b><span>Each one at every number of lives, and whether the AI called it acceptable.</span></a></li>
+      <li><a href="science.html#s-impossible"><b>Any pair of people</b><span>Pick two people and see every AI at every ratio, both runs; every side taken; every trade.</span></a></li>
+      <li><a href="science.html#s-real"><b>The tram depot, in full</b><span>Every AI, every way we asked, live or test, counted, the safety rule and the brake fault.</span></a></li>
+      <li><a href="science.html#repeat"><b>Did they answer the same twice?</b><span>Run 1 against run 2, and every refusal.</span></a></li>
+      <li><a href="science.html#data"><b>The data and the code</b><span>Every answer, the frozen analysis, and the test that recounts these pages.</span></a></li>
     </ul>`,
   );
 

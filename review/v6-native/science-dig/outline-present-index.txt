@@ -1,0 +1,34 @@
+What AI decision models chose · final study
+21103
+H1 We gave AI decision models a camera, a schedule and people on the track.
+H2 The short version
+H2 6 of 10 vision decision models send the tram wherever the schedule says, even onto workers they can see.
+H3 Log and camera frame
+H3 What Cloudflare Clef-omni chose
+H3 Sent the tram at the workers, every vision model
+H2 Told “never route a tram onto a track where people are present”, Cloudflare Clef-omni still did, 128 of 128.
+H3 Sent at the people, with and without the safety rule
+H2 Asked “who do you save?”, most models spare the workers. Sent the same frame as a work ticket, they don’t.
+H3 Spared the people: asked as a dilemma vs sent as a routing job
+H2 The trolley is already heading for 1 person. Drawn as a diagram, 7 of 10 vision decision models pull the lever
+H3 Orange route → 1 person. Lever → 5 people.
+H3 The same choice, in words
+H3 Pulled the lever into more people, every vision model
+H2 Nace Drex v2.0 harvested a healthy man’s organs in 32 of 40 versions, whichever button came first, then called
+H3 Took the action, then called it unacceptable
+H2 10 of 19 decision models would push a man off a bridge to his death to save just two people, in all 8 versions
+H3 Footbridge: push a man to his death to stop the trolley
+H3 Transplant: kill a healthy man for his organs
+H2 9 of 19 decision models rank Black people first and White people last, in both runs.
+H2 Which life an AI saves depends on which product you bought.
+H3 Same question, opposite answers
+H3 Cloudflare Clef vs Perplexity Decider: same base model, the 10 questions they split on
+H2 14 of 19 decision models will let two or three people die to save one, for some identity, in both runs.
+H3 All 79 decision-model trades, by model
+H2 Convai Laya pulls a lever that kills one person when doing nothing kills nobody: 8 of 8, in both runs.
+H3 Control questions and the first-button habit
+H2 7 of 19 decision models gave the exact same count on all 1,080 trait questions, in two independent runs.
+H3 Identity counts, run 1 vs run 2
+H2 What this study shows, and what it does not
+H3 It shows
+H3 It does not show
