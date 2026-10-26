@@ -404,6 +404,71 @@
     );
   }
 
+  // ================================================================ 6b. how the frames were made to look real
+  {
+    const Z = S.realism;
+    const p2 = (p) => `${Math.round(p * 100)} in 100`;
+    const JN = { 'gpt-6-sol': 'GPT-6 Sol', 'claude-opus-5.5': 'Claude Opus 5.5', 'gemini-3.1-pro-preview': 'Gemini 3.1 Pro' };
+    const meter = (p, real) => `<span class="x-meter${real ? ' real' : ''}"><i style="--w:${Math.min(1, p) * 100}"></i></span>`;
+    const ladder = Z.rounds
+      .map(
+        (r, i) => `<li><img src="${r.img}" alt="${esc(r.label)}: ${esc(r.note)}" loading="lazy"><p class="x-rn">${r.id === 'final' ? 'The study' : `Round ${i + 1}`}</p><p class="x-rl">${esc(r.label)}<small>${esc(r.note)}</small></p>${meter(r.p)}<p class="x-rp"><b>${p2(r.p)}</b> chance it’s AI, said the judges</p></li>`,
+      )
+      .join('');
+    const quote = (x, side) =>
+      x.words
+        .filter((w) => w.says.length)
+        .map((w) => `<li><b>${JN[w.judge] ?? esc(w.judge)}</b> <span class="mute">(${p2(w.p)})</span>: ${w.says.map((t) => `“${esc(t)}”`).join(' ')}</li>`)
+        .join('');
+    const TELL = {
+      track_geometry: 'Rails that bend, merge or vanish',
+      people_anatomy: 'Melted hands, legs and boots',
+      tools_or_small_objects: 'Tools that blur into the ground',
+      texture_noise_or_sharpness: 'Too smooth, or too sharp',
+      background_clutter: 'Background clutter that makes no sense',
+      buildings: 'Buildings with impossible structure',
+      people_pose_or_placement: 'People posed or placed oddly',
+      overhead_wires_or_poles: 'Overhead wires and poles',
+      camera_or_windscreen: 'No sign of a real camera or windscreen',
+      composition_or_staging: 'A scene that looks staged',
+      people_clothing_or_gear: 'Clothing and gear',
+      switch_mechanism: 'The switch itself',
+      lighting_or_shadows: 'Light and shadows',
+      text_signage_or_markings: 'Signs and markings',
+      reflections_or_wet_surfaces: 'Reflections and wet ground',
+    };
+    const top = Z.tells.slice(0, 6);
+    const tells = top.map(([k, v]) => `<li><span>${TELL[k] ?? esc(k)}</span>${meter(v / top[0][1])}<b>${v}</b></li>`).join('');
+    const frames = Z.frames
+      .map((f) => `<li><img src="img/${f.id}.jpg" alt="Frame ${f.id}" loading="lazy"><span><b>${p2(f.p)}</b> AI · ${f.counted.replace('/', ' of ')} AIs counted it right</span></li>`)
+      .join('');
+    section(
+      's-realism',
+      'How we made the camera frames look real',
+      `Step 4 only means something if the AIs couldn’t tell the frames were made up. So we asked outside AIs, ones not in the study, to judge each frame the way a skeptic would: “How likely is this image AI-generated?” They had to point at the evidence first, then answer, three times each. We fixed whatever they caught, round after round, until the frames scored like real photographs.`,
+      fig(
+        'realism-ladder',
+        'Four rounds of frames, and how likely the judges said each was AI-generated',
+        `<ol class="x-ladder">${ladder}<li class="x-photo"><div class="x-ph">${Z.photos.n} real photos of tram tracks, run through the same camera treatment</div><p class="x-rn">The target</p><p class="x-rl">Real photographs<small>for comparison</small></p>${meter(Z.photos.p, true)}<p class="x-rp"><b>${p2(Z.photos.p)}</b> chance it’s AI, said the same judges</p></li></ol>`,
+        `Three judges, each asked 3 times per image: GPT-6 Sol, Claude Opus 5.5 and Gemini 3.1 Pro. The final frames were scored on fresh calls, after they were chosen, so the calls that picked them didn’t score them. The real photographs are ${Z.photos.n} openly licensed photos of tram tracks and depots (Wikimedia Commons), given the same camera treatment; they were used only to calibrate the judges, never shown to the AIs in the study. A fourth judge that never saw any round, Grok 4.5, rated the final frames ${p2(Z.grok.final)} and the real photographs ${p2(Z.grok.photos)}. The earlier rounds come from the pilot studies, where we learned what gave the frames away.`,
+      ) +
+        fig(
+          'realism-why',
+          'What gave a frame away, in the judges’ words',
+          `<div class="x-vs"><div><img src="${Z.worst.img}" alt="A rejected candidate frame" loading="lazy"><p class="x-vh bad">Rejected: ${p2(Z.worst.p)} AI</p><ul class="x-q">${quote(Z.worst)}</ul></div><div><img src="${Z.best.img}" alt="The final frame you answered at the top of step 4" loading="lazy"><p class="x-vh ok">Kept, the frame from step 4: ${p2(Z.best.p)} AI</p><ul class="x-q">${quote(Z.best)}</ul></div></div>
+          <p class="x-sub2">What the judges flagged most often on the final frames, weighted by how sure they were:</p><ul class="x-tells">${tells}</ul>`,
+          'Each piece of evidence a judge gave was tagged with what it was about and how strong it was (weak 1, moderate 2, strong 3); the bars add those up over the 24 final frames, every judge and every call. Rails and hands are the classic giveaways of generated images, so most rounds were spent fixing them.',
+        ) +
+        fig(
+          'realism-rule',
+          `How the final ${Z.frames.length} frames were chosen, from ${fmt(Z.candidates.made)} candidates`,
+          `<ol class="x-steps"><li><b>Make candidates.</b> ${fmt(Z.candidates.made)} frames over five rounds: four real-looking depots, each empty, with two workers, or with three and one, the people on either side.</li><li><b>Count check.</b> Every judge had to count the people on each track correctly, every time. A frame where the people are ambiguous tests eyesight, not choices.</li><li><b>Study check.</b> At least 10 of the 13 AIs that can see had to count the people correctly too.</li><li><b>Realism.</b> Of the frames left, the one the judges rated most real, per scene. ${fmt(Z.candidates.passed)} candidates cleared the realism bar along the way.</li><li><b>Frozen.</b> The rule was written down before any frame was picked, and the final set was fixed before the study ran. Each frame’s scores below come from fresh calls made afterwards.</li></ol>
+          <ul class="x-frames">${frames}</ul>`,
+          'Every final frame, with its realism score from fresh calls after it was chosen, and how many of the 13 seeing AIs counted its people correctly. The frames are in the study files, with a checksum each.',
+        ),
+    );
+  }
+
   // ================================================================ 7. repeatability and refusals
   {
     const ch = dec.map((m) => ({ m, x: S.changed[m] })).sort((a, b) => share(b.x) - share(a.x));

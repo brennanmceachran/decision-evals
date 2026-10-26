@@ -1,8 +1,10 @@
 // INDEPENDENT verification of site/v6's cards against the raw answer files.
-// Written without importing scripts/site-v6*.ts or reading results/final/*.analysis.json. One streaming pass per raw
+// Written without importing scripts/site-v6*.ts. It reads results/final/*.analysis.json only to confirm the science
+// page copies the frozen analysis's scores of the pre-registered predictions faithfully. One streaming pass per raw
 // file tallies every count the cards use; each test then checks the numbers drawn INSIDE the images (window.CARDS
 // .cards[].drawn: every <text> on each card, in all four formats) and the proof line beside them. A test collects
 // every mismatch and fails with the full list.
+import { createHash } from 'node:crypto';
 import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs';
 import { createInterface } from 'node:readline';
 import { beforeAll, describe, expect, it } from 'vitest';
@@ -1853,12 +1855,27 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     eq('trades are the story\'s', S.trades, C.facts.imp.costs);
     eq('habits are the story\'s', S.habits, C.facts.imp.habit);
     eq('changes are the story\'s', S.changed, C.facts.imp.changed);
-    // the predictions, as the frozen analysis scored each run
+    // the predictions: the page must copy the frozen analysis's own scores (src/final/analyze.ts, bootstrap CIs this
+    // checker doesn't redo). This is the one place the checker reads an analysis file, to confirm a faithful copy.
     const H = ['final-run1', 'final-run2'].map((f) => JSON.parse(readFileSync(`results/final/${f}.analysis.json`, 'utf8')).hypotheses);
     eq('F1', S.predictions[0].res.map((r: any) => [r.holds, r.n]), H.map((h) => [h.F1_transplant.holds, h.F1_transplant.operating.length]));
     eq('F2', S.predictions[1].res.map((r: any) => [r.holds, r.n]), H.map((h) => [h.F2_raceRepeats.holds, h.F2_raceRepeats.flagged.length]));
     eq('F5', S.predictions[4].res.map((r: any) => [r.holds, r.n]), H.map((h) => [h.F5_lunaRefuses.holds, h.F5_lunaRefuses.refused]));
     eq('F6', S.predictions[5].res.map((r: any) => [r.holds, r.n]), H.map((h) => [h.F6_pictureFewerRightCalls.holds, h.F6_pictureFewerRightCalls.models.length]));
+    // the realism section: the judges' scores, recomputed from the realism-check files, and the frame record
+    const RC = (f: string) => JSON.parse(readFileSync(`results/realism-check-${f}.json`, 'utf8'));
+    const avg = (r: any) => r.rows.reduce((a: number, x: any) => a + x.meanJudgePAi, 0) / r.rows.length;
+    eq('realism: final frames, fresh calls', +S.realism.rounds[3].p.toFixed(4), +avg(RC('final-frozen-fresh')).toFixed(4));
+    eq('realism: 24 final frames', S.realism.rounds[3].n, 24);
+    eq('realism: real photos', +S.realism.photos.p.toFixed(4), +avg(RC('real-photos-pipe')).toFixed(4));
+    eq('realism: held-out judge', [+S.realism.grok.final.toFixed(4), +S.realism.grok.photos.toFixed(4)], [+avg(RC('final-frozen-grok')).toFixed(4), +avg(RC('real-photos-grok')).toFixed(4)]);
+    const cand = ['final-r2', 'final-r3', 'final-r4', 'final-r5', 'final-r6'].map(RC);
+    eq('realism: candidates', [S.realism.candidates.made, S.realism.candidates.passed], [cand.reduce((a, r) => a + r.rows.length, 0), cand.reduce((a, r) => a + r.rows.filter((x: any) => x.passesGate).length, 0)]);
+    const SRC = JSON.parse(readFileSync('assets/real-final/SOURCES.json', 'utf8'));
+    eq('realism: every frame', S.realism.frames.map((f: any) => [f.id, f.p, f.counted]), Object.entries<any>(SRC.frames).map(([k, f]) => [k, f.realismFresh3Judges, f.studyModelsCountingRight]));
+    // the frames on the page are the frames the study used, byte for byte
+    for (const [k, f] of Object.entries<any>(SRC.frames))
+      eq(`frame ${k}`, createHash('sha256').update(readFileSync(`site/v6/img/${k}.jpg`)).digest('hex'), f.sha256);
     // and the page itself types no percentages, like the story
     const src = readFileSync('site/v6/science.js', 'utf8');
     const prose = [...src.matchAll(/`([^`]*)`/g)].map((x) => x[1]!.replace(/\$\{[^}]*\}/g, '')).join('\n');

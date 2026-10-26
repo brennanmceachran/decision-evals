@@ -2421,6 +2421,7 @@
       <li><a href="science.html#s-hard"><b>Every dilemma, every AI</b><span>Each one at every number of lives, and whether the AI called it acceptable.</span></a></li>
       <li><a href="science.html#s-impossible"><b>Any pair of people</b><span>Pick two people and see every AI at every ratio, both runs; every side taken; every trade.</span></a></li>
       <li><a href="science.html#s-real"><b>The tram depot, in full</b><span>Every AI, every way we asked, live or test, counted, the safety rule and the brake fault.</span></a></li>
+      <li><a href="science.html#s-realism"><b>How we made the camera frames look real</b><span>Four rounds of frames, outside judges, what gave them away, and how the final 24 were chosen.</span></a></li>
       <li><a href="science.html#repeat"><b>Did they answer the same twice?</b><span>Run 1 against run 2, and every refusal.</span></a></li>
       <li><a href="science.html#data"><b>The data and the code</b><span>Every answer, the frozen analysis, and the test that recounts these pages.</span></a></li>
     </ul>`,

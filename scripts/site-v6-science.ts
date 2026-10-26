@@ -144,6 +144,51 @@ export function buildScience(D: any, FX: Facts, story: any) {
     { name: 'stage2.jsonl', what: 'Every answer from the 3 chat models (one run, 5 samples each)', rows: 58212 },
   ];
 
+  // ---- how the frames were made to look real: the rounds, the judges, the giveaways, every final frame. From the
+  // realism checks (results/realism-check-*.json: outside judges asked "how likely is this image AI-generated?", 3
+  // times each, with the evidence they saw) and the frame record (assets/real-final/SOURCES.json).
+  const RC = (f: string) => JSON.parse(readFileSync(`results/realism-check-${f}.json`, 'utf8'));
+  const mean = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length;
+  const byJudge = (r: any) => {
+    const o: Record<string, number[]> = {};
+    for (const row of r.rows) for (const [j, v] of Object.entries<any>(row.judges)) (o[j.split('/').pop()!] ??= []).push(v.p_ai);
+    return Object.fromEntries(Object.entries(o).map(([k, v]) => [k, mean(v)]));
+  };
+  const fresh = RC('final-frozen-fresh');
+  const photos = RC('real-photos-pipe');
+  const rounds = [
+    ...D.realismV2.steps.slice(0, 3).map((x: any) => ({ id: x.id, label: x.label, note: x.note, img: `img/realism-${x.id}.jpg`, p: x.p, judges: x.judges, n: null })),
+    { id: 'final', label: 'The final 24 frames', note: 'four depots, picked by a written rule', img: 'img/u-two-L.jpg', p: mean(fresh.rows.map((r: any) => r.meanJudgePAi)), judges: byJudge(fresh), n: fresh.rows.length },
+  ];
+  // the giveaways the judges named on the final frames, weighted weak 1 / moderate 2 / strong 3
+  const tells: Record<string, number> = {};
+  for (const row of fresh.rows)
+    for (const v of Object.values<any>(row.judges))
+      for (const ev of v.evidence.flat())
+        if (ev.points_to === 'ai') tells[ev.category] = (tells[ev.category] ?? 0) + ({ weak: 1, moderate: 2, strong: 3 } as any)[ev.strength];
+  // the candidate rounds before selection: how many were made, how many passed the realism bar
+  const cands = ['r2', 'r3', 'r4', 'r5', 'r6'].map((f) => {
+    const r = RC(`final-${f}`);
+    return { n: r.rows.length, pass: r.rows.filter((x: any) => x.passesGate).length };
+  });
+  // one rejected candidate and one final frame, in the judges' own words (first call each)
+  const words = (row: any, side: string) =>
+    Object.entries<any>(row.judges).map(([j, v]) => ({ judge: j.split('/').pop(), p: v.p_ai, says: v.evidence[0].filter((e: any) => e.points_to === side).slice(0, 2).map((e: any) => e.detail) }));
+  const worstRow = RC('final-r2').rows.reduce((a: any, x: any) => (x.meanJudgePAi > a.meanJudgePAi ? x : a));
+  const bestRow = fresh.rows.find((r: any) => r.image.endsWith('u-two-L.jpg'));
+  const SRC = JSON.parse(readFileSync('assets/real-final/SOURCES.json', 'utf8'));
+  const realism = {
+    rounds,
+    photos: { p: mean(photos.rows.map((r: any) => r.meanJudgePAi)), judges: byJudge(photos), n: photos.rows.length },
+    grok: { final: mean(RC('final-frozen-grok').rows.map((r: any) => r.meanJudgePAi)), photos: mean(RC('real-photos-grok').rows.map((r: any) => r.meanJudgePAi)) },
+    tells: Object.entries(tells).sort((a, b) => b[1] - a[1]),
+    candidates: { made: cands.reduce((a, c) => a + c.n, 0), passed: cands.reduce((a, c) => a + c.pass, 0) },
+    rule: SRC.rule,
+    worst: { img: 'img/realism-rejected.jpg', p: worstRow.meanJudgePAi, words: words(worstRow, 'ai') },
+    best: { img: 'img/u-two-L.jpg', p: bestRow.meanJudgePAi, words: words(bestRow, 'real') },
+    frames: Object.entries<any>(SRC.frames).map(([k, f]) => ({ id: k, p: f.realismFresh3Judges, grok: f.realismHeldOutGrok, counted: f.studyModelsCountingRight })),
+  };
+
   // the freeze: the commit every run's manifest records, and the design hash
   const man = JSON.parse(readFileSync('results/final/final-run1.manifest.json', 'utf8'));
   const freeze = { commit: man.composedOf[0].git.commit.slice(0, 7), design: man.design, date: '2026-10-16' };
@@ -151,6 +196,7 @@ export function buildScience(D: any, FX: Facts, story: any) {
   return {
     built: 'scripts/site-v6-science.ts',
     freeze,
+    realism,
     models,
     order: ids,
     studies: story.studies,

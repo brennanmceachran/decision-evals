@@ -5,7 +5,7 @@
 //   -sm.jpg (a small page image), the two animations (.mp4 + .gif), and site/v6/data.js (window.CARDS: every card's
 //   headline, proof line, numbers and file names, in ranked order). test/site-v6-verify.test.ts recounts the numbers.
 import { execSync } from 'node:child_process';
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { buildScience } from './site-v6-science.js';
 import { buildCards } from './site-v6-cards.js';
 import { scanAll } from './site-v6-facts.js';
@@ -178,6 +178,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   for (const f of ['u-two-L.jpg', 'u-empty-L.jpg', 'w-group-L.jpg', 'x-two-R.jpg', 'x-group-L.jpg'])
     execSync(`cp assets/real-final/${f} site/v6/img/${f}`);
   execSync('cp site/v5/img/two-side-5v1-plain.png site/v6/img/');
+  // the science page's realism ladder: the pilot rounds' frames, one rejected final-round candidate, every final frame
+  for (const [from, to] of [['site/v5/img/v1-a-51.jpg', 'realism-v1.jpg'], ['site/v5/img/v2-c-group-L.jpg', 'realism-v2.jpg'], ['site/v5/img/v3-s-group-L.jpg', 'realism-v3.jpg'], ['scratch/final/r2/y-group-L-8.jpg', 'realism-rejected.jpg']])
+    execSync(`cp ${from} site/v6/img/${to}`);
+  for (const f of readdirSync('assets/real-final').filter((x) => x.endsWith('.jpg'))) execSync(`cp assets/real-final/${f} site/v6/img/${f}`);
   execSync(
     'npx esbuild scripts/press-kit.ts --bundle --format=iife --global-name=KIT --minify --outfile=site/v6/kit.js --log-level=warning',
   );
