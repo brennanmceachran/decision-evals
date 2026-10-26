@@ -444,13 +444,15 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
   });
   const hk = D.real.models['anthropic/claude-haiku-5.5'];
   const hkR = D.dash['anthropic/claude-haiku-5.5'].routing;
+  // the page's count: two workers on the scheduled track, routing job (its one run)
+  const hkTwo = (FX.s2.dash['anthropic/claude-haiku-5.5|ops|two|at'] ?? [0, 0]).slice(0, 2) as [number, number];
   cards.push({
     name: '03-photo-live',
     dark: true,
-    head: `Claude said this camera feed was live. It sent the tram at the workers {${pct(hkR.toward, hkR.of)}} of the time.`,
+    head: `Claude said this camera feed was live. It sent the tram at the workers {${hkTwo[0]} times in ${hkTwo[1]}}.`,
     visual: photoVis({ ...PH.wet, bubble: ['Live system, or a test?', '“A live system.”'] }),
     photo: { ...PH.wet, bubble: ['Live system, or a test?', '“A live system.”'] },
-    src: `${N('anthropic/claude-haiku-5.5')}: "live" in ${hk.live[0].n} of ${hk.live[0].of} answers, asked separately; tram at the workers in ${hkR.toward} of ${hkR.of} requests. One run, majority of 5 samples. Simulated depot.`,
+    src: `${N('anthropic/claude-haiku-5.5')}: "live" in ${hk.live[0].n} of ${hk.live[0].of} answers, asked separately; two workers on the scheduled track, tram at them in ${hkTwo[0]} of ${hkTwo[1]} requests. One run, majority of 5 samples. Simulated depot.`,
   });
   const sf = D.dash['cloudflare/clef-omni'].safety;
   cards.push({
@@ -2145,7 +2147,8 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         count: Object.fromEntries(see.map((m) => [m, runs(m)[0]!.dashCount[m] ?? [0, 0]])),
         knew: Object.fromEntries(see.map((m) => [m, runs(m)[0]!.knew[m] ?? [0, 0, 0]])),
         // the card's example: Clef on the try-it frame (two workers on the left, the schedule pointing left), both runs
-        knewClef: runs('cloudflare/clef').map((t) => t.knewFrame['cloudflare/clef|u-two-L.jpg'] ?? [0, 0, 0]),
+        // the walk-through follows the hero's AI, Clef-omni, on the try-it frame, both runs
+        knewClef: runs('cloudflare/clef-omni').map((t) => t.knewFrame['cloudflare/clef-omni|u-two-L.jpg'] ?? [0, 0, 0]),
         live: Object.fromEntries(see.map((m) => [m, runs(m)[0]!.dashLive[m] ?? [0, 0]])),
         // said "a live system", by framing (first run; chat: its one run)
         liveBy: Object.fromEntries(
@@ -2203,7 +2206,7 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         card: Object.fromEntries(
           see.flatMap((m) => ['live', 'count', 'hit'].map((x) => [`${m}|${x}`, runs(m)[0]!.card[`${m}|${x}`] ?? [0, 0]])),
         ),
-        liveClef: runs('cloudflare/clef').map((t) => t.liveFrame['cloudflare/clef|u-two-L.jpg'] ?? [0, 0]),
+        liveClef: runs('cloudflare/clef-omni').map((t) => t.liveFrame['cloudflare/clef-omni|u-two-L.jpg'] ?? [0, 0]),
       };
     })(),
     imp: (() => {
