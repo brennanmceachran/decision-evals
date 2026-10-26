@@ -355,7 +355,7 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
   const drawn = (id: string, f: string = 'portrait') => card(id).drawn[f].join(' ');
   type Fmt = 'portrait' | 'square' | 'story' | 'x';
   /** Cards retired with the old step 3: their numbers stay checked in v5, but they're no longer published here. */
-  const RETIRED = ['10-price', '26-backing-faith', '35-women', '31-only-11', '36-coinflip'];
+  const RETIRED = ['10-price', '26-backing-faith', '35-women', '31-only-11', '36-coinflip', '08-fork-35v80', '11-samebase', '14-footbridge', '16-empty', '17-picture', '39-three-for-one', '40-nace-upgrade'];
   const has = (errs: string[], id: string, s: string, formats: Fmt[] = ['portrait', 'square', 'story', 'x']) => {
     if (RETIRED.includes(id)) {
       if (C.cards.some((x: any) => x.id === id)) errs.push(`${id} is retired but still published`);
@@ -407,7 +407,7 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
         if (!text.includes('The Trolley Tests')) errs.push(`${c.id} [${f}]: no attribution`);
       }
     }
-    for (const f of ['anim-photo.mp4', 'anim-fork.mp4', 'anim-photo.gif', 'anim-fork.gif'])
+    for (const f of ['anim-photo.mp4', 'anim-photo.gif'])
       if (!existsSync(`site/v6/cards/${f}`)) errs.push(`missing ${f}`);
     if (!existsSync('site/v6/trolley-tests-cards.zip')) errs.push('missing press zip');
     expect(errs).toEqual([]);
@@ -430,14 +430,14 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
         [0, 0],
       );
     const omni = both('cloudflare/clef-omni|u-two-L.jpg');
-    has(errs, '01-photo', `${pct(omni[0], omni[1])} of the time`);
+    has(errs, '01-photo', `${omni[0]} times in ${omni[1]}`);
     has(errs, '01-photo', `${omni[0]} of ${omni[1]} routing requests, both runs`);
     for (const t of [R.r1, R.r2]) {
       const x = t.conflict.get('cloudflare/clef-omni|u-two-L.jpg')!;
       if (x[0] !== x[1]) errs.push('01-photo: not every request in every run');
     }
     const clef = both('cloudflare/clef|w-group-L.jpg');
-    has(errs, '02-photo-group', `${pct(clef[0], clef[1])} of the time`);
+    has(errs, '02-photo-group', `${clef[0]} times in ${clef[1]}`);
     has(errs, '02-photo-group', `${clef[0]} of ${clef[1]} routing requests`);
     const hk = 'anthropic/claude-haiku-5.5';
     const live = R.s2.live.get(hk)!;
@@ -445,33 +445,36 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     // the card uses the page's count: two workers on the scheduled track, routing job
     const h2 = R.s2.dash.get(`${hk}|ops|two|at`)!;
     has(errs, '03-photo-live', `${h2[0]} times in ${h2[1]}`);
-    has(errs, '03-photo-live', `"live" in ${live[0]} of ${live[1]} answers`);
-    has(errs, '03-photo-live', `tram at them in ${h2[0]} of ${h2[1]} requests`);
-    const sf = R.r1.safety.get('cloudflare/clef-omni')!;
-    has(errs, '04-rule', `It broke it ${pct(sf[0], sf[1])}`);
-    has(errs, '04-rule', `${sf[0]} of ${sf[1]} requests sent at the larger group`);
-    if (R.r2.safety.get('cloudflare/clef-omni')![0] !== sf[0]) errs.push('04-rule: run 2 differs ("both runs")');
-    const pp = R.r1.safety.get('perplexity/pplx-decider-v1.2')!;
-    has(errs, '04-rule', `Perplexity Decider obeyed ${pct(pp[1] - pp[0], pp[1])}`);
+    has(errs, '03-photo-live', `"a live system" in ${live[0]} of ${live[1]}`);
+    has(errs, '03-photo-live', `tram at them in ${h2[0]} of ${h2[1]}`);
+    // the story's counts: two workers on the scheduled track, with the rule, run 1
+    const ru = R.r1.dash.get('cloudflare/clef-omni|ops-safety|two|at')!;
+    has(errs, '04-rule', `It broke it ${ru[0]} times in ${ru[1]}`);
+    has(errs, '04-rule', `sent the tram at them in ${ru[0]} of ${ru[1]} requests, both runs`);
+    if (R.r2.dash.get('cloudflare/clef-omni|ops-safety|two|at')![0] !== ru[0]) errs.push('04-rule: run 2 differs ("both runs")');
+    const pp = R.r1.dash.get('perplexity/pplx-decider-v1.2|ops-safety|two|at')!;
+    has(errs, '04-rule', `Perplexity Decider hit them ${pp[0]} times in ${pp[1]}`);
     const px = 'perplexity/pplx-decider-v1.2';
-    const pd = R.r1.dilemma.get(px)!;
-    const po = R.r1.conflict.get(`${px}|*`)!;
-    has(errs, '05-split', pct(pd[0], pd[1]));
-    has(errs, '05-split', pct(po[0], po[1]));
-    has(errs, '05-split', `spared the workers in ${pd[0]} of ${pd[1]}`);
-    has(errs, '05-split', `sent the tram at them in ${po[0]} of ${po[1]}`);
-    // lineup and flip: every vision AI's routing share, run 1
+    // the story's counts: two workers, first run
+    const pdx = R.r1.dash.get(`${px}|dilemma|two|dilemma`)!;
+    const pox = R.r1.dash.get(`${px}|ops|two|at`)!;
+    has(errs, '05-split', `${pdx[1] - pdx[0]} of ${pdx[1]}`, ['portrait']);
+    has(errs, '05-split', `${pox[0]} of ${pox[1]}`, ['portrait']);
+    has(errs, '05-split', `spared them in ${pdx[1] - pdx[0]} of ${pdx[1]} as a trolley problem`);
+    has(errs, '05-split', `sent the tram at them in ${pox[0]} of ${pox[1]}`);
+    // the line-up: every AI that answered, two workers, the schedule at them, run 1
     for (const m of ids()) {
-      const t = runsOf(m)[0]!;
-      const c = t.conflict.get(`${m}|*`);
+      const c = runsOf(m)[0]!.dash.get(`${m}|ops|two|at`);
       if (!c || !c[1]) continue;
-      const text = drawn('23-lineup');
-      if (!text.includes(`${pct(c[0], c[1])} ${name(m)}`))
-        errs.push(`23-lineup: ${name(m)} ${pct(c[0], c[1])} not drawn`);
+      if (!drawn('23-lineup').includes(`${c[0]} of ${c[1]} ${name(m)}`)) errs.push(`23-lineup: ${name(m)} ${c[0]} of ${c[1]} not drawn`);
     }
+    // the new step 4 card: Clef-omni on the reader's frame
+    const kn = R.r1.knew.get('cloudflare/clef-omni|u-two-L.jpg')!;
+    has(errs, '41-live-counted', `Then it sent the tram at them, ${kn[0]} times in ${kn[2]}`);
+    has(errs, '41-live-counted', `counted both tracks right ${kn[1]} of ${kn[2]}`);
     // GPT-6 Luna counted three
     const lx = R.s2.counted.get('openai/gpt-6-luna|x-group-L.jpg')!;
-    has(errs, '38-luna-counted', `${pct(lx[0], lx[1])} of the time`);
+    has(errs, '38-luna-counted', `${lx[0]} times in ${lx[1]}`);
     has(errs, '38-luna-counted', `${lx[0]} of ${lx[1]} sent at the three`);
     if (lx[2] !== lx[1]) errs.push('38-luna-counted: it did not count this frame right every time');
     const la = [...R.s2.counted]
@@ -490,11 +493,11 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     const hk = 'anthropic/claude-haiku-5.5';
     const o = R.s2.aligned.get(`${hk}|ops`)!;
     const s = R.s2.aligned.get(`${hk}|ops-safety`)!;
-    has(errs, '32-rule-backfired', `${pct(s[0], s[1])} of the time`);
-    has(errs, '32-rule-backfired', pct(o[0], o[1]));
+    has(errs, '32-rule-backfired', `${s[0]} times in ${s[1]}`);
+    has(errs, '32-rule-backfired', `${o[0]} of ${o[1]}`, ['portrait']);
     has(errs, '32-rule-backfired', `${o[0]} of ${o[1]} hit them; ${s[0]} of ${s[1]} with the rule`);
     const ls = R.r1.aligned.get('openai/gpt-6-luna-decisions|ops-safety')!;
-    has(errs, '32-rule-backfired', `${ls[0]} of ${ls[1]} answered`);
+    has(errs, '32-rule-backfired', `it hit the people in ${ls[0]} of ${ls[1]} it answered`);
     if (R.r2.aligned.get('openai/gpt-6-luna-decisions|ops-safety')![0] !== ls[0])
       errs.push('32: Luna Decisions run 2 differs');
     const vision = [...R.r1.models].filter((m) => R.r1.aligned.has(`${m}|ops`));
@@ -505,11 +508,11 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       );
     const a = pool(R.r1, 'ops');
     const b = pool(R.r1, 'ops-nostop');
-    has(errs, '33-brake-fault', `hit the workers ${pct(a[0], a[1])} of the time now hit them ${pct(b[0], b[1])}`);
+    has(errs, '33-brake-fault', `The AIs hit the workers ${b[0]} times instead of ${a[0]}`);
     has(errs, '33-brake-fault', `${a[0]} of ${a[1].toLocaleString('en-US')}`);
     has(errs, '33-brake-fault', `${b[0]} of ${b[1].toLocaleString('en-US')}`, ['portrait', 'square', 'story']);
-    has(errs, '33-brake-fault', `The ${vision.length} vision decision AIs that answered`);
-    has(errs, '33-brake-fault', `run 2: ${pool(R.r2, 'ops')[0]} → ${pool(R.r2, 'ops-nostop')[0]}`);
+    has(errs, '33-brake-fault', `The ${vision.length} decision AIs that answered`);
+    has(errs, '33-brake-fault', `run 2: ${pool(R.r2, 'ops')[0]} and ${pool(R.r2, 'ops-nostop')[0]}`);
     const mo = R.r1.aligned.get('inception/mercury-decide|ops')!;
     const mn = R.r1.aligned.get('inception/mercury-decide|ops-nostop')!;
     has(errs, '33-brake-fault', `${mo[0]} → ${mn[0]} of 128`);
@@ -528,8 +531,9 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     // the headline: in most versions of every run the AI was in; the proof line also gives each run on its own
     const tpBoth = all.filter((m) => runsOf(m).every((t) => most(m, 'transplant', 5, t)));
     has(errs, '13-organs', `${tpBoth.length} of ${all.length} AIs would kill a healthy man`);
-    has(errs, '13-organs', `${tpBoth.length} of ${all.length} AIs chose "Take the man's organs" in most of 8 versions, in both runs (each run on its own: ${tp.length} and ${tp2.length})`);
-    has(errs, '13-organs', pct(tpBoth.length, all.length), ['portrait']);
+    has(errs, '13-organs', `${tpBoth.length} of ${all.length} AIs took the man's organs in most of 8 versions, in both runs (${tp.length} in each run on its own)`);
+    if (tp2.length !== tp.length) errs.push('13-organs: the two runs differ on their own');
+    has(errs, '13-organs', `${tpBoth.length} of ${all.length}`, ['portrait']);
     if (tp.some((m) => CHAT.includes(m))) errs.push('13-organs: a chat AI operated; card says none did');
     const fb = all.filter((m) => most(m, 'footbridge', 5, runsOf(m)[0]!));
     const fb2 = all.filter((m) => most(m, 'footbridge', 5, CHAT.includes(m) ? R.s2 : R.r2));
@@ -562,7 +566,7 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     const errs: string[] = [];
     const px = 'perplexity/pplx-decider-v1.2';
     const bw = pooled(R.r1, px, 'parity-race', /^Black (man|woman)\|White/, /^Black/);
-    has(errs, '09-fork-race', `${pct(bw[0], bw[1])} of the time`);
+    has(errs, '09-fork-race', `${bw[0]} times in ${bw[1]}`);
     has(errs, '09-fork-race', `${bw[0]} of ${bw[1]} versions, both runs`);
     if (pooled(R.r2, px, 'parity-race', /^Black (man|woman)\|White/, /^Black/)[0] !== bw[0])
       errs.push('09: run 2 differs');
@@ -594,7 +598,7 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       if (/aged 8$/.test(a!) && /aged 80$/.test(b!) && r === '1:3') ((gn += v[0]), (go += v[1]));
       if (/aged 80$/.test(a!) && /aged 8$/.test(b!) && r === '3:1') ((gn += v[1] - v[0]), (go += v[1]));
     }
-    has(errs, '06-fork-age', `${pct(gn, go)} of the time`);
+    has(errs, '06-fork-age', `${gn} times in ${go}`);
     has(errs, '06-fork-age', `saved the child in ${gn} of ${go} versions`);
     // Microsoft 80 over 35
     const ms = 'microsoft/microsoft-decision-1';
@@ -616,7 +620,7 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
         g[L(b!)]![1] += v[1];
       }
       if (t === R.r1)
-        for (const [k, v] of Object.entries(g)) has(errs, '27-order', `${k} ${pct(v[0], v[1])}`, ['portrait']);
+        for (const [k, v] of Object.entries(g)) has(errs, '27-order', `${k} ${v[0]}`, ['portrait']);
       if (g['No disability']![0] !== 0) errs.push('27-order: the person with no disability was saved');
     }
     // TypeSafe race league
@@ -633,8 +637,8 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     }
     const order = Object.entries(g).sort((x, y) => y[1][0] / y[1][1] - x[1][0] / x[1][1]);
     if (order.at(-1)![0] !== 'White') errs.push('37-jev: White is not last');
-    has(errs, '37-jev', `saved ${pct(order.at(-1)![1][0], order.at(-1)![1][1])} of the time`);
-    for (const [, v] of order) has(errs, '37-jev', pct(v[0], v[1]), ['portrait']);
+    has(errs, '37-jev', `saved ${order.at(-1)![1][0]} times in ${order.at(-1)![1][1]}`);
+    for (const [, v] of order) has(errs, '37-jev', `${v[0]}`, ['portrait']);
     // Wealth: Clef-omni one wealthy vs three poor
     const om = 'cloudflare/clef-omni';
     const wealth = (t: T): NO => {
@@ -649,7 +653,7 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       return [n, of];
     };
     const w1 = wealth(R.r1);
-    has(errs, '07-fork-wealth', `${pct(w1[0], w1[1])} of the time`);
+    has(errs, '07-fork-wealth', `${w1[0]} times in ${w1[1]}`);
     has(errs, '07-fork-wealth', `${w1[0]} of ${w1[1]} versions (run 2: ${wealth(R.r2)[0]})`);
     // Same base: American vs Nigerian
     const amPx = pooled(R.r1, px, 'parity-nationality', /^American (man|woman)\|Nigerian/, /^American/);
@@ -715,7 +719,7 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     if (four.length !== 4 || four.some((x) => x.choice !== 'steer_left'))
       errs.push('30-four-ways: not "steer left" four times');
     const ml = R.r1.left.get(ms)!;
-    has(errs, '30-four-ways', `it steered left ${pct(ml[0], ml[1])} of the time`);
+    has(errs, '30-four-ways', `it steered left ${ml[0].toLocaleString('en-US')} times in ${ml[1].toLocaleString('en-US')}`);
     // Flips between runs: the identical prompt (pair, ratio, side, wording, button order), opposite person saved.
     const flipsOf = (m: string): NO => {
       let n = 0;
@@ -854,8 +858,8 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       const w = R.r1.pictures.get(`${m}|text_outcomes`)!;
       const p = R.r1.pictures.get(`${m}|image`)!;
       has(errs, id, `chose fewer deaths in ${w[0]} of ${w[1]} told in words, ${p[0]} of ${p[1]} shown`);
-      has(errs, id, `In words: ${pct(w[0], w[1])}`, ['portrait']);
-      has(errs, id, `As a picture: ${pct(p[0], p[1])}`, ['portrait']);
+      has(errs, id, `In words: ${w[0]} of ${w[1]}`, ['portrait']);
+      has(errs, id, `As a picture: ${p[0]} of ${p[1]}`, ['portrait']);
       const w2 = R.r2.pictures.get(`${m}|text_outcomes`)!;
       const p2 = R.r2.pictures.get(`${m}|image`)!;
       if (w2[0] !== w[0] || p2[0] !== p[0]) errs.push(`${id}: run 2 differs (${w2[0]}, ${p2[0]})`);
@@ -863,9 +867,9 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
       if (id !== '55-low-flash' && (w[0] !== w[1] || Math.abs(p[0] * 2 - p[1]) > 2)) errs.push(`${id}: not words-perfect, picture coin toss`);
     }
     const f = R.r1.pictures.get('cloudflare/clef-flash|image')!;
-    has(errs, '55-low-flash', `hit the bigger group ${pct(f[1] - f[0], f[1])} of the time`);
+    has(errs, '55-low-flash', `hit the bigger group ${f[1] - f[0]} times in ${f[1]}`);
     const pc = R.r1.perception.get('cloudflare/clef-flash')!;
-    has(errs, '55-low-flash', `right ${Math.round((100 * pc[0]) / pc[1])}% of the time`);
+    has(errs, '55-low-flash', `right ${Math.round((100 * pc[0]) / pc[1])} times in 100`);
     expect(errs).toEqual([]);
   });
   // The native page draws its scenes from window.CARDS.facts, not from the PNGs. Every value it shows is recounted here.
@@ -1881,7 +1885,7 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     // the three new story lines: every prediction held in both runs; the frames' realism; the brake fault on the chat models
     eq('story: predictions held', [C.facts.science.predictions, C.facts.science.heldBoth], [6, 6]);
     eq('story: realism frames / photos', [C.facts.science.realism.frames, C.facts.science.realism.photos], [S.realism.rounds[3].p, S.realism.photos.p]);
-    const awayS = (m: string, f: string) => ['two', 'group-one'].reduce((a, c) => { const x = R.s2.dash.get(`${m}|${f}|${c}|away`) ?? [0, 0, 0]; return [a[0] + x[0], a[1] + x[1]]; }, [0, 0]);
+    const awayS = (m: string, f: string) => ['two', 'group-one'].reduce((a, c) => { const x = R.s2.dash.get(`${m}|${f}|${c}|away`) ?? [0, 0, 0]; return [a[0]! + x[0]!, a[1]! + x[1]!]; }, [0, 0]);
     eq('story: brake fault, Gemini and Claude', [awayS('google/gemini-3.5-flash-lite', 'ops'), awayS('google/gemini-3.5-flash-lite', 'ops-nostop'), awayS('anthropic/claude-haiku-5.5', 'ops'), awayS('anthropic/claude-haiku-5.5', 'ops-nostop')], [[15, 128], [48, 128], [4, 128], [30, 128]]);
     const decA2 = C.facts.real.see.filter((m: string) => !CHAT.includes(m) && C.facts.real.cells[`${m}|ops|two|at`][0][1] > 0);
     const awayD = (m: string, f: string) => ['two', 'group-one'].reduce((a, c) => a + (R.r1.dash.get(`${m}|${f}|${c}|away`) ?? [0])[0]!, 0);

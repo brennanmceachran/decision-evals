@@ -19,60 +19,52 @@ const OUT = 'site/v6/cards';
    is the v5 section with the full counts; `with` are the cards to read (and share) alongside, so a claim travels with
    the context that keeps it honest. */
 export const ORDER: { id: string; story: string; tier: 1 | 2 | 3; evidence: string; with: string[] }[] = [
-  { id: '03-photo-live', story: 'tram', tier: 1, evidence: '#dashcam', with: [] },
-  { id: '38-luna-counted', story: 'tram', tier: 1, evidence: '#dashcam', with: [] },
-  { id: '09-fork-race', story: 'identity', tier: 1, evidence: '#traits', with: ['25-backing'] },
-  { id: '25-backing', story: 'identity', tier: 1, evidence: '#traits', with: ['09-fork-race'] },
-  { id: '13-organs', story: 'dilemmas', tier: 1, evidence: '#lever', with: ['34-acceptable'] },
-  { id: '06-fork-age', story: 'identity', tier: 1, evidence: '#traits', with: [] },
-  { id: '32-rule-backfired', story: 'tram', tier: 1, evidence: '#dashcam', with: ['04-rule'] },
-  { id: '05-split', story: 'tram', tier: 1, evidence: '#dashcam', with: ['28-flip'] },
-  { id: '01-photo', story: 'tram', tier: 1, evidence: '#dashcam', with: ['23-lineup'] },
-  { id: '34-acceptable', story: 'dilemmas', tier: 2, evidence: '#lever', with: [] },
-  { id: '07-fork-wealth', story: 'identity', tier: 2, evidence: '#traits', with: [] },
-  { id: '11-samebase', story: 'identity', tier: 2, evidence: '#traits', with: ['24-podium'] },
-  { id: '04-rule', story: 'tram', tier: 2, evidence: '#dashcam', with: [] },
-  { id: '37-jev', story: 'identity', tier: 2, evidence: '#traits', with: ['09-fork-race'] },
-  { id: '33-brake-fault', story: 'tram', tier: 2, evidence: '#dashcam', with: [] },
-  { id: '16-empty', story: 'dilemmas', tier: 2, evidence: '#fair', with: [] },
-  { id: '27-order', story: 'identity', tier: 2, evidence: '#traits', with: [] },
-  { id: '08-fork-35v80', story: 'identity', tier: 2, evidence: '#traits', with: [] },
-  { id: '30-four-ways', story: 'chance', tier: 3, evidence: '#traits', with: [] },
-  { id: '14-footbridge', story: 'dilemmas', tier: 3, evidence: '#lever', with: [] },
-  { id: '23-lineup', story: 'tram', tier: 3, evidence: '#dashcam', with: [] },
-  { id: '24-podium', story: 'identity', tier: 3, evidence: '#traits', with: [] },
-  { id: '02-photo-group', story: 'tram', tier: 3, evidence: '#dashcam', with: [] },
-  { id: '17-picture', story: 'tram', tier: 3, evidence: '#fair', with: [] },
-  { id: '28-flip', story: 'tram', tier: 3, evidence: '#dashcam', with: [] },
-  { id: '39-three-for-one', story: 'chance', tier: 3, evidence: '#traits', with: [] },
-  { id: '40-nace-upgrade', story: 'chance', tier: 3, evidence: '#traits', with: [] },
-  // step 1's lowlights, one card each
-  { id: '50-low-laya', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
-  { id: '51-low-solar', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
-  { id: '52-low-omni', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
-  { id: '53-low-luna', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
-  { id: '54-low-d1', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
-  { id: '55-low-flash', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
-  // step 2's hall of shame, one card each
-  { id: '60-hard-laya', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
-  { id: '61-hard-flash', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
-  { id: '62-hard-mercury', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
-  { id: '63-hard-microsoft', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
-  { id: '64-hard-order', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
-  { id: '65-hard-cloudflare', story: 'dilemmas', tier: 3, evidence: '#fair', with: [] },
+  // the opening: the try-it frame
+  { id: '01-photo', story: 'open', tier: 1, evidence: '#top', with: ['41-live-counted'] },
+  // step 4, the tram depot: the step's own findings, then its hall of shame
+  { id: '41-live-counted', story: 'real', tier: 1, evidence: '#real', with: ['05-split'] },
+  { id: '05-split', story: 'real', tier: 1, evidence: '#real', with: ['28-flip'] },
+  { id: '28-flip', story: 'real', tier: 2, evidence: '#real', with: ['23-lineup'] },
+  { id: '23-lineup', story: 'real', tier: 2, evidence: '#real', with: [] },
+  { id: '04-rule', story: 'real', tier: 1, evidence: '#real', with: ['32-rule-backfired'] },
+  { id: '32-rule-backfired', story: 'real', tier: 1, evidence: '#real', with: ['04-rule'] },
+  { id: '33-brake-fault', story: 'real', tier: 1, evidence: '#real', with: [] },
+  { id: '03-photo-live', story: 'real', tier: 2, evidence: '#real', with: [] },
+  { id: '02-photo-group', story: 'real', tier: 2, evidence: '#real', with: [] },
+  { id: '38-luna-counted', story: 'real', tier: 2, evidence: '#real', with: [] },
+  // step 3, two strangers
+  { id: '25-backing', story: 'impossible', tier: 1, evidence: '#impossible', with: ['09-fork-race'] },
+  { id: '09-fork-race', story: 'impossible', tier: 1, evidence: '#impossible', with: ['25-backing'] },
+  { id: '37-jev', story: 'impossible', tier: 2, evidence: '#impossible', with: ['09-fork-race'] },
+  { id: '06-fork-age', story: 'impossible', tier: 1, evidence: '#impossible', with: [] },
+  { id: '07-fork-wealth', story: 'impossible', tier: 2, evidence: '#impossible', with: [] },
+  { id: '27-order', story: 'impossible', tier: 2, evidence: '#impossible', with: [] },
+  { id: '24-podium', story: 'impossible', tier: 2, evidence: '#impossible', with: [] },
+  { id: '30-four-ways', story: 'impossible', tier: 3, evidence: '#impossible', with: [] },
+  // step 2, one life for five
+  { id: '13-organs', story: 'hard', tier: 1, evidence: '#hard', with: ['34-acceptable'] },
+  { id: '34-acceptable', story: 'hard', tier: 2, evidence: '#hard', with: [] },
+  { id: '60-hard-laya', story: 'hard', tier: 3, evidence: '#hard', with: [] },
+  { id: '61-hard-flash', story: 'hard', tier: 3, evidence: '#hard', with: [] },
+  { id: '62-hard-mercury', story: 'hard', tier: 3, evidence: '#hard', with: [] },
+  { id: '63-hard-microsoft', story: 'hard', tier: 3, evidence: '#hard', with: [] },
+  { id: '64-hard-order', story: 'hard', tier: 3, evidence: '#hard', with: [] },
+  { id: '65-hard-cloudflare', story: 'hard', tier: 3, evidence: '#hard', with: [] },
+  // step 1, questions with one right answer
+  { id: '50-low-laya', story: 'obvious', tier: 2, evidence: '#obvious', with: [] },
+  { id: '51-low-solar', story: 'obvious', tier: 3, evidence: '#obvious', with: [] },
+  { id: '52-low-omni', story: 'obvious', tier: 3, evidence: '#obvious', with: [] },
+  { id: '53-low-luna', story: 'obvious', tier: 3, evidence: '#obvious', with: [] },
+  { id: '54-low-d1', story: 'obvious', tier: 3, evidence: '#obvious', with: [] },
+  { id: '55-low-flash', story: 'obvious', tier: 2, evidence: '#obvious', with: [] },
 ];
 /** Swipe sets: the card that leads, and the cards that complete the picture (the defence comes with the claim). */
 export const STORIES: Record<string, { title: string; dek: string }> = {
-  tram: {
-    title: 'The tram test',
-    dek: 'A real-looking dashcam frame, a depot log asking for a route. No mention of people.',
-  },
-  identity: { title: 'Who gets saved', dek: 'Two strangers, one track each. Only one thing about them differs.' },
-  dilemmas: {
-    title: 'The classic dilemmas',
-    dek: 'The thought experiments philosophers use, next to what people answer.',
-  },
-  chance: { title: 'Mostly, it isn’t choosing', dek: 'Swap the tracks or the buttons, and most answers change.' },
+  open: { title: 'The opening', dek: 'The frame you answered at the top of the page.' },
+  obvious: { title: 'Step 1: Questions with one right answer', dek: 'The lever, the control questions, words against pictures.' },
+  hard: { title: 'Step 2: One life for five, made personal', dek: 'The lever, the loop, the trapdoor, the footbridge, the surgeon.' },
+  impossible: { title: 'Step 3: Two strangers', dek: 'Two people, one on each track, the same in every way but one.' },
+  real: { title: 'Step 4: The tram depot', dek: 'A real-looking routing request: a log, a schedule, a frame from the cab camera.' },
 };
 
 const strip = (s: string) => s.replace(/[{}]/g, '');
@@ -150,22 +142,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     })),
     48,
   );
-  const ageCard = byName.get('06-fork-age')!;
-  const top = { label: '1 child,\naged 8', kind: 'child', n: 1, o: { shirt: B.GREEN } };
-  const bot = { label: '3 people\naged 80', kind: 'elder', n: 3 };
-  video(
-    'anim-fork',
-    Array.from({ length: 60 }, (_, i) => ({
-      ...ageCard,
-      hiOpacity: fade(i, 43),
-      visual: B.forkVis(top as any, bot as any, i >= 12 ? 'bottom' : null, {
-        reveal: ease((i - 14) / 26),
-        skulls: i >= 42,
-        tramDx: 20 * ease((i - 14) / 26),
-      }),
-    })),
-    48,
-  );
   // One zip of every card, every format, for press.
   execSync(`cd site/v6 && rm -f trolley-tests-cards.zip && zip -qr trolley-tests-cards.zip cards -x '*-sm.jpg'`);
   const openers = ['21a-you-photo', '22a-you-age'].map((id) => ({
@@ -191,7 +167,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // real outside judges rated the frames against real photographs
   const SCI0 = buildScience(D, FX, B.F);
   const F3 = SCI0.predictions.find((x: any) => x.id === 'F3')!;
-  B.F.science = {
+  (B.F as any).science = {
     predictions: SCI0.predictions.length,
     heldBoth: SCI0.predictions.filter((x: any) => (x.id === 'F3' ? x.res.every((r: any) => r.n === r.of) && F3.chat!.n === F3.chat!.of : x.res.every((r: any) => r.holds === true))).length,
     realism: { frames: SCI0.realism.rounds.at(-1).p, photos: SCI0.realism.photos.p, judges: 3 },
@@ -214,5 +190,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const SCI = SCI0;
   writeFileSync('site/v6/science-data.js', `// Built by scripts/site-v6-science.ts. Do not edit.\nwindow.SCI = ${JSON.stringify(SCI)};\n`);
   stamp();
-  console.log(`→ site/v6: ${out.length} cards × 4 formats, 2 openers, 2 animations, data.js, science-data.js`);
+  console.log(`→ site/v6: ${out.length} cards × 4 formats, 2 openers, 1 animation, data.js, science-data.js`);
 }

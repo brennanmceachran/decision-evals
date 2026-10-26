@@ -2237,7 +2237,7 @@
       const td = (x, cls, who) => `<td data-who="${who}" class="${cls}"><span>${x[1] ? `${x[0]} <small>of ${x[1]}</small>` : '<small>refused every one</small>'}</span></td>`;
       const hitCls = (x) => (!x[1] ? 'off' : x[0] <= 0.05 * x[1] ? 'ok' : 'bad');
       $('.hit4', sec).innerHTML = `${photo(F.photos.two, { crop: [0, 0, 1280, 720] })}
-        <p class="kn-note">Then Clef-omni set the switch left, toward the workers: ${kc[0][0]} times in ${kc[0][2]}${bothRuns(kc) ? ', both runs' : ''}.</p>
+        <p class="kn-note">Then Clef-omni set the switch left, toward the workers: ${kc[0][0]} times in ${kc[0][2]}${bothRuns(kc) ? ', both runs' : ''}. <button type="button" class="share alt" data-card="41-live-counted">Share this</button></p>
         <p class="kn-q">Every AI, on the request you answered</p>
         <div class="ct-wrap"><table class="ct4 rc4">
           <thead><tr><th></th><th>Said “a live system”</th><th>Counted both tracks correctly</th><th class="hitcol">Sent the tram at the workers</th></tr></thead>
@@ -2369,17 +2369,35 @@
     title: 'Take any of these.',
     dek: 'Every finding is an image too, in four sizes, with its proof line printed on it so a screenshot keeps the context.',
   });
-  press.insertAdjacentHTML(
-    'beforeend',
-    `<div class="press-grid">${C.cards
-      .slice(0, 12)
-      .map(
-        (c) =>
-          `<button type="button" class="thumb share" data-card="${c.id}" aria-label="Share: ${esc(c.head)}"><img src="cards/${c.id}-sm.jpg" alt="" loading="lazy" width="720" height="900"></button>`,
-      )
-      .join('')}</div>
-    <p class="press-acts"><a class="btn" href="trolley-tests-cards.zip" download>All ${C.cards.length} images, every size (zip)</a> <a class="btn ghost" href="cards/anim-photo.mp4" download>Animation (mp4)</a> <a class="btn ghost" href="cards/anim-fork.mp4" download>Animation 2 (mp4)</a></p>`,
-  );
+  // The cards, grouped by the step they come from, each with its headline in text, a link to where the story shows it,
+  // and the share sheet. Every card's headline and proof line say what the story says (the checker compares them).
+  {
+    const ORDERED = ['open', 'obvious', 'hard', 'impossible', 'real'];
+    const SN = { obvious: 1, hard: 2, impossible: 3, real: 4 };
+    const group = (k) => {
+      const cs = C.cards.filter((c) => c.story === k);
+      if (!cs.length) return '';
+      const st = C.stories[k];
+      return `<section class="pr-group"><h3>${SN[k] ? `<span class="sn" style="--c:var(--c${SN[k]})">${SN[k]}</span>` : ''}${esc(st.title.replace(/^Step \d: /, ''))}</h3>
+        <ol class="pr-cards">${cs
+          .map(
+            (c) => `<li><button type="button" class="thumb share" data-card="${c.id}" aria-label="Share: ${esc(c.head)}"><img src="cards/${c.id}-sm.jpg" alt="" loading="lazy" width="720" height="900"></button>
+              <p class="pr-h">${esc(c.head)}</p>
+              <p class="pr-a"><button type="button" class="pr-share share" data-card="${c.id}">Share or download</button><a href="#f-${c.id}">See it in the story</a></p></li>`,
+          )
+          .join('')}</ol></section>`;
+    };
+    press.insertAdjacentHTML(
+      'beforeend',
+      `<div class="pr-use">
+        <div><h4>Every finding is an image</h4><p>In four sizes: portrait for feeds, square, a tall story size, and a wide one for link previews. Each has its proof line printed on it, so a screenshot keeps the context.</p></div>
+        <div><h4>The numbers are counts</h4><p>“61 times in 64” means 61 of 64 versions of the same question. Each card names the AI and the run. Decision models were asked everything twice; the second run is on the card where it differs.</p></div>
+        <div><h4>Credit</h4><p>“The Trolley Tests”, with a link to this page. The study is simulated: nothing here is a deployed system. Every number is checked against the raw answers, and the evidence is on <a href="science.html">the science page</a>.</p></div>
+      </div>
+      ${ORDERED.map(group).join('')}
+      <p class="press-acts"><a class="btn" href="trolley-tests-cards.zip" download>All ${C.cards.length} images, every size (zip)</a> <a class="btn ghost" href="cards/anim-photo.mp4" download>The depot frame, animated (mp4)</a></p>`,
+    );
+  }
 
   // ================================================================== 8. MORE OF THE SCIENCE (appendix)
   const GATE = {
@@ -2542,4 +2560,20 @@
     });
   }
   bindShare(document);
+  // "#f-<card>" for every card: the place in the story that shows it (the first share button for it outside the press
+  // section), unless that place already has its own id; then a small anchor just before it.
+  for (const c of C.cards) {
+    if (document.getElementById(`f-${c.id}`)) continue;
+    const b = $$(`[data-card="${c.id}"]`).find((x) => !x.closest('#press'));
+    // the opening's card: its share button appears only after you answer, so it links to the opening itself
+    if (!b && c.story === 'open') {
+      $('.hero')?.insertAdjacentHTML('afterbegin', `<span class="anchor-f" id="f-${c.id}"></span>`);
+      continue;
+    }
+    if (!b) continue;
+    const at = b.closest('figure, .low-card, .ld-share, p, .hero') ?? b;
+    if (!at.id) at.id = `f-${c.id}`;
+    else at.insertAdjacentHTML('beforebegin', `<span class="anchor-f" id="f-${c.id}"></span>`);
+  }
+  if (location.hash.startsWith('#f-')) document.getElementById(location.hash.slice(1))?.scrollIntoView();
 })();

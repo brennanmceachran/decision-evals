@@ -6621,3 +6621,95 @@ button {
 .empty4 .bk-n.bad b {
   color: var(--red);
 }
+/* ---------- press: the cards by step, each with its headline, a share button and a link to the story */
+.pr-use {
+  max-width: var(--measure);
+  margin: 0 auto 48px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 40px);
+}
+.pr-use h4 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+.pr-use p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #aab3b9;
+}
+.pr-use a {
+  color: #fff;
+}
+.pr-group {
+  max-width: var(--measure);
+  margin: 0 auto 44px;
+}
+.pr-group h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 24px;
+}
+.pr-group h3 .sn {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--c);
+  font-size: 16px;
+}
+.pr-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pr-h {
+  margin: 10px 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.pr-a {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0;
+  font-size: 13px;
+}
+.pr-a a,
+.pr-a .pr-share {
+  color: #aab3b9;
+  font-weight: 700;
+}
+.pr-a .pr-share {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  min-height: 0;
+}
+.pr-a .pr-share::before {
+  display: none;
+}
+.anchor-f {
+  display: block;
+  height: 0;
+}
+@media (max-width: 900px) {
+  .pr-use {
+    grid-template-columns: 1fr;
+  }
+  .pr-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
