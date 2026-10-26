@@ -6132,7 +6132,9 @@ button {
 }
 /* the photo's route and skulls play in on scroll elsewhere; here the answer is already given, so show them */
 #real .knew4 .scene .route,
-#real .knew4 .scene .skull {
+#real .knew4 .scene .skull,
+#real .group4 .scene .route,
+#real .group4 .scene .skull {
   opacity: 1 !important;
   clip-path: none !important;
   transform: none !important;
@@ -6330,4 +6332,9 @@ button {
 }
 .pair4 > .kn-q {
   margin-bottom: 12px;
+}
+/* the live-or-test answer: neither right nor wrong, its own color */
+.qa-a.real {
+  color: #3d4a8c;
+  background: #eff1fa;
 }

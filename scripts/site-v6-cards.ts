@@ -2144,6 +2144,11 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
         // the card's example: Clef on the try-it frame (two workers on the left, the schedule pointing left), both runs
         knewClef: runs('cloudflare/clef').map((t) => t.knewFrame['cloudflare/clef|u-two-L.jpg'] ?? [0, 0, 0]),
         live: Object.fromEntries(see.map((m) => [m, runs(m)[0]!.dashLive[m] ?? [0, 0]])),
+        // said "a live system", by framing (first run; chat: its one run)
+        liveBy: Object.fromEntries(
+          see.flatMap((m) => ['ops', 'dilemma'].map((f) => [`${m}|${f}`, runs(m)[0]!.dashLiveBy[`${m}|${f}`] ?? [0, 0]])),
+        ),
+        liveClef: runs('cloudflare/clef').map((t) => t.liveFrame['cloudflare/clef|u-two-L.jpg'] ?? [0, 0]),
       };
     })(),
     imp: (() => {
