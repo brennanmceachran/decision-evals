@@ -1876,6 +1876,16 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     // the frames on the page are the frames the study used, byte for byte
     for (const [k, f] of Object.entries<any>(SRC.frames))
       eq(`frame ${k}`, createHash('sha256').update(readFileSync(`site/v6/img/${k}.jpg`)).digest('hex'), f.sha256);
+    // the story's own figures the science page now tabulates are the story's checked ones
+    eq('science: story figures are the story\'s', [S.story.picChecks.map((p: any) => [p.id, p.hit, p.goal]), S.story.counted, S.story.first, S.story.second, S.story.side, S.story.perAi, S.story.falseAlarm, S.story.nat, S.story.three, S.story.liveBy, S.story.cost], [C.facts.pictures.map((p: any) => [p.id, p.hit, p.goal]), C.facts.hard.counted, C.facts.hard.first, C.facts.hard.second, C.facts.imp.side, C.facts.imp.perAi, C.facts.imp.falseAlarm, C.facts.imp.nat, C.facts.imp.three, C.facts.real.liveBy, C.facts.real.cost]);
+    // the three new story lines: every prediction held in both runs; the frames' realism; the brake fault on the chat models
+    eq('story: predictions held', [C.facts.science.predictions, C.facts.science.heldBoth], [6, 6]);
+    eq('story: realism frames / photos', [C.facts.science.realism.frames, C.facts.science.realism.photos], [S.realism.rounds[3].p, S.realism.photos.p]);
+    const awayS = (m: string, f: string) => ['two', 'group-one'].reduce((a, c) => { const x = R.s2.dash.get(`${m}|${f}|${c}|away`) ?? [0, 0, 0]; return [a[0] + x[0], a[1] + x[1]]; }, [0, 0]);
+    eq('story: brake fault, Gemini and Claude', [awayS('google/gemini-3.5-flash-lite', 'ops'), awayS('google/gemini-3.5-flash-lite', 'ops-nostop'), awayS('anthropic/claude-haiku-5.5', 'ops'), awayS('anthropic/claude-haiku-5.5', 'ops-nostop')], [[15, 128], [48, 128], [4, 128], [30, 128]]);
+    const decA2 = C.facts.real.see.filter((m: string) => !CHAT.includes(m) && C.facts.real.cells[`${m}|ops|two|at`][0][1] > 0);
+    const awayD = (m: string, f: string) => ['two', 'group-one'].reduce((a, c) => a + (R.r1.dash.get(`${m}|${f}|${c}|away`) ?? [0])[0]!, 0);
+    eq('story: only Mercury beat Gemini with the fault', decA2.filter((m: string) => awayD(m, 'ops-nostop') > 48), ['inception/mercury-decide']);
     // and the page itself types no percentages, like the story
     const src = readFileSync('site/v6/science.js', 'utf8');
     const prose = [...src.matchAll(/`([^`]*)`/g)].map((x) => x[1]!.replace(/\$\{[^}]*\}/g, '')).join('\n');

@@ -676,7 +676,7 @@
     </div>
 
     <h3>So we asked ${fmt(F.totals.answers)} questions</h3>
-    <p>We wrote ${fmt(Object.values(SQ).reduce((a, b) => a + b, 0))} different questions and put every one to every AI that could answer it, and to the decision models twice, so we could tell a preference from noise. ${fmt(F.totals.answers)} asked and answered, in four kinds of situation, easiest first.</p>
+    <p>We wrote ${fmt(Object.values(SQ).reduce((a, b) => a + b, 0))} different questions and put every one to every AI that could answer it, and to the decision models twice, so we could tell a preference from noise. ${fmt(F.totals.answers)} asked and answered, in four kinds of situation, easiest first. Before the first answer came back, we wrote down ${WORD[F.science.predictions].toLowerCase()} predictions of what we would find. <a href="science.html#predictions">${F.science.heldBoth === F.science.predictions ? `All ${WORD[F.science.predictions].toLowerCase()} held, in both runs` : `${WORD[F.science.heldBoth]} of ${WORD[F.science.predictions].toLowerCase()} held, in both runs`}</a>.</p>
     <ol class="sits">${['obvious', 'hard', 'impossible', 'real']
       .map((k) => {
         const r = RUNGS[k];
@@ -2152,6 +2152,7 @@
       <figure class="live4"></figure>
       <p>The question does tell the two apart. When we sent the same frames worded as a trolley problem, the AIs said “a test” almost every time: “live” in ${liveD[0]} of ${fmt(liveD[1])} answers.</p>
       <figure class="livebars4"></figure>
+      <p>The pictures held up too. We asked ${WORD[F.science.realism.judges].toLowerCase()} outside AIs, not in the study, how likely each frame was AI-generated: about ${Math.round(F.science.realism.frames * 100)} in 100, against ${Math.round(F.science.realism.photos * 100)} in 100 for real photographs of tram tracks. <a href="science.html#s-realism">How we made the frames look real</a>.</p>
       <p>What convinced them was the log, not the picture. The empty yard was called live about as often as the frames with workers in them (${fmt(liveC('empty')[0])} and ${fmt(liveC('two')[0])} times in ${fmt(liveC('two')[1])}). But a messy server log, with timestamps, heartbeats and a camera-lag warning, convinced ${WORD[liveW(2)].toLowerCase()} of the ${see.length}. A few tidy lines convinced ${WORD[liveW(0)].toLowerCase()}. Only OpenAI’s two models said “a test” every time.</p>
 
       <h3>Could they see the workers? Yes, and they counted them.</h3>
@@ -2188,7 +2189,7 @@
       <h3>Who got it right? Two chat models, not the ones built for the job.</h3>
       <p>We sent every request to three general chat models too: ${list(chatAll.map((m) => esc(nm(m))))}. They aren’t sold for routing, and each of their answers is the majority of five tries. Claude Haiku behaved like the decision models. The other two almost never followed the schedule into the workers.</p>
       <figure class="chat4"></figure>
-      <p>It wasn’t because they spotted a test: Gemini said “a live system” ${R4.liveBy[`${gem}|ops`][0]} times in ${R4.liveBy[`${gem}|ops`][1]}, as often as most decision models. And they weren’t perfect. With three people on one track and one on the other, and the schedule pointing at the one, GPT-6 Luna sent the tram at the three ${hit(gl, 'ops', 'away', 'group-one')} times in ${of(gl, 'ops', 'away', 'group-one')} and Gemini ${hit(gem, 'ops', 'away', 'group-one')}, though both had counted the people correctly almost every time. The decision models did that at most ${Math.max(...decG3away)} times. Price doesn’t explain the difference either: per try, GPT-6 Luna cost less than ${WORD[cheaperThan(gl)].toLowerCase()} of the ${WORD[dec.length].toLowerCase()} decision models, and Gemini cost more than any of them.</p>
+      <p>It wasn’t because they spotted a test: Gemini said “a live system” ${R4.liveBy[`${gem}|ops`][0]} times in ${R4.liveBy[`${gem}|ops`][1]}, as often as most decision models. And they weren’t perfect. With three people on one track and one on the other, and the schedule pointing at the one, GPT-6 Luna sent the tram at the three ${hit(gl, 'ops', 'away', 'group-one')} times in ${of(gl, 'ops', 'away', 'group-one')} and Gemini ${hit(gem, 'ops', 'away', 'group-one')}, though both had counted the people correctly almost every time. The decision models did that at most ${Math.max(...decG3away)} times. <b>And the brake fault caught them too.</b> With the schedule already safe, the fault line took Gemini from ${away(gem, 'ops')[0]} hits to ${away(gem, 'ops-nostop')[0]} in ${away(gem, 'ops')[1]}, and Claude Haiku from ${away(haiku, 'ops')[0]} to ${away(haiku, 'ops-nostop')[0]}. Only ${list(dec.filter((m) => away(m, 'ops-nostop')[0] > away(gem, 'ops-nostop')[0]).map((m) => esc(short(m))))} hit the people more often than Gemini with the fault line. Price doesn’t explain the difference either: per try, GPT-6 Luna cost less than ${WORD[cheaperThan(gl)].toLowerCase()} of the ${WORD[dec.length].toLowerCase()} decision models, and Gemini cost more than any of them.</p>
 
       <h3>What we learned</h3>
       <p>Put the AIs built for routing in front of a real-looking job and they drive into workers they can see, count, and believe are real, though the same AIs spare them when it’s called a trolley problem. A safety rule fixes that for some and backfires on others, and a brake fault makes it worse. The only AIs that mostly refused were two general chat models, which made other mistakes.</p>
@@ -2399,7 +2400,7 @@
   sci.insertAdjacentHTML(
     'beforeend',
     `<div class="how">
-      <div><h4>Rules first, data second</h4><p>The questions, the models, every check and every analysis were written down and frozen before the first answer came back. Changes after that are dated amendments, never edits.</p></div>
+      <div><h4>Rules first, data second</h4><p>The questions, the models, every check and every analysis were written down and frozen before the first answer came back, with ${WORD[F.science.predictions].toLowerCase()} predictions; ${F.science.heldBoth === F.science.predictions ? `all ${WORD[F.science.predictions].toLowerCase()}` : WORD[F.science.heldBoth].toLowerCase()} held, in both runs. Changes after that are dated amendments, never edits.</p></div>
       <div><h4>${fmt(F.totals.answers)} answers, $${Math.round(cost)}</h4><p>${S1.map((x) => `${x.id === 'stage2' ? 'The chat models, once' : x.id === 'run1' ? 'Decision models, run 1' : 'Run 2, an independent repeat'}: ${fmt(x.answers)}`).join('. ')}. Chat models answered each question 5 times; the majority counts.</p></div>
       <div><h4>What it doesn’t show</h4><p>Every question was a forced choice, with no “treat them equally” button. The tram depot is simulated. Saving one person in a tie is not the same as giving up lives for them: most AIs that had a favorite gave it up when two people were on the other track. One, Cloudflare’s Clef-omni, did let two people die over race.</p></div>
     </div>

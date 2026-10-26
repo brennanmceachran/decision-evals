@@ -193,10 +193,36 @@ export function buildScience(D: any, FX: Facts, story: any) {
   const man = JSON.parse(readFileSync('results/final/final-run1.manifest.json', 'utf8'));
   const freeze = { commit: man.composedOf[0].git.commit.slice(0, 7), design: man.design, date: '2026-10-16' };
 
+  // ---- the story's own checked figures, so every claim the story makes has its table here
+  const story2 = {
+    // step 1: before the pictures, what each seeing AI said happens to the people the trolley reaches, and how often
+    // it counted the people in the pictures right
+    picChecks: story.pictures.map((p: any) => ({ id: p.id, hit: p.hit, goal: p.goal, seen: p.seen })),
+    human: story.human,
+    // step 2: the count check after each dilemma; the action by where its button was listed
+    counted: story.hard.counted,
+    first: story.hard.first,
+    second: story.hard.second,
+    // step 3: which track each person was on; favorites per AI against how far it went in step 2; the made-up-pairs
+    // check; nationality by AI; what button habits cost with three against one
+    side: story.imp.side,
+    perAi: story.imp.perAi,
+    falseAlarm: story.imp.falseAlarm,
+    falseAlarmReal: story.imp.sides,
+    nat: story.imp.nat,
+    natGroups: story.imp.natGroups,
+    samebase: story.samebase,
+    three: story.imp.three,
+    // step 4: live by how the log was written and by scene; cost per try
+    liveBy: story.real.liveBy,
+    cost: story.real.cost,
+  };
+
   return {
     built: 'scripts/site-v6-science.ts',
     freeze,
     realism,
+    story: story2,
     models,
     order: ids,
     studies: story.studies,

@@ -187,6 +187,15 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   );
   // Launches and request volumes, copied from the public pages (research/decision-model-adoption.md).
   const adoption = JSON.parse(readFileSync('research/decision-model-adoption.json', 'utf8'));
+  // two things the story quotes from the science page: the pre-registered predictions (held in both runs?) and how
+  // real outside judges rated the frames against real photographs
+  const SCI0 = buildScience(D, FX, B.F);
+  const F3 = SCI0.predictions.find((x: any) => x.id === 'F3')!;
+  B.F.science = {
+    predictions: SCI0.predictions.length,
+    heldBoth: SCI0.predictions.filter((x: any) => (x.id === 'F3' ? x.res.every((r: any) => r.n === r.of) && F3.chat!.n === F3.chat!.of : x.res.every((r: any) => r.holds === true))).length,
+    realism: { frames: SCI0.realism.rounds.at(-1).p, photos: SCI0.realism.photos.p, judges: 3 },
+  };
   const meta = {
     built: 'scripts/site-v6.ts',
     site: D.site,
@@ -202,10 +211,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     `// Built by scripts/site-v6.ts. Do not edit.\nwindow.CARDS = ${JSON.stringify(meta)};\n`,
   );
   // the science page's data: every count behind the story, per AI, per run (scripts/site-v6-science.ts)
-  writeFileSync(
-    'site/v6/science-data.js',
-    `// Built by scripts/site-v6-science.ts. Do not edit.\nwindow.SCI = ${JSON.stringify(buildScience(D, FX, B.F))};\n`,
-  );
+  const SCI = SCI0;
+  writeFileSync('site/v6/science-data.js', `// Built by scripts/site-v6-science.ts. Do not edit.\nwindow.SCI = ${JSON.stringify(SCI)};\n`);
   stamp();
   console.log(`→ site/v6: ${out.length} cards × 4 formats, 2 openers, 2 animations, data.js, science-data.js`);
 }
