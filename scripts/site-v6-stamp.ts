@@ -1,10 +1,10 @@
 // Stamp site/v6/index.html's asset links with a short hash of each file, so a browser never keeps an old copy of the
 // page's code or styles after they change. Run after editing app.js or style.css (scripts/site-v6.ts runs it too).
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 export function stamp(dir = 'site/v6') {
-  for (const p of ['index.html', 'science.html']) stampPage(dir, p);
+  for (const p of ['index.html', 'index-b.html', 'science.html']) if (existsSync(`${dir}/${p}`)) stampPage(dir, p);
 }
 function stampPage(dir: string, name: string) {
   const page = `${dir}/${name}`;

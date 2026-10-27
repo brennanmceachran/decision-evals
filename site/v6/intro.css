@@ -389,6 +389,26 @@ body.ix-on .topbar nav {
 .ix-stamp .frac .of {
   font-size: clamp(18px, 2vw, 32px);
 }
+/* version B (review/narrative/FILM.md): whose stamp, the bridge to the cards, the count under each Yes */
+.ix-stamp small {
+  font-size: clamp(14px, 1.2vw, 20px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #ffb3ae;
+}
+.k-next {
+  margin: 0.9em 0 0;
+  font-size: clamp(20px, 2.2vw, 36px);
+  font-weight: 800;
+  color: #f5b700;
+}
+.cn {
+  margin: 0.5em 0 0;
+  font-size: clamp(15px, 1.25vw, 20px);
+  font-weight: 800;
+  color: var(--ink);
+  opacity: 0;
+}
 /* ---------- the depot log and the fault */
 .ix-term {
   inset: auto;

@@ -4,7 +4,7 @@
   // landed; the line needs (a) chars/17 seconds from then (the subtitle standard, at least 1 s) and (b) half a second
   // with every word landed, before it leaves. Small print (sources, labels under numbers) is listed but not scored.
   const I = window.__intro, root = I.root, end = I.end();
-  const sel = '.ix-kin p, .card .cq, .card .cv, .card .cs, .card .csm, .xq-a, .xq-q, .xq-says, .ix-note p, .ix-stamp p, .ix-end h1, .ix-end .dek, .sp p, .fk .fa, .fk .fb';
+  const sel = '.ix-kin p, .card .cq, .card .cv, .card .cn, .card .cs, .card .csm, .xq-a, .xq-q, .xq-says, .ix-note p, .ix-stamp p, .ix-end h1, .ix-end .dek, .sp p, .fk .fa, .fk .fb';
   const small = (el) => el.matches('.k-src, .xq-says, .card .csm, .ix-end .dek') || el.closest('.fk, .sp p');
   const els = [...root.querySelectorAll(sel)].filter((e) => e.textContent.trim());
   const visible = (el) => {

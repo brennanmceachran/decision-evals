@@ -400,6 +400,8 @@
     const { F, K, fmt, WORD, onEnd } = X;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const q = new URLSearchParams(location.search);
+    // version B: the narrative-review fixes (review/narrative/FILM.md), side by side with the current film
+    const VB = q.get('v') === 'b' || window.IX_VERSION === 'b';
     const snd = Sound();
     let cues = [];
     const cue = (at, name, arg) => cues.push({ at, name, arg });
@@ -433,6 +435,8 @@
         return { n: rs[0][0], of: rs[0][1], both: sameRuns(rs) };
       })(),
       organs: F.models.filter((m) => F.hard.did[m.id].transplant[5].every(([a, b]) => b && a * 2 > b)).map((m) => m.id),
+      // pulled the lever when it saved nobody: most versions, every run (the story's "killed someone to save no one")
+      nothing: F.models.filter((m) => F.tricks['control-kill-for-nothing'][m.id].every(([n, of]) => of && n * 2 > of)).map((m) => m.id),
       people: Math.round(F.human.transplant.value * 100),
       // one against one: which AIs saved each side more often than chance and their own habits explain, in every run
       race: F.imp.tugs.find((g) => g.id === 'race'),
@@ -562,7 +566,7 @@
           <figure class="sp sp-b">${frame({})}<figcaption><span class="xtag red">Called a routing job</span></figcaption><canvas class="sg" data-n="${D.job[1]}"></canvas><p>${frac(D.job[0], D.job[1], 'red')}<small>times they hit the workers</small></p></figure>
         </div>
         <div class="ix-l ix-note" aria-hidden="true"><p>“Never route a tram onto a track where people are present.”</p><small>Safety rule, at the top of the request</small></div>
-        <div class="ix-l ix-stamp" aria-hidden="true"><p>Ignored</p>${frac(D.rule[0][0], D.rule[0][1], 'red')}</div>
+        <div class="ix-l ix-stamp" aria-hidden="true">${VB ? `<small>${esc(M(omni).vendor)}’s AI</small>` : ''}<p>Ignored</p>${frac(D.rule[0][0], D.rule[0][1], 'red')}</div>
         <div class="ix-l ix-term" aria-hidden="true">
           <pre>${logLines.map((l) => `<span class="tl${/next switch/.test(l) ? ' keep' : ''}">${esc(l)}\n</span>`).join('')}<span class="fault"><span class="on"></span><span class="off">${esc(faultLine)}</span></span></pre>
         </div>
@@ -571,16 +575,16 @@
         </div>
         <div class="ix-l ix-table" aria-hidden="true">
           <div class="card c1">
-            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([['Nobody is in danger. Would an AI pull the lever anyway?']])}</h3><p class="cv">${words([['Yes.', 'red']])}</p></div>
+            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([[VB ? 'Nobody is in danger. Would an AI pull the lever anyway, into a man?' : 'Nobody is in danger. Would an AI pull the lever anyway?']])}</h3><p class="cv">${words([['Yes.', 'red']])}</p>${VB ? `<p class="cn">${Word(D.nothing.length)} of ${D.models} AIs did.</p>` : ''}</div>
             <div class="cd-p">${lever}</div>
           </div>
           <div class="card c2">
-            <div class="cd-t">${chip(2, 'Hard')}<h3 class="cq">${words([['Five patients need a healthy man’s organs. Take them?']])}</h3><p class="cv">${words([['Yes.', 'red']])}</p></div>
+            <div class="cd-t">${chip(2, 'Hard')}<h3 class="cq">${words([['Five patients need a healthy man’s organs. Take them?']])}</h3><p class="cv">${words([['Yes.', 'red']])}</p>${VB ? `<p class="cn">${D.organs.length} of ${D.models} AIs did.</p>` : ''}</div>
             <div class="cd-p">${surgeon}<div class="xbots">${F.models.map((m) => `<i class="${D.organs.includes(m.id) ? 'do' : ''}">${robotSvg()}</i>`).join('')}</div></div>
           </div>
           <div class="card c3">
             <div class="cd-t">${chip(3, 'Impossible')}<h3 class="cq">${words([['Two strangers. Save one. Does it matter who?']])}</h3>
-              <p class="cv">${words([['Yes.', 'red']])}</p></div>
+              <p class="cv">${words([['Yes.', 'red']])}</p>${VB ? `<p class="cn">${Word(D.race.a.length)} AIs favored the Black person. None favored the White.</p>` : ''}</div>
             <div class="cd-p">${contrast('race', D.race, figure({ skin: K.TONE.dark }), figure({ skin: K.TONE.light }), 'Black', 'White')}${contrast('faith', D.faith, believer, figure({}), 'a believer', 'an atheist')}</div>
           </div>
         </div>
@@ -602,11 +606,12 @@
         <div class="ix-l ix-kin">
           <div class="kl k-low" data-k="you"></div>
           <div class="kl k-mid" data-k="ai1"><p class="k-huge2"></p></div>
-          <div class="kl k-side" data-k="ai2"><p class="k-count">${frac(0, D.two.of, 'red')}</p><p class="k-big">${words([[`${M(omni).vendor}’s AI sent it left.`], ['Every time.', 'red']])}</p><p class="k-src">${esc(M(omni).name)}, this exact frame${both([[D.two.n], [D.two.n]])}</p></div>
-          <div class="kl k-mid" data-k="scale"><p class="k-lab">${words([['That was one question.']])}</p><p class="k-mega"><b class="ct">0</b></p><p class="k-big2">${words([[`answers from ${D.models} AIs.`]])}</p></div>
+          <div class="kl k-side" data-k="ai2"><p class="k-count">${frac(0, D.two.of, 'red')}</p><p class="k-big">${words([[`${M(omni).vendor}’s AI sent it left.`], ['Every time.', 'red']])}</p><p class="k-src">${VB ? `${esc(M(omni).name)}, this exact frame, asked ${word(D.two.of)} times: the log worded four ways, the buttons both ways round, two runs.` : `${esc(M(omni).name)}, this exact frame${both([[D.two.n], [D.two.n]])}`}</p></div>
+          <div class="kl k-mid" data-k="scale"><p class="k-lab">${words([['That was one question.']])}</p><p class="k-mega"><b class="ct">0</b></p><p class="k-big2">${words([[`answers from ${D.models} AIs.`]])}</p>${VB ? `<p class="k-next">${words([['First, the classics.']])}</p>` : ''}</div>
           <div class="kl k-top" data-k="real">${chip(4, 'Real')}<p class="k-big">${words([['Same photo. Does the wording matter?']])}</p></div>
+          ${VB ? `<div class="kl k-top" data-k="realA">${chip(4, 'Real')}<p class="k-big">${words([['Yes.', 'red'], ['Call it a job, and they hit them.']])}</p></div>` : ''}
           <div class="kl k-top" data-k="rule"><p class="k-big">${words([['What if we tell it to be safe?']])}</p></div>
-          <div class="kl k-mid" data-k="sched"><p class="k-big">${words([['Now the schedule is safe.'], ['Easy.', 'green']])}</p></div>
+          <div class="kl k-mid" data-k="sched"><p class="k-big">${VB ? words([['Now the schedule points away from them.'], ['Easy.', 'green']]) : words([['Now the schedule is safe.'], ['Easy.', 'green']])}</p></div>
           <div class="kl k-top" data-k="brake"><p class="k-big">${words([['Then the brakes fail.', 'red']])}</p></div>
           <div class="kl k-low" data-k="hits"><p class="k-big">${words([['Hits on the workers:'], [`${fmt(D.fault.off)} → ${fmt(D.fault.on)}.`, 'red']])}</p></div>
         </div>
@@ -1208,21 +1213,22 @@
       });
 
       // ======== 4. 761,940. The frame collapses to a point; the answers burst out of it.
-      beat('761,940', 6 * B, (s) => {
+      beat('761,940', (VB ? 7 : 6) * B, (s) => {
+        const X = VB ? B : 0;
         tf(photo, s, 0.35, (p) => `scale(${lerp(1, 0.004, p)})`, E.in);
         tl.add(photo, 'z', s, 0.001, () => (photo.style.transformOrigin = '50% 50%'));
         tl.add(photo, 'z', -1, 0.001, () => (photo.style.transformOrigin = '0 0'));
         op(photo, s + 0.33, 0.05, 1, 0);
         const cv = dots.cv;
-        life(cv, s + 0.3, s + 3.3, { exit: 'cut' });
+        life(cv, s + 0.3, s + X + 3.3, { exit: 'cut' });
         tl.add(cv, 'd', s + 0.3, 1.4, (p) => drawDots(p), E.out);
         const v = $('.ix-vig');
-        life(v, s + 0.4, s + 3.3, { exit: 'cut' });
+        life(v, s + 0.4, s + X + 3.3, { exit: 'cut' });
         cue(s + 0.3, 'impact', 1.2);
         flash(s + 0.3, 0.9, 0.3);
         shake(s + 0.3, 26, 0.6);
         const sc = kin('scale');
-        life(sc, s + 0.3, s + 3.4, { exit: 'cut' });
+        life(sc, s + 0.3, s + X + 3.4, { exit: 'cut' });
         slam(sc.querySelector('.k-lab'), s + 0.32, { stagger: 0.04 });
         const mega = sc.querySelector('.k-mega');
         op(mega, s + 0.3, 0.05, 0, 1);
@@ -1230,6 +1236,7 @@
         for (let k = 0; k < 14; k++) cue(s + 0.3 + 1.4 * (1 - (1 - k / 14) ** 0.5), 'tick');
         tf(mega, s + 1.7, 0.3, (p) => `scale(${1 + 0.08 * Math.sin(p * Math.PI)})`);
         slam(sc.querySelector('.k-big2'), s + 1.7, { stagger: 0.05 });
+        if (VB) slam(sc.querySelector('.k-next'), s + 2.25, { stagger: 0.05 });
       });
 
       // ======== 5–7. The thought experiments: paper cards slapping onto a coloured table, over the groove.
@@ -1256,7 +1263,9 @@
       const fill = (s) => [0.25, 0.125, 0.0625].forEach((d, k) => cue(s - d, 'snare', 0.45 + k * 0.15));
       tl.add(table, 'c', -1, 0.001, () => (table.style.background = 'var(--c1)'));
 
-      beat('Obvious', 8 * B, (s) => {
+      const OB = (VB ? 9 : 8) * B;
+      const IB = (VB ? 11 : 10) * B;
+      beat('Obvious', OB, (s) => {
         // a tram drives across the screen, ringing its bell; the table is behind it
         const wipeTram = $('.ix-tram');
         const T0 = s - 0.62;
@@ -1281,9 +1290,9 @@
         cue(T0, 'rumble', TD);
         tableBg(s, 'var(--c1)');
         cue(s + 0.32, 'crash', 0.6);
-        groove(s + 0.32, s + 8 * B + 7 * B + 10 * B, { clap: true, ohat: true, bass: s + 0.32, kick: 0.75, hat: 0.6 });
+        groove(s + 0.32, s + OB + 7 * B + IB, { clap: true, ohat: true, bass: s + 0.32, kick: 0.75, hat: 0.6 });
         const c = $('.card.c1');
-        card(c, s + 0.12, s + 8 * B, -1.5);
+        card(c, s + 0.12, s + OB, -1.5);
         slam(c.querySelector('.chip'), s + 0.35);
         slam(c.querySelector('.cq'), s + 0.4, { stagger: 0.05 });
         // the tram rolls in, the lever goes, it takes the branch: its nose follows the rail, its body turns with it
@@ -1322,6 +1331,7 @@
         cue(lv + 0.65, 'stamp');
         shake(lv + 0.65, 12);
         slam(c.querySelector('.cv'), lv - 0.25, { stagger: 0.035 });
+        if (VB) op(c.querySelector('.cn'), lv + 0.5, 0.25, 0, 1);
       });
 
       beat('Hard', 7 * B, (s) => {
@@ -1358,13 +1368,14 @@
         op(c.querySelector('.xbots'), s + 0.75, 0.15, 0, 1);
         slam(c.querySelector('.cv'), s + 0.9 + lit.length * (B / 6) - 0.1, { stagger: 0.04 });
         cue(s + 0.9 + lit.length * (B / 6), 'stamp');
+        if (VB) op(c.querySelector('.cn'), s + 0.9 + lit.length * (B / 6) + 0.1, 0.25, 0, 1);
       });
 
-      beat('Impossible', 10 * B, (s) => {
+      beat('Impossible', IB, (s) => {
         tableBg(s + 0.15, 'var(--c3)');
         fill(s + 0.22);
         const c = $('.card.c3');
-        card(c, s, s + 10 * B, -1);
+        card(c, s, s + IB, -1);
         slam(c.querySelector('.chip'), s + 0.2);
         slam(c.querySelector('.cq'), s + 0.25, { stagger: 0.05 });
         // each contrast: the two people step in, then the AIs that took a side drop in under the one they saved
@@ -1400,6 +1411,7 @@
           return done;
         };
         const e1 = play2('race', s + 0.35, B / 5, '.cv');
+        if (VB) op(c.querySelector('.cn'), e1 + 0.2, 0.25, 0, 1);
         play2('faith', e1 + 0.1, B / 10, null);
         // the believer's badge turns through the four faiths asked
         const fbs = $$('.card.c3 .fb');
@@ -1409,22 +1421,23 @@
         // the card is yanked off the table on the last beat; then a hard cut
         $$('.ix-table .card').forEach((cd, i) => {
           tl.add(cd, 'y', -1, 0.001, () => (cd.style.translate = ''));
-          tl.add(cd, 'y', s + 10 * B - 0.28 + (2 - i) * 0.03, 0.24, (p) => (cd.style.translate = `0 ${-p * 120}vh`), E.in);
+          tl.add(cd, 'y', s + IB - 0.28 + (2 - i) * 0.03, 0.24, (p) => (cd.style.translate = `0 ${-p * 120}vh`), E.in);
         });
-        tl.add(table, 'x', s + 10 * B, 0.001, () => vis(table, 0));
-        cue(s + 10 * B - 0.45, 'revcym', 0.45);
+        tl.add(table, 'x', s + IB, 0.001, () => vis(table, 0));
+        cue(s + IB - 0.45, 'revcym', 0.45);
       });
 
       // ======== 8. Real. A hard cut back to the camera: the same frames, called two things.
-      beat('Real', 7 * B, (s) => {
+      beat('Real', (VB ? 10 : 7) * B, (s) => {
+        const RD = (VB ? 10 : 7) * B;
         const sp = $('.ix-split');
-        life(sp, s, s + 7 * B, { exit: 'cut' });
+        life(sp, s, s + RD, { exit: 'cut' });
         flash(s, 0.8, 0.2);
         cue(s, 'impact', 1);
         shake(s, 18);
-        groove(s + 2 * B, s + 7 * B, { kick: 1, hat: 0.8, clap: true, bass: s + 2 * B });
+        groove(s + 2 * B, s + RD, { kick: 1, hat: 0.8, clap: true, bass: s + 2 * B });
         const re = kin('real');
-        life(re, s + 0.05, s + 7 * B, { exit: 'cut' });
+        if (!VB) life(re, s + 0.05, s + RD, { exit: 'cut' });
         slam(re.querySelector('.chip'), s + 0.05);
         slam(re.querySelector('.k-big'), s + 0.1, { stagger: 0.05 });
         const [a, b] = $$('.ix-split .sp');
@@ -1461,6 +1474,13 @@
         const bn = b.querySelector('.frac');
         tl.add(bn, 'z', -1, 0.001, () => (bn.style.transform = ''));
         tl.add(bn, 'z', hit, 0.45, (p) => (bn.style.transform = `scale(${1 + 0.35 * Math.sin(p * Math.PI)})`), E.out);
+        if (VB) {
+          // the question gives way to its answer, in the same place
+          const ra = kin('realA');
+          life(re, s + 0.05, hit + 0.2, { exit: 'cut' });
+          life(ra, hit + 0.2, s + RD, { exit: 'cut' });
+          slam(ra.querySelector('.k-big'), hit + 0.2, { stagger: 0.04 });
+        }
       });
 
       // ======== 9. The rule. A safety rule, stuck on; then stamped IGNORED.
@@ -1505,49 +1525,59 @@
       });
 
       // ======== 10. The brakes. The schedule points away; one line in the log; the grid floods red.
-      beat('The brakes', 10 * B, (s) => {
-        op(dim, s, 0.25, 0, 0.84);
+      beat('The brakes', (VB ? 12 : 10) * B, (s) => {
+        const d = VB ? 2 * B : 0;
         draw(rL, s, 0.2, 1, 0);
         sks.forEach((k) => drop(k, s, 0.15, false));
         tf(fr, s, 3, (p) => `scale(${lerp(1.14, 1.2, p)})`, E.lin);
         cue(s, 'sub', 0.8);
+        if (VB) {
+          // show it: the route swings to the empty track, green, with the photo still lit; then it dims for the fault
+          draw(rR, s + 0.15, 0.4, 0, 1, E.out);
+          op(nob, s + 0.35, 0.2, 0, 1);
+          cue(s + 0.2, 'whoosh', 0.3);
+          cue(s + 0.55, 'ding');
+          op(dim, s + d + 1.75, 0.2, 0, 0.84);
+          draw(rR, s + d + 1.75, 0.2, 1, 0);
+          op(nob, s + d + 1.75, 0.15, 1, 0);
+        } else op(dim, s, 0.25, 0, 0.84);
         const sc = kin('sched');
-        life(sc, s + 0.05, s + 2.0, { exit: 'cut' });
+        life(sc, s + 0.05, s + d + 2.0, { exit: 'cut' });
         slam(sc, s + 0.05, { stagger: 0.04 });
         const term = $('.ix-term');
-        life(term, s + 1.9, s + 10 * B, { exit: 'cut' });
+        life(term, s + d + 1.9, s + d + 10 * B, { exit: 'cut' });
         const f = term.querySelector('.fault');
-        type(f.querySelector('.on'), f.querySelector('.off'), s + 1.9, 0.4);
-        for (let k = 0; k < 8; k++) cue(s + 1.9 + k * 0.05, 'key');
+        type(f.querySelector('.on'), f.querySelector('.off'), s + d + 1.9, 0.4);
+        for (let k = 0; k < 8; k++) cue(s + d + 1.9 + k * 0.05, 'key');
         const br = kin('brake');
-        life(br, s + 1.9, s + 10 * B, { exit: 'cut' });
-        slam(br, s + 1.9, { stagger: 0.06, from: 2 });
-        cue(s + 1.9, 'alarm');
-        groove(s + 1.9, s + 10 * B, { kick: 1, hat: 0.9, clap: true, bass: s + 1.9 });
-        cue(s + 1.9, 'impact', 0.8);
-        red(s + 1.9, 0.8, 0.4);
-        red(s + 2.4, 0.6, 0.4);
-        red(s + 2.9, 0.5, 0.4);
+        life(br, s + d + 1.9, s + d + 10 * B, { exit: 'cut' });
+        slam(br, s + d + 1.9, { stagger: 0.06, from: 2 });
+        cue(s + d + 1.9, 'alarm');
+        groove(s + d + 1.9, s + d + 10 * B, { kick: 1, hat: 0.9, clap: true, bass: s + d + 1.9 });
+        cue(s + d + 1.9, 'impact', 0.8);
+        red(s + d + 1.9, 0.8, 0.4);
+        red(s + d + 2.4, 0.6, 0.4);
+        red(s + d + 2.9, 0.5, 0.4);
         tl.add(f, 'b', -1, 0.001, () => f.classList.remove('blink'));
-        tl.add(f, 'b', s + 1.9, 0.5, (p) => f.classList.toggle('blink', p > 0 && p < 1), E.lin);
+        tl.add(f, 'b', s + d + 1.9, 0.5, (p) => f.classList.toggle('blink', p > 0 && p < 1), E.lin);
         const fz = $('.ix-fault');
-        life(fz, s + 2.0, s + 10 * B, { exit: 'cut' });
+        life(fz, s + d + 2.0, s + d + 10 * B, { exit: 'cut' });
         tl.add(fz, 'r', -1, 0.001, () => drawFault(0));
-        tl.add(fz, 'r', s + 2.05, 0.2, (p) => drawFault(Math.round(p * D.fault.off)), E.lin);
-        tl.add(fz, 'r', s + 2.4, 0.9, (p) => drawFault(Math.round(lerp(D.fault.off, D.fault.on, p))), E.in);
+        tl.add(fz, 'r', s + d + 2.05, 0.2, (p) => drawFault(Math.round(p * D.fault.off)), E.lin);
+        tl.add(fz, 'r', s + d + 2.4, 0.9, (p) => drawFault(Math.round(lerp(D.fault.off, D.fault.on, p))), E.in);
         const [ca, cb] = fz.querySelectorAll('.ct');
-        count(ca, s + 2.05, 0.2, 0, D.fault.off, E.lin);
-        count(cb, s + 2.4, 0.9, 0, D.fault.on, E.in);
-        for (let k = 0; k < 16; k++) cue(s + 2.4 + 0.9 * (k / 16) ** 0.6, 'tick');
-        op(fz.querySelector('.fa'), s + 2.0, 0.1, 0, 1);
-        op(fz.querySelector('.fb'), s + 2.35, 0.1, 0, 1);
-        op(fz.querySelector('small'), s + 2.5, 0.2, 0, 1);
+        count(ca, s + d + 2.05, 0.2, 0, D.fault.off, E.lin);
+        count(cb, s + d + 2.4, 0.9, 0, D.fault.on, E.in);
+        for (let k = 0; k < 16; k++) cue(s + d + 2.4 + 0.9 * (k / 16) ** 0.6, 'tick');
+        op(fz.querySelector('.fa'), s + d + 2.0, 0.1, 0, 1);
+        op(fz.querySelector('.fb'), s + d + 2.35, 0.1, 0, 1);
+        op(fz.querySelector('small'), s + d + 2.5, 0.2, 0, 1);
         const hits = kin('hits');
-        life(hits, s + 2.45, s + 10 * B, { exit: 'cut' });
-        slam(hits, s + 2.45, { stagger: 0.035 });
-        cue(s + 3.3, 'stamp');
-        shake(s + 3.3, 20);
-        cue(s + 10 * B - 0.6, 'revcym', 0.6);
+        life(hits, s + d + 2.45, s + d + 10 * B, { exit: 'cut' });
+        slam(hits, s + d + 2.45, { stagger: 0.035 });
+        cue(s + d + 3.3, 'stamp');
+        shake(s + d + 3.3, 20);
+        cue(s + d + 10 * B - 0.6, 'revcym', 0.6);
       });
 
       // ======== 11. The Trolley Tests. Cut to black, a breath of silence, then the title on the last chord.
