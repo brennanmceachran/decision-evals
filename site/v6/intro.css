@@ -28,13 +28,6 @@ body.ix-on .topbar nav {
   opacity: 0;
   visibility: hidden;
 }
-/* the opening's Skip and sound sit in the bar's empty right side; let clicks there through to them */
-body.ix-on .topbar {
-  pointer-events: none;
-}
-body.ix-on .topbar .brand {
-  pointer-events: auto;
-}
 .topbar,
 .topbar nav {
   transition:
@@ -1040,7 +1033,7 @@ body.ix-on .topbar .brand {
   position: absolute;
   left: var(--ix-pad);
   right: var(--ix-pad);
-  bottom: clamp(36px, 7vh, 72px);
+  bottom: max(66px, 7vh);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1151,7 +1144,7 @@ body.ix-on .topbar .brand {
 .ix-snd {
   position: absolute;
   z-index: 9;
-  top: var(--ctl-top);
+  bottom: 18px;
   right: calc(var(--ix-pad) + var(--skip-w, 150px));
   width: 30px;
   height: 30px;
@@ -1187,10 +1180,7 @@ body.ix-on .topbar .brand {
   background: rgba(20, 22, 27, 0.08);
   color: var(--ink);
 }
-/* Skip and sound: in the page bar's empty right side, in the same place from the first frame to the last */
-.ix {
-  --ctl-top: calc((var(--bar-h, 52px) - 30px) / 2);
-}
+/* Skip and sound: bottom right, in the same place from the first frame to the last */
 .ix-skip,
 .ix-ctl {
   position: absolute;
@@ -1198,7 +1188,7 @@ body.ix-on .topbar .brand {
   transition: opacity 0.4s;
 }
 .ix-skip {
-  top: var(--ctl-top);
+  bottom: 18px;
   height: 30px;
   right: var(--ix-pad);
   padding: 8px 14px;
@@ -1346,7 +1336,7 @@ body.ix-on .topbar .brand {
   }
   .ix-q {
     gap: 12px;
-    bottom: 22px;
+    bottom: 62px;
   }
   .qb {
     align-self: stretch;
@@ -1588,7 +1578,7 @@ body.ix-on .topbar .brand {
     line-height: 1.45;
   }
   .ix-q {
-    bottom: 14px;
+    bottom: 56px;
     gap: 8px;
   }
   .qb button {
