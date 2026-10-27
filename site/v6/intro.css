@@ -426,6 +426,30 @@ body.ix-on .topbar nav {
   font-size: clamp(34px, 4.6vw, 76px);
   white-space: nowrap;
 }
+/* film C's brake fault: a red banner across the photo */
+.kl.ix-banner {
+  left: 0;
+  right: 0;
+  top: 50%;
+  translate: 0 -50%;
+  padding: clamp(10px, 2vh, 20px) var(--ix-pad);
+  background: rgba(200, 30, 24, 0.92);
+  text-align: center;
+}
+.ix-banner p {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 64px);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.ix-banner.blink {
+  background: rgba(255, 70, 60, 0.96);
+}
+.vc .kl[data-k='hits'] .k-src {
+  opacity: 0;
+}
 .st-rest {
   margin-top: 6px;
   color: #ffb3ae;

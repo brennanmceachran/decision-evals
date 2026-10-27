@@ -627,7 +627,8 @@
           <div class="kl k-top" data-k="rule"><p class="k-big">${words([[VC ? 'Add a safety rule.' : 'What if we tell it to be safe?']])}</p></div>
           <div class="kl k-mid" data-k="sched"><p class="k-big">${VC ? words([['Safe route.', 'green']]) : VB ? words([['Now the schedule points away from them.'], ['Easy.', 'green']]) : words([['Now the schedule is safe.'], ['Easy.', 'green']])}</p></div>
           <div class="kl k-top" data-k="brake"><p class="k-big">${words([['Then the brakes fail.', 'red']])}</p></div>
-          <div class="kl k-low" data-k="hits"><p class="k-big">${words([[VC ? 'Hits:' : 'Hits on the workers:'], [`${fmt(D.fault.off)} → ${fmt(D.fault.on)}.`, 'red']])}</p></div>
+          <div class="kl k-low" data-k="hits"><p class="k-big">${VC ? words([['The AIs swerved into them.'], [`${fmt(D.fault.off)} → ${fmt(D.fault.on)}.`, 'red']]) : words([['Hits on the workers:'], [`${fmt(D.fault.off)} → ${fmt(D.fault.on)}.`, 'red']])}</p>${VC ? `<p class="k-src">Times the decision AIs hit the workers, of ${fmt(D.fault.offOf)} requests: brakes working, then brakes failed.</p>` : ''}</div>
+          ${VC ? `<div class="kl ix-banner" data-k="fail"><p>${words([['Brakes not responding']])}</p></div>` : ''}
         </div>
       </div>
       <div class="ix-l ix-rw" aria-hidden="true"><p>◀◀ ${VC ? 'An AI' : esc(M(omni).name)}</p></div>
@@ -1557,6 +1558,58 @@
       };
       const seg_brakes = () => {
         // ======== 10. The brakes. The schedule points away; one line in the log; the grid floods red.
+        if (VC)
+          return beat('The brakes', 13 * B, (s) => {
+            // the photo stays lit: the schedule's safe green route, then the fault, then the route swings into them
+            draw(rL, s, 0.2, 1, 0);
+            sks.forEach((k) => drop(k, s, 0.15, false));
+            op(dim, s, 0.001, 0, 0);
+            tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = '50% 60%'));
+            tf(fr, s, 6, (p) => `scale(${lerp(1.04, 1.16, p)})`, E.lin);
+            cue(s, 'sub', 0.8);
+            draw(rR, s + 0.15, 0.4, 0, 1, E.out);
+            op(nob, s + 0.35, 0.2, 0, 1);
+            cue(s + 0.2, 'whoosh', 0.3);
+            cue(s + 0.55, 'ding');
+            const sc = kin('sched');
+            life(sc, s + 0.05, s + 1.9, { exit: 'cut' });
+            slam(sc, s + 0.05, { stagger: 0.04 });
+            // the fault: a red banner, the alarm; the headline drops in
+            const F0 = s + 2;
+            const fb = kin('fail');
+            life(fb, F0, F0 + 1.6, { exit: 'cut' });
+            slam(fb.querySelector('p'), F0, { stagger: 0.04, from: 2.2 });
+            tl.add(fb, 'b', -1, 0.001, () => fb.classList.remove('blink'));
+            tl.add(fb, 'b', F0, 0.9, (p) => fb.classList.toggle('blink', p > 0 && p < 1 && Math.floor(p * 6) % 2 === 0), E.lin);
+            const br = kin('brake');
+            life(br, F0, s + 13 * B, { exit: 'cut' });
+            slam(br, F0, { stagger: 0.06, from: 2 });
+            cue(F0, 'alarm');
+            cue(F0, 'impact', 0.8);
+            red(F0, 0.8, 0.4);
+            red(F0 + 0.5, 0.6, 0.4);
+            groove(F0, s + 13 * B, { kick: 1, hat: 0.9, clap: true, bass: F0 });
+            // the swerve: green off the empty track, red into the workers, the skulls
+            const SW = F0 + 1.2;
+            draw(rR, SW, 0.25, 1, 0, E.in);
+            op(nob, SW, 0.15, 1, 0);
+            draw(rL, SW + 0.2, 0.4, 0, 1, E.out);
+            cue(SW + 0.2, 'rewind', 0.25);
+            sks.forEach((k, i) => drop(k, SW + 0.55 + i * 0.09));
+            cue(SW + 0.55, 'impact', 1.1);
+            flash(SW + 0.55, 0.55);
+            shake(SW + 0.55, 22);
+            red(SW + 0.55, 0.8, 0.7);
+            // the count: the photo dims a little under it
+            op(dim, SW + 0.9, 0.3, 0, 0.5);
+            const hits = kin('hits');
+            life(hits, SW + 0.9, s + 13 * B, { exit: 'cut' });
+            slam(hits.querySelector('.k-big'), SW + 0.9, { stagger: 0.035 });
+            op(hits.querySelector('.k-src'), SW + 1.4, 0.3, 0, 1);
+            cue(SW + 1.5, 'stamp');
+            shake(SW + 1.5, 14);
+            cue(s + 13 * B - 0.6, 'revcym', 0.6);
+          });
         beat('The brakes', (VB ? 12 : 10) * B, (s) => {
           const d = VB ? 2 * B : 0;
           draw(rL, s, 0.2, 1, 0);

@@ -38,9 +38,11 @@ job": a red route into the workers.*
 *Image: a yellow note, "Never route a tram onto a track where people are present," stamped IGNORED.*
 
 ### 7. Safe route. Then the brakes fail.
-**Hits: 9 → 161.** The schedule pointed at the empty track. Add one log line, "brakes not responding," and hits on
-the workers jumped from 9 to 161 in 1,152.
-*Image: a green route to the empty track turns red and swings into the workers.*
+**The AIs swerved into them. 9 → 161.** The schedule pointed at the empty track. A red banner, "BRAKES NOT
+RESPONDING," and the route swings off the empty track into the workers. Hits on the workers went from 9 to 161 in
+1,152 requests.
+*Image: the photo stays lit. A green route to the empty track ("nobody here"), the red banner across it, then the route
+swings red into the workers and the skulls drop.* (Film C as built: no terminal log, no dot grid.)
 
 ### 8. That was one scene.
 **761,940 answers total.** From 22 AIs: the classic trolley problems, then the real job.
@@ -73,7 +75,7 @@ atheist.
 > **Not just one AI.** 7 of 9.
 > **Call it a "trolley problem."** Most spare them.
 > **Add a safety rule.** It ignored it.
-> **Safe route. Then the brakes fail.** Hits: 9 → 161.
+> **Safe route. Then the brakes fail.** The AIs swerved. 9 → 161.
 > **That was one scene.** 761,940 answers total.
 > **Nobody in danger.** Two pulled anyway.
 > **Five patients. One healthy man.** 10 AIs operate.
