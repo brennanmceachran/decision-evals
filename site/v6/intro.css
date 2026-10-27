@@ -249,12 +249,24 @@ body.ix-on .topbar nav {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(270deg, rgba(12, 16, 19, 0.94) 0, rgba(12, 16, 19, 0.55) 30%, rgba(12, 16, 19, 0) 52%);
+  background: linear-gradient(270deg, rgba(12, 16, 19, 0.96) 0, rgba(12, 16, 19, 0.8) 40%, rgba(12, 16, 19, 0) 70%);
   pointer-events: none;
 }
 .sp .ix-frame {
   position: absolute;
   inset: 0;
+}
+.sp .sg {
+  position: absolute;
+  z-index: 1;
+  right: calc(clamp(16px, 2.4vw, 40px) + clamp(180px, 20vw, 330px));
+  top: 10%;
+  height: 80%;
+  aspect-ratio: 24 / 24;
+  opacity: 0;
+}
+.sp-a .sg {
+  aspect-ratio: 12 / 24;
 }
 .sp figcaption,
 .sp p {
@@ -330,7 +342,7 @@ body.ix-on .topbar nav {
 .ix-note {
   inset: auto;
   left: 50%;
-  top: 38%;
+  top: 34%;
   width: min(540px, 80vw);
   padding: 22px 26px 18px;
   background: var(--amber);
@@ -355,8 +367,8 @@ body.ix-on .topbar nav {
 }
 .ix-stamp {
   inset: auto;
-  left: 50%;
-  top: 46%;
+  left: 58%;
+  top: 64%;
   display: grid;
   justify-items: center;
   padding: 10px 26px 16px;
@@ -408,6 +420,12 @@ body.ix-on .topbar nav {
 .ix-term .fault {
   color: #ff5a50;
   font-weight: 700;
+}
+.ix-term .tl:not(.keep) {
+  display: none;
+}
+.ix-term pre {
+  font-size: clamp(14px, 1.35vw, 22px);
 }
 .ix-term .fault.blink {
   animation: ix-blink 0.16s steps(2) 3;
@@ -536,6 +554,14 @@ body.ix-on .topbar nav {
 }
 .cs .frac .n {
   font-size: clamp(56px, 6.6vw, 112px);
+}
+.cs-l {
+  display: block;
+  margin-top: 0.2em;
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 800;
+  letter-spacing: 0;
+  color: var(--muted);
 }
 .csm,
 .csrc,
@@ -1097,6 +1123,22 @@ body.ix-on .topbar nav {
   font-size: 15px;
   color: #fff;
 }
+.ix-big-cd {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  margin: 0;
+  font-size: clamp(160px, 26vw, 420px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  color: #ff4d44;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 0 0 80px rgba(226, 48, 42, 0.6);
+  mix-blend-mode: screen;
+}
 .ix.picked .ix-q {
   transition: opacity 0.2s;
 }/* ---------- controls */
@@ -1391,6 +1433,11 @@ body.ix-on .topbar nav {
   .sp p small {
     display: none;
   }
+  .sp .sg {
+    right: calc(var(--ix-pad) + 40vw);
+    top: 18%;
+    height: 64%;
+  }
   .card {
     top: calc(50% + var(--bar-h, 52px) * 0.4);
     grid-template-columns: 1fr;
@@ -1618,6 +1665,24 @@ body.ix-on .topbar nav {
   }
   .ix-you {
     font-size: 14px;
+  }
+  .ix-stamp {
+    top: 76%;
+    left: 66%;
+    padding: 4px 16px 8px;
+    border-width: 5px;
+  }
+  .ix-stamp p {
+    font-size: 9vh;
+  }
+  .ix-stamp .frac .n {
+    font-size: 8vh;
+  }
+  .ix-note {
+    top: 38%;
+  }
+  .sp .sg {
+    right: calc(clamp(16px, 2.4vw, 40px) + 26vw);
   }
 }
 @media (prefers-reduced-motion: reduce) {

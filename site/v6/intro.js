@@ -559,8 +559,8 @@
         <canvas class="ix-l ix-dots" aria-hidden="true"></canvas>
         <div class="ix-l ix-vig" aria-hidden="true"></div>
         <div class="ix-l ix-split" aria-hidden="true">
-          <figure class="sp sp-a">${frame({ left: false, right: true })}<figcaption><span class="xtag">Called a trolley problem</span></figcaption><p>${frac(D.trolley[0], D.trolley[1])}<small>times the ${word(D.dec)} decision AIs hit the workers</small></p></figure>
-          <figure class="sp sp-b">${frame({})}<figcaption><span class="xtag red">Called a routing job</span></figcaption><p>${frac(D.job[0], D.job[1], 'red')}<small>the same AIs, the same frames, first run</small></p></figure>
+          <figure class="sp sp-a">${frame({ left: false, right: true })}<figcaption><span class="xtag">Called a trolley problem</span></figcaption><canvas class="sg" data-n="${D.trolley[1]}"></canvas><p>${frac(D.trolley[0], D.trolley[1])}<small>times they hit the workers</small></p></figure>
+          <figure class="sp sp-b">${frame({})}<figcaption><span class="xtag red">Called a routing job</span></figcaption><canvas class="sg" data-n="${D.job[1]}"></canvas><p>${frac(D.job[0], D.job[1], 'red')}<small>times they hit the workers</small></p></figure>
         </div>
         <div class="ix-l ix-note" aria-hidden="true"><p>“Never route a tram onto a track where people are present.”</p><small>Safety rule, at the top of the request</small></div>
         <div class="ix-l ix-stamp" aria-hidden="true"><p>Ignored</p>${frac(D.rule[0][0], D.rule[0][1], 'red')}</div>
@@ -568,22 +568,21 @@
           <pre>${logLines.map((l) => `<span class="tl${/next switch/.test(l) ? ' keep' : ''}">${esc(l)}\n</span>`).join('')}<span class="fault"><span class="on"></span><span class="off">${esc(faultLine)}</span></span></pre>
         </div>
         <div class="ix-l ix-fault" aria-hidden="true"><canvas></canvas>
-          <p class="fk"><span class="fa"><b class="ct">0</b> without that line</span><span class="fb"><b class="ct red">0</b> with it</span><small>of ${fmt(D.fault.offOf)} requests, the schedule pointing away from the workers</small></p>
+          <p class="fk"><span class="fa"><b class="ct">0</b> brakes working</span><span class="fb"><b class="ct red">0</b> brakes failed</span><small>times they hit the workers, of ${fmt(D.fault.offOf)} requests</small></p>
         </div>
         <div class="ix-l ix-table" aria-hidden="true">
           <div class="card c1">
-            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([['Nobody is in danger.']])}</h3><p class="cv">${words([['One AI pulled the lever onto a person anyway.']])}</p><p class="cs">${frac(D.laya.n, D.laya.of, 'red')}</p><p class="csrc">${esc(M('convaiinnovations/laya').name)}, told in words${D.laya.both ? ', both runs' : ''}</p></div>
+            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([['Nobody is in danger.']])}</h3><p class="cv">${words([['One AI pulled the lever onto a person anyway.']])}</p><p class="cs">${frac(D.laya.n, D.laya.of, 'red')}<span class="cs-l">times it was asked</span></p></div>
             <div class="cd-p">${lever}</div>
           </div>
           <div class="card c2">
             <div class="cd-t">${chip(2, 'Hard')}<h3 class="cq">${words([['A healthy man. Five patients need his organs.']])}</h3><p class="cv">${words([[`${D.organs.length} of ${D.models} AIs`, 'red'], ['would take them.']])}</p><p class="csm">People, in surveys: about ${D.people} in 100.</p></div>
-            <div class="cd-p">${surgeon}<div class="xbots">${F.models.map((m) => `<i class="${D.organs.includes(m.id) ? 'do' : ''}">${robotSvg()}</i>`).join('')}</div><p class="xgl">Each robot is one AI. Lit: it took the organs in most versions, every run.</p></div>
+            <div class="cd-p">${surgeon}<div class="xbots">${F.models.map((m) => `<i class="${D.organs.includes(m.id) ? 'do' : ''}">${robotSvg()}</i>`).join('')}</div></div>
           </div>
           <div class="card c3">
             <div class="cd-t">${chip(3, 'Impossible')}<h3 class="cq">${words([['Two strangers. Save one.']])}</h3>
-              <p class="cv v1">${words([['Black or White:'], [sideOf(D.race), 'red']])}</p>
-              <p class="cv v2">${words([['Believer or atheist:'], [sideOf(D.faith), 'red']])}</p>
-              <p class="csrc">AIs that took a side, more often than chance and their own habits explain, every run. The rest saved both about equally. Forced choice.</p></div>
+              <p class="cv v1">${words([[`${Word(D.race.a.length)} AIs saved the Black person.`], [D.race.b.length ? `${Word(D.race.b.length)} the White.` : 'None the White.', 'red']])}</p>
+              <p class="cv v2">${words([[`${Word(D.faith.a.length)} saved the believer.`], [D.faith.b.length ? `${Word(D.faith.b.length)} the atheist.` : 'None the atheist.', 'red']])}</p></div>
             <div class="cd-p">${contrast('race', D.race, figure({ skin: K.TONE.dark }), figure({ skin: K.TONE.light }), 'Black', 'White')}${contrast('faith', D.faith, believer, figure({}), 'a believer', 'an atheist')}</div>
           </div>
         </div>
@@ -611,7 +610,7 @@
           <div class="kl k-mid" data-k="scale"><p class="k-lab">${words([['That was one question.']])}</p><p class="k-mega"><b class="ct">0</b></p><p class="k-big2">${words([[`answers from ${D.models} AIs`]])}</p><div class="names">${D.makers.map((v) => `<span>${esc(v)}</span>`).join('')}</div></div>
           <div class="kl k-top" data-k="real">${chip(4, 'Real')}<p class="k-big">${words([['Same frames.'], ['Only the words changed.', 'red']])}</p></div>
           <div class="kl k-top" data-k="rule"><p class="k-big">${words([['So we added a safety rule.']])}</p></div>
-          <div class="kl k-top" data-k="sched"><p class="k-big">${words([['The schedule sends the tram away from them.']])}</p></div>
+          <div class="kl k-mid" data-k="sched"><p class="k-big">${words([['Now the schedule sends the tram'], ['away', 'green'], ['from the workers.']])}</p></div>
           <div class="kl k-top" data-k="brake"><p class="k-big">${words([['Then the brakes fail.', 'red']])}</p></div>
           <div class="kl k-low" data-k="hits"><p class="k-big">${words([['They hit the workers'], [`${fmt(D.fault.on)} times, not ${fmt(D.fault.off)}.`, 'red']])}</p></div>
         </div>
@@ -639,6 +638,7 @@
           <div class="qb"><button type="button" data-pick="left"><span class="ar">←</span>${esc(sent.buttons[0])}</button><button type="button" data-pick="right">${esc(sent.buttons[1])}<span class="ar">→</span></button></div>
           <p class="cd"><i></i><span>${esc(sw)} in <b>${secs}</b> s</span></p>
         </div>
+        <p class="ix-big-cd" aria-hidden="true">0</p>
       </div>
 
       <button type="button" class="ix-skip">Skip<span class="xs"> to the story</span></button>
@@ -826,6 +826,42 @@
       }
     }
 
+    /** One of the split's grids: one dot per request, the first `red` (in a fixed random order) red. */
+    const sg = { order: {} };
+    function drawSplit(cv, red) {
+      const n = Number(cv.dataset.n);
+      const r = cv.getBoundingClientRect();
+      if (!r.width) return;
+      const dpr = Math.min(2, devicePixelRatio || 1);
+      if (cv.width !== Math.round(r.width * dpr)) {
+        cv.width = Math.round(r.width * dpr);
+        cv.height = Math.round(r.height * dpr);
+      }
+      // the same dot size for both grids: 24 rows on the larger one, so 288 is 12 columns and 576 is 24
+      const rows = 24;
+      const cols = Math.ceil(n / rows);
+      const step = cv.height / rows;
+      const sz = step * 0.7;
+      if (!sg.order[n]) {
+        const rnd = rng(n);
+        const o = Array.from({ length: n }, (_, i) => i).sort(() => rnd() - 0.5);
+        const rank = new Uint32Array(n);
+        o.forEach((v, i) => (rank[v] = i));
+        sg.order[n] = rank;
+      }
+      const rank = sg.order[n];
+      const ctx = cv.getContext('2d');
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      for (let i = 0; i < n; i++) {
+        const x = cv.width - (cols - Math.floor(i / rows)) * step + (step - sz) / 2;
+        const y = (i % rows) * step + (step - sz) / 2;
+        ctx.fillStyle = rank[i] < red ? '#ff4d44' : 'rgba(255,255,255,.22)';
+        ctx.beginPath();
+        ctx.arc(x + sz / 2, y + sz / 2, sz / 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
     // ------------------------------------------------------------------ geometry the zoom needs (layout boxes)
     const G = {};
     function measure() {
@@ -903,7 +939,14 @@
         const left = secs * (1 - p);
         cn.textContent = String(Math.max(0, Math.ceil(left - 1e-6)));
         $('.ix-q .cd').classList.toggle('late', left < 4.5);
-        pulse.style.opacity = left < 4.5 && p < 1 ? String(0.55 * (1 - (Math.ceil(left) - left)) ** 3) : '0';
+        // each second tick flashes red, then fades; the last three seconds are counted big over the frame
+        const frac0 = left - Math.floor(left);
+        pulse.style.opacity = left < 4.5 && p < 1 ? String(0.55 * frac0 ** 3) : '0';
+        const bc = $('.ix-big-cd');
+        const last = left < 3.5 && p < 1;
+        bc.textContent = String(Math.max(1, Math.ceil(left - 1e-6)));
+        bc.style.opacity = last ? String(0.25 + 0.75 * frac0 ** 2) : '0';
+        bc.style.transform = last ? `${CENTER} scale(${1 + 0.5 * frac0 ** 4})` : CENTER;
       }, E.lin);
       const clk = $('.ix-hud .clk');
       tl.add(clk, 'c', 0, 120, (p) => {
@@ -1231,7 +1274,7 @@
       const fill = (s) => [0.25, 0.125, 0.0625].forEach((d, k) => cue(s - d, 'snare', 0.45 + k * 0.15));
       tl.add(table, 'c', -1, 0.001, () => (table.style.background = 'var(--c1)'));
 
-      beat('Obvious', 8 * B, (s) => {
+      beat('Obvious', 7 * B, (s) => {
         // a tram drives across the screen, ringing its bell; the table is behind it
         const wipeTram = $('.ix-tram');
         const T0 = s - 0.62;
@@ -1256,9 +1299,9 @@
         cue(T0, 'rumble', TD);
         tableBg(s, 'var(--c1)');
         cue(s + 0.32, 'crash', 0.6);
-        groove(s + 0.32, s + 8 * B + 7 * B + 9 * B, { clap: true, ohat: true, bass: s + 0.32 });
+        groove(s + 0.32, s + 7 * B + 6 * B + 8 * B, { clap: true, ohat: true, bass: s + 0.32, kick: 0.75, hat: 0.6 });
         const c = $('.card.c1');
-        card(c, s + 0.12, s + 8 * B, -1.5);
+        card(c, s + 0.12, s + 7 * B, -1.5);
         slam(c.querySelector('.chip'), s + 0.35);
         slam(c.querySelector('.cq'), s + 0.4, { stagger: 0.05 });
         // the tram rolls in, the lever goes, it takes the branch: its nose follows the rail, its body turns with it
@@ -1275,8 +1318,8 @@
           return `translate(${a.x - 150} ${a.y - 214}) rotate(${ang} 150 212)`;
         };
         at(tram, -1, 0.001, () => 'translate(-330 0)');
-        at(tram, s + 0.35, 0.7, (p) => `translate(${lerp(-330, 0, p)} 0)`, E.out);
-        const lv = s + 1.1;
+        at(tram, s + 0.3, 0.5, (p) => `translate(${lerp(-330, 0, p)} 0)`, E.out);
+        const lv = s + 2 * B;
         op(c.querySelector('.pose1'), -1, 0.001, 0, 0);
         op(c.querySelector('.pose1'), lv, 0.05, 0, 1, E.lin);
         op(c.querySelector('.pose0'), lv, 0.05, 1, 0, E.lin);
@@ -1303,21 +1346,20 @@
           vis(cs, Math.min(1, p * 3));
           cs.style.transform = `scale(${lerp(2.4, 1, p)}) rotate(${(1 - p) * -8}deg)`;
         }, E.snap);
-        op(c.querySelector('.csrc'), lv + 1.1, 0.3, 0, 1);
       });
 
-      beat('Hard', 7 * B, (s) => {
+      beat('Hard', 6 * B, (s) => {
         tableBg(s + 0.15, 'var(--c2)');
         fill(s + 0.22);
         const c = $('.card.c2');
-        card(c, s, s + 7 * B, 1.2);
+        card(c, s, s + 6 * B, 1.2);
         slam(c.querySelector('.chip'), s + 0.2);
         slam(c.querySelector('.cq'), s + 0.25, { stagger: 0.035 });
         const hot = c.querySelector('.hot');
         const hp = hot?.querySelector('path');
         if (hp) {
           tl.add(hot, 'h', -1, 0.001, () => (hot.style.visibility = 'hidden'));
-          tl.add(hot, 'h', s + 0.6, 0.35, (p) => {
+          tl.add(hot, 'h', s + 0.45, 0.3, (p) => {
             hp.style.strokeDasharray = '1 1';
             hp.style.strokeDashoffset = String(1 - p);
             hot.style.visibility = p ? 'visible' : 'hidden';
@@ -1325,30 +1367,29 @@
         }
         c.querySelectorAll('.ix-scene .skull').forEach((k) => {
           tl.add(k, 'k', -1, 0.001, () => (k.style.opacity = 0));
-          tl.add(k, 'k', s + 0.95, 0.35, (p) => {
+          tl.add(k, 'k', s + 0.75, 0.3, (p) => {
             k.style.opacity = Math.min(1, p * 2);
             k.style.transform = `translateY(${(1 - p) * -30}px)`;
           }, E.snap);
         });
-        cue(s + 0.95, 'kick', 1);
+        cue(s + 0.75, 'kick', 1);
         const lit = [...c.querySelectorAll('.xbots i.do')];
         c.querySelectorAll('.xbots i').forEach((b) => tl.add(b, 'l', -1, 0.001, () => b.classList.remove('on')));
         lit.forEach((b, i) => {
-          tl.add(b, 'l', s + 1.1 + i * (B / 4), 0.01, (p) => b.classList.toggle('on', p > 0), E.lin);
-          cue(s + 1.1 + i * (B / 4), 'pop', i);
+          tl.add(b, 'l', s + 0.9 + i * (B / 4), 0.01, (p) => b.classList.toggle('on', p > 0), E.lin);
+          cue(s + 0.9 + i * (B / 4), 'pop', i);
         });
-        op(c.querySelector('.xbots'), s + 0.9, 0.2, 0, 1);
-        op(c.querySelector('.xgl'), s + 1.4, 0.3, 0, 1);
-        slam(c.querySelector('.cv'), s + 1.1 + lit.length * (B / 4) - 0.1, { stagger: 0.05 });
-        cue(s + 1.1 + lit.length * (B / 4), 'stamp');
-        op(c.querySelector('.csm'), s + 2.6, 0.3, 0, 1);
+        op(c.querySelector('.xbots'), s + 0.75, 0.15, 0, 1);
+        slam(c.querySelector('.cv'), s + 0.9 + lit.length * (B / 4) - 0.1, { stagger: 0.05 });
+        cue(s + 0.9 + lit.length * (B / 4), 'stamp');
+        op(c.querySelector('.csm'), s + 2.3, 0.3, 0, 1);
       });
 
-      beat('Impossible', 9 * B, (s) => {
+      beat('Impossible', 8 * B, (s) => {
         tableBg(s + 0.15, 'var(--c3)');
         fill(s + 0.22);
         const c = $('.card.c3');
-        card(c, s, s + 9 * B, -1);
+        card(c, s, s + 8 * B, -1);
         slam(c.querySelector('.chip'), s + 0.2);
         slam(c.querySelector('.cq'), s + 0.25, { stagger: 0.05 });
         // each contrast: the two people step in, then the AIs that took a side drop in under the one they saved
@@ -1383,59 +1424,68 @@
           slam(c.querySelector(cv), done - 0.05, { stagger: 0.05 });
           return done;
         };
-        const e1 = play2('race', s + 0.5, B / 4, '.v1');
-        play2('faith', e1 + 0.3, B / 8, '.v2');
+        const e1 = play2('race', s + 0.4, B / 4, '.v1');
+        play2('faith', e1 + 0.15, B / 8, '.v2');
         // the believer's badge turns through the four faiths asked
         const fbs = $$('.card.c3 .fb');
         const fb = c.querySelector('.mu[data-k="faith"] .mu-fig');
         tl.add(fb, 'f', -1, 0.001, () => fbs.forEach((x, i) => (x.style.opacity = i ? 0 : 1)));
-        for (let k = 1; k < 10; k++) tl.add(fb, 'f', e1 + 0.3 + k * 0.3, 0.001, () => fbs.forEach((x, i) => (x.style.opacity = i === k % FAITHS.length ? 1 : 0)));
-        op(c.querySelector('.csrc'), s + 3.2, 0.3, 0, 1);
+        for (let k = 1; k < 10; k++) tl.add(fb, 'f', e1 + 0.15 + k * 0.25, 0.001, () => fbs.forEach((x, i) => (x.style.opacity = i === k % FAITHS.length ? 1 : 0)));
         // the card is yanked off the table on the last beat; then a hard cut
         $$('.ix-table .card').forEach((cd, i) => {
           tl.add(cd, 'y', -1, 0.001, () => (cd.style.translate = ''));
-          tl.add(cd, 'y', s + 9 * B - 0.28 + (2 - i) * 0.03, 0.24, (p) => (cd.style.translate = `0 ${-p * 120}vh`), E.in);
+          tl.add(cd, 'y', s + 8 * B - 0.28 + (2 - i) * 0.03, 0.24, (p) => (cd.style.translate = `0 ${-p * 120}vh`), E.in);
         });
-        tl.add(table, 'x', s + 9 * B, 0.001, () => vis(table, 0));
-        cue(s + 9 * B - 0.45, 'revcym', 0.45);
+        tl.add(table, 'x', s + 8 * B, 0.001, () => vis(table, 0));
+        cue(s + 8 * B - 0.45, 'revcym', 0.45);
       });
 
       // ======== 8. Real. A hard cut back to the camera: the same frames, called two things.
-      beat('Real', 6 * B, (s) => {
+      beat('Real', 8 * B, (s) => {
         const sp = $('.ix-split');
-        life(sp, s, s + 6 * B, { exit: 'cut' });
+        life(sp, s, s + 8 * B, { exit: 'cut' });
         flash(s, 0.8, 0.2);
         cue(s, 'impact', 1);
         shake(s, 18);
-        groove(s + B, s + 6 * B, { kick: 0.9, hat: 0.7, bass: s + B });
+        groove(s + 2 * B, s + 8 * B, { kick: 1, hat: 0.8, clap: true, bass: s + 2 * B });
         const re = kin('real');
-        life(re, s + 0.05, s + 6 * B, { exit: 'cut' });
+        life(re, s + 0.05, s + 8 * B, { exit: 'cut' });
         slam(re.querySelector('.chip'), s + 0.05);
         slam(re.querySelector('.k-big'), s + 0.1, { stagger: 0.05 });
         const [a, b] = $$('.ix-split .sp');
         draw(a.querySelector('.r-right'), -1, 0.001, 0, 0);
         draw(b.querySelector('.r-left'), -1, 0.001, 0, 0);
         b.querySelectorAll('.sk').forEach((k) => drop(k, -1, 0.001, false));
+        const [ga, gb] = $$('.ix-split .sg');
         op(a.querySelector('figcaption'), s + 0.4, 0.15, 0, 1);
         op(a.querySelector('p'), s + 0.5, 0.15, 0, 1);
         draw(a.querySelector('.r-right'), s + 0.5, 0.4);
         count(a.querySelector('.n'), s + 0.5, 0.6, 0, D.trolley[0], E.out);
+        tl.add(ga, 'r', -1, 0.001, () => drawSplit(ga, 0));
+        tl.add(ga, 'r', s + 0.5, 0.6, (p) => drawSplit(ga, Math.round(p * D.trolley[0])), E.out);
+        op(ga, s + 0.45, 0.1, 0, 1);
         cue(s + 0.5, 'whoosh', 0.25);
         cue(s + 1.1, 'ding');
-        op(b.querySelector('figcaption'), s + 1.3, 0.15, 0, 1);
-        op(b.querySelector('p'), s + 1.4, 0.15, 0, 1);
-        draw(b.querySelector('.r-left'), s + 1.4, 0.4);
-        count(b.querySelector('.n'), s + 1.4, 0.8, 0, D.job[0], E.out);
-        for (let k = 0; k < 10; k++) cue(s + 1.4 + k * 0.08, 'tick');
-        b.querySelectorAll('.sk').forEach((k, i) => drop(k, s + 2.2 + i * 0.08));
-        cue(s + 2.2, 'impact', 1);
-        cue(s + 2.2, 'glitch');
-        flash(s + 2.2, 0.5);
-        shake(s + 2.2, 20);
-        red(s + 2.2, 0.7);
+        // the routing job: its grid is twice the size, and it fills
+        const tb = s + 2 * B;
+        op(b.querySelector('figcaption'), tb, 0.15, 0, 1);
+        op(b.querySelector('p'), tb + 0.05, 0.15, 0, 1);
+        op(gb, tb, 0.1, 0, 1);
+        draw(b.querySelector('.r-left'), tb, 0.4);
+        count(b.querySelector('.n'), tb + 0.05, 1.3, 0, D.job[0], E.in);
+        tl.add(gb, 'r', -1, 0.001, () => drawSplit(gb, 0));
+        tl.add(gb, 'r', tb + 0.05, 1.3, (p) => drawSplit(gb, Math.round(p * D.job[0])), E.in);
+        for (let k = 0; k < 20; k++) cue(tb + 0.05 + 1.3 * (k / 20) ** 0.5, 'tick');
+        const hit = tb + 1.35;
+        b.querySelectorAll('.sk').forEach((k, i) => drop(k, hit + i * 0.08));
+        cue(hit, 'impact', 1.1);
+        cue(hit, 'glitch');
+        flash(hit, 0.55);
+        shake(hit, 22);
+        red(hit, 0.8, 0.7);
         const bn = b.querySelector('.frac');
         tl.add(bn, 'z', -1, 0.001, () => (bn.style.transform = ''));
-        tl.add(bn, 'z', s + 2.2, 0.4, (p) => (bn.style.transform = `scale(${1 + 0.3 * Math.sin(p * Math.PI)})`), E.out);
+        tl.add(bn, 'z', hit, 0.45, (p) => (bn.style.transform = `scale(${1 + 0.35 * Math.sin(p * Math.PI)})`), E.out);
       });
 
       // ======== 9. The rule. A safety rule, stuck on; then stamped IGNORED.
@@ -1470,7 +1520,7 @@
         tl.add(st, 'x', -1, 0.001, () => vis(st, 0));
         tl.add(st, 'x', s + 1.55, 0.25, (p) => {
           vis(st, Math.min(1, p * 3));
-          st.style.transform = `${CENTER} scale(${lerp(3, 1, p)}) rotate(${lerp(-24, -9, p)}deg)`;
+          st.style.transform = `${CENTER} scale(${lerp(3, 1, p)}) rotate(${lerp(-24, -7, p)}deg)`;
         }, E.snap);
         tl.add(st, 'x', s + 5 * B, 0.001, () => vis(st, 0));
         cue(s + 1.75, 'stamp');
@@ -1490,10 +1540,10 @@
         life(sc, s + 0.05, s + 1.1, { exit: 'cut' });
         slam(sc, s + 0.05, { stagger: 0.04 });
         const term = $('.ix-term');
-        life(term, s + 0.3, s + 6 * B, { exit: 'cut' });
+        life(term, s + 1.1, s + 6 * B, { exit: 'cut' });
         const f = term.querySelector('.fault');
-        type(f.querySelector('.on'), f.querySelector('.off'), s + 0.6, 0.5);
-        for (let k = 0; k < 10; k++) cue(s + 0.6 + k * 0.05, 'key');
+        type(f.querySelector('.on'), f.querySelector('.off'), s + 1.1, 0.4);
+        for (let k = 0; k < 8; k++) cue(s + 1.1 + k * 0.05, 'key');
         const br = kin('brake');
         life(br, s + 1.1, s + 6 * B, { exit: 'cut' });
         slam(br, s + 1.1, { stagger: 0.06, from: 2 });
