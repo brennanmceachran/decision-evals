@@ -1,0 +1,1288 @@
+/* site/v6/intro.css: the opening (intro.js). One full-screen stage under the top bar. Layers, back to front: the cab
+   frame, the grid of the same frame, the dot field, the split, the safety note, the terminal, the paper scenes; then
+   the words; then the cold open's question; then the controls. The film moves things with transforms and opacity
+   only, so nothing reflows while it plays. */
+.hero.hero-ix {
+  padding: 0;
+  background: var(--night);
+}
+.ix {
+  --ix-pad: clamp(20px, 4.4vw, 72px);
+  --hl: clamp(34px, 5.1vw, 84px);
+  position: relative;
+  height: 100svh;
+  min-height: 560px;
+  margin-top: calc(-1 * var(--bar-h, 52px));
+  overflow: hidden;
+  background: var(--night);
+  color: #fff;
+  isolation: isolate;
+  outline: none;
+}
+body.ix-on .topbar {
+  background: transparent;
+  backdrop-filter: none;
+}
+body.ix-on .topbar nav {
+  opacity: 0;
+  visibility: hidden;
+}
+.topbar,
+.topbar nav {
+  transition:
+    background 0.6s,
+    opacity 0.6s,
+    visibility 0.6s;
+}
+.ix-l {
+  position: absolute;
+  inset: 0;
+}
+/* ---------- the frame */
+.ix-photo {
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.ix-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ix-photo .ix-frame {
+  transform-origin: 50% 55%;
+}
+.ix .rt .rail {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+}
+.ix .r-left,
+.ix .r-right {
+  visibility: hidden;
+}
+.ix .tracks.narrow {
+  display: none;
+}
+.ix .rt .bed,
+.ix .rt .chev,
+.ix .sk,
+.ix .nobody,
+.ix .tracks {
+  opacity: 0;
+}
+/* ---------- the grid: every time the AI was asked */
+.ix-grid {
+  visibility: hidden;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-content: center;
+  gap: clamp(6px, 0.7vw, 12px);
+  width: 56vw;
+  left: var(--ix-pad);
+  right: auto;
+  padding: 0;
+}
+.ix-grid .tile {
+  aspect-ratio: var(--ar, 1.6);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000;
+  opacity: 0;
+}
+/* ---------- the dots */
+.ix-dots {
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  image-rendering: pixelated;
+}
+.ix-flash {
+  background: #fff;
+  visibility: hidden;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+.ix-vig {
+  visibility: hidden;
+  pointer-events: none;
+  background: radial-gradient(ellipse 52% 46% at 50% 50%, rgba(12, 16, 19, 0.92) 0, rgba(12, 16, 19, 0.7) 45%, rgba(12, 16, 19, 0) 100%);
+}
+/* ---------- the split: trolley problem / routing request */
+.ix-split {
+  visibility: hidden;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 4px;
+  padding-top: calc(var(--bar-h, 52px) + clamp(120px, 17vh, 170px));
+  background: var(--night);
+}
+.sp {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+}
+.sp::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(270deg, rgba(12, 16, 19, 0.92) 0, rgba(12, 16, 19, 0.55) 26%, rgba(12, 16, 19, 0) 48%);
+  pointer-events: none;
+}
+.sp .ix-frame {
+  position: absolute;
+  inset: 0;
+}
+.sp figcaption,
+.sp p {
+  position: absolute;
+  z-index: 1;
+  left: clamp(16px, 2.4vw, 40px);
+  right: clamp(16px, 2.4vw, 40px);
+  margin: 0;
+  opacity: 0;
+}
+.sp figcaption {
+  top: 14px;
+  left: 14px;
+  right: auto;
+}
+.sp p {
+  left: auto;
+  top: 50%;
+  translate: 0 -50%;
+  text-align: right;
+  font-size: clamp(18px, 1.6vw, 26px);
+  font-weight: 700;
+  line-height: 1.1;
+}
+.sp p b {
+  display: block;
+  font-size: clamp(64px, 8vw, 132px);
+  font-weight: 900;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+.sp p small {
+  display: block;
+  margin-top: 4px;
+  font-size: clamp(14px, 1.1vw, 17px);
+  font-weight: 600;
+  color: #c9d0d5;
+}
+.tag {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-size: clamp(14px, 1.15vw, 18px);
+  font-weight: 800;
+}
+.ix .tag.red {
+  background: var(--red);
+  color: #fff;
+}
+.ix .red {
+  color: var(--red);
+}
+.ix b.red,
+.ix .ct.red {
+  color: #ff4d44;
+}
+/* ---------- the safety rule, stuck onto the screen */
+.ix-note {
+  inset: auto;
+  left: 50%;
+  top: 34%;
+  width: min(560px, 80vw);
+  padding: 22px 26px 18px;
+  background: var(--amber);
+  color: var(--ink);
+  border-radius: 4px;
+  visibility: hidden;
+  transform: translate(-50%, -50%) rotate(-3deg);
+}
+.ix-note p {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.2vw, 34px);
+  line-height: 1.2;
+  font-weight: 700;
+}
+.ix-note small {
+  display: block;
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  opacity: 0.7;
+}
+/* ---------- the depot log and the fault */
+.ix-term {
+  inset: auto;
+  top: calc(var(--bar-h, 52px) + clamp(110px, 17vh, 170px));
+  left: var(--ix-pad);
+  width: min(820px, 54vw);
+  visibility: hidden;
+}
+.ix-term pre,
+.ix-log pre {
+  margin: 0;
+  font: 500 clamp(11px, 0.95vw, 15px) / 1.6 Menlo, 'SF Mono', Consolas, monospace;
+  white-space: pre-wrap;
+  color: #9fb0bb;
+}
+.ix-term pre {
+  padding: 18px 20px;
+  border-radius: 12px;
+  background: rgba(12, 16, 19, 0.86);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.ix .off {
+  opacity: 0;
+}
+.ix-term .fault {
+  color: #ff5a50;
+  font-weight: 700;
+}
+.ix-term .fault.blink {
+  animation: ix-blink 0.2s steps(2) 3;
+}
+@keyframes ix-blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+.ix-fault {
+  inset: auto;
+  right: var(--ix-pad);
+  top: calc(var(--bar-h, 52px) + clamp(110px, 17vh, 170px));
+  width: min(520px, 34vw);
+  visibility: hidden;
+}
+.ix-fault canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 48 / 24;
+}
+.fk {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 28px;
+  margin: 14px 0 0;
+  font-weight: 700;
+  font-size: 15px;
+  color: #c9d0d5;
+}
+.fk b {
+  display: block;
+  font-size: clamp(34px, 3.4vw, 56px);
+  font-weight: 900;
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.fk small {
+  flex-basis: 100%;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8d979e;
+}
+.fk span,
+.fk small {
+  opacity: 0;
+}
+/* ---------- the paper: the thought experiments */
+.ix-paper {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  color: var(--ink);
+  visibility: hidden;
+  overflow: hidden;
+}
+.ix-paper .edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  margin-left: -3px;
+  background: var(--amber);
+  box-shadow: 0 0 40px 8px rgba(245, 183, 0, 0.55);
+  opacity: 0;
+  z-index: 2;
+}
+.pp {
+  position: absolute;
+  right: var(--ix-pad);
+  top: 50%;
+  width: min(54vw, 860px);
+  translate: 0 -50%;
+  opacity: 0;
+  visibility: hidden;
+}
+.ix-scene {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+.ix-scene .hot path {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+}
+.pp-2 .bots,
+.pp-2 .ppl,
+.pp-2 .gl {
+  opacity: 0;
+}
+.pp-2 .gl {
+  margin: 6px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.pp-2 .bots {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  gap: 4px 6px;
+  margin: 10px 0 0;
+  max-width: 560px;
+}
+.pp-2 .bots i svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.32;
+  filter: grayscale(1);
+  transition:
+    opacity 0.2s,
+    filter 0.2s,
+    transform 0.25s cubic-bezier(0.3, 1.6, 0.6, 1);
+}
+.pp-2 .bots i.on svg {
+  opacity: 1;
+  filter: none;
+  transform: translateY(-4px);
+}
+.pp-2 .bots i.on svg rect:nth-of-type(3),
+.pp-2 .bots i.on svg rect:nth-of-type(1) {
+  fill: #ffd2cf;
+}
+.pp-2 .ppl {
+  display: grid;
+  grid-template-columns: repeat(25, minmax(0, 1fr));
+  gap: 5px;
+  margin: 18px 0 0;
+  max-width: 560px;
+}
+.pp-2 .ppl i {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #d8d2c5;
+  transition:
+    background 0.2s,
+    transform 0.25s cubic-bezier(0.3, 1.6, 0.6, 1);
+}
+.pp-2 .ppl i.on {
+  background: var(--red);
+  transform: scale(1.25);
+}
+/* step 3: the podium of nations */
+.pp-3 {
+  width: min(48vw, 720px);
+}
+.who {
+  position: relative;
+  height: 2.4em;
+  margin: 0 0 14px;
+  font-size: clamp(20px, 1.8vw, 28px);
+  font-weight: 900;
+}
+.who span {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.who small {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.flags {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  height: calc(11 * var(--row));
+  --row: clamp(30px, 4.6vh, 46px);
+}
+.flags li {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--row);
+  display: grid;
+  grid-template-columns: calc(var(--row) * 1.1) 7.4em 1fr 3.2em;
+  align-items: center;
+  gap: 12px;
+  font-weight: 800;
+  font-size: clamp(14px, 1.15vw, 17px);
+  will-change: transform;
+}
+.flags li svg {
+  width: 100%;
+  display: block;
+}
+.fbar {
+  height: 55%;
+  border-radius: 4px;
+  background: #e7e2d7;
+  overflow: hidden;
+}
+.fbar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 4px;
+  background: #4b5058;
+}
+.fc {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.flags li.hl .fbar i {
+  background: var(--red);
+}
+.flags li.hl .fn,
+.flags li.hl .fc {
+  color: var(--red);
+}
+/* ---------- the AI's answers, as speech bubbles over the frame */
+.ix-bub {
+  position: absolute;
+  inset: auto;
+  right: var(--ix-pad);
+  top: calc(var(--bar-h, 52px) + clamp(24px, 6vh, 64px));
+  width: min(440px, 40vw);
+  display: grid;
+  gap: 12px;
+  visibility: hidden;
+}
+.bb {
+  padding: 14px 18px 12px;
+  border-radius: 18px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transform-origin: 90% 100%;
+}
+.bb.last {
+  background: var(--red);
+  color: #fff;
+}
+.bq {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.bb.last .bq {
+  color: #ffd9d6;
+}
+.ba {
+  margin: 2px 0 0;
+  font-size: clamp(22px, 2vw, 30px);
+  font-weight: 900;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+.bn {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  opacity: 0;
+}
+.bb.last .bn {
+  color: #ffd9d6;
+}
+/* ---------- the words */
+.ix-copy {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.cp {
+  position: absolute;
+  left: var(--ix-pad);
+  right: var(--ix-pad);
+  visibility: hidden;
+}
+.cp.low {
+  bottom: clamp(84px, 13vh, 140px);
+  max-width: 17em;
+  font-size: var(--hl);
+}
+.cp.low .big,
+.cp.top .big {
+  font-size: 1em;
+}
+.cp.top {
+  top: calc(var(--bar-h, 52px) + clamp(24px, 6vh, 64px));
+  font-size: calc(var(--hl) * 0.66);
+}
+.cp.top .lead {
+  font-size: calc(var(--hl) * 0.5);
+}
+.cp.top .lead {
+  max-width: 22em;
+}
+.cp.side {
+  left: calc(56vw + 2 * var(--ix-pad));
+  top: 50%;
+  translate: 0 -50%;
+}
+.cp.mid {
+  top: 50%;
+  translate: 0 -50%;
+  text-align: center;
+}
+.cp.paper {
+  top: 50%;
+  translate: 0 -50%;
+  width: min(36vw, 560px);
+  color: var(--ink);
+}
+.cp-h {
+  max-width: 15em;
+}
+.big {
+  margin: 0;
+  font-size: clamp(30px, 3.8vw, 64px);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.cp.low .big {
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
+}
+.b2 {
+  margin-top: 0.4em;
+}
+.w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.04em 0.02em 0.1em;
+  margin: -0.04em -0.02em -0.1em;
+}
+.wi {
+  display: inline-block;
+  transform: translateY(108%);
+  opacity: 0;
+  will-change: transform;
+}
+.wi.red {
+  color: #ff4d44;
+}
+.paper .wi.red {
+  color: var(--red);
+}
+.kick {
+  margin: 0 0 12px;
+  font-size: clamp(14px, 1.15vw, 18px);
+  font-weight: 800;
+  color: var(--amber);
+  opacity: 0;
+}
+.lead {
+  margin: 0 0 14px;
+  font-size: clamp(20px, 2vw, 32px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+.lead.dark {
+  color: var(--ink);
+}
+.huge {
+  margin: 0;
+  font-size: clamp(64px, 12vw, 200px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+}
+.stat {
+  margin: 14px 0 0;
+  font-size: clamp(30px, 3.6vw, 60px);
+  font-weight: 900;
+  line-height: 1;
+  opacity: 0;
+  transform-origin: 0 50%;
+  font-variant-numeric: tabular-nums;
+}
+.stat.sm {
+  font-size: clamp(20px, 1.8vw, 28px);
+  color: var(--muted);
+}
+.src {
+  margin: 14px 0 0;
+  max-width: 36em;
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 600;
+  color: #aab4bb;
+  opacity: 0;
+}
+.mid .src {
+  margin-inline: auto;
+}
+.paper .src {
+  color: var(--muted);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  font-weight: 800;
+  font-size: clamp(15px, 1.2vw, 19px);
+  color: var(--c);
+  opacity: 0;
+}
+.chip span {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 7px;
+  background: var(--c);
+  color: #fff;
+  font-size: 0.85em;
+}
+.top .chip {
+  color: #fff;
+}
+/* ---------- the end: the page's hero */
+.ix-end {
+  position: absolute;
+  left: var(--ix-pad);
+  right: var(--ix-pad);
+  bottom: clamp(56px, 11vh, 120px);
+  max-width: 900px;
+  visibility: hidden;
+}
+.ix-end .kick {
+  color: var(--amber);
+}
+.ix-end h1 {
+  margin: 0;
+  font-size: clamp(52px, 8.4vw, 140px);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+}
+.ix-end .dek {
+  margin: 18px 0 0;
+  max-width: 34em;
+  font-size: clamp(17px, 1.5vw, 22px);
+  color: #d5dbdf;
+  opacity: 0;
+}
+.ix-end .res {
+  margin: 10px 0 0;
+  max-width: 40em;
+  font-size: clamp(16px, 1.3vw, 19px);
+  color: #c9d0d5;
+  opacity: 0;
+}
+.ix-end .res b {
+  color: #fff;
+}
+.ix-end .acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 24px 0 0;
+  opacity: 0;
+}
+.ix-end .acts a,
+.ix-end .acts button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+  font: 800 16px var(--font);
+  text-decoration: none;
+  cursor: pointer;
+}
+.ix-end .acts .go {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--ink);
+}
+.ix-end .acts .go::after {
+  content: '';
+  width: 9px;
+  height: 9px;
+  margin: -4px 0 0 12px;
+  border: solid currentColor;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+.ix-end .acts .share {
+  margin: 0;
+}
+.ix:not([data-state='end']) .ix-end .acts {
+  pointer-events: none;
+}
+/* ---------- the cold open */
+.ix-pre {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.ix[data-state='pre'] .ix-pre > * {
+  pointer-events: auto;
+}
+.ix:not([data-state='pre']) .ix-pre {
+  visibility: hidden;
+}
+.ix-hud {
+  position: absolute;
+  top: calc(var(--bar-h, 52px) + 14px);
+  right: var(--ix-pad);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font: 600 12px Menlo, 'SF Mono', Consolas, monospace;
+  letter-spacing: 0.04em;
+  color: #fff;
+  opacity: 0.86;
+}
+.ix-hud .rec {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--red);
+  animation: ix-rec 1.4s steps(2) infinite;
+}
+@keyframes ix-rec {
+  50% {
+    opacity: 0.15;
+  }
+}
+.ix-hud .clk {
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.5);
+}
+.ix-you {
+  position: absolute;
+  top: calc(var(--bar-h, 52px) + 10px);
+  left: var(--ix-pad);
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(16px, 1.3vw, 20px);
+  opacity: 0;
+}
+.ix-log {
+  position: absolute;
+  left: var(--ix-pad);
+  top: calc(var(--bar-h, 52px) + 52px);
+  width: min(720px, calc(100% - 2 * var(--ix-pad)));
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: rgba(12, 16, 19, 0.72);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  opacity: 0;
+}
+.ix-log pre {
+  color: #d5dde2;
+  font-size: clamp(11px, 0.88vw, 14px);
+}
+.ix-q {
+  position: absolute;
+  left: var(--ix-pad);
+  right: var(--ix-pad);
+  bottom: clamp(36px, 7vh, 72px);
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 14px 22px;
+  opacity: 0;
+  visibility: hidden;
+}
+.qq {
+  margin: 0;
+  font-size: clamp(22px, 2.2vw, 34px);
+  font-weight: 900;
+}
+.qb {
+  display: flex;
+  gap: 12px;
+}
+.qb button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 10px 24px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  background: rgba(12, 16, 19, 0.5);
+  color: #fff;
+  font: 800 clamp(16px, 1.3vw, 19px) var(--font);
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition:
+    background 0.15s,
+    color 0.15s,
+    transform 0.15s;
+}
+.qb button:hover,
+.qb button:focus-visible {
+  background: #fff;
+  color: var(--ink);
+}
+.qb button:active {
+  transform: scale(0.97);
+}
+.qb .ar {
+  font-size: 1.2em;
+  line-height: 1;
+}
+.cd {
+  position: relative;
+  justify-self: end;
+  width: min(260px, 100%);
+  margin: 0;
+  padding-top: 12px;
+  font: 600 13px Menlo, 'SF Mono', Consolas, monospace;
+  color: #c9d0d5;
+  text-align: right;
+}
+.cd i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: #fff;
+  transform-origin: 0 50%;
+}
+.cd.late i {
+  background: var(--red);
+}
+.cd.late {
+  color: #ff6b62;
+}
+.cd b {
+  display: inline-block;
+  min-width: 2ch;
+  font-size: 15px;
+  color: #fff;
+}
+.ix.picked .ix-q {
+  transition: opacity 0.2s;
+}
+/* ---------- controls */
+.ix-skip,
+.ix-ctl {
+  position: absolute;
+  z-index: 5;
+  bottom: 18px;
+  transition: opacity 0.4s;
+}
+.ix-skip {
+  right: var(--ix-pad);
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font: 700 13px var(--font);
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+.ix-skip:hover,
+.ix-skip:focus-visible {
+  background: rgba(255, 255, 255, 0.24);
+}
+.ix[data-state='pre'] .ix-skip {
+  bottom: auto;
+  top: calc(var(--bar-h, 52px) + 44px);
+  opacity: 0.8;
+}
+.ix-ctl {
+  left: var(--ix-pad);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ix:not([data-state='film']) .ix-ctl,
+.ix[data-state='end'] .ix-skip {
+  opacity: 0;
+  pointer-events: none;
+}
+.ix-pp {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.ix-pp i {
+  width: 10px;
+  height: 11px;
+  border: solid #fff;
+  border-width: 0 3px;
+}
+.ix.paused .ix-pp i {
+  width: 0;
+  height: 0;
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 3px;
+}
+.ix-seg {
+  display: flex;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ix-seg button {
+  display: block;
+  width: clamp(18px, 2.6vw, 36px);
+  height: 20px;
+  padding: 8px 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.ix-seg i {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #fff calc(var(--p, 0) * 100%), rgba(255, 255, 255, 0.24) 0);
+}
+.ix button:focus-visible,
+.ix a:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 3px;
+}
+/* on paper, the controls go dark */
+.ix.on-paper .ix-skip,
+.ix.on-paper .ix-pp {
+  background: rgba(20, 22, 27, 0.08);
+  color: var(--ink);
+}
+.ix.on-paper .ix-pp i {
+  border-color: var(--ink);
+}
+.ix.on-paper.paused .ix-pp i {
+  border-color: transparent transparent transparent var(--ink);
+}
+.ix.on-paper .ix-seg i {
+  background: linear-gradient(90deg, var(--ink) calc(var(--p, 0) * 100%), rgba(20, 22, 27, 0.16) 0);
+}
+/* ---------- phones and tall screens: the frame is a band at the top, the words under it */
+@media (max-aspect-ratio: 1/1) {
+  .ix {
+    --hl: clamp(28px, 8.2vw, 52px);
+    --ph-top: calc(var(--bar-h, 52px) + 44px);
+    --ph-h: 72vw;
+    --ph-bot: calc(var(--ph-top) + var(--ph-h));
+  }
+  .ix .tracks.wide {
+    display: none;
+  }
+  .ix .tracks.narrow {
+    display: inline;
+  }
+  .ix-photo {
+    top: var(--ph-top);
+    bottom: auto;
+    height: var(--ph-h);
+  }
+  .ix-grid {
+    width: auto;
+    right: var(--ix-pad);
+    top: var(--ph-top);
+    bottom: auto;
+    align-content: start;
+    gap: 5px;
+  }
+  .ix-hud {
+    display: none;
+  }
+  .ix-you {
+    top: calc(var(--bar-h, 52px) + 10px);
+    font-size: 15px;
+  }
+  .ix[data-state='pre'] .ix-skip {
+    top: calc(var(--ph-top) + 10px);
+    right: var(--ix-pad);
+    bottom: auto;
+  }
+  .ix-log {
+    top: calc(var(--ph-bot) + 12px);
+    padding: 10px 12px;
+  }
+  .ix-log pre {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+  .ix-q {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    bottom: 22px;
+  }
+  .qq {
+    font-size: 22px;
+  }
+  .qb button {
+    flex: 1;
+    justify-content: center;
+    min-height: 52px;
+    padding: 8px 10px;
+    font-size: 15px;
+  }
+  .cd {
+    justify-self: stretch;
+    width: auto;
+  }
+  .ix-skip .xs {
+    display: none;
+  }
+  .ix-seg button {
+    width: 15px;
+  }
+  .cp.side {
+    left: var(--ix-pad);
+    top: auto;
+    bottom: 76px;
+    translate: none;
+  }
+  .cp.low {
+    bottom: 76px;
+  }
+  .ix-bub {
+    top: calc(var(--ph-bot) + 12px);
+    width: auto;
+    left: var(--ix-pad);
+    gap: 8px;
+  }
+  .bb {
+    padding: 9px 14px 8px;
+    border-radius: 14px;
+  }
+  .ba {
+    font-size: 20px;
+  }
+  .bq {
+    font-size: 12px;
+  }
+  .ix-split {
+    padding-top: calc(var(--bar-h, 52px) + 146px);
+    padding-bottom: 64px;
+  }
+  .cp-g2 .src {
+    display: none;
+  }
+  .sp p b {
+    font-size: clamp(48px, 14vw, 90px);
+  }
+  .sp p small {
+    display: none;
+  }
+  .pp,
+  .pp-3 {
+    left: var(--ix-pad);
+    right: var(--ix-pad);
+    width: auto;
+    top: auto;
+    bottom: 76px;
+    translate: none;
+  }
+  .flags {
+    --row: min(28px, 3.4svh);
+  }
+  .flags li {
+    font-size: 13px;
+    gap: 8px;
+    grid-template-columns: calc(var(--row) * 1.1) 6.4em 1fr 2.6em;
+  }
+  .who {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .cp.paper {
+    top: calc(var(--bar-h, 52px) + 18px);
+    translate: none;
+    width: auto;
+  }
+  .cp.paper .big {
+    font-size: clamp(26px, 7.4vw, 44px);
+  }
+  .ix-term {
+    top: calc(var(--bar-h, 52px) + 130px);
+    width: auto;
+    right: var(--ix-pad);
+  }
+  .ix-term .tl:not(.keep) {
+    display: none;
+  }
+  .ix-term pre {
+    padding: 12px 14px;
+  }
+  .ix-fault {
+    left: var(--ix-pad);
+    right: var(--ix-pad);
+    width: auto;
+    top: calc(var(--bar-h, 52px) + 270px);
+  }
+  .cp.top .lead {
+    font-size: 17px;
+  }
+}
+@media (max-aspect-ratio: 1/1) and (max-height: 740px) {
+  .bq {
+    display: none;
+  }
+  .ix-log .ln:first-child {
+    display: none;
+  }
+}
+/* ---------- short, wide screens (a phone on its side, a small laptop window) */
+@media (min-aspect-ratio: 1/1) and (max-height: 620px) {
+  .ix {
+    --hl: clamp(24px, 7.4vh, 44px);
+    min-height: 340px;
+  }
+  .cp.low,
+  .ix-end {
+    bottom: 54px;
+  }
+  .ix-end h1 {
+    font-size: clamp(40px, 13vh, 80px);
+  }
+  .ix-end .dek {
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  .ix-end .res {
+    font-size: 14px;
+  }
+  .ix-end .acts {
+    margin-top: 12px;
+  }
+  .ix-end .acts a,
+  .ix-end .acts button {
+    min-height: 40px;
+    padding: 6px 16px;
+    font-size: 14px;
+  }
+  .ix-end .kick {
+    margin-bottom: 6px;
+  }
+  .ix-term {
+    top: calc(var(--bar-h, 52px) + 96px);
+  }
+  .ix-term .tl:not(.keep) {
+    display: none;
+  }
+  .ix-fault {
+    top: calc(var(--bar-h, 52px) + 96px);
+  }
+  .ix-fault canvas {
+    width: 100%;
+  }
+  .fk b {
+    font-size: 28px;
+  }
+  .cp.top {
+    top: calc(var(--bar-h, 52px) + 8px);
+  }
+  .ix-split {
+    padding-top: calc(var(--bar-h, 52px) + 92px);
+  }
+  .sp p b {
+    font-size: clamp(40px, 14vh, 90px);
+  }
+  .sp p small {
+    display: none;
+  }
+  .ix-log {
+    top: calc(var(--bar-h, 52px) + 40px);
+    padding: 8px 12px;
+  }
+  .ix-log pre {
+    font-size: 10.5px;
+    line-height: 1.45;
+  }
+  .ix-q {
+    bottom: 18px;
+    grid-template-columns: auto auto minmax(110px, 1fr);
+  }
+  .qq {
+    font-size: 20px;
+  }
+  .qb button {
+    min-height: 44px;
+    padding: 6px 16px;
+    font-size: 15px;
+  }
+  .cd {
+    width: 100%;
+    white-space: nowrap;
+  }
+  .ix-hud,
+  .ix .tracks.wide {
+    display: none;
+  }
+  .ix[data-state='pre'] .ix-skip {
+    top: calc(var(--bar-h, 52px) + 6px);
+  }
+  .bb {
+    padding: 8px 14px 7px;
+  }
+  .ba {
+    font-size: 18px;
+  }
+  .bn,
+  .bq {
+    font-size: 11px;
+  }
+  .ix-bub {
+    gap: 6px;
+    top: calc(var(--bar-h, 52px) + 8px);
+  }
+  .pp-2 .gl {
+    display: none;
+  }
+  .ix-you {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ix-hud .rec {
+    animation: none;
+  }
+}

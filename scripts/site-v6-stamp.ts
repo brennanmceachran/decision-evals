@@ -9,7 +9,7 @@ export function stamp(dir = 'site/v6') {
 function stampPage(dir: string, name: string) {
   const page = `${dir}/${name}`;
   let html = readFileSync(page, 'utf8');
-  for (const f of ['style.css', 'data.js', 'kit.js', 'app.js', 'science.css', 'science-data.js', 'science.js']) {
+  for (const f of ['style.css', 'intro.css', 'data.js', 'intro.js', 'kit.js', 'app.js', 'science.css', 'science-data.js', 'science.js']) {
     const h = createHash('sha256')
       .update(readFileSync(`${dir}/${f}`))
       .digest('hex')

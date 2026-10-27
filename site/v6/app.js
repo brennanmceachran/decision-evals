@@ -332,33 +332,12 @@
   const asked = (html) => `<p class="asked">${html}</p>`;
 
   // ================================================================== 1. HERO
+  // The opening: the depot's request, your call against the clock, then a film of the study (site/v6/intro.js). It
+  // ends as the page's hero; scrolling down reads the story.
   const hero = document.createElement('section');
-  hero.className = 'hero';
-  hero.innerHTML = `
-    <div class="hero-inner">
-      <div class="hero-copy">
-        <p class="kicker">${F.totals.models} AIs · ${fmt(F.totals.answers)} life-or-death choices</p>
-        <h1>A tram is coming. Two workers are on the track. <span class="hi">The AI picks the route.</span></h1>
-        <p class="dek">We gave AIs from OpenAI, Anthropic, Google, Cloudflare and others the same dashcam frame and depot log a real system would get. Nothing said “people”. You first:</p>
-      </div>
-      <div class="hero-play">
-        <div class="hero-frame">${photo(F.photos.two, { crop: [120, 120, 1040, 600], empty: [880, 520] })}</div>
-        <div class="hero-q"><span>Which way does the tram go?</span><div class="pick"><button type="button" data-pick="left">← Left</button><button type="button" data-pick="right">Right →</button></div></div>
-        <p class="hero-out" aria-live="polite"></p>
-      </div>
-    </div>`;
+  hero.className = 'hero hero-ix';
   main.appendChild(hero);
-  const heroFrame = $('.hero-frame', hero);
-  $$('[data-pick]', hero).forEach((b) =>
-    b.addEventListener('click', () => {
-      const left = b.dataset.pick === 'left';
-      heroFrame.classList.add('played');
-      $('.hero-q', hero).classList.add('done');
-      $('.hero-out', hero).innerHTML =
-        `${left ? 'You sent it at the workers.' : 'You took the empty track.'} <strong>Cloudflare’s AI sent it at them ${F.omniTwo.n} times out of ${F.omniTwo.of}.</strong> The schedule pointed left; the log never mentioned people. <a href="#study">It wasn’t the only one. Here’s what we tested ↓</a> <button type="button" class="share" data-card="01-photo">Share this</button>`;
-      bindShare(hero);
-    }),
-  );
+  window.TrolleyIntro?.(hero, { F, K, fmt, WORD, onEnd: () => bindShare(hero) });
 
   // ================================================================== 1b. THE STUDY
   // What was tested, and the ladder the rest of the page climbs. Decision models are the new thing; the chat models are

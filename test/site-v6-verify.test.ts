@@ -1918,11 +1918,15 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     expect(errs).toEqual([]);
   });
 
-  it('native page: app.js draws numbers only from the facts', () => {
+  it('native page: app.js and the opening draw numbers only from the facts', () => {
     // Numbers typed into the page's code would bypass the recount. Allow only layout values and the fixed study design.
-    const src = readFileSync('site/v6/app.js', 'utf8');
-    const prose = [...src.matchAll(/`([^`]*)`/g)].map((m) => m[1]!.replace(/\$\{[^}]*\}/g, '')).join('\n');
-    const bad = [...prose.matchAll(/\b\d+(?:[.,]\d+)?%/g)].map((m) => m[0]);
-    expect(bad).toEqual([]);
+    for (const f of ['site/v6/app.js', 'site/v6/intro.js']) {
+      const src = readFileSync(f, 'utf8');
+      const prose = [...src.matchAll(/`([^`]*)`/g)].map((m) => m[1]!.replace(/\$\{[^}]*\}/g, '')).join('\n');
+      const bad = [...prose.matchAll(/\b\d+(?:[.,]\d+)?%/g)].map((m) => m[0]);
+      expect(bad, f).toEqual([]);
+      // the opening's words: no count typed as a number word or digits next to "times", "of" or "AIs"
+      if (f.endsWith('intro.js')) expect([...prose.matchAll(/\b\d[\d,]*\s+(?:times|of|AIs|in)\b/g)].map((m) => m[0]), f).toEqual([]);
+    }
   });
 });

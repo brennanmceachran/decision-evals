@@ -1552,6 +1552,17 @@ button {
 .toast.show {
   transform: translate(-50%, 0);
 }
+.toast:empty,
+.toast:not(.show) {
+  visibility: hidden;
+  transition:
+    transform 0.25s,
+    visibility 0s 0.25s;
+}
+.toast.show {
+  visibility: visible;
+  transition: transform 0.25s;
+}
 
 /* ---------- small screens */
 @media (max-width: 860px) {
