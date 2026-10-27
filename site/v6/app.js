@@ -2552,7 +2552,9 @@
     if (!b) continue;
     const at = b.closest('figure, .low-card, .ld-share, p, .hero') ?? b;
     if (!at.id) at.id = `f-${c.id}`;
-    else at.insertAdjacentHTML('beforebegin', `<span class="anchor-f" id="f-${c.id}"></span>`);
+    // the place already has an id: put the link's target inside it (an extra element beside it would take a cell
+    // in a grid of cards and shift the layout)
+    else at.insertAdjacentHTML('afterbegin', `<span class="anchor-f" id="f-${c.id}"></span>`);
   }
   if (location.hash.startsWith('#f-')) document.getElementById(location.hash.slice(1))?.scrollIntoView();
 })();

@@ -6713,7 +6713,8 @@ button {
   display: none;
 }
 .anchor-f {
-  display: block;
+  position: absolute;
+  width: 0;
   height: 0;
 }
 @media (max-width: 900px) {
