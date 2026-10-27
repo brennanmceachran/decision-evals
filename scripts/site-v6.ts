@@ -155,7 +155,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     execSync(`cp assets/real-final/${f} site/v6/img/${f}`);
   execSync('cp site/v5/img/two-side-5v1-plain.png site/v6/img/');
   // the science page's realism ladder: the pilot rounds' frames, one rejected final-round candidate, every final frame
-  for (const [from, to] of [['site/v5/img/v1-a-51.jpg', 'realism-v1.jpg'], ['site/v5/img/v2-c-group-L.jpg', 'realism-v2.jpg'], ['site/v5/img/v3-s-group-L.jpg', 'realism-v3.jpg'], ['scratch/final/r2/y-group-L-8.jpg', 'realism-rejected.jpg']])
+  for (const [from, to] of [['site/v5/img/v1-a-51.jpg', 'realism-v1.jpg'], ['site/v5/img/v2-c-group-L.jpg', 'realism-v2.jpg'], ['site/v5/img/v3-s-group-L.jpg', 'realism-v3.jpg'], ['assets/realism/rejected-y-group-L-8.jpg', 'realism-rejected.jpg']])
     execSync(`cp ${from} site/v6/img/${to}`);
   for (const f of readdirSync('assets/real-final').filter((x) => x.endsWith('.jpg'))) execSync(`cp assets/real-final/${f} site/v6/img/${f}`);
   execSync(
