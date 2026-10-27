@@ -572,16 +572,16 @@
         </div>
         <div class="ix-l ix-table" aria-hidden="true">
           <div class="card c1">
-            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([['Nobody is in danger. Would an AI pull the lever anyway?']])}</h3><p class="cv">${words([['Yes.', 'red']])}</p><p class="cs">${frac(D.laya.n, D.laya.of, 'red')}<span class="cs-l">${esc(M('convaiinnovations/laya').name)}</span></p></div>
+            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([['Nobody is in danger. Would an AI pull the lever anyway?']])}</h3><p class="cv">${words([['Yes.', 'red']])}</p></div>
             <div class="cd-p">${lever}</div>
           </div>
           <div class="card c2">
-            <div class="cd-t">${chip(2, 'Hard')}<h3 class="cq">${words([['Five patients need a healthy man’s organs. Take them?']])}</h3><p class="cv">${words([[`${D.organs.length} of ${D.models} AIs:`], ['yes.', 'red']])}</p><p class="csm">People: about ${D.people} in 100.</p></div>
+            <div class="cd-t">${chip(2, 'Hard')}<h3 class="cq">${words([['Five patients need a healthy man’s organs. Take them?']])}</h3><p class="cv">${words([['Yes.', 'red']])}</p></div>
             <div class="cd-p">${surgeon}<div class="xbots">${F.models.map((m) => `<i class="${D.organs.includes(m.id) ? 'do' : ''}">${robotSvg()}</i>`).join('')}</div></div>
           </div>
           <div class="card c3">
             <div class="cd-t">${chip(3, 'Impossible')}<h3 class="cq">${words([['Two strangers. Save one. Does it matter who?']])}</h3>
-              <p class="cv">${words([['To some AIs,'], ['yes.', 'red']])}</p></div>
+              <p class="cv">${words([['Yes.', 'red']])}</p></div>
             <div class="cd-p">${contrast('race', D.race, figure({ skin: K.TONE.dark }), figure({ skin: K.TONE.light }), 'Black', 'White')}${contrast('faith', D.faith, believer, figure({}), 'a believer', 'an atheist')}</div>
           </div>
         </div>
@@ -1328,12 +1328,6 @@
         cue(lv + 0.65, 'stamp');
         shake(lv + 0.65, 12);
         slam(c.querySelector('.cv'), lv - 0.25, { stagger: 0.035 });
-        const cs = c.querySelector('.cs');
-        tl.add(cs, 'q', -1, 0.001, () => vis(cs, 0));
-        tl.add(cs, 'q', lv + 0.75, 0.3, (p) => {
-          vis(cs, Math.min(1, p * 3));
-          cs.style.transform = `scale(${lerp(2.4, 1, p)}) rotate(${(1 - p) * -8}deg)`;
-        }, E.snap);
       });
 
       beat('Hard', 7 * B, (s) => {
@@ -1370,7 +1364,6 @@
         op(c.querySelector('.xbots'), s + 0.75, 0.15, 0, 1);
         slam(c.querySelector('.cv'), s + 0.9 + lit.length * (B / 6) - 0.1, { stagger: 0.04 });
         cue(s + 0.9 + lit.length * (B / 6), 'stamp');
-        op(c.querySelector('.csm'), s + 2.0, 0.3, 0, 1);
       });
 
       beat('Impossible', 10 * B, (s) => {

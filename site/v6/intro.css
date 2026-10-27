@@ -533,8 +533,8 @@ body.ix-on .topbar nav {
   letter-spacing: -0.01em;
 }
 .cv {
-  margin: 0.35em 0 0;
-  font-size: clamp(34px, 3.8vw, 66px);
+  margin: 0.3em 0 0;
+  font-size: clamp(48px, 5.6vw, 96px);
   font-weight: 900;
   line-height: 1.02;
   letter-spacing: -0.02em;
@@ -1439,10 +1439,7 @@ body.ix-on .topbar nav {
     font-size: 22px;
   }
   .cv {
-    font-size: 26px;
-  }
-  .c3 .cv {
-    font-size: 21px;
+    font-size: 15vw;
   }
   .cs .frac .n {
     font-size: 15vw;
@@ -1634,9 +1631,11 @@ body.ix-on .topbar nav {
   .cq {
     font-size: 5.4vh;
   }
-  .cv,
-  .c3 .cv {
-    font-size: 5.2vh;
+  .cv {
+    font-size: 11vh;
+  }
+  .card .xbots {
+    display: none;
   }
   .cs .frac .n {
     font-size: 12vh;
