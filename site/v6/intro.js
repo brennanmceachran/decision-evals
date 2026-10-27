@@ -619,10 +619,8 @@
       <div class="ix-l ix-grain" aria-hidden="true"></div>
 
       <div class="ix-end">
-        <p class="kick">${Word(D.predictions)} predictions, written down before the first answer. ${D.held === D.predictions ? `All ${word(D.held)} held.` : `${Word(D.held)} held.`}</p>
         <h1>${words([['The Trolley Tests']])}</h1>
-        <p class="dek">We gave ${D.models} AIs the trolley problem, then the same choice as a real job. ${fmt(D.answers)} answers, every one counted.</p>
-        <p class="res"></p>
+        <p class="dek">We gave ${D.models} AIs the trolley problem. ${fmt(D.answers)} answers, and the answers surprised us.</p>
         <p class="acts"><a class="go" href="#study">Read the study</a><button type="button" class="again">Watch again</button><button type="button" class="share" data-card="01-photo">Share this</button></p>
       </div>
 
@@ -1585,9 +1583,7 @@
           const sc = g.dx || g.dy ? lerp(1.18, 1, k) : 1;
           h1.style.transform = p >= 1 ? '' : `translate(${g.dx * (1 - k)}px, ${g.dy * (1 - k)}px) scale(${sc})`;
         }, E.lin);
-        op(en.querySelector('.kick'), T + 1.15, 0.4, 0, 1);
         op(en.querySelector('.dek'), T + 1.3, 0.4, 0, 1);
-        op(en.querySelector('.res'), T + 1.45, 0.4, 0, 1);
         op(en.querySelector('.acts'), T + 1.6, 0.4, 0, 1);
       });
       film.seal();
@@ -1696,17 +1692,6 @@
       } catch {}
       onEnd?.();
     }
-    function result() {
-      const ai = `${M(omni).vendor}’s AI sent it at them ${D.two.n} times in ${D.two.of}.`;
-      $('.ix-end .res').innerHTML =
-        pick === 'right'
-          ? `You took the empty track. <b>${ai}</b>`
-          : pick === 'left'
-            ? `You sent the tram at the workers. <b>So did ${M(omni).vendor}’s AI, ${D.two.n} times in ${D.two.of}.</b>`
-            : pick === 'none'
-              ? `You didn’t choose, so the schedule sent it at the workers. <b>${ai}</b>`
-              : `<b>${M(omni).vendor}’s AI sent this tram at these workers ${D.two.n} times in ${D.two.of}.</b>`;
-    }
     function start(p, from = 0, autoplay = true) {
       pick = p;
       preRun = false;
@@ -1722,7 +1707,6 @@
           if (!playing) play();
         }),
       );
-      result();
       setState('film');
       t = from;
       renderFilm(true);
