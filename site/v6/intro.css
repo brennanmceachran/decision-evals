@@ -386,79 +386,108 @@ body.ix-on .topbar nav {
   background: var(--red);
   transform: scale(1.25);
 }
-/* step 3: the podium of nations */
+/* step 3: two strangers, and the AIs that saved each, piling up under them */
 .pp-3 {
-  width: min(48vw, 720px);
+  width: min(50vw, 760px);
+  display: grid;
+  gap: clamp(14px, 2.6vh, 28px);
 }
-.who {
-  position: relative;
-  height: 2.4em;
-  margin: 0 0 14px;
-  font-size: clamp(20px, 1.8vw, 28px);
+.mu {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: 18px;
+  opacity: 0;
+  visibility: hidden;
+}
+.mu-s {
+  display: grid;
+  grid-template-columns: clamp(48px, 5vw, 72px) 1fr;
+  column-gap: 14px;
+  align-items: end;
+}
+.mu-fig {
+  grid-row: 1 / 3;
+  align-self: start;
+}
+.mu-fig svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.mu .fb {
+  transition: opacity 0.15s;
+}
+.mu-l {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
   font-weight: 900;
+  font-size: clamp(16px, 1.4vw, 22px);
+  line-height: 1;
 }
-.who span {
-  position: absolute;
-  left: 0;
-  top: 0;
+.mu-n {
+  font-size: clamp(34px, 3.4vw, 56px);
+  font-weight: 900;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--red);
+  display: inline-block;
 }
-.who small {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  font-size: 14px;
-  font-weight: 600;
+.mu-s.b .mu-n {
+  color: #b8b2a6;
+}
+.mu-pile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  min-height: clamp(30px, 3.6vw, 46px);
+  margin-top: 8px;
+  align-content: flex-start;
+}
+.mu-pile i {
+  width: clamp(22px, 2.2vw, 32px);
+  opacity: 0;
+}
+.mu-pile i svg,
+.mu-key i svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.mu-pile.a i svg rect:nth-of-type(1),
+.mu-pile.a i svg rect:nth-of-type(3) {
+  fill: #ffd2cf;
+}
+.mu-or {
+  align-self: center;
+  font-weight: 800;
+  font-size: 15px;
   color: var(--muted);
 }
-.flags {
-  position: relative;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  height: calc(11 * var(--row));
-  --row: clamp(30px, 4.6vh, 46px);
-}
-.flags li {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: var(--row);
-  display: grid;
-  grid-template-columns: calc(var(--row) * 1.1) 7.4em 1fr 3.2em;
+.mu-key {
+  display: flex;
   align-items: center;
-  gap: 12px;
-  font-weight: 800;
-  font-size: clamp(14px, 1.15vw, 17px);
-  will-change: transform;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  opacity: 0;
 }
-.flags li svg {
-  width: 100%;
-  display: block;
+.mu-key i {
+  width: 18px;
 }
-.fbar {
-  height: 55%;
-  border-radius: 4px;
-  background: #e7e2d7;
-  overflow: hidden;
+.cp-f .mid2 {
+  margin: 0.55em 0 0;
+  font-size: clamp(20px, 1.9vw, 30px);
+  font-weight: 900;
+  line-height: 1.12;
 }
-.fbar i {
-  display: block;
-  height: 100%;
-  width: 0;
-  border-radius: 4px;
-  background: #4b5058;
-}
-.fc {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-.flags li.hl .fbar i {
-  background: var(--red);
-}
-.flags li.hl .fn,
-.flags li.hl .fc {
-  color: var(--red);
+.cp-f .big {
+  margin-bottom: 0.2em;
 }
 /* ---------- the AI's answers, as speech bubbles over the frame */
 .ix-bub {
@@ -899,6 +928,52 @@ body.ix-on .topbar nav {
   transition: opacity 0.2s;
 }
 /* ---------- controls */
+.ix-snd {
+  position: absolute;
+  z-index: 5;
+  bottom: 18px;
+  right: calc(var(--ix-pad) + var(--skip-w, 150px));
+  width: 34px;
+  height: 34px;
+  padding: 7px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: opacity 0.4s;
+}
+.ix-snd svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ix-snd .x,
+.ix-snd.off .w {
+  display: none;
+}
+.ix-snd.off .x {
+  display: inline;
+}
+.ix-snd.off {
+  opacity: 0.7;
+}
+.ix[data-state='pre'] .ix-snd {
+  top: calc(var(--bar-h, 52px) + 44px);
+  bottom: auto;
+  width: 30px;
+  height: 30px;
+  padding: 6px;
+}
+.ix[data-state='end'] .ix-snd {
+  opacity: 0;
+  pointer-events: none;
+}
+.ix.on-paper .ix-snd {
+  background: rgba(20, 22, 27, 0.08);
+  color: var(--ink);
+}
 .ix-skip,
 .ix-ctl {
   position: absolute;
@@ -1121,17 +1196,27 @@ body.ix-on .topbar nav {
     bottom: 76px;
     translate: none;
   }
-  .flags {
-    --row: min(28px, 3.4svh);
-  }
-  .flags li {
-    font-size: 13px;
+  .mu {
     gap: 8px;
-    grid-template-columns: calc(var(--row) * 1.1) 6.4em 1fr 2.6em;
   }
-  .who {
-    font-size: 18px;
-    margin-bottom: 8px;
+  .mu-s {
+    grid-template-columns: 38px 1fr;
+    column-gap: 8px;
+  }
+  .mu-pile i {
+    width: 19px;
+  }
+  .mu-l {
+    font-size: 15px;
+  }
+  .mu-n {
+    font-size: 26px;
+  }
+  .cp-f .mid2 {
+    font-size: 17px;
+  }
+  .cp-f .src {
+    display: none;
   }
   .cp.paper {
     top: calc(var(--bar-h, 52px) + 18px);
@@ -1303,6 +1388,44 @@ body.ix-on .topbar nav {
   }
   .ix-you {
     font-size: 14px;
+  }
+  .cp.paper {
+    top: calc(var(--bar-h, 52px) + 4px);
+    translate: none;
+  }
+  .cp.paper .big {
+    font-size: clamp(22px, 7vh, 34px);
+  }
+  .cp-f .mid2 {
+    font-size: 15px;
+  }
+  .cp-f .src,
+  .mu-key {
+    display: none;
+  }
+  .pp-3 {
+    top: calc(var(--bar-h, 52px) + 4px);
+    translate: none;
+    gap: 8px;
+  }
+  .mu-fig {
+    width: 34px;
+  }
+  .mu-s {
+    grid-template-columns: 34px 1fr;
+  }
+  .mu-pile {
+    min-height: 0;
+    margin-top: 4px;
+  }
+  .mu-pile i {
+    width: 17px;
+  }
+  .mu-l {
+    font-size: 14px;
+  }
+  .mu-n {
+    font-size: 26px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

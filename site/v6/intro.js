@@ -58,6 +58,139 @@
     };
   }
 
+  /**
+   * Sound: small synthesized cues, no audio files. Browsers only allow sound after a click, so nothing plays until the
+   * reader makes their choice. Muting is remembered for the session.
+   */
+  function Sound() {
+    let ctx = null;
+    let bus = null;
+    let muted = (() => {
+      try {
+        return sessionStorage.getItem('ix-mute') === '1';
+      } catch {
+        return false;
+      }
+    })();
+    const ok = () => ctx && !muted && ctx.state === 'running';
+    const env = (g, t0, a, d, peak) => {
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(peak, t0 + a);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + a + d);
+    };
+    const tone = (type, f0, f1, dur, peak, delay = 0) => {
+      const t0 = ctx.currentTime + delay;
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(f0, t0);
+      if (f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t0 + dur);
+      env(g, t0, 0.006, dur, peak);
+      o.connect(g).connect(bus);
+      o.start(t0);
+      o.stop(t0 + dur + 0.05);
+    };
+    const noise = (dur, peak, f, q = 1, delay = 0, type = 'bandpass') => {
+      const t0 = ctx.currentTime + delay;
+      const n = Math.ceil(ctx.sampleRate * dur);
+      const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const fl = ctx.createBiquadFilter();
+      fl.type = type;
+      fl.frequency.setValueAtTime(f[0], t0);
+      if (f[1]) fl.frequency.exponentialRampToValueAtTime(f[1], t0 + dur);
+      fl.Q.value = q;
+      const g = ctx.createGain();
+      env(g, t0, 0.01, dur, peak);
+      src.connect(fl).connect(g).connect(bus);
+      src.start(t0);
+    };
+    // C major pentatonic, so any run of pops is a little tune
+    const PENTA = [523.25, 587.33, 659.25, 783.99, 880, 1046.5, 1174.66, 1318.51];
+    const fx = {
+      tick: () => tone('square', 1800, 1800, 0.02, 0.07),
+      key: () => noise(0.03, 0.3, [3200], 1.4),
+      blip: () => tone('sine', 880, 1320, 0.12, 0.2),
+      // the switch throws: a mechanical clunk
+      clunk: () => {
+        noise(0.09, 0.32, [900, 180], 1.2);
+        tone('triangle', 140, 70, 0.14, 0.32);
+      },
+      // the route draws: a soft rising sweep
+      sweep: () => noise(0.55, 0.45, [400, 2600], 0.8),
+      // a skull lands: a little thud with a hollow knock
+      thud: (i = 0) => {
+        tone('sine', 190 - i * 18, 70, 0.16, 0.36);
+        tone('square', 420 - i * 30, 300, 0.05, 0.06);
+      },
+      // a grid tile, a robot, a counted answer: a bright pop that climbs the scale
+      pop: (i = 0) => tone('sine', PENTA[i % PENTA.length] * (i >= PENTA.length ? 2 : 1), PENTA[i % PENTA.length] * 1.02, 0.16, 0.2),
+      // speech bubble
+      bubble: () => {
+        tone('sine', 520, 980, 0.13, 0.2);
+        tone('sine', 1040, 1300, 0.09, 0.08, 0.05);
+      },
+      // a wrong answer lands: two notes down
+      wrong: () => {
+        tone('triangle', 392, 392, 0.14, 0.16);
+        tone('triangle', 311.1, 311.1, 0.28, 0.16, 0.13);
+      },
+      ding: () => {
+        tone('sine', 1567.98, 1567.98, 0.7, 0.16);
+        tone('sine', 2349.32, 2349.32, 0.35, 0.04);
+      },
+      whoosh: () => noise(0.5, 0.6, [300, 3600], 0.6),
+      bonk: () => tone('triangle', 220, 150, 0.2, 0.26),
+      // the safety note slaps onto the screen
+      slap: () => {
+        noise(0.08, 0.3, [2200, 600], 0.9);
+        tone('sine', 300, 160, 0.08, 0.16);
+      },
+      alarm: () => {
+        for (let i = 0; i < 3; i++) {
+          tone('square', 880, 880, 0.09, 0.06, i * 0.2);
+          tone('square', 660, 660, 0.09, 0.06, i * 0.2 + 0.1);
+        }
+      },
+      // the closing chord
+      chord: () => [261.63, 329.63, 392, 523.25].forEach((f, i) => tone('triangle', f, f, 1.6, 0.05, i * 0.06)),
+    };
+    return {
+      get muted() {
+        return muted;
+      },
+      unlock() {
+        try {
+          ctx ??= new (window.AudioContext || window.webkitAudioContext)();
+          if (!bus) {
+            bus = ctx.createGain();
+            bus.gain.value = 1.3;
+            const comp = ctx.createDynamicsCompressor();
+            bus.connect(comp).connect(ctx.destination);
+          }
+          ctx.resume?.();
+        } catch {}
+      },
+      toggle() {
+        muted = !muted;
+        try {
+          sessionStorage.setItem('ix-mute', muted ? '1' : '0');
+        } catch {}
+        if (!muted) this.unlock();
+        return muted;
+      },
+      play(name, arg) {
+        if (!ok()) return;
+        try {
+          fx[name]?.(arg);
+        } catch {}
+      },
+    };
+  }
+
   /** A seeded random generator, so the scattered things (dots, which squares turn red) are the same every time. */
   const rng = (seed) => () => {
     seed = (seed + 0x6d2b79f5) | 0;
@@ -70,6 +203,13 @@
     const { F, K, fmt, WORD, onEnd } = X;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const q = new URLSearchParams(location.search);
+    // sound cues on the film's clock: each fires only when playback crosses it, never on a seek
+    const snd = Sound();
+    let cues = [];
+    const cue = (at, name, arg) => cues.push({ at, name, arg });
+    const fire = (a, b) => {
+      for (const c of cues) if (c.at > a && c.at <= b) snd.play(c.name, c.arg);
+    };
     const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
     const Word = (n) => WORD[n] ?? fmt(n);
     const word = (n) => (WORD[n] ?? fmt(n)).toLowerCase();
@@ -101,8 +241,10 @@
       })(),
       organs: F.models.filter((m) => F.hard.did[m.id].transplant[5].every(([a, b]) => b && a * 2 > b)).map((m) => m.id),
       people: Math.round(F.human.transplant.value * 100),
-      px: F.samebase.pxRank,
-      cf: F.samebase.cfRank,
+      // one against one: which AIs saved each side more often than chance and their own habits explain, in every run
+      race: F.imp.tugs.find((g) => g.id === 'race'),
+      faith: F.imp.tugs.find((g) => g.id === 'faith'),
+      versions: F.design.versions1v1,
       job: pool('ops', 'at'),
       trolley: pool('dilemma', 'dilemma'),
       dec: dec.length,
@@ -194,12 +336,24 @@
       </svg>`;
     })();
     const surgeon = `<svg class="ix-scene" viewBox="0 0 600 330" aria-hidden="true">${K.classicScene('transplant', { did: true, bg: K.PAPER, animate: true })}</svg>`;
-    const flagOf = (g) => `<svg viewBox="0 0 66 44" aria-hidden="true">${K.flag(K.FLAG[g], 0, 0, 66)}</svg>`;
+    const PURPLE = '#6d4c8f';
+    const figure = (o, extra = '') => `<svg viewBox="-40 -160 80 166" aria-hidden="true">${K.person('adult', 0, 0, 130, { shirt: PURPLE, ...o })}${extra}</svg>`;
+    // the believer was asked as each faith in turn: the badge cycles through them
+    const FAITHS = ['christian', 'muslim', 'jewish', 'hindu'];
+    const believer = figure({}, FAITHS.map((f, i) => `<g class="fb fb${i}" transform="translate(0 -78)">${K.faith(f, 0, 0, 15)}</g>`).join(''));
+    // a contrast: who stands on each side, and the AIs that saved each, dropping in under them
+    const contrast = (k, g, a, b, la, lb) => {
+      const pile = (xs, side) => `<div class="mu-pile ${side}">${xs.map(() => `<i>${robotSvg()}</i>`).join('')}</div>`;
+      return `<div class="mu" data-k="${k}">
+        <div class="mu-s a"><div class="mu-fig">${a}</div><p class="mu-l"><b class="mu-n">0</b>${esc(la)}</p>${pile(g.a, 'a')}</div>
+        <span class="mu-or">or</span>
+        <div class="mu-s b"><div class="mu-fig">${b}</div><p class="mu-l"><b class="mu-n">${g.b.length}</b>${esc(lb)}</p>${pile(g.b, 'b')}</div>
+      </div>`;
+    };
 
     // ------------------------------------------------------------------ the stage
     const bars = (n, of) => `${fmt(n)} of ${fmt(of)}`;
     const both = (rs) => (sameRuns(rs) ? ', both runs' : '');
-    const rows = D.px.map((r) => r.g);
     host.innerHTML = `
     <div class="ix" data-state="pre" tabindex="-1">
       <div class="ix-l ix-photo">${frame({ right: true, tag: true, labels: true, dim: true, shade: true, plainRoute: true })}</div>
@@ -226,8 +380,10 @@
           <div class="ppl">${Array.from({ length: 100 }, (_, i) => `<i class="${i < D.people ? 'do' : ''}"></i>`).join('')}</div>
           <p class="gl ppl-l">People, in surveys: about ${D.people} in 100 call it permissible (${esc(F.human.transplant.source)}).</p>
         </div>
-        <div class="pp pp-3"><p class="who"><span class="who-a">${esc(M('perplexity/pplx-decider-v1.2').vendor)}’s AI</span><span class="who-b">${esc(M('cloudflare/clef').vendor)}’s AI</span><small>one-against-one match-ups won, of ${fmt(D.px[0].of)}</small></p>
-          <ol class="flags">${rows.map((g) => `<li data-g="${esc(g)}">${flagOf(g)}<span class="fn">${esc(g)}</span><span class="fbar"><i></i></span><b class="fc">0</b></li>`).join('')}</ol>
+        <div class="pp pp-3">
+          ${contrast('race', D.race, figure({ skin: K.TONE.dark }), figure({ skin: K.TONE.light }), 'Black', 'White')}
+          ${contrast('faith', D.faith, believer, figure({}), 'a believer', 'an atheist')}
+          <p class="mu-key"><i>${robotSvg()}</i>one AI that saved that person more often than chance explains</p>
         </div>
       </div>
       <div class="ix-bub" aria-hidden="true">
@@ -247,7 +403,10 @@
         <div class="cp cp-c mid"><p class="lead">${words([[`We gave ${D.models} AIs the trolley problem`]])}</p><p class="huge"><b class="ct" data-n="${D.answers}">0</b></p><p class="lead">${words([['times.']])}</p><p class="src">Every dot is one answer. From ${majors.join(', ')} and ${word(D.makers.length - majors.length)} other makers.</p></div>
         <div class="cp cp-d paper"><p class="chip" style="--c:var(--c1)"><span>1</span>Obvious</p><h2 class="big">${words([['Nobody was on the track.']])}</h2><h2 class="big b2">${words([['One AI pulled the lever onto a person anyway.']])}</h2><p class="stat"><span class="red">${D.laya.n} times in ${D.laya.of}.</span></p><p class="src">${esc(M('convaiinnovations/laya').name)}, told in words${D.laya.both ? ', both runs' : ''}.</p></div>
         <div class="cp cp-e paper"><p class="chip" style="--c:var(--c2)"><span>2</span>Hard</p><p class="lead dark">${words([['A healthy man is in for a checkup. Five patients need his organs.']])}</p><h2 class="big">${words([[`${D.organs.length} of ${D.models} AIs`, 'red'], ['would take them.']])}</h2><p class="stat sm">People: about ${D.people} in 100.</p></div>
-        <div class="cp cp-f paper"><p class="chip" style="--c:var(--c3)"><span>3</span>Impossible</p><h2 class="big">${words([['Two AIs. The same model underneath.']])}</h2><h2 class="big b2">${words([['One saves Americans first. The other saves them'], ['last.', 'red']])}</h2><p class="src">${esc(M('perplexity/pplx-decider-v1.2').name)} and ${esc(M('cloudflare/clef').name)}, both built on ${esc(F.samebase.base)}. Forced choice.</p></div>
+        <div class="cp cp-f paper"><p class="chip" style="--c:var(--c3)"><span>3</span>Impossible</p><h2 class="big">${words([['Two strangers. Who do you save?']])}</h2>
+          <p class="mid2 m1">${words([[`Black or White: ${word(D.race.a.length + D.race.b.length)} AIs picked a side.`], [D.race.b.length ? `${Word(D.race.a.length)} saved the Black person.` : `Every one saved the Black person.`, 'red']])}</p>
+          <p class="mid2 m2">${words([[`A believer or an atheist: ${word(D.faith.a.length + D.faith.b.length)} picked.`], [D.faith.b.length ? `${Word(D.faith.b.length)} saved the atheist.` : 'Not one saved the atheist.', 'red']])}</p>
+          <p class="src">Of ${D.models} AIs, one against one, each pair asked ${D.versions} ways. A side means more often than chance and the AI’s own habits explain, in every run. The rest saved both about equally. Forced choice.</p></div>
         <div class="cp cp-g top"><p class="chip" style="--c:var(--c4)"><span>4</span>Real</p><h2 class="big">${words([['Same frames. Only the words changed.']])}</h2></div>
         <div class="cp cp-g2 top"><p class="chip" style="--c:var(--c4)"><span>4</span>Real</p><h2 class="big">${words([['Called a job,'], ['they drove into the workers.', 'red']])}</h2></div>
         <div class="cp cp-h low"><p class="lead">${words([['So we added a safety rule.']])}</p><h2 class="big">${words([[`${M(omni).vendor}’s AI broke it`], [`${D.rule[0][0]} times in ${D.rule[0][1]}.`, 'red']])}</h2><p class="src">${esc(M(omni).name)}${sameRuns(D.rule) ? ', both runs' : ''}. Two workers on the scheduled track.</p></div>
@@ -275,6 +434,7 @@
       </div>
 
       <button type="button" class="ix-skip">Skip<span class="xs"> to the story</span></button>
+      <button type="button" class="ix-snd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="w" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="x" d="M16 9l6 6M22 9l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       <div class="ix-ctl"><button type="button" class="ix-pp" aria-label="Pause"><i></i></button><ol class="ix-seg"></ol></div>
     </div>`;
 
@@ -502,7 +662,9 @@
       const cn = $('.ix-q .cd b');
       tl.add(cd, 'c', tQ + 0.2, secs, (p) => {
         cd.style.transform = `scaleX(${1 - p})`;
-        cn.textContent = String(Math.max(0, Math.ceil(secs * (1 - p) - 1e-6)));
+        const left = Math.max(0, Math.ceil(secs * (1 - p) - 1e-6));
+        if (cn.textContent !== String(left) && p > 0 && p < 1) snd.play(left <= 4 ? 'blip' : 'tick');
+        cn.textContent = String(left);
         $('.ix-q .cd').classList.toggle('late', p > 0.62);
       }, E.lin);
       const clk = $('.ix-hud .clk');
@@ -517,6 +679,7 @@
     let film;
     const marks = [];
     function buildFilm() {
+      cues = [];
       film = Timeline();
       tl = film;
       let S = 0;
@@ -551,6 +714,8 @@
         tf(photo, s, 0.5, (p) => (p >= 1 ? 'none' : `translate(${Math.sin(p * 38) * 7 * (1 - p)}px, ${Math.cos(p * 31) * 4 * (1 - p)}px)`), E.lin);
         const flash = $('.ix-flash');
         op(flash, s, 0.45, 0.5, 0, E.out);
+        cue(s + 0.001, 'clunk');
+        cue(s + 0.2, 'sweep');
         $$('.ix-photo .tracks').forEach((g) => op(g, s, 0.3, 1, 0));
         // the camera pushes in on the track you chose, then pulls back out as the frame shrinks into the grid
         const ox = atWorkers ? 30 : 72;
@@ -561,6 +726,7 @@
         if (atWorkers) {
           draw(rL, s + 0.15, 1.0);
           sks.forEach((k, i) => drop(k, s + 1.0 + i * 0.12));
+          sks.forEach((k, i) => cue(s + 1.05 + i * 0.12, 'thud', i));
         } else {
           draw(rR, s + 0.15, 1.0);
           op(nob, s + 1.0, 0.4, 0, 1);
@@ -601,6 +767,7 @@
           }, E.quint);
           draw(tile.querySelector('.r-left'), s + 3.6 + i * 0.1, 0.3, 0, 1, E.out);
           tile.querySelectorAll('.sk').forEach((k, j) => drop(k, s + 3.8 + i * 0.1 + j * 0.04, 0.35));
+          cue(s + 3.8 + i * 0.1, 'pop', i);
         });
         const a2 = $('.cp-a2');
         block(a2, s + 3.0, s + 6.25);
@@ -609,6 +776,7 @@
         op(a2.querySelector('.stat'), s + 3.4, 0.3, 0, 1);
         const ct = a2.querySelector('.ct');
         tl.add(ct, 'c', s + 3.8, D.two.of * 0.1, (p) => (ct.textContent = String(Math.round(p * D.two.n))), E.lin);
+        cue(s + 3.8 + D.two.of * 0.1, 'wrong');
         tl.add(a2.querySelector('.stat'), 't', s + 3.8 + D.two.of * 0.1, 0.5, (p) => (a2.querySelector('.stat').style.transform = `scale(${1 + 0.12 * Math.sin(p * Math.PI)})`), E.out);
         op(a2.querySelector('.src'), s + 5.1, 0.4, 0, 1);
       });
@@ -624,6 +792,7 @@
         if (!atWorkers) {
           draw(rL, s + 1.0, 0.9);
           sks.forEach((k, i) => drop(k, s + 1.7 + i * 0.12));
+          sks.forEach((k, i) => cue(s + 1.75 + i * 0.12, 'thud', i));
         }
         const bub = $('.ix-bub');
         op(bub, s + 0.9, 0.01, 0, 1);
@@ -634,6 +803,9 @@
             b.style.transform = `translateY(${(1 - p) * 26}px) scale(${lerp(0.96, 1, p)})`;
           }, E.quint);
           type(b.querySelector('.ba .on'), b.querySelector('.ba .off'), t0 + 0.45, 0.42);
+          cue(t0, 'bubble');
+          for (let k = 0; k < 5; k++) cue(t0 + 0.45 + k * 0.08, 'key');
+          if (i === 2) cue(t0 + 0.9, 'wrong');
           op(b.querySelector('.bn'), t0 + 0.85, 0.3, 0, 1);
         });
         // the last answer lands on the rails: the red route pulses
@@ -649,6 +821,9 @@
         op(photo, s + 0.1, 1.0, 1, 0, E.in);
         const cv = dots.cv;
         op(cv, s + 0.15, 0.3, 0, 1);
+        cue(s + 0.2, 'whoosh');
+        for (let k = 0; k < 18; k++) cue(s + 0.35 + 2.6 * (k / 18) ** 0.7, 'tick');
+        cue(s + 2.95, 'ding');
         tl.add(cv, 'd', s + 0.35, 2.6, (p) => drawDots(p), E.io);
         const v = $('.ix-vig');
         op(v, s + 0.5, 0.8, 0, 1);
@@ -691,6 +866,8 @@
 
       beat('Obvious', 5.6, (s) => {
         wipe(s, true);
+        cue(s + 0.05, 'whoosh');
+        cue(s + 2.05, 'clunk');
         const pp = $('.pp-1');
         scene(pp, s + 0.35, s + 5.05);
         // the tram rolls in, the lever goes, and it takes the branch: its nose follows the rail, its body turns with it
@@ -722,6 +899,7 @@
         }, E.io);
         drop(pp.querySelector('.sk'), -1, 0.001, false);
         drop(pp.querySelector('.sk'), s + 3.25);
+        cue(s + 3.3, 'thud');
         const c = $('.cp-d');
         block(c, s + 0.45, s + 5.05);
         op(c.querySelector('.chip'), s + 0.45, 0.4, 0, 1);
@@ -756,9 +934,11 @@
         const lit = $$('.pp-2 .bots i.do');
         $$('.pp-2 .bots i').forEach((b) => tl.add(b, 'l', -1, 0.001, () => b.classList.remove('on')));
         lit.forEach((b, i) => tl.add(b, 'l', s + 2.2 + i * 0.09, 0.01, (p) => b.classList.toggle('on', p > 0), E.lin));
+        lit.forEach((b, i) => cue(s + 2.2 + i * 0.09, 'pop', i));
         const ppl = $$('.pp-2 .ppl i.do');
         ppl.forEach((b) => tl.add(b, 'l', -1, 0.001, () => b.classList.remove('on')));
         ppl.forEach((b, i) => tl.add(b, 'l', s + 3.85 + i * 0.07, 0.01, (p) => b.classList.toggle('on', p > 0), E.lin));
+        ppl.forEach((b, i) => cue(s + 3.85 + i * 0.07, 'tick'));
         op(pp.querySelector('.bots'), s + 1.9, 0.4, 0, 1);
         op(pp.querySelector('.bots-l'), s + 2.3, 0.4, 0, 1);
         op(pp.querySelector('.ppl'), s + 3.6, 0.4, 0, 1);
@@ -771,46 +951,58 @@
         op(c.querySelector('.stat'), s + 3.6, 0.4, 0, 1);
       });
 
-      beat('Impossible', 7.6, (s) => {
+      beat('Impossible', 7.8, (s) => {
         const pp = $('.pp-3');
-        scene(pp, s + 0.05, s + 6.9);
-        const li = $$('.pp-3 .flags li');
-        const pos = (rank, g) => rank.findIndex((r) => r.g === g);
-        li.forEach((el, i) => {
-          const g = el.dataset.g;
-          const a = D.px[pos(D.px, g)];
-          const b = D.cf[pos(D.cf, g)];
-          const bar = el.querySelector('.fbar i');
-          const c = el.querySelector('.fc');
-          tl.add(el, 'r', -1, 0.001, () => vis(el, 0));
-          tl.add(el, 'r', s + 0.3 + i * 0.05, 0.5, (p) => {
-            vis(el, p);
-            el.style.transform = `translateY(${pos(D.px, g) * 100}%) translateX(${(1 - p) * 30}px)`;
+        scene(pp, s + 0.05, s + 7.1);
+        // each contrast: the two people step in, then the AIs that took a side drop in under the one they saved
+        const play2 = (k, t0, gap) => {
+          const mu = pp.querySelector(`.mu[data-k="${k}"]`);
+          tl.add(mu, 'm', -1, 0.001, () => vis(mu, 0));
+          tl.add(mu, 'm', t0, 0.5, (p) => {
+            vis(mu, p);
+            mu.style.transform = `translateY(${(1 - p) * 18}px)`;
           }, E.quint);
-          tl.add(el, 'r', s + 3.2, 1.3, (p) => {
-            vis(el, 1);
-            el.style.transform = `translateY(${lerp(pos(D.px, g), pos(D.cf, g), p) * 100}%)`;
-          }, E.io);
-          tl.add(bar, 'w', s + 0.4 + i * 0.05, 0.6, (p) => (bar.style.width = `${(p * a.n * 100) / a.of}%`), E.out);
-          tl.add(bar, 'w', s + 3.2, 1.3, (p) => (bar.style.width = `${(lerp(a.n, b.n, p) * 100) / a.of}%`), E.io);
-          count(c, s + 0.4 + i * 0.05, 0.6, 0, a.n, E.out);
-          count(c, s + 3.2, 1.3, a.n, b.n);
-          if (g === 'American') tl.add(el, 'h', s + 2.3, 0.4, (p) => el.classList.toggle('hl', p > 0), E.lin);
-        });
-        const wa = pp.querySelector('.who-a');
-        const wb = pp.querySelector('.who-b');
-        op(wa, -1, 0.001, 0, 0);
-        op(wa, s + 0.1, 0.4, 0, 1);
-        op(wa, s + 3.2, 0.5, 1, 0);
-        op(wb, -1, 0.001, 0, 0);
-        op(wb, s + 3.5, 0.5, 0, 1);
+          const bots = [...mu.querySelectorAll('.mu-pile.a i')];
+          const n = mu.querySelector('.a .mu-n');
+          tl.add(n, 'c', -1, 0.001, () => (n.textContent = '0'));
+          bots.forEach((r, i) => {
+            const at0 = t0 + 0.55 + i * gap;
+            tl.add(r, 'd', -1, 0.001, () => {
+              r.style.opacity = 0;
+              r.style.transform = 'translateY(-60px)';
+            });
+            tl.add(r, 'd', at0, 0.45, (p) => {
+              r.style.opacity = Math.min(1, p * 3);
+              r.style.transform = `translateY(${(1 - p) * -60}px)`;
+            }, E.back);
+            tl.add(n, 'c', at0 + 0.12, 0.001, () => (n.textContent = String(i + 1)));
+            cue(at0 + 0.1, 'pop', i);
+          });
+          // the side nobody took: its zero gives a small shrug
+          const z = mu.querySelector('.b .mu-n');
+          const done = t0 + 0.55 + bots.length * gap;
+          tl.add(z, 'z', done + 0.1, 0.5, (p) => (z.style.transform = `translateX(${Math.sin(p * Math.PI * 4) * 5 * (1 - p)}px)`), E.lin);
+          if (!mu.querySelectorAll('.mu-pile.b i').length) cue(done + 0.1, 'bonk');
+          return done;
+        };
+        const e1 = play2('race', s + 0.55, 0.16);
+        const e2 = play2('faith', Math.max(e1 + 0.4, s + 2.6), 0.1);
+        // the believer's badge turns through the four faiths asked
+        const fbs = $$('.pp-3 .fb');
+        const fb = pp.querySelector('.mu[data-k="faith"] .mu-fig');
+        tl.add(fb, 'f', -1, 0.001, () => fbs.forEach((x, i) => (x.style.opacity = i ? 0 : 1)));
+        for (let k = 1; k < 9; k++)
+          tl.add(fb, 'f', s + 2.6 + k * 0.55, 0.001, () => fbs.forEach((x, i) => (x.style.opacity = i === k % FAITHS.length ? 1 : 0)));
+        op(pp.querySelector('.mu-key'), e2 + 0.2, 0.4, 0, 1);
         const c = $('.cp-f');
-        block(c, s + 0.15, s + 6.9);
+        block(c, s + 0.15, s + 7.1);
         op(c.querySelector('.chip'), s + 0.15, 0.3, 0, 1);
-        rise(c.querySelector('h2'), s + 0.35);
-        rise(c.querySelector('.b2'), s + 4.4, { stagger: 0.05 });
-        op(c.querySelector('.src'), s + 5.2, 0.4, 0, 1);
-        wipe(s + 6.9, false);
+        rise(c.querySelector('h2'), s + 0.3);
+        rise(c.querySelector('.m1'), s + 0.75, { stagger: 0.035 });
+        rise(c.querySelector('.m2'), Math.max(e1 + 0.4, s + 2.6) + 0.1, { stagger: 0.035 });
+        op(c.querySelector('.src'), e2 + 0.3, 0.4, 0, 1);
+        wipe(s + 7.1, false);
+        cue(s + 7.1, 'whoosh');
       });
 
       beat('Real', 6.8, (s) => {
@@ -823,6 +1015,9 @@
         draw(a.querySelector('.r-right'), s + 0.9, 0.9);
         draw(b.querySelector('.r-left'), s + 1.9, 0.9);
         b.querySelectorAll('.sk').forEach((k, i) => drop(k, s + 2.6 + i * 0.1));
+        b.querySelectorAll('.sk').forEach((k, i) => cue(s + 2.65 + i * 0.1, 'thud', i));
+        cue(s + 1.0, 'blip');
+        cue(s + 3.4, 'wrong');
         op(a.querySelector('figcaption'), s + 0.5, 0.4, 0, 1);
         op(b.querySelector('figcaption'), s + 1.5, 0.4, 0, 1);
         op(a.querySelector('p'), s + 1.0, 0.4, 0, 1);
@@ -861,6 +1056,9 @@
         tl.add(note, 'n2', s + 1.45, 0.25, (p) => (note.style.filter = `drop-shadow(0 ${lerp(30, 10, p)}px ${lerp(40, 14, p)}px rgba(0,0,0,.45))`), E.out);
         draw(rL, s + 2.4, 0.9);
         sks.forEach((k, i) => drop(k, s + 3.1 + i * 0.12));
+        cue(s + 1.25, 'slap');
+        cue(s + 2.4, 'sweep');
+        sks.forEach((k, i) => cue(s + 3.15 + i * 0.12, 'thud', i));
         const c = $('.cp-h');
         block(c, s + 0.3, s + 5.5);
         rise(c.querySelector('.lead'), s + 0.3);
@@ -884,6 +1082,10 @@
         }, E.quint);
         const f = term.querySelector('.fault');
         type(f.querySelector('.on'), f.querySelector('.off'), s + 1.4, 1.2);
+        for (let k = 0; k < 12; k++) cue(s + 1.4 + k * 0.1, 'key');
+        cue(s + 2.6, 'alarm');
+        for (let k = 0; k < 24; k++) cue(s + 3.9 + 1.6 * (k / 24), 'tick');
+        cue(s + 5.5, 'wrong');
         tl.add(f, 'f', s + 2.6, 0.6, (p) => f.classList.toggle('blink', p > 0 && p < 1), E.lin);
         const c = $('.cp-i');
         block(c, s + 0.25, s + 6.3);
@@ -918,6 +1120,7 @@
         tl.add(en, 'x', -1, 0.001, () => vis(en, 0));
         tl.add(en, 'x', s + 0.05, 0.01, () => vis(en, 1));
         rise(en.querySelector('h1'), s + 0.1, { stagger: 0.09, dur: 1.0 });
+        cue(s + 0.1, 'chord');
         op(en.querySelector('.kick'), s + 0.9, 0.5, 0, 1);
         op(en.querySelector('.dek'), s + 1.2, 0.5, 0, 1);
         op(en.querySelector('.res'), s + 1.6, 0.5, 0, 1);
@@ -956,7 +1159,9 @@
         if (preT > tQ + secs + 0.2 && !pick) choose('none');
       }
       if (playing) {
+        const t0 = t;
         t = Math.min(END, t + dt);
+        fire(t0, t);
         renderFilm();
         if (t >= END) finish();
       }
@@ -1033,14 +1238,41 @@
       }
       start(p);
     }
-    $$('.ix-q [data-pick]').forEach((b) => b.addEventListener('click', () => choose(b.dataset.pick)));
+    $$('.ix-q [data-pick]').forEach((b) =>
+      b.addEventListener('click', () => {
+        snd.unlock();
+        choose(b.dataset.pick);
+      }),
+    );
+    // the mute switch: a small speaker in the corner
+    const mute = $('.ix-snd');
+    const showMute = () => {
+      mute.classList.toggle('off', snd.muted);
+      mute.setAttribute('aria-label', snd.muted ? 'Sound off. Turn sound on' : 'Sound on. Turn sound off');
+      mute.title = snd.muted ? 'Sound off' : 'Sound on';
+    };
+    showMute();
+    // the speaker sits just left of Skip, whatever width Skip's label has
+    const placeMute = () => root.style.setProperty('--skip-w', `${$('.ix-skip').offsetWidth + 10}px`);
+    placeMute();
+    addEventListener('resize', placeMute);
+    mute.addEventListener('click', () => {
+      snd.toggle();
+      snd.unlock();
+      showMute();
+      if (!snd.muted) snd.play('blip');
+    });
     $('.ix-skip').addEventListener('click', () => {
       if (!film) start(pick ?? 'skip', 0, false);
       finish();
       document.getElementById('study')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
     });
-    $('.ix-pp').addEventListener('click', () => (playing ? pause() : play()));
+    $('.ix-pp').addEventListener('click', () => {
+      snd.unlock();
+      playing ? pause() : play();
+    });
     $('.ix-end .again').addEventListener('click', () => {
+      snd.unlock();
       setState('film');
       seek(0);
       play();
@@ -1121,7 +1353,7 @@
         kick();
       }
     }
-    return { root };
+    return { root, cues: () => cues.map((c) => ({ ...c })), sound: Sound };
   }
   window.TrolleyIntro = mount;
 })();

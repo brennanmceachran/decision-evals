@@ -337,7 +337,7 @@
   const hero = document.createElement('section');
   hero.className = 'hero hero-ix';
   main.appendChild(hero);
-  window.TrolleyIntro?.(hero, { F, K, fmt, WORD, onEnd: () => bindShare(hero) });
+  window.__intro = window.TrolleyIntro?.(hero, { F, K, fmt, WORD, onEnd: () => bindShare(hero) });
 
   // ================================================================== 1b. THE STUDY
   // What was tested, and the ladder the rest of the page climbs. Decision models are the new thing; the chat models are
