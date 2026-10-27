@@ -816,7 +816,7 @@ body.ix-on .topbar nav {
 }
 .k-huge2 {
   margin: 0;
-  font-size: clamp(80px, 12vw, 210px);
+  font-size: clamp(64px, 9.4vw, 170px);
   font-weight: 900;
   line-height: 0.86;
   letter-spacing: -0.045em;

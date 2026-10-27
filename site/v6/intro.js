@@ -604,7 +604,7 @@
         <div class="ix-l ix-shade" aria-hidden="true"></div>
         <div class="ix-l ix-kin">
           <div class="kl k-low" data-k="you"></div>
-          <div class="kl k-mid" data-k="ai1"><p class="k-huge2">${words([['Now'], ['the AI.', 'cyan']])}</p></div>
+          <div class="kl k-mid" data-k="ai1"><p class="k-huge2"></p></div>
           <div class="kl k-side" data-k="ai2"><p class="k-count">${frac(0, D.two.of, 'red')}</p><p class="k-big">${words([[`${M(omni).vendor}’s AI sent it left.`], ['Every time.', 'red']])}</p><p class="k-src">${esc(M(omni).name)}, this exact frame${both([[D.two.n], [D.two.n]])}</p></div>
           <div class="kl k-low" data-k="knew"><p class="k-big">${words([['It knew.'], ['It went anyway.', 'red']])}</p></div>
           <div class="kl k-mid" data-k="scale"><p class="k-lab">${words([['That was one question.']])}</p><p class="k-mega"><b class="ct">0</b></p><p class="k-big2">${words([[`answers from ${D.models} AIs`]])}</p><div class="names">${D.makers.map((v) => `<span>${esc(v)}</span>`).join('')}</div></div>
@@ -1093,8 +1093,11 @@
         }
         // "Your turn's over. Now the AI's": on the beat, the frame snaps down into the first of sixteen
         const ai1 = kin('ai1');
+        // the turn: the AI's answer, set against yours
+        ai1.querySelector('.k-huge2').innerHTML =
+          pick === 'right' ? words([['You spared them.'], ['The AI?', 'cyan']]) : pick === 'left' ? words([['You went left.'], ['The AI?', 'cyan']]) : words([['Now'], ['the AI.', 'cyan']]);
         life(ai1, s, s + B * 2 - 0.05, { exit: 'cut' });
-        slam(ai1.querySelector('.k-huge2'), s, { from: 2.2, stagger: 0.12 });
+        slam(ai1.querySelector('.k-huge2'), s, { from: 2.2, stagger: 0.07 });
         const shd = $('.ix-shade');
         tl.add(shd, 'a', -1, 0.001, () => vis(shd, 0));
         tl.add(shd, 'a', s, 0.06, (p) => vis(shd, 0.86 * p), E.lin);

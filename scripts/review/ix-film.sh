@@ -15,18 +15,16 @@ agent-browser open "about:blank" >/dev/null
 agent-browser record start $O/film.webm "http://localhost:8780/v6/index.html?pick=$pick&t=0&play=1&z=$RANDOM" >/dev/null
 sleep $(python3 -c "print($end + 3)")
 agent-browser record stop >/dev/null
-# the film starts when the red route first appears on the bottom-left of the frame; find that frame to sync the score
-rm -rf $O/.st; mkdir $O/.st; ffmpeg -v error -i $O/film.webm -t 5 -vf "fps=30,scale=160:-1" $O/.st/%04d.png
-off=$(python3 - "$O" <<'PY'
+# sync: the screen goes nearly black when "Now the AI." lands, at the start of the film's second mark; find that frame
+mark=$(agent-browser eval "window.__intro.marks()[1].s")
+rm -rf $O/.st; mkdir $O/.st; ffmpeg -v error -i $O/film.webm -t 6 -vf "fps=60,scale=160:-1" $O/.st/%04d.png
+off=$(python3 - "$O" "$mark" <<'PY'
 import sys,glob
 from PIL import Image, ImageStat
-fs=sorted(glob.glob(sys.argv[1]+'/.st/*.png'))
-base=None
+fs=sorted(glob.glob(sys.argv[1]+'/.st/*.png')); mark=float(sys.argv[2])
 for i,f in enumerate(fs):
-    m=ImageStat.Stat(Image.open(f).convert('L')).mean[0]
-    if base is None and m>20: base=m; continue
-    if base is not None and abs(m-base)>4: print(round(i/30-0.02,3)); break
-else: print(0.5)
+    if ImageStat.Stat(Image.open(f).convert('L')).mean[0] < 30: print(round(i/60 - mark - 0.03,3)); break
+else: print(0)
 PY
 )
 rm -rf $O/.st
