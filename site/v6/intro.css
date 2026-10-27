@@ -443,16 +443,21 @@ body.ix-on .topbar nav {
   inset: 0;
   background: radial-gradient(ellipse 70% 60% at 50% 45%, rgba(255, 255, 255, 0.16), rgba(0, 0, 0, 0.22));
 }
-.ix-table .edge {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 8px;
-  margin-left: -4px;
-  background: #fff;
-  box-shadow: 0 0 50px 12px rgba(255, 255, 255, 0.5);
-  opacity: 0;
-  z-index: 2;
+.ix-tram {
+  z-index: 3;
+  inset: auto;
+  left: 0;
+  bottom: 4vh;
+  height: 66vh;
+  aspect-ratio: 1580 / 720;
+  visibility: hidden;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.45));
+  will-change: transform;
+}
+.ix-tram svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .card {
   position: absolute;
@@ -709,6 +714,7 @@ body.ix-on .topbar nav {
 }
 /* ---------- the big words */
 .ix-kin {
+  z-index: 2;
   pointer-events: none;
 }
 .kl {
@@ -830,6 +836,7 @@ body.ix-on .topbar nav {
 /* ---------- the end: the page's hero */
 .ix-end {
   position: absolute;
+  z-index: 8;
   left: var(--ix-pad);
   right: var(--ix-pad);
   bottom: clamp(56px, 11vh, 120px);
@@ -840,6 +847,7 @@ body.ix-on .topbar nav {
   color: var(--amber);
 }
 .ix-end h1 {
+  display: inline-block;
   margin: 0;
   font-size: clamp(52px, 8.4vw, 140px);
   line-height: 0.92;
@@ -906,6 +914,7 @@ body.ix-on .topbar nav {
 .ix-pre {
   position: absolute;
   inset: 0;
+  z-index: 8;
   pointer-events: none;
 }
 .ix[data-state='pre'] .ix-pre > * {
@@ -1057,7 +1066,7 @@ body.ix-on .topbar nav {
 }/* ---------- controls */
 .ix-snd {
   position: absolute;
-  z-index: 5;
+  z-index: 9;
   bottom: 18px;
   right: calc(var(--ix-pad) + var(--skip-w, 150px));
   width: 34px;
@@ -1104,7 +1113,7 @@ body.ix-on .topbar nav {
 .ix-skip,
 .ix-ctl {
   position: absolute;
-  z-index: 5;
+  z-index: 9;
   bottom: 18px;
   transition: opacity 0.4s;
 }
@@ -1224,6 +1233,10 @@ body.ix-on .topbar nav {
   }
   .pov {
     inset: 6px;
+  }
+  .ix-tram {
+    height: 34svh;
+    bottom: 30svh;
   }
   .pov i {
     width: 22px;

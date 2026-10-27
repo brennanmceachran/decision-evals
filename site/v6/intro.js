@@ -269,6 +269,32 @@
       },
       whoosh: (t, d = 0.3) => nz(t, d * 0.4, 0.34, 'bandpass', 500, 4200, 0.7, { a: d * 0.6, wet: 0.3 }),
       tick: (t) => osc(t, 'square', 2100, 0, 0, 0.001, 0.016, 0.05),
+      // a tram bell: two strikes, each a few inharmonic partials ringing down
+      bell: (t) => {
+        for (const [k, v] of [[0, 1], [0.17, 0.85]])
+          for (const [m, a, d] of [[1, 0.2, 0.9], [2.76, 0.08, 0.5], [5.4, 0.05, 0.25], [8.9, 0.025, 0.12]])
+            osc(t + k, 'sine', 1180 * m, 0, 0, 0.001, d, a * v, { wet: 0.35 });
+      },
+      // a tram passing: a low rumble swelling and fading, and the wheels on the rail joints
+      rumble: (t, d = 0.9) => {
+        const s = ctx.createBufferSource();
+        s.buffer = nb;
+        const f = ctx.createBiquadFilter();
+        f.type = 'lowpass';
+        f.frequency.value = 260;
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.9, t + d * 0.45);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+        send(s.connect(f).connect(g), 0.2);
+        s.start(t, 0.3);
+        s.stop(t + d + 0.05);
+        for (const k of [0.22, 0.3, 0.52, 0.6]) {
+          nz(t + d * k, 0.05, 0.4, 'bandpass', 1500, 400, 1.2);
+          osc(t + d * k, 'sine', 120, 60, 0.05, 0.002, 0.06, 0.4);
+        }
+        nz(t, d, 0.18, 'bandpass', 500, 3000, 0.6, { a: d * 0.5 });
+      },
       key: (t) => nz(t, 0.022, 0.22, 'bandpass', 3600, 0, 1.6),
       blip: (t, f = 880) => osc(t, 'sine', f, f * 1.5, 0.08, 0.003, 0.1, 0.17),
       // the last chord: A minor, wide, with the sub and a crash under it
@@ -539,7 +565,7 @@
         <div class="ix-l ix-fault" aria-hidden="true"><canvas></canvas>
           <p class="fk"><span class="fa"><b class="ct">0</b> without that line</span><span class="fb"><b class="ct red">0</b> with it</span><small>of ${fmt(D.fault.offOf)} requests, the schedule pointing away from the workers</small></p>
         </div>
-        <div class="ix-l ix-table" aria-hidden="true"><i class="edge"></i>
+        <div class="ix-l ix-table" aria-hidden="true">
           <div class="card c1">
             <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([['Nobody is in danger.']])}</h3><p class="cv">${words([['One AI pulled the lever onto a person anyway.']])}</p><p class="cs">${frac(D.laya.n, D.laya.of, 'red')}</p><p class="csrc">${esc(M('convaiinnovations/laya').name)}, told in words${D.laya.both ? ', both runs' : ''}</p></div>
             <div class="cd-p">${lever}</div>
@@ -556,6 +582,11 @@
             <div class="cd-p">${contrast('race', D.race, figure({ skin: K.TONE.dark }), figure({ skin: K.TONE.light }), 'Black', 'White')}${contrast('faith', D.faith, believer, figure({}), 'a believer', 'an atheist')}</div>
           </div>
         </div>
+        <div class="ix-l ix-tram" aria-hidden="true"><svg viewBox="-520 0 1580 720" preserveAspectRatio="xMinYMax meet">
+          ${[[300, 22], [420, 14], [520, 26], [610, 12]].map(([y, h], i) => `<rect x="${-520 + i * 60}" y="${y}" width="${520 - i * 40}" height="${h}" rx="${h / 2}" fill="#fff" opacity="${0.5 - i * 0.08}"/>`).join('')}
+          <path d="M-520 702 H1060" stroke="#2a2f36" stroke-width="16"/>
+          ${K.trolley(1000, 690, 1000)}
+        </svg></div>
         <div class="ix-l ix-qa" aria-hidden="true">
           ${[
             ['Is this a live system, or a test?', '“A live system.”', okMark],
@@ -801,10 +832,22 @@
         return { x, y, w: el.offsetWidth, h: el.offsetHeight };
       };
       G.photo = box($('.ix-photo'));
+      G.vw = root.offsetWidth;
+      // where the title sits in the end card, so it can land centred first and glide there
+      const hb = box($('.ix-end h1'));
+      // (on a narrow screen it is already as wide as the screen: it lands where it rests)
+      G.h1 = G.vw < 700 || hb.w > G.vw * 0.7 ? { dx: 0, dy: 0 } : { dx: G.vw / 2 - (hb.x + hb.w / 2), dy: root.offsetHeight * 0.46 - (hb.y + hb.h / 2) };
+      G.tramW = $('.ix-tram').offsetWidth;
       // the grid's tiles take the frame's shape, so the frame shrinks exactly into the first one
       $('.ix-grid').style.setProperty('--ar', (G.photo.w / G.photo.h).toFixed(4));
       G.tile = box($('.ix-grid .tile'));
     }
+    // the tram wipe: x of the tram sprite's left edge, and the middle of its body, as it crosses (p 0..1)
+    const tramAt = (p) => {
+      const w = G.tramW;
+      const x = lerp(-w, G.vw + w * 0.05, p);
+      return { x, mid: x + w * 0.66 };
+    };
     const toTile = (p) => {
       const s = lerp(1, G.tile.w / G.photo.w, p);
       return `translate(${lerp(0, G.tile.x - G.photo.x, p)}px, ${lerp(0, G.tile.y - G.photo.y, p)}px) scale(${s})`;
@@ -909,9 +952,15 @@
 
       // ---- the music: a groove on the beat grid, the bass walking A minor (Am, F, C, G, one chord a bar)
       const PROG = [55, 43.65, 65.41, 49];
+      const bump = (x, amt = 0.012) =>
+        tl.add(cam, 'k', x, B * 0.9, (p) => (cam.style.scale = p >= 1 ? '' : String(1 + amt * (1 - p) ** 2)), E.lin);
+      tl.add(cam, 'k', -1, 0.001, () => (cam.style.scale = ''));
       const groove = (a, b, o = {}) => {
         for (let x = a, k = 0; x < b - 1e-6; x += B / 2, k++) {
-          if (k % 2 === 0) cue(x, 'kick', o.kick ?? 0.85);
+          if (k % 2 === 0) {
+            cue(x, 'kick', o.kick ?? 0.85);
+            if (o.bump !== false) bump(x, k % 8 === 0 ? 0.016 : 0.008);
+          }
           else cue(x, 'hat', o.hat ?? 0.8);
           if (o.clap && k % 4 === 2) cue(x, 'clap', 0.7);
           if (o.ohat && k % 4 === 3) cue(x, 'ohat', 0.7);
@@ -977,9 +1026,9 @@
       // ======== 2. The AI. The frame snaps into a grid of sixteen on a drumroll; impact on sixteen.
       beat('The AI', 8 * B, (s) => {
         const ai1 = kin('ai1');
-        life(ai1, s, s + 1.0, { exit: 'fade', out: 0.2 });
-        slam(ai1.querySelector('.k-big'), s + 0.02);
-        op(ai1.querySelector('.k-sub'), s + 0.3, 0.25, 0, 1);
+        life(ai1, s + 0.3, s + 1.0, { exit: 'fade', out: 0.2 });
+        slam(ai1.querySelector('.k-big'), s + 0.3);
+        op(ai1.querySelector('.k-sub'), s + 0.5, 0.25, 0, 1);
         cue(s, 'impact', 0.7);
         flash(s, 0.5);
         tf(fr, s, 0.4, (p) => `scale(${lerp(1.42, 1, p)})`, E.io);
@@ -1048,7 +1097,7 @@
         cue(s, 'impact', 0.5);
         groove(s + B, s + 8 * B, { kick: 0.6, hat: 0.6, bass: s + B });
         const qa = $('.ix-qa');
-        life(qa, s + 0.15, s + 3.75, { exit: 'whip' });
+        life(qa, s + 0.15, s + 4.0, { exit: 'cut' });
         const rows = $$('.ix-qa .xq');
         const t = [s + 0.2, s + 0.2 + 2 * B, s + 0.2 + 4 * B];
         rows.forEach((r, i) => {
@@ -1092,7 +1141,7 @@
         shake(wrongAt + 0.35, 16);
         red(wrongAt + 0.35, 0.6, 0.6);
         const knew = kin('knew');
-        life(knew, s + 3.15, s + 3.9);
+        life(knew, s + 3.15, s + 4.0, { exit: 'cut' });
         slam(knew, s + 3.15, { stagger: 0.08 });
         cue(s + 3.15, 'snare', 0.8);
         cue(s + 3.4, 'snare', 0.9);
@@ -1106,16 +1155,16 @@
         tl.add(photo, 'z', -1, 0.001, () => (photo.style.transformOrigin = '0 0'));
         op(photo, s + 0.33, 0.05, 1, 0);
         const cv = dots.cv;
-        life(cv, s + 0.3, s + 2.85, { exit: 'fade', out: 0.2 });
+        life(cv, s + 0.3, s + 3.3, { exit: 'cut' });
         tl.add(cv, 'd', s + 0.3, 1.4, (p) => drawDots(p), E.out);
         const v = $('.ix-vig');
-        life(v, s + 0.4, s + 2.85, { exit: 'fade', out: 0.2 });
+        life(v, s + 0.4, s + 3.3, { exit: 'cut' });
         cue(s + 0.3, 'impact', 1.2);
         flash(s + 0.3, 0.9, 0.3);
         shake(s + 0.3, 26, 0.6);
         const sc = kin('scale');
-        life(sc, s + 0.0, s + 2.85, { exit: 'fade', out: 0.2 });
-        slam(sc.querySelector('.k-lab'), s + 0.0, { stagger: 0.04 });
+        life(sc, s + 0.3, s + 3.4, { exit: 'cut' });
+        slam(sc.querySelector('.k-lab'), s + 0.32, { stagger: 0.04 });
         const mega = sc.querySelector('.k-mega');
         op(mega, s + 0.3, 0.05, 0, 1);
         count(sc.querySelector('.ct'), s + 0.3, 1.4, 0, D.answers, E.out);
@@ -1131,12 +1180,10 @@
           tl.add(el, 'x', n0 + (i + 1) * (B / 8), 0.001, () => vis(el, i === names.length - 1 ? 1 : 0));
           cue(n0 + i * (B / 8), 'pop', i % 11);
         });
-        cue(s + 2.5, 'whoosh', 0.35);
       });
 
       // ======== 5–7. The thought experiments: paper cards slapping onto a coloured table, over the groove.
       const table = $('.ix-table');
-      const edge = $('.ix-table .edge');
       const tStart = S;
       const card = (el, s, e, rot) => {
         tl.add(el, 'x', -1, 0.001, () => vis(el, 0));
@@ -1160,15 +1207,29 @@
       tl.add(table, 'c', -1, 0.001, () => (table.style.background = 'var(--c1)'));
 
       beat('Obvious', 8 * B, (s) => {
-        // the table wipes in from the right
-        tl.add(table, 'x', s, 0.35, (p) => {
-          vis(table, 1);
-          table.style.clipPath = `inset(0 0 0 ${(1 - p) * 100}%)`;
-          edge.style.left = `${(1 - p) * 100}%`;
-          edge.style.opacity = p < 1 ? '1' : '0';
-        }, E.io);
+        // a tram drives across the screen, ringing its bell; the table is behind it
+        const wipeTram = $('.ix-tram');
+        const T0 = s - 0.62;
+        const TD = 0.9;
+        const glide = (p) => (p < 0.5 ? 2 * p * p : 1 - 2 * (1 - p) * (1 - p)) * 0.3 + p * 0.7;
+        tl.add(wipeTram, 'x', -1, 0.001, () => vis(wipeTram, 0));
+        tl.add(wipeTram, 'x', T0, TD, (p) => {
+          vis(wipeTram, p > 0 && p < 1 ? 1 : 0);
+          wipeTram.style.transform = `translateX(${tramAt(glide(p)).x}px)`;
+        }, E.lin);
+        tl.add(table, 'x', T0, TD, (p) => {
+          vis(table, p > 0 ? 1 : 0);
+          table.style.clipPath = p >= 1 ? '' : `inset(0 ${Math.max(0, G.vw - tramAt(glide(p)).mid)}px 0 0)`;
+          table.style.transform = '';
+          table.style.filter = '';
+        }, E.lin);
+        // what was on screen goes with it: the big number is wiped away behind the tram
+        const scl = kin('scale');
+        tl.add(scl, 'w', -1, 0.001, () => (scl.style.clipPath = ''));
+        tl.add(scl, 'w', T0, TD, (p) => (scl.style.clipPath = p <= 0 ? '' : `inset(0 0 0 ${Math.max(0, tramAt(glide(p)).mid)}px)`), E.lin);
+        cue(T0 - 0.05, 'bell');
+        cue(T0, 'rumble', TD);
         tableBg(s, 'var(--c1)');
-        cue(s, 'whoosh', 0.3);
         cue(s + 0.32, 'crash', 0.6);
         groove(s + 0.32, s + 8 * B + 7 * B + 9 * B, { clap: true, ohat: true, bass: s + 0.32 });
         const c = $('.card.c1');
@@ -1305,9 +1366,13 @@
         tl.add(fb, 'f', -1, 0.001, () => fbs.forEach((x, i) => (x.style.opacity = i ? 0 : 1)));
         for (let k = 1; k < 10; k++) tl.add(fb, 'f', e1 + 0.3 + k * 0.3, 0.001, () => fbs.forEach((x, i) => (x.style.opacity = i === k % FAITHS.length ? 1 : 0)));
         op(c.querySelector('.csrc'), s + 3.2, 0.3, 0, 1);
-        // the table whips away
-        tl.add(table, 'x', s + 9 * B - 0.2, 0.25, (p) => exits.whip(table, p), E.in);
-        cue(s + 9 * B - 0.35, 'revcym', 0.35);
+        // the card is yanked off the table on the last beat; then a hard cut
+        $$('.ix-table .card').forEach((cd, i) => {
+          tl.add(cd, 'y', -1, 0.001, () => (cd.style.translate = ''));
+          tl.add(cd, 'y', s + 9 * B - 0.28 + (2 - i) * 0.03, 0.24, (p) => (cd.style.translate = `0 ${-p * 120}vh`), E.in);
+        });
+        tl.add(table, 'x', s + 9 * B, 0.001, () => vis(table, 0));
+        cue(s + 9 * B - 0.45, 'revcym', 0.45);
       });
 
       // ======== 8. Real. A hard cut back to the camera: the same frames, called two things.
@@ -1435,7 +1500,7 @@
       });
 
       // ======== 11. The Trolley Tests. Cut to black, a breath of silence, then the title on the last chord.
-      beat('The Trolley Tests', 6 * B, (s) => {
+      beat('The Trolley Tests', 7 * B, (s) => {
         tl.add(black, 'b', s, 0.001, () => vis(black, 1));
         tl.add(black, 'b', s + 0.5, 1.0, (p) => vis(black, 1 - p), E.io);
         op(dim, s, 0.001, 0.62, 0.62);
@@ -1453,11 +1518,20 @@
         shake(T, 14, 0.5);
         const en = $('.ix-end');
         tl.add(en, 'x', T, 0.001, () => vis(en, 1));
-        slam(en.querySelector('h1'), T, { stagger: 0.09, from: 1.6, dur: 0.4 });
-        op(en.querySelector('.kick'), T + 0.6, 0.4, 0, 1);
-        op(en.querySelector('.dek'), T + 0.8, 0.4, 0, 1);
-        op(en.querySelector('.res'), T + 1.0, 0.4, 0, 1);
-        op(en.querySelector('.acts'), T + 1.2, 0.4, 0, 1);
+        const h1 = en.querySelector('h1');
+        slam(h1, T, { stagger: 0.09, from: 1.6, dur: 0.4 });
+        // centred and big on the hit, then it glides down to where the hero keeps it
+        tl.add(h1, 'm', -1, 0.001, () => (h1.style.transform = ''));
+        tl.add(h1, 'm', T, 1.25, (p) => {
+          const g = G.h1 ?? { dx: 0, dy: 0 };
+          const k = p < 0.45 ? 0 : E.io((p - 0.45) / 0.55);
+          const sc = g.dx || g.dy ? lerp(1.18, 1, k) : 1;
+          h1.style.transform = p >= 1 ? '' : `translate(${g.dx * (1 - k)}px, ${g.dy * (1 - k)}px) scale(${sc})`;
+        }, E.lin);
+        op(en.querySelector('.kick'), T + 1.15, 0.4, 0, 1);
+        op(en.querySelector('.dek'), T + 1.3, 0.4, 0, 1);
+        op(en.querySelector('.res'), T + 1.45, 0.4, 0, 1);
+        op(en.querySelector('.acts'), T + 1.6, 0.4, 0, 1);
       });
       film.seal();
       cues.sort((a, b) => a.at - b.at);
