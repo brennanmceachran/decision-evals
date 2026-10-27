@@ -620,7 +620,7 @@
 
       <div class="ix-end">
         <h1>${words([['The Trolley Tests']])}</h1>
-        <p class="dek">We gave ${D.models} AIs the trolley problem. ${fmt(D.answers)} answers, and the answers surprised us.</p>
+        <p class="dek">We gave ${D.models} AIs the trolley problem ${fmt(D.answers)} times, and the answers surprised us.</p>
         <p class="acts"><a class="go" href="#study">Read the study</a><button type="button" class="again">Watch again</button><button type="button" class="share" data-card="01-photo">Share this</button></p>
       </div>
 
