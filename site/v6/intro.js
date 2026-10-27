@@ -1061,10 +1061,12 @@
           draw(tile.querySelector('.r-left'), ti, 0.1, 0, 1, E.out);
           tile.querySelectorAll('.sk').forEach((k, j) => drop(k, ti + 0.04 + j * 0.02, 0.18));
           tl.add(n, 'c', ti, 0.001, () => (n.textContent = String(i + 1)));
-          cue(ti, 'snare', 0.5 + i * 0.03);
+          cue(ti, 'snare', 0.7 + i * 0.03);
           cue(ti, 'climb', i);
+          if (i % 4 === 0) cue(ti, 'kick', 0.7);
         });
         const hit = t0 + D.two.of * step;
+        cue(t0, 'riser', hit - t0);
         // impact: the whole grid flushes red, the count lands
         cue(hit, 'impact', 1.1);
         flash(hit, 0.6);
@@ -1473,6 +1475,7 @@
         life(br, s + 1.1, s + 6 * B, { exit: 'cut' });
         slam(br, s + 1.1, { stagger: 0.06, from: 2 });
         cue(s + 1.1, 'alarm');
+        groove(s + 1.1, s + 6 * B, { kick: 1, hat: 0.9, clap: true, bass: s + 1.1 });
         cue(s + 1.1, 'impact', 0.8);
         red(s + 1.1, 0.8, 0.4);
         red(s + 1.6, 0.6, 0.4);
@@ -1549,6 +1552,8 @@
     // the audio clock: while sound is on, film time is read from it, and cues are scheduled a little ahead on it
     let audioOn = false;
     let aStart = 0;
+    let lastCT = -1;
+    let stall = 0;
     let schedTo = 0;
     const LOOK = 0.25;
     const seg$ = $('.ix-seg');
@@ -1583,7 +1588,13 @@
             schedTo = t - 0.001;
             audioOn = true;
           }
-          t = Math.min(END, Math.max(t, snd.ctx.currentTime - aStart));
+          // follow the wall clock, eased toward the audio clock: smooth motion, and the score stays in sync. If the
+          // audio clock stalls (no output device, a suspended tab), the wall clock carries on alone.
+          const ct = snd.ctx.currentTime;
+          stall = ct === lastCT ? stall + 1 : 0;
+          lastCT = ct;
+          const pred = t + dt;
+          t = Math.min(END, stall > 6 ? pred : Math.max(t, pred + (ct - aStart - pred) * 0.12));
           const to = t + LOOK;
           for (const c of cues) if (c.at > schedTo && c.at <= to) snd.at(c.name, aStart + c.at, c.arg);
           schedTo = to;
