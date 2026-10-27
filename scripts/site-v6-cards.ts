@@ -1,9 +1,7 @@
 // site/v6 share cards: one image per finding, drawn as SVG from site/v5/data.js plus raw counts from
 // scripts/site-v6-facts.ts, rasterised with resvg. Each card also exports its numbers (`facts`) so the page and the
 // independent checker (test/site-v6-verify.test.ts) can confirm every figure on every image.
-import { dashcamJobs, textJobs } from '../src/final/jobs.js';
-import { FINAL_SUBJECTS } from '../src/final/subjects.js';
-import { createHash } from 'node:crypto';
+import { textJobs } from '../src/final/jobs.js';
 import { realTrials } from '../src/real-study.js';
 import { CLASSICS, type RunFacts } from './site-v6-facts.js';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -2231,33 +2229,10 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
             return [f, { text: t.text, question: t.question, buttons: Object.values(t.criteria) }];
           }),
         ),
-        // what one plain routing request cost, from the run caches (the main call only; a chat model's answer was five
-        // samples, so one call is a fifth of it). Gateway prices as charged during the runs, October 2026.
-        cost: (() => {
-          const jobs = dashcamJobs().filter((j) => j.meta.framing === 'ops');
-          const sha = (x: string) => createHash('sha256').update(x).digest('hex');
-          return Object.fromEntries(
-            see.map((m) => {
-              const s = FINAL_SUBJECTS.find((x) => x.id === m)!;
-              const ns = s.category !== 'decision' ? 'stage2' : m.startsWith('perplexity/') ? 'pplx12-a' : 'stage1';
-              let sum = 0;
-              let n = 0;
-              // median time to answer, ms. Clean for decision models (one call, timed around the request). A chat
-              // model's five samples were timed together, from before our own rate limiter, so its time is not shown.
-              const lat: number[] = [];
-              for (const j of jobs) {
-                const key = `final1|${s.id}|${s.route}|${s.host ?? ''}|${(s.gatewayOnly ?? []).join(',')}|${j.id}|main|${JSON.stringify(j.main)}`;
-                const f = `.cache/final/${ns}/${sha(key).slice(0, 32)}.json`;
-                if (!existsSync(f)) continue;
-                const rec = JSON.parse(readFileSync(f, 'utf8'));
-                sum += rec.costUsd / (s.category === 'decision' ? 1 : 5);
-                lat.push(rec.latencyMs);
-                n++;
-              }
-              return [m, { per1000: n ? (1000 * sum) / n : null, n, ms: n ? lat.sort((x, y) => x - y)[Math.floor(n / 2)]! : null }];
-            }),
-          );
-        })(),
+        // what one plain routing request cost, per AI, and its median time to answer. Computed once from the run caches
+        // (.cache/final, the main call only; a chat model's answer was five samples, so one call is a fifth of it), at
+        // gateway prices as charged during the runs, October 2026. The caches are archived in the data-2026-10 release.
+        cost: JSON.parse(readFileSync('assets/routing-cost.json', 'utf8')),
         // the report card: the request the reader answered, per AI: said live, counted right, hit the workers
         card: Object.fromEntries(
           see.flatMap((m) => ['live', 'count', 'hit'].map((x) => [`${m}|${x}`, runs(m)[0]!.card[`${m}|${x}`] ?? [0, 0]])),
