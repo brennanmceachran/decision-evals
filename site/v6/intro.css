@@ -112,7 +112,7 @@ body.ix-on .topbar nav {
   display: grid;
   grid-template-rows: 1fr 1fr;
   gap: 4px;
-  padding-top: calc(var(--bar-h, 52px) + clamp(120px, 17vh, 170px));
+  padding-top: calc(var(--bar-h, 52px) + 72px + var(--hl) * 1.9);
   background: var(--night);
 }
 .sp {
@@ -219,7 +219,7 @@ body.ix-on .topbar nav {
 /* ---------- the depot log and the fault */
 .ix-term {
   inset: auto;
-  top: calc(var(--bar-h, 52px) + clamp(110px, 17vh, 170px));
+  top: calc(var(--bar-h, 52px) + 72px + var(--hl) * 1.45);
   left: var(--ix-pad);
   width: min(820px, 54vw);
   visibility: hidden;
@@ -255,7 +255,7 @@ body.ix-on .topbar nav {
 .ix-fault {
   inset: auto;
   right: var(--ix-pad);
-  top: calc(var(--bar-h, 52px) + clamp(110px, 17vh, 170px));
+  top: calc(var(--bar-h, 52px) + 72px + var(--hl) * 1.45);
   width: min(520px, 34vw);
   visibility: hidden;
 }
@@ -540,7 +540,7 @@ body.ix-on .topbar nav {
   font-size: calc(var(--hl) * 0.5);
 }
 .cp.top .lead {
-  max-width: 22em;
+  max-width: 30em;
 }
 .cp.side {
   left: calc(56vw + 2 * var(--ix-pad));
@@ -1203,28 +1203,52 @@ body.ix-on .topbar nav {
     margin-bottom: 6px;
   }
   .ix-term {
-    top: calc(var(--bar-h, 52px) + 96px);
+    top: calc(var(--bar-h, 52px) + 80px);
+    width: min(440px, 48vw);
+  }
+  .cp.top .lead {
+    font-size: 17px;
   }
   .ix-term .tl:not(.keep) {
     display: none;
   }
   .ix-fault {
-    top: calc(var(--bar-h, 52px) + 96px);
+    top: calc(var(--bar-h, 52px) + 80px);
+    width: min(360px, 40vw);
   }
   .ix-fault canvas {
     width: 100%;
   }
+  .fk {
+    margin-top: 8px;
+    font-size: 12px;
+  }
   .fk b {
-    font-size: 28px;
+    font-size: 24px;
+  }
+  .fk small {
+    display: none;
   }
   .cp.top {
     top: calc(var(--bar-h, 52px) + 8px);
   }
   .ix-split {
-    padding-top: calc(var(--bar-h, 52px) + 92px);
+    padding-top: calc(var(--bar-h, 52px) + 72px);
+    padding-bottom: 46px;
   }
   .sp p b {
-    font-size: clamp(40px, 14vh, 90px);
+    font-size: clamp(34px, 11vh, 80px);
+  }
+  .sp p {
+    font-size: 14px;
+  }
+  .sp figcaption {
+    top: 8px;
+    left: 8px;
+  }
+  .sp .tag {
+    padding: 4px 10px;
+    font-size: 12px;
   }
   .sp p small {
     display: none;
