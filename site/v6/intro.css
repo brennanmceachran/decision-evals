@@ -409,6 +409,65 @@ body.ix-on .topbar nav {
   color: var(--ink);
   opacity: 0;
 }
+/* film C (review/narrative/FILM-C.md): statements, not questions */
+.xq-h {
+  margin: 0 0 0.1em;
+  font-size: clamp(40px, 4.6vw, 80px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #fff;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6);
+}
+.vc .ix-qa {
+  gap: clamp(6px, 1.4vh, 16px);
+}
+.vc .ix-stamp p {
+  font-size: clamp(34px, 4.6vw, 76px);
+  white-space: nowrap;
+}
+.st-rest {
+  margin-top: 6px;
+  color: #ffb3ae;
+  font-size: clamp(12px, 1vw, 16px);
+  font-weight: 700;
+}
+.k-mid .xfleet {
+  display: flex;
+  justify-content: center;
+  gap: clamp(6px, 1.2vw, 18px);
+  margin: clamp(14px, 3vh, 30px) auto 0;
+  opacity: 0;
+}
+.xfleet i {
+  width: clamp(34px, 5vw, 72px);
+}
+.xfleet i svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.32;
+  filter: grayscale(1);
+  transition:
+    opacity 0.12s,
+    filter 0.12s,
+    transform 0.2s cubic-bezier(0.3, 1.8, 0.6, 1);
+}
+.xfleet i.on svg {
+  opacity: 1;
+  filter: none;
+  transform: translateY(-6px) scale(1.12);
+}
+.xfleet i.on svg rect:nth-of-type(1),
+.xfleet i.on svg rect:nth-of-type(3) {
+  fill: #ff6b62;
+}
+.k-mid[data-k='fleet'] .k-big2 {
+  margin-top: 0.35em;
+}
+.k-mid[data-k='fleet'] .k-src {
+  margin-top: 16px;
+}
 /* ---------- the depot log and the fault */
 .ix-term {
   inset: auto;

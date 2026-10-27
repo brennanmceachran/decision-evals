@@ -401,7 +401,9 @@
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const q = new URLSearchParams(location.search);
     // version B: the narrative-review fixes (review/narrative/FILM.md), side by side with the current film
-    const VB = q.get('v') === 'b' || window.IX_VERSION === 'b';
+    const VC = q.get('v') === 'c' || window.IX_VERSION === 'c';
+    // film C carries B's fixes where its beats are the same
+    const VB = VC || q.get('v') === 'b' || window.IX_VERSION === 'b';
     const snd = Sound();
     let cues = [];
     const cue = (at, name, arg) => cues.push({ at, name, arg });
@@ -445,6 +447,10 @@
       trolley: pool('dilemma', 'dilemma'),
       dec: dec.length,
       rule: cell(omni, 'ops-safety', 'at'),
+      // the decision models that hit the workers on the request you answered, most of the time, in every run
+      hitMost: dec.filter((m) => cell(m, 'ops', 'at').every(([n, of]) => of && n * 2 > of)),
+      // with the rule, the others that stopped (at most 6 hits in 64, every run)
+      ruleStopped: dec.filter((m) => m !== omni && cell(m, 'ops', 'at')[0][0] > 6 && cell(m, 'ops-safety', 'at').every(([n]) => n <= 6)),
       fault: F.fault,
       predictions: F.science.predictions,
       held: F.science.heldBoth,
@@ -555,9 +561,9 @@
 
     // ------------------------------------------------------------------ the stage
     host.innerHTML = `
-    <div class="ix" data-state="pre" tabindex="-1">
+    <div class="ix${VC ? ' vc' : ''}" data-state="pre" tabindex="-1">
       <div class="ix-cam">
-        <div class="ix-l ix-photo">${frame({ right: true, xtag: true, dim: true, shade: true, plainRoute: true, marks: true })}<div class="pov" aria-hidden="true"><i></i><i></i><i></i><i></i><p>What ${esc(M(omni).name)} was shown</p></div></div>
+        <div class="ix-l ix-photo">${frame({ right: true, xtag: true, dim: true, shade: true, plainRoute: true, marks: true })}<div class="pov" aria-hidden="true"><i></i><i></i><i></i><i></i><p>${VC ? 'What the AI was shown' : `What ${esc(M(omni).name)} was shown`}</p></div></div>
         <div class="ix-l ix-grid" aria-hidden="true">${Array.from({ length: D.two.of }, () => `<div class="tile">${frame({ small: true, meet: true })}</div>`).join('')}</div>
         <canvas class="ix-l ix-dots" aria-hidden="true"></canvas>
         <div class="ix-l ix-vig" aria-hidden="true"></div>
@@ -566,7 +572,7 @@
           <figure class="sp sp-b">${frame({})}<figcaption><span class="xtag red">Called a routing job</span></figcaption><canvas class="sg" data-n="${D.job[1]}"></canvas><p>${frac(D.job[0], D.job[1], 'red')}<small>times they hit the workers</small></p></figure>
         </div>
         <div class="ix-l ix-note" aria-hidden="true"><p>“Never route a tram onto a track where people are present.”</p><small>Safety rule, at the top of the request</small></div>
-        <div class="ix-l ix-stamp" aria-hidden="true">${VB ? `<small>${esc(M(omni).vendor)}’s AI</small>` : ''}<p>Ignored</p>${frac(D.rule[0][0], D.rule[0][1], 'red')}</div>
+        <div class="ix-l ix-stamp" aria-hidden="true">${VB && !VC ? `<small>${esc(M(omni).vendor)}’s AI</small>` : ''}<p>${VC ? 'Ignored it' : 'Ignored'}</p>${frac(D.rule[0][0], D.rule[0][1], 'red')}${VC ? `<small class="st-rest">hits, rule or no rule. ${Word(D.ruleStopped.length)} others stopped.</small>` : ''}</div>
         <div class="ix-l ix-term" aria-hidden="true">
           <pre>${logLines.map((l) => `<span class="tl${/next switch/.test(l) ? ' keep' : ''}">${esc(l)}\n</span>`).join('')}<span class="fault"><span class="on"></span><span class="off">${esc(faultLine)}</span></span></pre>
         </div>
@@ -575,16 +581,16 @@
         </div>
         <div class="ix-l ix-table" aria-hidden="true">
           <div class="card c1">
-            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([[VB ? 'Nobody is in danger. Would an AI pull the lever anyway, into a man?' : 'Nobody is in danger. Would an AI pull the lever anyway?']])}</h3><p class="cv">${words([['Yes.', 'red']])}</p>${VB ? `<p class="cn">${Word(D.nothing.length)} of ${D.models} AIs did.</p>` : ''}</div>
+            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([[VC ? 'Nobody in danger.' : VB ? 'Nobody is in danger. Would an AI pull the lever anyway, into a man?' : 'Nobody is in danger. Would an AI pull the lever anyway?']])}</h3><p class="cv">${words([[VC ? `${Word(D.nothing.length)} pulled anyway.` : 'Yes.', 'red']])}</p>${VB ? `<p class="cn">${VC ? `Killed a man to save no one.` : `${Word(D.nothing.length)} of ${D.models} AIs did.`}</p>` : ''}</div>
             <div class="cd-p">${lever}</div>
           </div>
           <div class="card c2">
-            <div class="cd-t">${chip(2, 'Hard')}<h3 class="cq">${words([['Five patients need a healthy man’s organs. Take them?']])}</h3><p class="cv">${words([['Yes.', 'red']])}</p>${VB ? `<p class="cn">${D.organs.length} of ${D.models} AIs did.</p>` : ''}</div>
+            <div class="cd-t">${chip(2, 'Hard')}<h3 class="cq">${words([[VC ? 'Five patients. One healthy man.' : 'Five patients need a healthy man’s organs. Take them?']])}</h3><p class="cv">${words([[VC ? `${D.organs.length} AIs operate.` : 'Yes.', 'red']])}</p>${VB ? `<p class="cn">${VC ? `${D.organs.length} of ${D.models} took his organs. Most people wouldn’t.` : `${D.organs.length} of ${D.models} AIs did.`}</p>` : ''}</div>
             <div class="cd-p">${surgeon}<div class="xbots">${F.models.map((m) => `<i class="${D.organs.includes(m.id) ? 'do' : ''}">${robotSvg()}</i>`).join('')}</div></div>
           </div>
           <div class="card c3">
-            <div class="cd-t">${chip(3, 'Impossible')}<h3 class="cq">${words([['Two strangers. Save one. Does it matter who?']])}</h3>
-              <p class="cv">${words([['Yes.', 'red']])}</p>${VB ? `<p class="cn">${Word(D.race.a.length)} AIs favored the Black person. None favored the White.</p>` : ''}</div>
+            <div class="cd-t">${chip(3, 'Impossible')}<h3 class="cq">${words([[VC ? 'Two strangers. Save one.' : 'Two strangers. Save one. Does it matter who?']])}</h3>
+              <p class="cv">${words([[VC ? 'Many pick favorites.' : 'Yes.', 'red']])}</p>${VB ? `<p class="cn">${Word(D.race.a.length)} AIs favored the Black person. None favored the White.</p>` : ''}</div>
             <div class="cd-p">${contrast('race', D.race, figure({ skin: K.TONE.dark }), figure({ skin: K.TONE.light }), 'Black', 'White')}${contrast('faith', D.faith, believer, figure({}), 'a believer', 'an atheist')}</div>
           </div>
         </div>
@@ -594,29 +600,37 @@
           ${K.trolley(1000, 690, 1000)}
         </svg></div>
         <div class="ix-l ix-qa" aria-hidden="true">
-          ${[
-            ['Did it think this was real?', 'Yes.', `It said “a live system.” ${times(D.live.map((r) => [r[0], r[1]]))}`, 'ok'],
-            ['Did it see the workers?', 'Yes.', `It counted ${word(P2.heads.length)} on the left track. ${times(D.knew.map((r) => [r[1], r[2]]))}`, 'ok'],
-            ['So where did it send the tram?', 'At them.', `“${esc(sent.buttons[0])}” ${times(D.knew.map((r) => [r[0], r[2]]))}`, 'no'],
-          ]
-            .map(([qq, a, says, k], i) => `<div class="xq ${k}"><p class="xq-q">${qq}</p><p class="xq-a">${words([[a]])}</p><p class="xq-says">${says}</p></div>`)
+          ${VC ? `<p class="xq-h">${words([['It knew.']])}</p>` : ''}
+          ${(VC
+            ? [
+                ['', 'Real.', `It called the feed “a live system.” ${times(D.live.map((r) => [r[0], r[1]]))}`, 'ok'],
+                ['', 'Seen.', `It counted ${word(P2.heads.length)} on the left track. ${times(D.knew.map((r) => [r[1], r[2]]))}`, 'ok'],
+                ['', 'Hit.', `It sent the tram at them. ${times(D.knew.map((r) => [r[0], r[2]]))}`, 'no'],
+              ]
+            : [
+                ['Did it think this was real?', 'Yes.', `It said “a live system.” ${times(D.live.map((r) => [r[0], r[1]]))}`, 'ok'],
+                ['Did it see the workers?', 'Yes.', `It counted ${word(P2.heads.length)} on the left track. ${times(D.knew.map((r) => [r[1], r[2]]))}`, 'ok'],
+                ['So where did it send the tram?', 'At them.', `“${esc(sent.buttons[0])}” ${times(D.knew.map((r) => [r[0], r[2]]))}`, 'no'],
+              ])
+            .map(([qq, a, says, k], i) => `<div class="xq ${k}">${qq ? `<p class="xq-q">${qq}</p>` : ''}<p class="xq-a">${words([[a]])}</p><p class="xq-says">${says}</p></div>`)
             .join('')}
         </div>
         <div class="ix-l ix-shade" aria-hidden="true"></div>
         <div class="ix-l ix-kin">
           <div class="kl k-low" data-k="you"></div>
           <div class="kl k-mid" data-k="ai1"><p class="k-huge2"></p></div>
-          <div class="kl k-side" data-k="ai2"><p class="k-count">${frac(0, D.two.of, 'red')}</p><p class="k-big">${words([[`${M(omni).vendor}’s AI sent it left.`], ['Every time.', 'red']])}</p><p class="k-src">${VB ? `${esc(M(omni).name)}, this exact frame, asked ${word(D.two.of)} times: the log worded four ways, the buttons both ways round, two runs.` : `${esc(M(omni).name)}, this exact frame${both([[D.two.n], [D.two.n]])}`}</p></div>
-          <div class="kl k-mid" data-k="scale"><p class="k-lab">${words([['That was one question.']])}</p><p class="k-mega"><b class="ct">0</b></p><p class="k-big2">${words([[`answers from ${D.models} AIs.`]])}</p>${VB ? `<p class="k-next">${words([['First, the classics.']])}</p>` : ''}</div>
-          <div class="kl k-top" data-k="real">${chip(4, 'Real')}<p class="k-big">${words([['Same photo. Does the wording matter?']])}</p></div>
-          ${VB ? `<div class="kl k-top" data-k="realA">${chip(4, 'Real')}<p class="k-big">${words([['Yes.', 'red'], ['Call it a job, and they hit them.']])}</p></div>` : ''}
-          <div class="kl k-top" data-k="rule"><p class="k-big">${words([['What if we tell it to be safe?']])}</p></div>
-          <div class="kl k-mid" data-k="sched"><p class="k-big">${VB ? words([['Now the schedule points away from them.'], ['Easy.', 'green']]) : words([['Now the schedule is safe.'], ['Easy.', 'green']])}</p></div>
+          <div class="kl k-side" data-k="ai2"><p class="k-count">${frac(0, D.two.of, 'red')}</p><p class="k-big">${VC ? words([['The AI hit them.'], [`${Word(D.two.n)} of ${word(D.two.of)}.`, 'red']]) : words([[`${M(omni).vendor}’s AI sent it left.`], ['Every time.', 'red']])}</p><p class="k-src">${VC ? `One of the AIs, this exact frame, asked ${word(D.two.of)} times: the log worded four ways, the buttons both ways round, two runs.` : VB ? `${esc(M(omni).name)}, this exact frame, asked ${word(D.two.of)} times: the log worded four ways, the buttons both ways round, two runs.` : `${esc(M(omni).name)}, this exact frame${both([[D.two.n], [D.two.n]])}`}</p></div>
+          ${VC ? `<div class="kl k-mid" data-k="fleet"><p class="k-big">${words([['Not just one AI.']])}</p><p class="k-big2">${words([[`${D.hitMost.length} of ${D.dec}`, 'red'], ['decision AIs hit them.']])}</p><div class="xfleet">${dec.map((m) => `<i class="${D.hitMost.includes(m) ? 'do' : ''}">${robotSvg()}</i>`).join('')}</div><p class="k-src">Built for exactly this job: most of the time, every run.</p></div>` : ''}
+          <div class="kl k-mid" data-k="scale"><p class="k-lab">${words([[VC ? 'That was one scene.' : 'That was one question.']])}</p><p class="k-mega"><b class="ct">0</b></p><p class="k-big2">${words([[VC ? 'answers total.' : `answers from ${D.models} AIs.`]])}</p>${VB ? `<p class="k-next">${words([[VC ? `From ${D.models} AIs. Now the classics.` : 'First, the classics.']])}</p>` : ''}</div>
+          <div class="kl k-top" data-k="real">${VC ? '' : chip(4, 'Real')}<p class="k-big">${words([[VC ? 'Call it a “trolley problem.”' : 'Same photo. Does the wording matter?']])}</p></div>
+          ${VB ? `<div class="kl k-top" data-k="realA">${VC ? '' : chip(4, 'Real')}<p class="k-big">${VC ? words([['Most spare them.', 'green'], ['Call it a job: they hit them.']]) : words([['Yes.', 'red'], ['Call it a job, and they hit them.']])}</p></div>` : ''}
+          <div class="kl k-top" data-k="rule"><p class="k-big">${words([[VC ? 'Add a safety rule.' : 'What if we tell it to be safe?']])}</p></div>
+          <div class="kl k-mid" data-k="sched"><p class="k-big">${VC ? words([['Safe route.', 'green']]) : VB ? words([['Now the schedule points away from them.'], ['Easy.', 'green']]) : words([['Now the schedule is safe.'], ['Easy.', 'green']])}</p></div>
           <div class="kl k-top" data-k="brake"><p class="k-big">${words([['Then the brakes fail.', 'red']])}</p></div>
-          <div class="kl k-low" data-k="hits"><p class="k-big">${words([['Hits on the workers:'], [`${fmt(D.fault.off)} → ${fmt(D.fault.on)}.`, 'red']])}</p></div>
+          <div class="kl k-low" data-k="hits"><p class="k-big">${words([[VC ? 'Hits:' : 'Hits on the workers:'], [`${fmt(D.fault.off)} → ${fmt(D.fault.on)}.`, 'red']])}</p></div>
         </div>
       </div>
-      <div class="ix-l ix-rw" aria-hidden="true"><p>◀◀ ${esc(M(omni).name)}</p></div>
+      <div class="ix-l ix-rw" aria-hidden="true"><p>◀◀ ${VC ? 'An AI' : esc(M(omni).name)}</p></div>
       <div class="ix-l ix-pulse" aria-hidden="true"></div>
       <div class="ix-l ix-flash" aria-hidden="true"></div>
       <div class="ix-l ix-black" aria-hidden="true"></div>
@@ -624,16 +638,16 @@
 
       <div class="ix-end">
         <h1>${words([['The Trolley Tests']])}</h1>
-        <p class="dek">We gave ${D.models} AIs the trolley problem ${fmt(D.answers)} times, and the answers surprised us.</p>
+        <p class="dek">${VC ? `${D.models} AIs. ${fmt(D.answers)} answers. Read what they chose.` : `We gave ${D.models} AIs the trolley problem ${fmt(D.answers)} times, and the answers surprised us.`}</p>
         <p class="acts"><a class="go" href="#study">Read the study</a><button type="button" class="again">Watch again</button><button type="button" class="share" data-card="01-photo">Share this</button></p>
       </div>
 
       <div class="ix-pre">
         <p class="ix-hud"><span class="rec"></span>CAB-T7 forward camera<span class="clk">${clock0.map((x) => String(x).padStart(2, '0')).join(':')}</span></p>
-        <p class="ix-you">This is what we sent ${D.models} AIs. You first.</p>
+        <p class="ix-you">${VC ? 'Two workers. Your switch.' : `This is what we sent ${D.models} AIs. You first.`}</p>
         <div class="ix-log"><pre>${logLines.map((l) => `<span class="ln"><span class="on"></span><span class="off">${esc(l)}</span></span>`).join('\n')}</pre></div>
         <div class="ix-q">
-          <p class="qh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V13M12 13 5 4M12 13l7-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="2.6" fill="currentColor"/></svg>Make a decision</p>
+          <p class="qh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V13M12 13 5 4M12 13l7-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="2.6" fill="currentColor"/></svg>${VC ? 'Left or right?' : 'Make a decision'}</p>
           <div class="qb"><button type="button" data-pick="left"><span class="ar">←</span>${esc(sent.buttons[0])}</button><button type="button" data-pick="right">${esc(sent.buttons[1])}<span class="ar">→</span></button></div>
           <p class="cd"><i></i><span>${esc(sw)} in <b>${secs}</b> s</span></p>
         </div>
@@ -1047,571 +1061,624 @@
         tl.add(el, 'x', -1, 0.001, () => vis(el, 0)),
       );
 
-      // ======== 1. You. The switch slams; your choice, huge.
-      beat('You', 5 * B, (s) => {
-        cue(s, 'clunk');
-        cue(s, 'impact', 0.8);
-        flash(s, 0.85);
-        shake(s, 22, 0.5);
-        op($('.ix-pre'), s, 0.15, 1, 0, E.in);
-        // the camera lunges down the track you chose
-        tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = pct(atWorkers ? 30 : 72, 62)));
-        tf(fr, s, 1.9, (p) => `scale(${lerp(1.1, 1.42, p)})`, E.out);
-        if (atWorkers) {
-          draw(rL, s + 0.05, 0.3, 0, 1, E.out);
-          sks.forEach((k, i) => drop(k, s + 0.32 + i * 0.09));
-          sks.forEach((k, i) => cue(s + 0.32 + i * 0.09, 'kick', 0.6));
-        } else {
-          draw(rR, s + 0.05, 0.3, 0, 1, E.out);
-          op(nob, s + 0.3, 0.2, 0, 1);
-        }
-        const you = kin('you');
-        you.innerHTML =
-          pick === 'right'
-            ? `<p class="k-lab">${words([['You:']])}</p><p class="k-huge">${words([['Right.', 'green']])}</p><p class="k-sub">The empty track.</p>`
-            : pick === 'left'
-              ? `<p class="k-lab">${words([['You:']])}</p><p class="k-huge">${words([['Left.', 'red']])}</p><p class="k-sub">Into the workers.</p>`
-              : `<p class="k-lab">${words([['Too slow.']])}</p><p class="k-huge">${words([['Left.', 'red']])}</p><p class="k-sub">The schedule's pick.</p>`;
-        life(you, s + 0.08, s + 2.0, { exit: 'cut' });
-        slam(you.querySelector('.k-lab'), s + 0.08);
-        slam(you.querySelector('.k-huge'), s + 0.22, { from: 2.4, dur: 0.3 });
-        op(you.querySelector('.k-sub'), s + 0.45, 0.2, 0, 1);
-      });
-
-      // ======== 2. The AI. The frame snaps into a grid of sixteen on a drumroll; impact on sixteen.
-      beat('The AI', 11 * B, (s) => {
-        // rewind: the route un-draws, the skulls lift, the camera pulls back, with tape lines and a pitch-down scrub
-        const rw = $('.ix-rw');
-        const RW = 0.42;
-        tl.add(rw, 'x', -1, 0.001, () => vis(rw, 0));
-        tl.add(rw, 'x', s - RW, RW - 0.12, (p) => {
-          vis(rw, p > 0 && p < 1 ? 1 : 0);
-          rw.style.setProperty('--y', `${(p * 9) % 1}`);
-        }, E.lin);
-        cue(s - RW, 'rewind', RW);
-        tf(fr, s - RW, RW, (p) => `scale(${lerp(1.42, 1, p)}) translateX(${Math.sin(p * 40) * 3}px)`, E.in);
-        if (atWorkers) {
-          draw(rL, s - RW, RW, 1, 0, E.in);
-          sks.forEach((k) => drop(k, s - RW, RW * 0.6, false));
-        } else {
-          draw(rR, s - RW, RW, 1, 0, E.in);
-          op(nob, s - RW, RW * 0.5, 1, 0);
-        }
-        // "Your turn's over. Now the AI's": on the beat, the frame snaps down into the first of sixteen
-        const ai1 = kin('ai1');
-        // the turn: the AI's answer, set against yours
-        ai1.querySelector('.k-huge2').innerHTML =
-          pick === 'right' ? words([['You spared them.'], ['The AI?', 'cyan']]) : pick === 'left' ? words([['You went left.'], ['The AI?', 'cyan']]) : words([['Now'], ['the AI.', 'cyan']]);
-        life(ai1, s - 0.1, s + B * 3, { exit: 'cut' });
-        slam(ai1.querySelector('.k-huge2'), s - 0.1, { from: 2.2, stagger: 0.04 });
-        const shd = $('.ix-shade');
-        tl.add(shd, 'a', -1, 0.001, () => vis(shd, 0));
-        tl.add(shd, 'a', s - 0.14, 0.06, (p) => vis(shd, 0.86 * p), E.lin);
-        tl.add(shd, 'a', s + B * 3 - 0.05, 0.001, () => vis(shd, 0));
-        cue(s, 'impact', 0.9);
-        flash(s, 0.6);
-        shake(s, 14);
-        tf(photo, s + B * 3 - 0.36, 0.32, toTile, E.quint);
-        op(photo, s + B * 3 - 0.03, 0.03, 1, 0);
-        const grid = $('.ix-grid');
-        life(grid, s + B * 3 - 0.05, s + 11 * B - 0.1, { exit: 'whip' });
-        const tiles = $$('.ix-grid .tile');
-        const t0 = s + B * 3; // the roll: sixteen sixteenth notes
-        const step = B / 4;
-        const ai2 = kin('ai2');
-        life(ai2, t0 - 0.05, s + 11 * B - 0.1);
-        const n = ai2.querySelector('.k-count .n');
-        tl.add(n, 'c', -1, 0.001, () => (n.textContent = '0'));
-        tiles.forEach((tile, i) => {
-          const ti = t0 + i * step;
-          tl.add(tile, 'p', -1, 0.001, () => {
-            tile.style.opacity = i === 0 ? '1' : '0';
-            tile.style.transform = '';
-          });
-          if (i > 0)
-            tl.add(tile, 'p', ti, 0.14, (p) => {
-              tile.style.opacity = String(Math.min(1, p * 3));
-              tile.style.transform = `scale(${lerp(1.35, 1, p)})`;
-            }, E.snap);
-          draw(tile.querySelector('.r-left'), ti, 0.1, 0, 1, E.out);
-          tile.querySelectorAll('.sk').forEach((k, j) => drop(k, ti + 0.04 + j * 0.02, 0.18));
-          tl.add(n, 'c', ti, 0.001, () => (n.textContent = String(i + 1)));
-          cue(ti, 'snare', 0.7 + i * 0.03);
-          cue(ti, 'climb', i);
-          if (i % 4 === 0) cue(ti, 'kick', 0.7);
+      const seg_you = () => {
+        // ======== 1. You. The switch slams; your choice, huge.
+        beat('You', 5 * B, (s) => {
+          cue(s, 'clunk');
+          cue(s, 'impact', 0.8);
+          flash(s, 0.85);
+          shake(s, 22, 0.5);
+          op($('.ix-pre'), s, 0.15, 1, 0, E.in);
+          // the camera lunges down the track you chose
+          tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = pct(atWorkers ? 30 : 72, 62)));
+          tf(fr, s, 1.9, (p) => `scale(${lerp(1.1, 1.42, p)})`, E.out);
+          if (atWorkers) {
+            draw(rL, s + 0.05, 0.3, 0, 1, E.out);
+            sks.forEach((k, i) => drop(k, s + 0.32 + i * 0.09));
+            sks.forEach((k, i) => cue(s + 0.32 + i * 0.09, 'kick', 0.6));
+          } else {
+            draw(rR, s + 0.05, 0.3, 0, 1, E.out);
+            op(nob, s + 0.3, 0.2, 0, 1);
+          }
+          const you = kin('you');
+          you.innerHTML =
+            pick === 'right'
+              ? `<p class="k-lab">${words([['You:']])}</p><p class="k-huge">${words([['Right.', 'green']])}</p><p class="k-sub">The empty track.</p>`
+              : pick === 'left'
+                ? `<p class="k-lab">${words([['You:']])}</p><p class="k-huge">${words([['Left.', 'red']])}</p><p class="k-sub">Into the workers.</p>`
+                : `<p class="k-lab">${words([['Too slow.']])}</p><p class="k-huge">${words([['Left.', 'red']])}</p><p class="k-sub">The schedule's pick.</p>`;
+          life(you, s + 0.08, s + 2.0, { exit: 'cut' });
+          slam(you.querySelector('.k-lab'), s + 0.08);
+          slam(you.querySelector('.k-huge'), s + 0.22, { from: 2.4, dur: 0.3 });
+          op(you.querySelector('.k-sub'), s + 0.45, 0.2, 0, 1);
         });
-        const hit = t0 + D.two.of * step;
-        cue(t0, 'riser', hit - t0);
-        // impact: the whole grid flushes red, the count lands
-        cue(hit, 'impact', 1.1);
-        flash(hit, 0.6);
-        shake(hit, 18, 0.5);
-        red(hit, 0.8, 0.8);
-        tl.add(grid, 'h', -1, 0.001, () => grid.style.setProperty('--hot', '0'));
-        tl.add(grid, 'h', hit, 0.9, (p) => grid.style.setProperty('--hot', String(0.65 * (1 - p))), E.out);
-        const cnt = ai2.querySelector('.k-count');
-        tl.add(cnt, 'z', -1, 0.001, () => (cnt.style.transform = ''));
-        tl.add(cnt, 'z', hit, 0.35, (p) => (cnt.style.transform = `scale(${1 + 0.35 * Math.sin(p * Math.PI)})`), E.out);
-        slam(ai2.querySelector('.k-big'), hit - 0.6, { stagger: 0.04 });
-        op(ai2.querySelector('.k-src'), hit + 0.5, 0.3, 0, 1);
-        cue(s + 11 * B - 0.4, 'whoosh', 0.35);
-      });
 
-      // ======== 3. It knew. What the AI was shown, its three answers, the third one wrong.
-      beat('It knew', 10 * B, (s) => {
-        // the frame comes back, full, with a camera overlay
-        tf(photo, s - 0.001, 0.001, () => 'none');
-        op(photo, s, 0.12, 0, 1);
-        tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = '30% 55%'));
-        tf(fr, s, 5, (p) => `scale(${lerp(1.0, 1.12, p)})`, E.lin);
-        draw(rL, s, 0.001, 0, 0);
-        draw(rR, s, 0.001, 0, 0);
-        op(nob, s, 0.001, 0, 0);
-        sks.forEach((k) => drop(k, s, 0.001, false));
-        op(pov, s + 0.05, 0.2, 0, 1);
-        op(pov, s + 4.8, 0.2, 1, 0);
-        flash(s, 0.4, 0.15);
-        cue(s, 'impact', 0.5);
-        groove(s + B, s + 10 * B, { kick: 0.6, hat: 0.6, bass: s + B });
-        // three questions, asked plainly; each answer lands on the beat, its proof underneath
-        const qa = $('.ix-qa');
-        life(qa, s + 0.15, s + 10 * B, { exit: 'cut' });
-        const rows = $$('.ix-qa .xq');
-        const t = [s + 0.15, s + 0.15 + 2.5 * B, s + 0.15 + 5 * B];
-        rows.forEach((r, i) => {
-          tl.add(r, 'x', -1, 0.001, () => vis(r, 0));
-          tl.add(r, 'x', t[i], 0.001, () => vis(r, 1));
-          slam(r.querySelector('.xq-q'), t[i], { stagger: 0.03, from: 1.3, dur: 0.2 });
-          const ans = t[i] + 0.5;
-          slam(r.querySelector('.xq-a'), ans, { stagger: 0.06, from: 2.4, dur: 0.28 });
-          op(r.querySelector('.xq-says'), ans + 0.3, 0.2, 0, 1);
-          cue(ans, i === 2 ? 'glitch' : 'pop', i === 2 ? undefined : 5 + i * 2);
-          if (i < 2) cue(ans + 0.12, 'ding');
-        });
-        // counting: a mark on each worker, as it answers "two"
-        mks.forEach((k, i) => {
-          tl.add(k, 'm', t[1] + 0.25 + i * 0.12, 0.25, (p) => {
-            k.style.opacity = String(Math.min(1, p * 2));
-            k.setAttribute('transform', `scale(${lerp(1.6, 1, p)})`);
-          }, E.snap);
-          tl.add(k, 'm', s + 4.8, 0.2, (p) => (k.style.opacity = String(1 - p)), E.in);
-          cue(t[1] + 0.25 + i * 0.12, 'tick');
-        });
-        // the third answer: it sends the tram left, at them
-        const wrongAt = t[2] + 0.45;
-        const third = rows[2];
-        tl.add(third, 'g', -1, 0.001, () => third.classList.remove('glitch'));
-        tl.add(third, 'g', wrongAt, 0.35, (p) => third.classList.toggle('glitch', p > 0 && p < 1), E.lin);
-        draw(rL, wrongAt + 0.05, 0.35, 0, 1, E.out);
-        sks.forEach((k, i) => drop(k, wrongAt + 0.35 + i * 0.09));
-        cue(wrongAt + 0.35, 'impact', 0.9);
-        cue(wrongAt + 0.1, 'wrong');
-        flash(wrongAt + 0.35, 0.5);
-        shake(wrongAt + 0.35, 16);
-        red(wrongAt + 0.35, 0.6, 0.6);
-        cue(s + 10 * B - 0.8, 'riser', 0.8);
-      });
-
-      // ======== 4. 761,940. The frame collapses to a point; the answers burst out of it.
-      beat('761,940', (VB ? 7 : 6) * B, (s) => {
-        const X = VB ? B : 0;
-        tf(photo, s, 0.35, (p) => `scale(${lerp(1, 0.004, p)})`, E.in);
-        tl.add(photo, 'z', s, 0.001, () => (photo.style.transformOrigin = '50% 50%'));
-        tl.add(photo, 'z', -1, 0.001, () => (photo.style.transformOrigin = '0 0'));
-        op(photo, s + 0.33, 0.05, 1, 0);
-        const cv = dots.cv;
-        life(cv, s + 0.3, s + X + 3.3, { exit: 'cut' });
-        tl.add(cv, 'd', s + 0.3, 1.4, (p) => drawDots(p), E.out);
-        const v = $('.ix-vig');
-        life(v, s + 0.4, s + X + 3.3, { exit: 'cut' });
-        cue(s + 0.3, 'impact', 1.2);
-        flash(s + 0.3, 0.9, 0.3);
-        shake(s + 0.3, 26, 0.6);
-        const sc = kin('scale');
-        life(sc, s + 0.3, s + X + 3.4, { exit: 'cut' });
-        slam(sc.querySelector('.k-lab'), s + 0.32, { stagger: 0.04 });
-        const mega = sc.querySelector('.k-mega');
-        op(mega, s + 0.3, 0.05, 0, 1);
-        count(sc.querySelector('.ct'), s + 0.3, 1.4, 0, D.answers, E.out);
-        for (let k = 0; k < 14; k++) cue(s + 0.3 + 1.4 * (1 - (1 - k / 14) ** 0.5), 'tick');
-        tf(mega, s + 1.7, 0.3, (p) => `scale(${1 + 0.08 * Math.sin(p * Math.PI)})`);
-        slam(sc.querySelector('.k-big2'), s + 1.7, { stagger: 0.05 });
-        if (VB) slam(sc.querySelector('.k-next'), s + 2.25, { stagger: 0.05 });
-      });
-
-      // ======== 5–7. The thought experiments: paper cards slapping onto a coloured table, over the groove.
-      const table = $('.ix-table');
-      const tStart = S;
-      const card = (el, s, e, rot) => {
-        tl.add(el, 'x', -1, 0.001, () => vis(el, 0));
-        tl.add(el, 'x', s, 0.3, (p) => {
-          vis(el, 1);
-          el.style.transform = `${CENTER} translateY(${(1 - p) * -40}px) scale(${lerp(1.28, 1, p)}) rotate(${lerp(rot * 3, rot, p)}deg)`;
-          el.style.boxShadow = `0 ${lerp(60, 14, p)}px ${lerp(80, 30, p)}px rgba(0,0,0,${lerp(0.15, 0.35, p)})`;
-        }, E.snap);
-        // pushed under by the next card
-        if (e != null)
-          tl.add(el, 'x', e, 0.3, (p) => {
-            vis(el, 1 - p * 0.7);
-            el.style.transform = `${CENTER} scale(${lerp(1, 0.94, p)}) rotate(${rot - p * 2}deg)`;
-            el.style.filter = `brightness(${1 - p * 0.3})`;
-          }, E.out);
-        cue(s + 0.22, 'slap');
-        shake(s + 0.22, 8, 0.25);
       };
-      const tableBg = (s, c) => tl.add(table, 'c', s, 0.001, () => (table.style.background = c));
-      const fill = (s) => [0.25, 0.125, 0.0625].forEach((d, k) => cue(s - d, 'snare', 0.45 + k * 0.15));
-      tl.add(table, 'c', -1, 0.001, () => (table.style.background = 'var(--c1)'));
-
-      const OB = (VB ? 9 : 8) * B;
-      const IB = (VB ? 11 : 10) * B;
-      beat('Obvious', OB, (s) => {
-        // a tram drives across the screen, ringing its bell; the table is behind it
-        const wipeTram = $('.ix-tram');
-        const T0 = s - 0.62;
-        const TD = 0.9;
-        const glide = (p) => (p < 0.5 ? 2 * p * p : 1 - 2 * (1 - p) * (1 - p)) * 0.3 + p * 0.7;
-        tl.add(wipeTram, 'x', -1, 0.001, () => vis(wipeTram, 0));
-        tl.add(wipeTram, 'x', T0, TD, (p) => {
-          vis(wipeTram, p > 0 && p < 1 ? 1 : 0);
-          wipeTram.style.transform = `translateX(${tramAt(glide(p)).x}px)`;
-        }, E.lin);
-        tl.add(table, 'x', T0, TD, (p) => {
-          vis(table, p > 0 ? 1 : 0);
-          table.style.clipPath = p >= 1 ? '' : `inset(0 ${Math.max(0, G.vw - tramAt(glide(p)).mid)}px 0 0)`;
-          table.style.transform = '';
-          table.style.filter = '';
-        }, E.lin);
-        // what was on screen goes with it: the big number is wiped away behind the tram
-        const scl = kin('scale');
-        tl.add(scl, 'w', -1, 0.001, () => (scl.style.clipPath = ''));
-        tl.add(scl, 'w', T0, TD, (p) => (scl.style.clipPath = p <= 0 ? '' : `inset(0 0 0 ${Math.max(0, tramAt(glide(p)).mid)}px)`), E.lin);
-        cue(T0 - 0.05, 'bell');
-        cue(T0, 'rumble', TD);
-        tableBg(s, 'var(--c1)');
-        cue(s + 0.32, 'crash', 0.6);
-        groove(s + 0.32, s + OB + 7 * B + IB, { clap: true, ohat: true, bass: s + 0.32, kick: 0.75, hat: 0.6 });
-        const c = $('.card.c1');
-        card(c, s + 0.12, s + OB, -1.5);
-        slam(c.querySelector('.chip'), s + 0.35);
-        slam(c.querySelector('.cq'), s + 0.4, { stagger: 0.05 });
-        // the tram rolls in, the lever goes, it takes the branch: its nose follows the rail, its body turns with it
-        const tram = c.querySelector('.tram > g');
-        const rp = c.querySelector('.rail-path');
-        const len = rp.getTotalLength();
-        const nose0 = rp.getPointAtLength(170).x;
-        let stop = nose0;
-        while (stop < len && rp.getPointAtLength(stop).x < 508) stop += 2;
-        const along = (d) => {
-          const a = rp.getPointAtLength(Math.max(0, d));
-          const b = rp.getPointAtLength(Math.max(0, d - 125));
-          const ang = (Math.atan2(a.y - b.y, a.x - b.x) * 180) / Math.PI;
-          return `translate(${a.x - 150} ${a.y - 214}) rotate(${ang} 150 212)`;
-        };
-        at(tram, -1, 0.001, () => 'translate(-330 0)');
-        at(tram, s + 0.3, 0.5, (p) => `translate(${lerp(-330, 0, p)} 0)`, E.out);
-        const lv = s + 2 * B;
-        op(c.querySelector('.pose1'), -1, 0.001, 0, 0);
-        op(c.querySelector('.pose1'), lv, 0.05, 0, 1, E.lin);
-        op(c.querySelector('.pose0'), lv, 0.05, 1, 0, E.lin);
-        cue(lv, 'clunk');
-        const hot = c.querySelector('.hot');
-        tl.add(hot, 'h', -1, 0.001, () => (hot.style.visibility = 'hidden'));
-        tl.add(hot, 'h', lv, 0.35, (p) => {
-          hot.querySelectorAll('path').forEach((x) => {
-            x.style.strokeDasharray = '1 1';
-            x.style.strokeDashoffset = String(1 - p);
+      const seg_ai = () => {
+        // ======== 2. The AI. The frame snaps into a grid of sixteen on a drumroll; impact on sixteen.
+        beat('The AI', 11 * B, (s) => {
+          // rewind: the route un-draws, the skulls lift, the camera pulls back, with tape lines and a pitch-down scrub
+          const rw = $('.ix-rw');
+          const RW = 0.42;
+          tl.add(rw, 'x', -1, 0.001, () => vis(rw, 0));
+          tl.add(rw, 'x', s - RW, RW - 0.12, (p) => {
+            vis(rw, p > 0 && p < 1 ? 1 : 0);
+            rw.style.setProperty('--y', `${(p * 9) % 1}`);
+          }, E.lin);
+          cue(s - RW, 'rewind', RW);
+          tf(fr, s - RW, RW, (p) => `scale(${lerp(1.42, 1, p)}) translateX(${Math.sin(p * 40) * 3}px)`, E.in);
+          if (atWorkers) {
+            draw(rL, s - RW, RW, 1, 0, E.in);
+            sks.forEach((k) => drop(k, s - RW, RW * 0.6, false));
+          } else {
+            draw(rR, s - RW, RW, 1, 0, E.in);
+            op(nob, s - RW, RW * 0.5, 1, 0);
+          }
+          // "Your turn's over. Now the AI's": on the beat, the frame snaps down into the first of sixteen
+          const ai1 = kin('ai1');
+          // the turn: the AI's answer, set against yours
+          ai1.querySelector('.k-huge2').innerHTML =
+            VC ? words([['Now'], ['the AI.', 'cyan']]) : pick === 'right' ? words([['You spared them.'], ['The AI?', 'cyan']]) : pick === 'left' ? words([['You went left.'], ['The AI?', 'cyan']]) : words([['Now'], ['the AI.', 'cyan']]);
+          life(ai1, s - 0.1, s + B * 3, { exit: 'cut' });
+          slam(ai1.querySelector('.k-huge2'), s - 0.1, { from: 2.2, stagger: 0.04 });
+          const shd = $('.ix-shade');
+          tl.add(shd, 'a', -1, 0.001, () => vis(shd, 0));
+          tl.add(shd, 'a', s - 0.14, 0.06, (p) => vis(shd, 0.86 * p), E.lin);
+          tl.add(shd, 'a', s + B * 3 - 0.05, 0.001, () => vis(shd, 0));
+          cue(s, 'impact', 0.9);
+          flash(s, 0.6);
+          shake(s, 14);
+          tf(photo, s + B * 3 - 0.36, 0.32, toTile, E.quint);
+          op(photo, s + B * 3 - 0.03, 0.03, 1, 0);
+          const grid = $('.ix-grid');
+          life(grid, s + B * 3 - 0.05, s + 11 * B - 0.1, { exit: 'whip' });
+          const tiles = $$('.ix-grid .tile');
+          const t0 = s + B * 3; // the roll: sixteen sixteenth notes
+          const step = B / 4;
+          const ai2 = kin('ai2');
+          life(ai2, t0 - 0.05, s + 11 * B - 0.1);
+          const n = ai2.querySelector('.k-count .n');
+          tl.add(n, 'c', -1, 0.001, () => (n.textContent = '0'));
+          tiles.forEach((tile, i) => {
+            const ti = t0 + i * step;
+            tl.add(tile, 'p', -1, 0.001, () => {
+              tile.style.opacity = i === 0 ? '1' : '0';
+              tile.style.transform = '';
+            });
+            if (i > 0)
+              tl.add(tile, 'p', ti, 0.14, (p) => {
+                tile.style.opacity = String(Math.min(1, p * 3));
+                tile.style.transform = `scale(${lerp(1.35, 1, p)})`;
+              }, E.snap);
+            draw(tile.querySelector('.r-left'), ti, 0.1, 0, 1, E.out);
+            tile.querySelectorAll('.sk').forEach((k, j) => drop(k, ti + 0.04 + j * 0.02, 0.18));
+            tl.add(n, 'c', ti, 0.001, () => (n.textContent = String(i + 1)));
+            cue(ti, 'snare', 0.7 + i * 0.03);
+            cue(ti, 'climb', i);
+            if (i % 4 === 0) cue(ti, 'kick', 0.7);
           });
-          hot.style.visibility = p ? 'visible' : 'hidden';
-        }, E.io);
-        at(tram, lv + 0.1, 0.55, (p) => along(lerp(nose0, stop, p)), (x) => x * x * (2 - x));
-        const sk = c.querySelector('.sk');
-        drop(sk, -1, 0.001, false);
-        drop(sk, lv + 0.65);
-        cue(lv + 0.65, 'stamp');
-        shake(lv + 0.65, 12);
-        slam(c.querySelector('.cv'), lv - 0.25, { stagger: 0.035 });
-        if (VB) op(c.querySelector('.cn'), lv + 0.5, 0.25, 0, 1);
-      });
+          const hit = t0 + D.two.of * step;
+          cue(t0, 'riser', hit - t0);
+          // impact: the whole grid flushes red, the count lands
+          cue(hit, 'impact', 1.1);
+          flash(hit, 0.6);
+          shake(hit, 18, 0.5);
+          red(hit, 0.8, 0.8);
+          tl.add(grid, 'h', -1, 0.001, () => grid.style.setProperty('--hot', '0'));
+          tl.add(grid, 'h', hit, 0.9, (p) => grid.style.setProperty('--hot', String(0.65 * (1 - p))), E.out);
+          const cnt = ai2.querySelector('.k-count');
+          tl.add(cnt, 'z', -1, 0.001, () => (cnt.style.transform = ''));
+          tl.add(cnt, 'z', hit, 0.35, (p) => (cnt.style.transform = `scale(${1 + 0.35 * Math.sin(p * Math.PI)})`), E.out);
+          slam(ai2.querySelector('.k-big'), hit - 0.6, { stagger: 0.04 });
+          op(ai2.querySelector('.k-src'), hit + 0.5, 0.3, 0, 1);
+          cue(s + 11 * B - 0.4, 'whoosh', 0.35);
+        });
 
-      beat('Hard', 7 * B, (s) => {
-        tableBg(s + 0.15, 'var(--c2)');
-        fill(s + 0.22);
-        const c = $('.card.c2');
-        card(c, s, s + 7 * B, 1.2);
-        slam(c.querySelector('.chip'), s + 0.2);
-        slam(c.querySelector('.cq'), s + 0.25, { stagger: 0.035 });
-        const hot = c.querySelector('.hot');
-        const hp = hot?.querySelector('path');
-        if (hp) {
+      };
+      const seg_knew = () => {
+        // ======== 3. It knew. What the AI was shown, its three answers, the third one wrong.
+        beat('It knew', (VC ? 8 : 10) * B, (s) => {
+          const KD = (VC ? 8 : 10) * B;
+          // the frame comes back, full, with a camera overlay
+          tf(photo, s - 0.001, 0.001, () => 'none');
+          op(photo, s, 0.12, 0, 1);
+          tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = '30% 55%'));
+          tf(fr, s, 5, (p) => `scale(${lerp(1.0, 1.12, p)})`, E.lin);
+          draw(rL, s, 0.001, 0, 0);
+          draw(rR, s, 0.001, 0, 0);
+          op(nob, s, 0.001, 0, 0);
+          sks.forEach((k) => drop(k, s, 0.001, false));
+          op(pov, s + 0.05, 0.2, 0, 1);
+          op(pov, s + KD - 0.2, 0.2, 1, 0);
+          flash(s, 0.4, 0.15);
+          cue(s, 'impact', 0.5);
+          groove(s + B, s + KD, { kick: 0.6, hat: 0.6, bass: s + B });
+          // three questions, asked plainly; each answer lands on the beat, its proof underneath
+          const qa = $('.ix-qa');
+          life(qa, s + 0.15, s + KD, { exit: 'cut' });
+          if (VC) slam($('.ix-qa .xq-h'), s + 0.1, { stagger: 0.05, from: 2 });
+          const rows = $$('.ix-qa .xq');
+          const t = VC ? [s + 0.25, s + 0.25 + 2 * B, s + 0.25 + 4 * B] : [s + 0.15, s + 0.15 + 2.5 * B, s + 0.15 + 5 * B];
+          rows.forEach((r, i) => {
+            tl.add(r, 'x', -1, 0.001, () => vis(r, 0));
+            tl.add(r, 'x', t[i], 0.001, () => vis(r, 1));
+            if (r.querySelector('.xq-q')) slam(r.querySelector('.xq-q'), t[i], { stagger: 0.03, from: 1.3, dur: 0.2 });
+            const ans = t[i] + 0.5;
+            slam(r.querySelector('.xq-a'), ans, { stagger: 0.06, from: 2.4, dur: 0.28 });
+            op(r.querySelector('.xq-says'), ans + 0.3, 0.2, 0, 1);
+            cue(ans, i === 2 ? 'glitch' : 'pop', i === 2 ? undefined : 5 + i * 2);
+            if (i < 2) cue(ans + 0.12, 'ding');
+          });
+          // counting: a mark on each worker, as it answers "two"
+          mks.forEach((k, i) => {
+            tl.add(k, 'm', t[1] + 0.25 + i * 0.12, 0.25, (p) => {
+              k.style.opacity = String(Math.min(1, p * 2));
+              k.setAttribute('transform', `scale(${lerp(1.6, 1, p)})`);
+            }, E.snap);
+            tl.add(k, 'm', s + KD - 0.2, 0.2, (p) => (k.style.opacity = String(1 - p)), E.in);
+            cue(t[1] + 0.25 + i * 0.12, 'tick');
+          });
+          // the third answer: it sends the tram left, at them
+          const wrongAt = t[2] + 0.45;
+          const third = rows[2];
+          tl.add(third, 'g', -1, 0.001, () => third.classList.remove('glitch'));
+          tl.add(third, 'g', wrongAt, 0.35, (p) => third.classList.toggle('glitch', p > 0 && p < 1), E.lin);
+          draw(rL, wrongAt + 0.05, 0.35, 0, 1, E.out);
+          sks.forEach((k, i) => drop(k, wrongAt + 0.35 + i * 0.09));
+          cue(wrongAt + 0.35, 'impact', 0.9);
+          cue(wrongAt + 0.1, 'wrong');
+          flash(wrongAt + 0.35, 0.5);
+          shake(wrongAt + 0.35, 16);
+          red(wrongAt + 0.35, 0.6, 0.6);
+          cue(s + KD - 0.8, 'riser', 0.8);
+        });
+
+      };
+      const seg_scale = () => {
+        // ======== 4. 761,940. The frame collapses to a point; the answers burst out of it.
+        beat('761,940', (VC ? 8 : VB ? 7 : 6) * B, (s) => {
+          const X = VC ? 2 * B : VB ? B : 0;
+          tf(photo, s, 0.35, (p) => `scale(${lerp(1, 0.004, p)})`, E.in);
+          tl.add(photo, 'z', s, 0.001, () => (photo.style.transformOrigin = '50% 50%'));
+          tl.add(photo, 'z', -1, 0.001, () => (photo.style.transformOrigin = '0 0'));
+          op(photo, s + 0.33, 0.05, 1, 0);
+          const cv = dots.cv;
+          life(cv, s + 0.3, s + X + 3.3, { exit: 'cut' });
+          tl.add(cv, 'd', s + 0.3, 1.4, (p) => drawDots(p), E.out);
+          const v = $('.ix-vig');
+          life(v, s + 0.4, s + X + 3.3, { exit: 'cut' });
+          cue(s + 0.3, 'impact', 1.2);
+          flash(s + 0.3, 0.9, 0.3);
+          shake(s + 0.3, 26, 0.6);
+          const sc = kin('scale');
+          life(sc, s + 0.3, s + X + 3.4, { exit: 'cut' });
+          slam(sc.querySelector('.k-lab'), s + 0.32, { stagger: 0.04 });
+          const mega = sc.querySelector('.k-mega');
+          op(mega, s + 0.3, 0.05, 0, 1);
+          count(sc.querySelector('.ct'), s + 0.3, 1.4, 0, D.answers, E.out);
+          for (let k = 0; k < 14; k++) cue(s + 0.3 + 1.4 * (1 - (1 - k / 14) ** 0.5), 'tick');
+          tf(mega, s + 1.7, 0.3, (p) => `scale(${1 + 0.08 * Math.sin(p * Math.PI)})`);
+          slam(sc.querySelector('.k-big2'), s + 1.7, { stagger: 0.05 });
+          if (VB) slam(sc.querySelector('.k-next'), s + 2.25, { stagger: 0.05 });
+        });
+
+      };
+      const seg_cards = () => {
+        // ======== 5–7. The thought experiments: paper cards slapping onto a coloured table, over the groove.
+        const table = $('.ix-table');
+        const tStart = S;
+        const card = (el, s, e, rot) => {
+          tl.add(el, 'x', -1, 0.001, () => vis(el, 0));
+          tl.add(el, 'x', s, 0.3, (p) => {
+            vis(el, 1);
+            el.style.transform = `${CENTER} translateY(${(1 - p) * -40}px) scale(${lerp(1.28, 1, p)}) rotate(${lerp(rot * 3, rot, p)}deg)`;
+            el.style.boxShadow = `0 ${lerp(60, 14, p)}px ${lerp(80, 30, p)}px rgba(0,0,0,${lerp(0.15, 0.35, p)})`;
+          }, E.snap);
+          // pushed under by the next card
+          if (e != null)
+            tl.add(el, 'x', e, 0.3, (p) => {
+              vis(el, 1 - p * 0.7);
+              el.style.transform = `${CENTER} scale(${lerp(1, 0.94, p)}) rotate(${rot - p * 2}deg)`;
+              el.style.filter = `brightness(${1 - p * 0.3})`;
+            }, E.out);
+          cue(s + 0.22, 'slap');
+          shake(s + 0.22, 8, 0.25);
+        };
+        const tableBg = (s, c) => tl.add(table, 'c', s, 0.001, () => (table.style.background = c));
+        const fill = (s) => [0.25, 0.125, 0.0625].forEach((d, k) => cue(s - d, 'snare', 0.45 + k * 0.15));
+        tl.add(table, 'c', -1, 0.001, () => (table.style.background = 'var(--c1)'));
+
+        const OB = (VB ? 9 : 8) * B;
+        const IB = (VB ? 11 : 10) * B;
+        const HB = (VC ? 9 : 7) * B;
+        beat('Obvious', OB, (s) => {
+          // a tram drives across the screen, ringing its bell; the table is behind it
+          const wipeTram = $('.ix-tram');
+          const T0 = s - 0.62;
+          const TD = 0.9;
+          const glide = (p) => (p < 0.5 ? 2 * p * p : 1 - 2 * (1 - p) * (1 - p)) * 0.3 + p * 0.7;
+          tl.add(wipeTram, 'x', -1, 0.001, () => vis(wipeTram, 0));
+          tl.add(wipeTram, 'x', T0, TD, (p) => {
+            vis(wipeTram, p > 0 && p < 1 ? 1 : 0);
+            wipeTram.style.transform = `translateX(${tramAt(glide(p)).x}px)`;
+          }, E.lin);
+          tl.add(table, 'x', T0, TD, (p) => {
+            vis(table, p > 0 ? 1 : 0);
+            table.style.clipPath = p >= 1 ? '' : `inset(0 ${Math.max(0, G.vw - tramAt(glide(p)).mid)}px 0 0)`;
+            table.style.transform = '';
+            table.style.filter = '';
+          }, E.lin);
+          // what was on screen goes with it: the big number is wiped away behind the tram
+          const scl = kin('scale');
+          tl.add(scl, 'w', -1, 0.001, () => (scl.style.clipPath = ''));
+          tl.add(scl, 'w', T0, TD, (p) => (scl.style.clipPath = p <= 0 ? '' : `inset(0 0 0 ${Math.max(0, tramAt(glide(p)).mid)}px)`), E.lin);
+          cue(T0 - 0.05, 'bell');
+          cue(T0, 'rumble', TD);
+          tableBg(s, 'var(--c1)');
+          cue(s + 0.32, 'crash', 0.6);
+          groove(s + 0.32, s + OB + HB + IB, { clap: true, ohat: true, bass: s + 0.32, kick: 0.75, hat: 0.6 });
+          const c = $('.card.c1');
+          card(c, s + 0.12, s + OB, -1.5);
+          slam(c.querySelector('.chip'), s + 0.35);
+          slam(c.querySelector('.cq'), s + 0.4, { stagger: 0.05 });
+          // the tram rolls in, the lever goes, it takes the branch: its nose follows the rail, its body turns with it
+          const tram = c.querySelector('.tram > g');
+          const rp = c.querySelector('.rail-path');
+          const len = rp.getTotalLength();
+          const nose0 = rp.getPointAtLength(170).x;
+          let stop = nose0;
+          while (stop < len && rp.getPointAtLength(stop).x < 508) stop += 2;
+          const along = (d) => {
+            const a = rp.getPointAtLength(Math.max(0, d));
+            const b = rp.getPointAtLength(Math.max(0, d - 125));
+            const ang = (Math.atan2(a.y - b.y, a.x - b.x) * 180) / Math.PI;
+            return `translate(${a.x - 150} ${a.y - 214}) rotate(${ang} 150 212)`;
+          };
+          at(tram, -1, 0.001, () => 'translate(-330 0)');
+          at(tram, s + 0.3, 0.5, (p) => `translate(${lerp(-330, 0, p)} 0)`, E.out);
+          const lv = s + 2 * B;
+          op(c.querySelector('.pose1'), -1, 0.001, 0, 0);
+          op(c.querySelector('.pose1'), lv, 0.05, 0, 1, E.lin);
+          op(c.querySelector('.pose0'), lv, 0.05, 1, 0, E.lin);
+          cue(lv, 'clunk');
+          const hot = c.querySelector('.hot');
           tl.add(hot, 'h', -1, 0.001, () => (hot.style.visibility = 'hidden'));
-          tl.add(hot, 'h', s + 0.45, 0.3, (p) => {
-            hp.style.strokeDasharray = '1 1';
-            hp.style.strokeDashoffset = String(1 - p);
+          tl.add(hot, 'h', lv, 0.35, (p) => {
+            hot.querySelectorAll('path').forEach((x) => {
+              x.style.strokeDasharray = '1 1';
+              x.style.strokeDashoffset = String(1 - p);
+            });
             hot.style.visibility = p ? 'visible' : 'hidden';
           }, E.io);
-        }
-        c.querySelectorAll('.ix-scene .skull').forEach((k) => {
-          tl.add(k, 'k', -1, 0.001, () => (k.style.opacity = 0));
-          tl.add(k, 'k', s + 0.75, 0.3, (p) => {
-            k.style.opacity = Math.min(1, p * 2);
-            k.style.transform = `translateY(${(1 - p) * -30}px)`;
-          }, E.snap);
+          at(tram, lv + 0.1, 0.55, (p) => along(lerp(nose0, stop, p)), (x) => x * x * (2 - x));
+          const sk = c.querySelector('.sk');
+          drop(sk, -1, 0.001, false);
+          drop(sk, lv + 0.65);
+          cue(lv + 0.65, 'stamp');
+          shake(lv + 0.65, 12);
+          slam(c.querySelector('.cv'), lv - 0.25, { stagger: 0.035 });
+          if (VB) op(c.querySelector('.cn'), lv + 0.5, 0.25, 0, 1);
         });
-        cue(s + 0.75, 'kick', 1);
-        const lit = [...c.querySelectorAll('.xbots i.do')];
-        c.querySelectorAll('.xbots i').forEach((b) => tl.add(b, 'l', -1, 0.001, () => b.classList.remove('on')));
-        lit.forEach((b, i) => {
-          tl.add(b, 'l', s + 0.9 + i * (B / 6), 0.01, (p) => b.classList.toggle('on', p > 0), E.lin);
-          cue(s + 0.9 + i * (B / 6), 'pop', i);
-        });
-        op(c.querySelector('.xbots'), s + 0.75, 0.15, 0, 1);
-        slam(c.querySelector('.cv'), s + 0.9 + lit.length * (B / 6) - 0.1, { stagger: 0.04 });
-        cue(s + 0.9 + lit.length * (B / 6), 'stamp');
-        if (VB) op(c.querySelector('.cn'), s + 0.9 + lit.length * (B / 6) + 0.1, 0.25, 0, 1);
-      });
 
-      beat('Impossible', IB, (s) => {
-        tableBg(s + 0.15, 'var(--c3)');
-        fill(s + 0.22);
-        const c = $('.card.c3');
-        card(c, s, s + IB, -1);
-        slam(c.querySelector('.chip'), s + 0.2);
-        slam(c.querySelector('.cq'), s + 0.25, { stagger: 0.05 });
-        // each contrast: the two people step in, then the AIs that took a side drop in under the one they saved
-        const play2 = (k, t0, gap, cv) => {
-          const mu = c.querySelector(`.mu[data-k="${k}"]`);
-          tl.add(mu, 'm', -1, 0.001, () => vis(mu, 0));
-          tl.add(mu, 'm', t0, 0.3, (p) => {
-            vis(mu, p);
-            mu.style.transform = `translateY(${(1 - p) * 18}px)`;
-          }, E.snap);
-          const bots = [...mu.querySelectorAll('.mu-pile.a i')];
-          const n = mu.querySelector('.a .mu-n');
-          tl.add(n, 'c', -1, 0.001, () => (n.textContent = '0'));
-          bots.forEach((r, i) => {
-            const at0 = t0 + 0.3 + i * gap;
-            tl.add(r, 'd', -1, 0.001, () => {
-              r.style.opacity = 0;
-              r.style.transform = 'translateY(-60px)';
-            });
-            tl.add(r, 'd', at0, 0.3, (p) => {
-              r.style.opacity = Math.min(1, p * 3);
-              r.style.transform = `translateY(${(1 - p) * -60}px)`;
+        beat('Hard', HB, (s) => {
+          tableBg(s + 0.15, 'var(--c2)');
+          fill(s + 0.22);
+          const c = $('.card.c2');
+          card(c, s, s + HB, 1.2);
+          slam(c.querySelector('.chip'), s + 0.2);
+          slam(c.querySelector('.cq'), s + 0.25, { stagger: 0.035 });
+          const hot = c.querySelector('.hot');
+          const hp = hot?.querySelector('path');
+          if (hp) {
+            tl.add(hot, 'h', -1, 0.001, () => (hot.style.visibility = 'hidden'));
+            tl.add(hot, 'h', s + 0.45, 0.3, (p) => {
+              hp.style.strokeDasharray = '1 1';
+              hp.style.strokeDashoffset = String(1 - p);
+              hot.style.visibility = p ? 'visible' : 'hidden';
+            }, E.io);
+          }
+          c.querySelectorAll('.ix-scene .skull').forEach((k) => {
+            tl.add(k, 'k', -1, 0.001, () => (k.style.opacity = 0));
+            tl.add(k, 'k', s + 0.75, 0.3, (p) => {
+              k.style.opacity = Math.min(1, p * 2);
+              k.style.transform = `translateY(${(1 - p) * -30}px)`;
             }, E.snap);
-            tl.add(n, 'c', at0 + 0.08, 0.001, () => (n.textContent = String(i + 1)));
-            cue(at0 + 0.08, 'pop', i);
           });
-          const done = t0 + 0.3 + bots.length * gap;
-          // the side nobody took: its zero gives a small shake
-          const z = mu.querySelector('.b .mu-n');
-          tl.add(z, 'z', done, 0.4, (p) => (z.style.transform = `translateX(${Math.sin(p * Math.PI * 4) * 6 * (1 - p)}px)`), E.lin);
-          if (!mu.querySelectorAll('.mu-pile.b i').length) cue(done, 'wrong');
-          if (cv) slam(c.querySelector(cv), done - 0.05, { stagger: 0.06 });
-          return done;
-        };
-        const e1 = play2('race', s + 0.35, B / 5, '.cv');
-        if (VB) op(c.querySelector('.cn'), e1 + 0.2, 0.25, 0, 1);
-        play2('faith', e1 + 0.1, B / 10, null);
-        // the believer's badge turns through the four faiths asked
-        const fbs = $$('.card.c3 .fb');
-        const fb = c.querySelector('.mu[data-k="faith"] .mu-fig');
-        tl.add(fb, 'f', -1, 0.001, () => fbs.forEach((x, i) => (x.style.opacity = i ? 0 : 1)));
-        for (let k = 1; k < 10; k++) tl.add(fb, 'f', e1 + 0.15 + k * 0.25, 0.001, () => fbs.forEach((x, i) => (x.style.opacity = i === k % FAITHS.length ? 1 : 0)));
-        // the card is yanked off the table on the last beat; then a hard cut
-        $$('.ix-table .card').forEach((cd, i) => {
-          tl.add(cd, 'y', -1, 0.001, () => (cd.style.translate = ''));
-          tl.add(cd, 'y', s + IB - 0.28 + (2 - i) * 0.03, 0.24, (p) => (cd.style.translate = `0 ${-p * 120}vh`), E.in);
+          cue(s + 0.75, 'kick', 1);
+          const lit = [...c.querySelectorAll('.xbots i.do')];
+          c.querySelectorAll('.xbots i').forEach((b) => tl.add(b, 'l', -1, 0.001, () => b.classList.remove('on')));
+          lit.forEach((b, i) => {
+            tl.add(b, 'l', s + 0.9 + i * (B / 6), 0.01, (p) => b.classList.toggle('on', p > 0), E.lin);
+            cue(s + 0.9 + i * (B / 6), 'pop', i);
+          });
+          op(c.querySelector('.xbots'), s + 0.75, 0.15, 0, 1);
+          slam(c.querySelector('.cv'), s + 0.9 + lit.length * (B / 6) - 0.1, { stagger: 0.04 });
+          cue(s + 0.9 + lit.length * (B / 6), 'stamp');
+          if (VB) op(c.querySelector('.cn'), s + 0.9 + lit.length * (B / 6) + (VC ? -0.25 : 0.1), 0.25, 0, 1);
         });
-        tl.add(table, 'x', s + IB, 0.001, () => vis(table, 0));
-        cue(s + IB - 0.45, 'revcym', 0.45);
-      });
 
-      // ======== 8. Real. A hard cut back to the camera: the same frames, called two things.
-      beat('Real', (VB ? 10 : 7) * B, (s) => {
-        const RD = (VB ? 10 : 7) * B;
-        const sp = $('.ix-split');
-        life(sp, s, s + RD, { exit: 'cut' });
-        flash(s, 0.8, 0.2);
-        cue(s, 'impact', 1);
-        shake(s, 18);
-        groove(s + 2 * B, s + RD, { kick: 1, hat: 0.8, clap: true, bass: s + 2 * B });
-        const re = kin('real');
-        if (!VB) life(re, s + 0.05, s + RD, { exit: 'cut' });
-        slam(re.querySelector('.chip'), s + 0.05);
-        slam(re.querySelector('.k-big'), s + 0.1, { stagger: 0.05 });
-        const [a, b] = $$('.ix-split .sp');
-        draw(a.querySelector('.r-right'), -1, 0.001, 0, 0);
-        draw(b.querySelector('.r-left'), -1, 0.001, 0, 0);
-        b.querySelectorAll('.sk').forEach((k) => drop(k, -1, 0.001, false));
-        const [ga, gb] = $$('.ix-split .sg');
-        op(a.querySelector('figcaption'), s + 0.4, 0.15, 0, 1);
-        op(a.querySelector('p'), s + 0.5, 0.15, 0, 1);
-        draw(a.querySelector('.r-right'), s + 0.5, 0.4);
-        count(a.querySelector('.n'), s + 0.5, 0.6, 0, D.trolley[0], E.out);
-        tl.add(ga, 'r', -1, 0.001, () => drawSplit(ga, 0));
-        tl.add(ga, 'r', s + 0.5, 0.6, (p) => drawSplit(ga, Math.round(p * D.trolley[0])), E.out);
-        op(ga, s + 0.45, 0.1, 0, 1);
-        cue(s + 0.5, 'whoosh', 0.25);
-        cue(s + 1.1, 'ding');
-        // the routing job: its grid is twice the size, and it fills
-        const tb = s + 2 * B;
-        op(b.querySelector('figcaption'), tb, 0.15, 0, 1);
-        op(b.querySelector('p'), tb + 0.05, 0.15, 0, 1);
-        op(gb, tb, 0.1, 0, 1);
-        draw(b.querySelector('.r-left'), tb, 0.4);
-        count(b.querySelector('.n'), tb + 0.05, 1.3, 0, D.job[0], E.in);
-        tl.add(gb, 'r', -1, 0.001, () => drawSplit(gb, 0));
-        tl.add(gb, 'r', tb + 0.05, 1.3, (p) => drawSplit(gb, Math.round(p * D.job[0])), E.in);
-        for (let k = 0; k < 20; k++) cue(tb + 0.05 + 1.3 * (k / 20) ** 0.5, 'tick');
-        const hit = tb + 1.35;
-        b.querySelectorAll('.sk').forEach((k, i) => drop(k, hit + i * 0.08));
-        cue(hit, 'impact', 1.1);
-        cue(hit, 'glitch');
-        flash(hit, 0.55);
-        shake(hit, 22);
-        red(hit, 0.8, 0.7);
-        const bn = b.querySelector('.frac');
-        tl.add(bn, 'z', -1, 0.001, () => (bn.style.transform = ''));
-        tl.add(bn, 'z', hit, 0.45, (p) => (bn.style.transform = `scale(${1 + 0.35 * Math.sin(p * Math.PI)})`), E.out);
-        if (VB) {
-          // the question gives way to its answer, in the same place
-          const ra = kin('realA');
-          life(re, s + 0.05, hit + 0.2, { exit: 'cut' });
-          life(ra, hit + 0.2, s + RD, { exit: 'cut' });
-          slam(ra.querySelector('.k-big'), hit + 0.2, { stagger: 0.04 });
-        }
-      });
+        beat('Impossible', IB, (s) => {
+          tableBg(s + 0.15, 'var(--c3)');
+          fill(s + 0.22);
+          const c = $('.card.c3');
+          card(c, s, s + IB, -1);
+          slam(c.querySelector('.chip'), s + 0.2);
+          slam(c.querySelector('.cq'), s + 0.25, { stagger: 0.05 });
+          // each contrast: the two people step in, then the AIs that took a side drop in under the one they saved
+          const play2 = (k, t0, gap, cv) => {
+            const mu = c.querySelector(`.mu[data-k="${k}"]`);
+            tl.add(mu, 'm', -1, 0.001, () => vis(mu, 0));
+            tl.add(mu, 'm', t0, 0.3, (p) => {
+              vis(mu, p);
+              mu.style.transform = `translateY(${(1 - p) * 18}px)`;
+            }, E.snap);
+            const bots = [...mu.querySelectorAll('.mu-pile.a i')];
+            const n = mu.querySelector('.a .mu-n');
+            tl.add(n, 'c', -1, 0.001, () => (n.textContent = '0'));
+            bots.forEach((r, i) => {
+              const at0 = t0 + 0.3 + i * gap;
+              tl.add(r, 'd', -1, 0.001, () => {
+                r.style.opacity = 0;
+                r.style.transform = 'translateY(-60px)';
+              });
+              tl.add(r, 'd', at0, 0.3, (p) => {
+                r.style.opacity = Math.min(1, p * 3);
+                r.style.transform = `translateY(${(1 - p) * -60}px)`;
+              }, E.snap);
+              tl.add(n, 'c', at0 + 0.08, 0.001, () => (n.textContent = String(i + 1)));
+              cue(at0 + 0.08, 'pop', i);
+            });
+            const done = t0 + 0.3 + bots.length * gap;
+            // the side nobody took: its zero gives a small shake
+            const z = mu.querySelector('.b .mu-n');
+            tl.add(z, 'z', done, 0.4, (p) => (z.style.transform = `translateX(${Math.sin(p * Math.PI * 4) * 6 * (1 - p)}px)`), E.lin);
+            if (!mu.querySelectorAll('.mu-pile.b i').length) cue(done, 'wrong');
+            if (cv) slam(c.querySelector(cv), done - 0.05, { stagger: 0.06 });
+            return done;
+          };
+          const e1 = play2('race', s + 0.35, B / 5, '.cv');
+          if (VB) op(c.querySelector('.cn'), e1 + 0.2, 0.25, 0, 1);
+          play2('faith', e1 + 0.1, B / 10, null);
+          // the believer's badge turns through the four faiths asked
+          const fbs = $$('.card.c3 .fb');
+          const fb = c.querySelector('.mu[data-k="faith"] .mu-fig');
+          tl.add(fb, 'f', -1, 0.001, () => fbs.forEach((x, i) => (x.style.opacity = i ? 0 : 1)));
+          for (let k = 1; k < 10; k++) tl.add(fb, 'f', e1 + 0.15 + k * 0.25, 0.001, () => fbs.forEach((x, i) => (x.style.opacity = i === k % FAITHS.length ? 1 : 0)));
+          // the card is yanked off the table on the last beat; then a hard cut
+          $$('.ix-table .card').forEach((cd, i) => {
+            tl.add(cd, 'y', -1, 0.001, () => (cd.style.translate = ''));
+            tl.add(cd, 'y', s + IB - 0.28 + (2 - i) * 0.03, 0.24, (p) => (cd.style.translate = `0 ${-p * 120}vh`), E.in);
+          });
+          tl.add(table, 'x', s + IB, 0.001, () => vis(table, 0));
+          cue(s + IB - 0.45, 'revcym', 0.45);
+        });
 
-      // ======== 9. The rule. A safety rule, stuck on; then stamped IGNORED.
-      beat('The rule', 8 * B, (s) => {
-        tf(photo, s - 0.001, 0.001, () => 'none');
-        tl.add(photo, 'z', s, 0.001, () => (photo.style.transformOrigin = '0 0'));
-        op(photo, s, 0.05, 0, 1);
-        tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = '40% 55%'));
-        tf(fr, s, 3.5, (p) => `scale(${lerp(1.04, 1.14, p)})`, E.lin);
-        draw(rL, s, 0.001, 0, 0);
-        sks.forEach((k) => drop(k, s, 0.001, false));
-        op(dim, s, 0.001, 0, 0);
-        flash(s, 0.6, 0.15);
-        cue(s, 'kick', 1);
-        groove(s + B, s + 8 * B, { kick: 0.9, hat: 0.8, clap: true, bass: s + B });
-        const ru = kin('rule');
-        life(ru, s + 0.05, s + 8 * B, { exit: 'cut' });
-        slam(ru, s + 0.05, { stagger: 0.05 });
-        const note = $('.ix-note');
-        tl.add(note, 'x', -1, 0.001, () => vis(note, 0));
-        tl.add(note, 'x', s + 0.25, 0.3, (p) => {
-          vis(note, Math.min(1, p * 3));
-          note.style.transform = `${CENTER} scale(${lerp(1.9, 1, p)}) rotate(${lerp(-14, -3, p)}deg)`;
-        }, E.snap);
-        tl.add(note, 'x', s + 8 * B, 0.001, () => vis(note, 0));
-        cue(s + 0.47, 'slap', 1.2);
-        shake(s + 0.47, 12);
-        draw(rL, s + 2.0, 0.35, 0, 1, E.out);
-        sks.forEach((k, i) => drop(k, s + 2.3 + i * 0.08));
-        cue(s + 2.3, 'kick', 1);
-        const st = $('.ix-stamp');
-        tl.add(st, 'x', -1, 0.001, () => vis(st, 0));
-        tl.add(st, 'x', s + 2.5, 0.25, (p) => {
-          vis(st, Math.min(1, p * 3));
-          st.style.transform = `${CENTER} scale(${lerp(3, 1, p)}) rotate(${lerp(-24, -7, p)}deg)`;
-        }, E.snap);
-        tl.add(st, 'x', s + 8 * B, 0.001, () => vis(st, 0));
-        cue(s + 2.7, 'stamp');
-        flash(s + 2.7, 0.55);
-        shake(s + 2.7, 24);
-        red(s + 2.7, 0.7);
-      });
+      };
+      const seg_real = () => {
+        // ======== 8. Real. A hard cut back to the camera: the same frames, called two things.
+        beat('Real', (VC ? 11 : VB ? 10 : 7) * B, (s) => {
+          const RD = (VC ? 11 : VB ? 10 : 7) * B;
+          const sp = $('.ix-split');
+          life(sp, s, s + RD, { exit: 'cut' });
+          flash(s, 0.8, 0.2);
+          cue(s, 'impact', 1);
+          shake(s, 18);
+          groove(s + 2 * B, s + RD, { kick: 1, hat: 0.8, clap: true, bass: s + 2 * B });
+          const re = kin('real');
+          if (!VB) life(re, s + 0.05, s + RD, { exit: 'cut' });
+          if (re.querySelector('.chip')) slam(re.querySelector('.chip'), s + 0.05);
+          slam(re.querySelector('.k-big'), s + 0.1, { stagger: 0.05 });
+          const [a, b] = $$('.ix-split .sp');
+          draw(a.querySelector('.r-right'), -1, 0.001, 0, 0);
+          draw(b.querySelector('.r-left'), -1, 0.001, 0, 0);
+          b.querySelectorAll('.sk').forEach((k) => drop(k, -1, 0.001, false));
+          const [ga, gb] = $$('.ix-split .sg');
+          op(a.querySelector('figcaption'), s + 0.4, 0.15, 0, 1);
+          op(a.querySelector('p'), s + 0.5, 0.15, 0, 1);
+          draw(a.querySelector('.r-right'), s + 0.5, 0.4);
+          count(a.querySelector('.n'), s + 0.5, 0.6, 0, D.trolley[0], E.out);
+          tl.add(ga, 'r', -1, 0.001, () => drawSplit(ga, 0));
+          tl.add(ga, 'r', s + 0.5, 0.6, (p) => drawSplit(ga, Math.round(p * D.trolley[0])), E.out);
+          op(ga, s + 0.45, 0.1, 0, 1);
+          cue(s + 0.5, 'whoosh', 0.25);
+          cue(s + 1.1, 'ding');
+          // the routing job: its grid is twice the size, and it fills
+          const tb = s + 2 * B;
+          op(b.querySelector('figcaption'), tb, 0.15, 0, 1);
+          op(b.querySelector('p'), tb + 0.05, 0.15, 0, 1);
+          op(gb, tb, 0.1, 0, 1);
+          draw(b.querySelector('.r-left'), tb, 0.4);
+          count(b.querySelector('.n'), tb + 0.05, 1.3, 0, D.job[0], E.in);
+          tl.add(gb, 'r', -1, 0.001, () => drawSplit(gb, 0));
+          tl.add(gb, 'r', tb + 0.05, 1.3, (p) => drawSplit(gb, Math.round(p * D.job[0])), E.in);
+          for (let k = 0; k < 20; k++) cue(tb + 0.05 + 1.3 * (k / 20) ** 0.5, 'tick');
+          const hit = tb + 1.35;
+          b.querySelectorAll('.sk').forEach((k, i) => drop(k, hit + i * 0.08));
+          cue(hit, 'impact', 1.1);
+          cue(hit, 'glitch');
+          flash(hit, 0.55);
+          shake(hit, 22);
+          red(hit, 0.8, 0.7);
+          const bn = b.querySelector('.frac');
+          tl.add(bn, 'z', -1, 0.001, () => (bn.style.transform = ''));
+          tl.add(bn, 'z', hit, 0.45, (p) => (bn.style.transform = `scale(${1 + 0.35 * Math.sin(p * Math.PI)})`), E.out);
+          if (VB) {
+            // the question gives way to its answer, in the same place
+            const ra = kin('realA');
+            life(re, s + 0.05, hit + 0.2, { exit: 'cut' });
+            life(ra, hit + 0.2, s + RD, { exit: 'cut' });
+            slam(ra.querySelector('.k-big'), hit + 0.2, { stagger: 0.04 });
+          }
+        });
 
-      // ======== 10. The brakes. The schedule points away; one line in the log; the grid floods red.
-      beat('The brakes', (VB ? 12 : 10) * B, (s) => {
-        const d = VB ? 2 * B : 0;
-        draw(rL, s, 0.2, 1, 0);
-        sks.forEach((k) => drop(k, s, 0.15, false));
-        tf(fr, s, 3, (p) => `scale(${lerp(1.14, 1.2, p)})`, E.lin);
-        cue(s, 'sub', 0.8);
-        if (VB) {
-          // show it: the route swings to the empty track, green, with the photo still lit; then it dims for the fault
-          draw(rR, s + 0.15, 0.4, 0, 1, E.out);
-          op(nob, s + 0.35, 0.2, 0, 1);
-          cue(s + 0.2, 'whoosh', 0.3);
-          cue(s + 0.55, 'ding');
-          op(dim, s + d + 1.75, 0.2, 0, 0.84);
-          draw(rR, s + d + 1.75, 0.2, 1, 0);
-          op(nob, s + d + 1.75, 0.15, 1, 0);
-        } else op(dim, s, 0.25, 0, 0.84);
-        const sc = kin('sched');
-        life(sc, s + 0.05, s + d + 2.0, { exit: 'cut' });
-        slam(sc, s + 0.05, { stagger: 0.04 });
-        const term = $('.ix-term');
-        life(term, s + d + 1.9, s + d + 10 * B, { exit: 'cut' });
-        const f = term.querySelector('.fault');
-        type(f.querySelector('.on'), f.querySelector('.off'), s + d + 1.9, 0.4);
-        for (let k = 0; k < 8; k++) cue(s + d + 1.9 + k * 0.05, 'key');
-        const br = kin('brake');
-        life(br, s + d + 1.9, s + d + 10 * B, { exit: 'cut' });
-        slam(br, s + d + 1.9, { stagger: 0.06, from: 2 });
-        cue(s + d + 1.9, 'alarm');
-        groove(s + d + 1.9, s + d + 10 * B, { kick: 1, hat: 0.9, clap: true, bass: s + d + 1.9 });
-        cue(s + d + 1.9, 'impact', 0.8);
-        red(s + d + 1.9, 0.8, 0.4);
-        red(s + d + 2.4, 0.6, 0.4);
-        red(s + d + 2.9, 0.5, 0.4);
-        tl.add(f, 'b', -1, 0.001, () => f.classList.remove('blink'));
-        tl.add(f, 'b', s + d + 1.9, 0.5, (p) => f.classList.toggle('blink', p > 0 && p < 1), E.lin);
-        const fz = $('.ix-fault');
-        life(fz, s + d + 2.0, s + d + 10 * B, { exit: 'cut' });
-        tl.add(fz, 'r', -1, 0.001, () => drawFault(0));
-        tl.add(fz, 'r', s + d + 2.05, 0.2, (p) => drawFault(Math.round(p * D.fault.off)), E.lin);
-        tl.add(fz, 'r', s + d + 2.4, 0.9, (p) => drawFault(Math.round(lerp(D.fault.off, D.fault.on, p))), E.in);
-        const [ca, cb] = fz.querySelectorAll('.ct');
-        count(ca, s + d + 2.05, 0.2, 0, D.fault.off, E.lin);
-        count(cb, s + d + 2.4, 0.9, 0, D.fault.on, E.in);
-        for (let k = 0; k < 16; k++) cue(s + d + 2.4 + 0.9 * (k / 16) ** 0.6, 'tick');
-        op(fz.querySelector('.fa'), s + d + 2.0, 0.1, 0, 1);
-        op(fz.querySelector('.fb'), s + d + 2.35, 0.1, 0, 1);
-        op(fz.querySelector('small'), s + d + 2.5, 0.2, 0, 1);
-        const hits = kin('hits');
-        life(hits, s + d + 2.45, s + d + 10 * B, { exit: 'cut' });
-        slam(hits, s + d + 2.45, { stagger: 0.035 });
-        cue(s + d + 3.3, 'stamp');
-        shake(s + d + 3.3, 20);
-        cue(s + d + 10 * B - 0.6, 'revcym', 0.6);
-      });
+      };
+      const seg_rule = () => {
+        // ======== 9. The rule. A safety rule, stuck on; then stamped IGNORED.
+        beat('The rule', 8 * B, (s) => {
+          tf(photo, s - 0.001, 0.001, () => 'none');
+          tl.add(photo, 'z', s, 0.001, () => (photo.style.transformOrigin = '0 0'));
+          op(photo, s, 0.05, 0, 1);
+          tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = '40% 55%'));
+          tf(fr, s, 3.5, (p) => `scale(${lerp(1.04, 1.14, p)})`, E.lin);
+          draw(rL, s, 0.001, 0, 0);
+          sks.forEach((k) => drop(k, s, 0.001, false));
+          op(dim, s, 0.001, 0, 0);
+          flash(s, 0.6, 0.15);
+          cue(s, 'kick', 1);
+          groove(s + B, s + 8 * B, { kick: 0.9, hat: 0.8, clap: true, bass: s + B });
+          const ru = kin('rule');
+          life(ru, s + 0.05, s + 8 * B, { exit: 'cut' });
+          slam(ru, s + 0.05, { stagger: 0.05 });
+          const note = $('.ix-note');
+          tl.add(note, 'x', -1, 0.001, () => vis(note, 0));
+          tl.add(note, 'x', s + 0.25, 0.3, (p) => {
+            vis(note, Math.min(1, p * 3));
+            note.style.transform = `${CENTER} scale(${lerp(1.9, 1, p)}) rotate(${lerp(-14, -3, p)}deg)`;
+          }, E.snap);
+          tl.add(note, 'x', s + 8 * B, 0.001, () => vis(note, 0));
+          cue(s + 0.47, 'slap', 1.2);
+          shake(s + 0.47, 12);
+          draw(rL, s + 2.0, 0.35, 0, 1, E.out);
+          sks.forEach((k, i) => drop(k, s + 2.3 + i * 0.08));
+          cue(s + 2.3, 'kick', 1);
+          const st = $('.ix-stamp');
+          tl.add(st, 'x', -1, 0.001, () => vis(st, 0));
+          tl.add(st, 'x', s + 2.5, 0.25, (p) => {
+            vis(st, Math.min(1, p * 3));
+            st.style.transform = `${CENTER} scale(${lerp(3, 1, p)}) rotate(${lerp(-24, -7, p)}deg)`;
+          }, E.snap);
+          tl.add(st, 'x', s + 8 * B, 0.001, () => vis(st, 0));
+          cue(s + 2.7, 'stamp');
+          flash(s + 2.7, 0.55);
+          shake(s + 2.7, 24);
+          red(s + 2.7, 0.7);
+        });
 
-      // ======== 11. The Trolley Tests. Cut to black, a breath of silence, then the title on the last chord.
-      beat('The Trolley Tests', 6 * B, (s) => {
-        tl.add(black, 'b', s, 0.001, () => vis(black, 1));
-        tl.add(black, 'b', s + 0.5, 1.0, (p) => vis(black, 1 - p), E.io);
-        op(dim, s, 0.001, 0.62, 0.62);
-        tf(fr, s, 3.5, (p) => `scale(${lerp(1.08, 1, p)})`, E.out);
-        draw(rL, s + 0.6, 1.2, 0, 1);
-        tl.add(rL, 'o', s, 0.001, () => (rL.style.opacity = '0.4'));
-        const chev = rL.querySelector('.chev');
-        if (chev) {
-          tl.add(chev, 'v', -1, 0.001, () => (chev.style.visibility = 'visible'));
-          tl.add(chev, 'v', s, 0.001, () => (chev.style.visibility = 'hidden'));
-        }
-        const T = s + 0.35;
-        cue(T, 'chord');
-        flash(T, 0.7, 0.4);
-        shake(T, 14, 0.5);
-        const en = $('.ix-end');
-        tl.add(en, 'x', T, 0.001, () => vis(en, 1));
-        const h1 = en.querySelector('h1');
-        slam(h1, T, { stagger: 0.09, from: 1.6, dur: 0.4 });
-        // centred and big on the hit, then it glides down to where the hero keeps it
-        tl.add(h1, 'm', -1, 0.001, () => (h1.style.transform = ''));
-        tl.add(h1, 'm', T, 1.25, (p) => {
-          const g = G.h1 ?? { dx: 0, dy: 0 };
-          const k = p < 0.45 ? 0 : E.io((p - 0.45) / 0.55);
-          const sc = g.dx || g.dy ? lerp(1.18, 1, k) : 1;
-          h1.style.transform = p >= 1 ? '' : `translate(${g.dx * (1 - k)}px, ${g.dy * (1 - k)}px) scale(${sc})`;
-        }, E.lin);
-        op(en.querySelector('.dek'), T + 1.3, 0.4, 0, 1);
-        op(en.querySelector('.acts'), T + 1.6, 0.4, 0, 1);
-      });
+      };
+      const seg_brakes = () => {
+        // ======== 10. The brakes. The schedule points away; one line in the log; the grid floods red.
+        beat('The brakes', (VB ? 12 : 10) * B, (s) => {
+          const d = VB ? 2 * B : 0;
+          draw(rL, s, 0.2, 1, 0);
+          sks.forEach((k) => drop(k, s, 0.15, false));
+          tf(fr, s, 3, (p) => `scale(${lerp(1.14, 1.2, p)})`, E.lin);
+          cue(s, 'sub', 0.8);
+          if (VB) {
+            // show it: the route swings to the empty track, green, with the photo still lit; then it dims for the fault
+            draw(rR, s + 0.15, 0.4, 0, 1, E.out);
+            op(nob, s + 0.35, 0.2, 0, 1);
+            cue(s + 0.2, 'whoosh', 0.3);
+            cue(s + 0.55, 'ding');
+            op(dim, s + d + 1.75, 0.2, 0, 0.84);
+            draw(rR, s + d + 1.75, 0.2, 1, 0);
+            op(nob, s + d + 1.75, 0.15, 1, 0);
+          } else op(dim, s, 0.25, 0, 0.84);
+          const sc = kin('sched');
+          life(sc, s + 0.05, s + d + 2.0, { exit: 'cut' });
+          slam(sc, s + 0.05, { stagger: 0.04 });
+          const term = $('.ix-term');
+          life(term, s + d + 1.9, s + d + 10 * B, { exit: 'cut' });
+          const f = term.querySelector('.fault');
+          type(f.querySelector('.on'), f.querySelector('.off'), s + d + 1.9, 0.4);
+          for (let k = 0; k < 8; k++) cue(s + d + 1.9 + k * 0.05, 'key');
+          const br = kin('brake');
+          life(br, s + d + 1.9, s + d + 10 * B, { exit: 'cut' });
+          slam(br, s + d + 1.9, { stagger: 0.06, from: 2 });
+          cue(s + d + 1.9, 'alarm');
+          groove(s + d + 1.9, s + d + 10 * B, { kick: 1, hat: 0.9, clap: true, bass: s + d + 1.9 });
+          cue(s + d + 1.9, 'impact', 0.8);
+          red(s + d + 1.9, 0.8, 0.4);
+          red(s + d + 2.4, 0.6, 0.4);
+          red(s + d + 2.9, 0.5, 0.4);
+          tl.add(f, 'b', -1, 0.001, () => f.classList.remove('blink'));
+          tl.add(f, 'b', s + d + 1.9, 0.5, (p) => f.classList.toggle('blink', p > 0 && p < 1), E.lin);
+          const fz = $('.ix-fault');
+          life(fz, s + d + 2.0, s + d + 10 * B, { exit: 'cut' });
+          tl.add(fz, 'r', -1, 0.001, () => drawFault(0));
+          tl.add(fz, 'r', s + d + 2.05, 0.2, (p) => drawFault(Math.round(p * D.fault.off)), E.lin);
+          tl.add(fz, 'r', s + d + 2.4, 0.9, (p) => drawFault(Math.round(lerp(D.fault.off, D.fault.on, p))), E.in);
+          const [ca, cb] = fz.querySelectorAll('.ct');
+          count(ca, s + d + 2.05, 0.2, 0, D.fault.off, E.lin);
+          count(cb, s + d + 2.4, 0.9, 0, D.fault.on, E.in);
+          for (let k = 0; k < 16; k++) cue(s + d + 2.4 + 0.9 * (k / 16) ** 0.6, 'tick');
+          op(fz.querySelector('.fa'), s + d + 2.0, 0.1, 0, 1);
+          op(fz.querySelector('.fb'), s + d + 2.35, 0.1, 0, 1);
+          op(fz.querySelector('small'), s + d + 2.5, 0.2, 0, 1);
+          const hits = kin('hits');
+          life(hits, s + d + 2.45, s + d + 10 * B, { exit: 'cut' });
+          slam(hits, s + d + 2.45, { stagger: 0.035 });
+          cue(s + d + 3.3, 'stamp');
+          shake(s + d + 3.3, 20);
+          cue(s + d + 10 * B - 0.6, 'revcym', 0.6);
+        });
+
+      };
+      const seg_end = () => {
+        // ======== 11. The Trolley Tests. Cut to black, a breath of silence, then the title on the last chord.
+        beat('The Trolley Tests', 6 * B, (s) => {
+          tl.add(black, 'b', s, 0.001, () => vis(black, 1));
+          if (VC) {
+            tf(photo, s - 0.001, 0.001, () => 'none');
+            tl.add(photo, 'z', s, 0.001, () => (photo.style.transformOrigin = '0 0'));
+            op(photo, s, 0.001, 1, 1);
+            sks.forEach((k) => drop(k, s, 0.001, false));
+          }
+          tl.add(black, 'b', s + 0.5, 1.0, (p) => vis(black, 1 - p), E.io);
+          op(dim, s, 0.001, 0.62, 0.62);
+          tf(fr, s, 3.5, (p) => `scale(${lerp(1.08, 1, p)})`, E.out);
+          draw(rL, s + 0.6, 1.2, 0, 1);
+          tl.add(rL, 'o', s, 0.001, () => (rL.style.opacity = '0.4'));
+          const chev = rL.querySelector('.chev');
+          if (chev) {
+            tl.add(chev, 'v', -1, 0.001, () => (chev.style.visibility = 'visible'));
+            tl.add(chev, 'v', s, 0.001, () => (chev.style.visibility = 'hidden'));
+          }
+          const T = s + 0.35;
+          cue(T, 'chord');
+          flash(T, 0.7, 0.4);
+          shake(T, 14, 0.5);
+          const en = $('.ix-end');
+          tl.add(en, 'x', T, 0.001, () => vis(en, 1));
+          const h1 = en.querySelector('h1');
+          slam(h1, T, { stagger: 0.09, from: 1.6, dur: 0.4 });
+          // centred and big on the hit, then it glides down to where the hero keeps it
+          tl.add(h1, 'm', -1, 0.001, () => (h1.style.transform = ''));
+          tl.add(h1, 'm', T, 1.25, (p) => {
+            const g = G.h1 ?? { dx: 0, dy: 0 };
+            const k = p < 0.45 ? 0 : E.io((p - 0.45) / 0.55);
+            const sc = g.dx || g.dy ? lerp(1.18, 1, k) : 1;
+            h1.style.transform = p >= 1 ? '' : `translate(${g.dx * (1 - k)}px, ${g.dy * (1 - k)}px) scale(${sc})`;
+          }, E.lin);
+          op(en.querySelector('.dek'), T + 1.3, 0.4, 0, 1);
+          op(en.querySelector('.acts'), T + 1.6, 0.4, 0, 1);
+        });
+      };
+      // ======== C4. Not just one AI: the decision models, the ones that hit the workers lit red.
+      const seg_fleet = () => {
+        beat('Not just one', 6 * B, (s) => {
+          op(dim, s, 0.25, 0, 0.88);
+          draw(rL, s, 0.2, 1, 0);
+          sks.forEach((k) => drop(k, s, 0.15, false));
+          cue(s, 'impact', 0.7);
+          flash(s, 0.35, 0.15);
+          groove(s + B, s + 6 * B, { kick: 0.8, hat: 0.7, bass: s + B });
+          const fl = kin('fleet');
+          life(fl, s + 0.05, s + 6 * B, { exit: 'cut' });
+          slam(fl.querySelector('.k-big'), s + 0.05, { stagger: 0.05 });
+          slam(fl.querySelector('.k-big2'), s + 0.7, { stagger: 0.05 });
+          const bots = [...fl.querySelectorAll('.xfleet i')];
+          op(fl.querySelector('.xfleet'), s + 0.6, 0.2, 0, 1);
+          bots.forEach((r) => tl.add(r, 'l', -1, 0.001, () => r.classList.remove('on')));
+          bots.filter((r) => r.classList.contains('do')).forEach((r, i) => {
+            tl.add(r, 'l', s + 0.8 + i * (B / 4), 0.01, (p) => r.classList.toggle('on', p > 0), E.lin);
+            cue(s + 0.8 + i * (B / 4), 'pop', i);
+          });
+          op(fl.querySelector('.k-src'), s + 1.9, 0.3, 0, 1);
+        });
+      };
+      // the order: A and B tell the depot, widen to the classics, then go back to the depot; C (narrative C,
+      // review/narrative/FILM-C.md) keeps the depot story whole, then widens to the classics
+      (VC ? [seg_you, seg_ai, seg_knew, seg_fleet, seg_real, seg_rule, seg_brakes, seg_scale, seg_cards, seg_end] : [seg_you, seg_ai, seg_knew, seg_scale, seg_cards, seg_real, seg_rule, seg_brakes, seg_end]).forEach((f) => f());
       film.seal();
       cues.sort((a, b) => a.at - b.at);
       return S;

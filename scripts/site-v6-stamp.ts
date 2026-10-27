@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 export function stamp(dir = 'site/v6') {
-  for (const p of ['index.html', 'index-b.html', 'science.html']) if (existsSync(`${dir}/${p}`)) stampPage(dir, p);
+  for (const p of ['index.html', 'index-b.html', 'index-c.html', 'science.html']) if (existsSync(`${dir}/${p}`)) stampPage(dir, p);
 }
 function stampPage(dir: string, name: string) {
   const page = `${dir}/${name}`;
