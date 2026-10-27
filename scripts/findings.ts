@@ -10,7 +10,7 @@ export const INPUTS = {
   prereg: 'results/prereg-pilot-v2b.json',
   preregUnpinned: 'results/prereg-pilot-v2a.json',
   data: 'results/findings-data.json',
-  card: 'site/data/report-card.json',
+  card: 'results/report-card.json',
   image: 'results/image-analysis-v3.json',
   host: 'results/host-check.json',
   harm: 'results/harm-probe.json',

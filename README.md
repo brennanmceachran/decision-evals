@@ -4,8 +4,12 @@ How do the new **decision models** make moral choices? These are the models that
 
 Decision models give no rationale, so we infer their criteria from controlled perturbations, for example *how many people have to be on the track before it pulls the lever?*
 
-**Landing page:** [site/](site/) (open `site/index.html`, or serve the folder). Every number on it comes from
-`site/data.js`, which `pnpm site` builds from the analysis files; `test/site.test.ts` fails if they drift.
+**The story:** [site/v6/](site/v6/), "The Trolley Tests" (`index.html`, the science page `science.html` and the press
+cards). Serve the `site/` folder. Every number on it comes from `site/v6/data.js`, which `pnpm site` builds from the
+raw answers in `results/final/`; `test/site-v6-verify.test.ts` recounts every figure from the raw answers and fails if
+anything drifts. The earlier drafts (v1 to v5) are in git history: `git checkout drafts-v1-v5`.
+
+**Raw data:** the answer files and the model-call caches are in the `data-2026-10` release (SHA256SUMS included).
 
 **Results:** [FINDINGS.md](FINDINGS.md) (every finding, generated from the analysis files), [REPORT_CARD.md](REPORT_CARD.md)
 (one row per model) and [SHARE.md](SHARE.md) (draft headlines). Pre-registrations: [PREREGISTRATION.md](PREREGISTRATION.md),
@@ -26,8 +30,8 @@ pnpm view                   # Promptfoo's results viewer
 pnpm prereg results/<run>.json   # the pre-registered analysis (add --confirm for the confirmation study)
 pnpm findings               # regenerate REPORT_CARD.md, FINDINGS.md and SHARE.md from the analysis files
 pnpm review                 # re-render every prompt as sent (review/*.md)
-pnpm site                   # rebuild the landing page data (site/data.js) and share cards (site/cards/)
-pnpm site:extract           # refresh results/site-extract.json from the raw result files (needs ~12 GB)
+pnpm site                   # rebuild site/v6 (data, share cards, the press zip) from results/final/
+pnpm site:stamp             # re-stamp asset versions after editing site/v6 by hand
 ```
 
 Narrow a run with env vars:

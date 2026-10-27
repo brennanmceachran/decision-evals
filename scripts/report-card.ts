@@ -1,5 +1,5 @@
 // Developer report card: one row per model, built only from the pre-registered analysis (results/prereg-*.json)
-// plus per-call latency/cost/host from the raw results. Writes REPORT_CARD.md and site/data/report-card.json.
+// plus per-call latency/cost/host from the raw results. Writes REPORT_CARD.md and results/report-card.json.
 // Usage: tsx scripts/report-card.ts results/prereg-pilot-v2b.json results/pilot-v2b.json
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 
@@ -80,9 +80,9 @@ function round(x: number, d = 3) {
   return Number.isFinite(x) ? Math.round(x * 10 ** d) / 10 ** d : null;
 }
 
-mkdirSync('site/data', { recursive: true });
+mkdirSync('results', { recursive: true });
 writeFileSync(
-  'site/data/report-card.json',
+  'results/report-card.json',
   JSON.stringify({ source: { prereg: preregPath, raw: rawPath }, cards }, null, 2),
 );
 
@@ -118,4 +118,4 @@ const md = [
   '',
 ].join('\n');
 writeFileSync('REPORT_CARD.md', md);
-console.log(`${cards.length} cards → REPORT_CARD.md, site/data/report-card.json`);
+console.log(`${cards.length} cards → REPORT_CARD.md, results/report-card.json`);

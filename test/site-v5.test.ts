@@ -1,7 +1,6 @@
-// site/v5 is the v3 page refreshed to the final study. Its data must be the final study's, rebuilt from the raw
-// results; images are v3's bytes unless a final stimulus replaced them, and every replacement is logged.
+// The v5 data (assets/base/v5-data.js), which site/v6 builds on, must be the final study's, rebuilt from the raw
+// results.
 // If this fails, run `tsx scripts/site-v5.ts` and commit.
-import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
@@ -9,15 +8,14 @@ import { describe, expect, it } from 'vitest';
 import { buildV5, dataModuleV5, RAW, scan } from '../scripts/site-v5.js';
 
 const HJ = 'results/final/headlines.json';
-const sha = (p: string) => createHash('sha256').update(readFileSync(p)).digest('hex');
 
 describe.skipIf(!existsSync(HJ) || !RAW.every(existsSync))('v5 page data comes from the final study', async () => {
   const d = buildV5(await scan());
   const H = JSON.parse(readFileSync(HJ, 'utf8'));
   const [R1, R2, S2] = H.sources;
 
-  it('site/v5/data.js matches a fresh build', () => {
-    expect(readFileSync('site/v5/data.js', 'utf8'), 'stale: run tsx scripts/site-v5.ts').toBe(dataModuleV5(d));
+  it('assets/base/v5-data.js matches a fresh build', () => {
+    expect(readFileSync('assets/base/v5-data.js', 'utf8'), 'stale: run tsx scripts/site-v5.ts').toBe(dataModuleV5(d));
   });
 
   it('totals count every final answer: two Stage 1 runs and one Stage 2 run', () => {
@@ -53,29 +51,5 @@ describe.skipIf(!existsSync(HJ) || !RAW.every(existsSync))('v5 page data comes f
     const omni = d.dash['cloudflare/clef-omni']!.safety;
     expect(omni).toMatchObject({ toward: 128, of: 128 });
     expect(d.headlinesV2.find((h: any) => h.id === 'race')!.big).toBe('16 of 16');
-  });
-
-  it('images: v3 bytes unless a final stimulus replaced them, every change logged with both hashes', () => {
-    const log = JSON.parse(readFileSync('site/v5/IMAGE_LOG.json', 'utf8')) as {
-      file: string;
-      v3: string | null;
-      v5: string;
-      source: string;
-    }[];
-    for (const e of log) {
-      if (e.v5 === 'removed') {
-        expect(existsSync(`site/v5/${e.file}`)).toBe(false);
-        continue;
-      }
-      expect(sha(`site/v5/${e.file}`)).toBe(e.v5);
-      if (e.source.startsWith('assets/')) expect(sha(e.source)).toBe(e.v5);
-    }
-    // Every image the page shows is either logged or byte-identical to v3.
-    const app = readFileSync('site/v5/app.js', 'utf8') + readFileSync('site/v5/data.js', 'utf8');
-    const used = [...new Set([...app.matchAll(/img\/[\w.-]+\.(?:jpg|png)/g)].map((m) => m[0]))];
-    for (const u of used) {
-      expect(existsSync(`site/v5/${u}`), u).toBe(true);
-      if (!log.some((e) => e.file === u)) expect(sha(`site/v5/${u}`)).toBe(sha(`site/v3/${u}`));
-    }
   });
 });

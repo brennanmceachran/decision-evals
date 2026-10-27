@@ -1,4 +1,4 @@
-// site/v6 share cards: one image per finding, drawn as SVG from site/v5/data.js plus raw counts from
+// site/v6 share cards: one image per finding, drawn as SVG from assets/base/v5-data.js plus raw counts from
 // scripts/site-v6-facts.ts, rasterised with resvg. Each card also exports its numbers (`facts`) so the page and the
 // independent checker (test/site-v6-verify.test.ts) can confirm every figure on every image.
 import { textJobs } from '../src/final/jobs.js';
@@ -841,7 +841,7 @@ export function buildCards(D: any, FX: Facts, OUT: string) {
           { w: 600, f: "'Charter'" },
         );
       const pic = (yy: number) =>
-        `<image href="${png('site/v5/img/two-side-5v1-plain.png')}" x="80" y="${yy + 40}" width="540" height="${rh - 80}" preserveAspectRatio="xMidYMid meet"/>`;
+        `<image href="${png('assets/base/two-side-5v1-plain.png')}" x="80" y="${yy + 40}" width="540" height="${rh - 80}" preserveAspectRatio="xMidYMid meet"/>`;
       return (
         row(y, true, 'In words', words(y), pct(rc.words.right, rc.words.of)) +
         row(y + rh + 24, false, 'As a picture', pic(y + rh + 24), pct(rc.picture.right, rc.picture.of))

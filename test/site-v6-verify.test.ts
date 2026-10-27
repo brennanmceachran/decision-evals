@@ -387,7 +387,7 @@ describe('site/v6 share cards, recounted from the raw answers', () => {
     new Function('window', readFileSync('site/v6/data.js', 'utf8'))(w);
     C = w.CARDS;
     const w5: any = {};
-    new Function('window', readFileSync('site/v5/data.js', 'utf8'))(w5);
+    new Function('window', readFileSync('assets/base/v5-data.js', 'utf8'))(w5);
     D5 = w5.DATA;
   }, 120_000);
 

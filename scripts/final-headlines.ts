@@ -2,7 +2,7 @@
 // headline can say "chose X in N of M versions". Stage 1 (19 decision models) has two independent runs; Stage 2
 // (3 chat models) has one run, where each answer is the majority of 5 samples. Nothing here re-scores or filters:
 // refusals are counted as refusals, every model is kept.
-// Usage: tsx scripts/final-headlines.ts → results/final/headlines.json (read by scripts/final-explorer.ts)
+// Usage: tsx scripts/final-headlines.ts → results/final/headlines.json (read by scripts/site-v5.ts and test/site-v5.test.ts)
 import { readFileSync, writeFileSync } from 'node:fs';
 import { FINAL_SUBJECTS } from '../src/final/subjects.js';
 

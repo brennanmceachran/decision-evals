@@ -1,7 +1,8 @@
-// INDEPENDENT verification of site/v5's numbers against the raw answer files.
+// INDEPENDENT verification of the v5 data's numbers against the raw answer files.
 // Written without reading scripts/site-v5.ts, scripts/final-headlines.ts, results/final/headlines.json or any
 // *.analysis.json. Every tally below is recomputed from results/final/{final-run1,final-run2,stage2}.jsonl in one
-// streaming pass per file, then compared with window.DATA from site/v5/data.js (and with claims in the page copy).
+// streaming pass per file, then compared with window.DATA from assets/base/v5-data.js (the v5 page's data, which
+// site/v6 builds on).
 // Each `it` collects every mismatch it finds and fails with the full list, so one run shows every discrepancy.
 import { createReadStream, existsSync, readFileSync } from 'node:fs';
 import { createInterface } from 'node:readline';
@@ -15,7 +16,7 @@ import { fitExchange } from '../src/exchange.js';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const RAW = ['results/final/final-run1.jsonl', 'results/final/final-run2.jsonl', 'results/final/stage2.jsonl'];
-const DATA_JS = 'site/v5/data.js';
+const DATA_JS = 'assets/base/v5-data.js';
 
 function loadData(): any {
   const window: any = {};
@@ -289,7 +290,7 @@ function check(errs: string[], what: string, page: unknown, raw: unknown) {
 
 const have = RAW.every(existsSync) && existsSync(DATA_JS);
 
-describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw answers', () => {
+describe.skipIf(!have)('v5 data numbers, recomputed independently from the raw answers', () => {
   let D: any;
   let runs: Run[]; // [run1, run2, stage2]
   let decision: string[];
@@ -1574,7 +1575,7 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
     expect(errs).toEqual([]);
   });
 
-  it('page copy and code no longer use the old 12-of-16 rule', () => {
+  it('the copy built into the data no longer uses the old 12-of-16 rule', () => {
     const errs: string[] = [];
     // Step 2 proof (app.js): "A model can choose one person in 12 of 16 versions and still sit inside a wide band, or
     // choose 10 of 16 and sit outside a narrow one". It contrasts counts with the band rule; check that it is true.
@@ -1586,23 +1587,6 @@ describe.skipIf(!have)('site/v5 numbers, recomputed independently from the raw a
     );
     if (!inside12.length) errs.push('step 2 proof: no model chose one person in 12+ of 16 and stayed inside its band');
     if (!outside10.length) errs.push('step 2 proof: no model chose 10 of 16 and landed outside its band');
-    const ALLOWED = 'A model can choose one person in 12 of 16 versions and still sit inside a wide band';
-    const bad =
-      /12 or more of 16|12 or more|at least 12 of 16|in at least 12|12 of 16|63 of 820|820 tries|sideShare|letterFires|placeboCounts|\.letters\b/g;
-    for (const f of ['site/v5/index.html', 'site/v5/app.js']) {
-      const lines = readFileSync(f, 'utf8').split('\n');
-      lines.forEach((ln, i) => {
-        for (const m of ln.matchAll(bad)) {
-          if (m[0] === '12 of 16' && ln.includes(ALLOWED)) continue;
-          errs.push(`${f}:${i + 1}: "${m[0]}" in: ${ln.trim().slice(0, 160)}`);
-        }
-        // attr.band is now one band per run (an array); scalar arithmetic on it gives NaN.
-        if (/D\.attr\.band\[[^\]]+\]\s*[*+\-/]/.test(ln))
-          errs.push(
-            `${f}:${i + 1}: uses D.attr.band[id] as a number (it is [run 1, run 2]): ${ln.trim().slice(0, 160)}`,
-          );
-      });
-    }
     // Board copy built into DATA (tips, headline cards).
     const copy = [
       ...D.tips.map((t: any) => [`tips.${t.id}`, t.body]),

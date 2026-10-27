@@ -19,10 +19,8 @@
     "prereg": "tsx src/prereg.ts",
     "format": "prettier --write src scripts test",
     "findings": "tsx scripts/report-card.ts && tsx scripts/findings.ts",
-    "site": "tsx scripts/site.ts",
-    "site:v2": "tsx scripts/site-v2.ts",
-    "site:extract": "node --max-old-space-size=12288 --import tsx scripts/site-extract.ts",
-    "site:v3": "tsx scripts/site-v3.ts"
+    "site": "tsx scripts/site-v6.ts",
+    "site:stamp": "tsx scripts/site-v6-stamp.ts"
   },
   "dependencies": {
     "@ai-sdk/gateway": "^4.0.112",

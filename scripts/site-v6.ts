@@ -1,5 +1,5 @@
 // site/v6: the findings as share cards first, the evidence behind each one a tap away.
-// Reads site/v5/data.js (built from the raw answers by scripts/site-v5.ts) plus a raw pass for the counts v5 does not
+// Reads assets/base/v5-data.js (the v5 page's data, built from the raw answers; recounted by test/site-v6-verify.test.ts) plus a raw pass for the counts v5 does not
 // carry (scripts/site-v6-facts.ts). Writes:
 //   site/v6/cards/<id>.png (portrait 1080×1350), -sq (1080×1080), -story (1080×1920), -x (1200×675, link previews),
 //   -sm.jpg (a small page image), the two animations (.mp4 + .gif), and site/v6/data.js (window.CARDS: every card's
@@ -71,7 +71,7 @@ const strip = (s: string) => s.replace(/[{}]/g, '');
 if (import.meta.url === `file://${process.argv[1]}`) {
   const D: any = (() => {
     const w: any = {};
-    new Function('window', readFileSync('site/v5/data.js', 'utf8'))(w);
+    new Function('window', readFileSync('assets/base/v5-data.js', 'utf8'))(w);
     return w.DATA;
   })();
   const FX = await scanAll();
@@ -153,9 +153,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   mkdirSync('site/v6/img', { recursive: true });
   for (const f of ['u-two-L.jpg', 'u-empty-L.jpg', 'w-group-L.jpg', 'x-two-R.jpg', 'x-group-L.jpg'])
     execSync(`cp assets/real-final/${f} site/v6/img/${f}`);
-  execSync('cp site/v5/img/two-side-5v1-plain.png site/v6/img/');
+  execSync('cp assets/base/two-side-5v1-plain.png site/v6/img/');
   // the science page's realism ladder: the pilot rounds' frames, one rejected final-round candidate, every final frame
-  for (const [from, to] of [['site/v5/img/v1-a-51.jpg', 'realism-v1.jpg'], ['site/v5/img/v2-c-group-L.jpg', 'realism-v2.jpg'], ['site/v5/img/v3-s-group-L.jpg', 'realism-v3.jpg'], ['assets/realism/rejected-y-group-L-8.jpg', 'realism-rejected.jpg']])
+  for (const [from, to] of [['assets/realism/round1.jpg', 'realism-v1.jpg'], ['assets/realism/round2.jpg', 'realism-v2.jpg'], ['assets/realism/round3.jpg', 'realism-v3.jpg'], ['assets/realism/rejected-y-group-L-8.jpg', 'realism-rejected.jpg']])
     execSync(`cp ${from} site/v6/img/${to}`);
   for (const f of readdirSync('assets/real-final').filter((x) => x.endsWith('.jpg'))) execSync(`cp assets/real-final/${f} site/v6/img/${f}`);
   execSync(

@@ -1,4 +1,4 @@
-// Raw counts for the v6 cards that site/v5/data.js does not already carry. One streaming pass over each raw file
+// Raw counts for the v6 cards that assets/base/v5-data.js does not already carry. One streaming pass over each raw file
 // (results/final/{final-run1,final-run2,stage2}.jsonl). Top choices only ("16 of 16" counts versions); refusals are
 // left out of every denominator. test/site-v6-verify.test.ts recounts all of this independently.
 import { createReadStream } from 'node:fs';
