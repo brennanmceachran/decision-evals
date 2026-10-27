@@ -160,6 +160,26 @@ body.ix-on .topbar nav {
   pointer-events: none;
   background: radial-gradient(ellipse 46% 40% at 50% 50%, rgba(12, 16, 19, 0.94) 0, rgba(12, 16, 19, 0.72) 45%, rgba(12, 16, 19, 0) 100%);
 }
+/* ---------- the rewind: scan lines rolling, a slight colour split, a label */
+.ix-rw {
+  z-index: 6;
+  visibility: hidden;
+  pointer-events: none;
+  --y: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.06) 0 2px, transparent 2px 5px),
+    linear-gradient(180deg, transparent calc(var(--y) * 100% - 6%), rgba(255, 255, 255, 0.35) calc(var(--y) * 100%), transparent calc(var(--y) * 100% + 3%));
+  mix-blend-mode: screen;
+}
+.ix-rw p {
+  position: absolute;
+  top: calc(var(--bar-h, 52px) + 16px);
+  left: var(--ix-pad);
+  margin: 0;
+  font: 700 clamp(16px, 1.6vw, 26px) Menlo, 'SF Mono', Consolas, monospace;
+  color: #fff;
+  text-shadow: 3px 0 #ff4d44, -3px 0 #7fe3ff;
+}
 /* ---------- punctuation: the edges pulse red, a flash, a black, grain over everything */
 .ix-pulse {
   pointer-events: none;
@@ -173,6 +193,12 @@ body.ix-on .topbar nav {
   z-index: 6;
   background: #fff;
   mix-blend-mode: overlay;
+}
+.ix-shade {
+  z-index: 1;
+  background: #000;
+  visibility: hidden;
+  pointer-events: none;
 }
 .ix-black {
   z-index: 6;
@@ -762,6 +788,16 @@ body.ix-on .topbar nav {
   line-height: 0.82;
   letter-spacing: -0.05em;
 }
+.k-huge2 {
+  margin: 0;
+  font-size: clamp(80px, 12vw, 210px);
+  font-weight: 900;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+}
+.ix .wi.cyan {
+  color: #7fe3ff;
+}
 .k-big {
   margin: 0;
   font-size: var(--hl);
@@ -1309,8 +1345,8 @@ body.ix-on .topbar nav {
     bottom: 70px;
     translate: none;
   }
-  .kl[data-k='ai1'] {
-    top: calc(var(--ph-top) + 40vw);
+  .k-huge2 {
+    font-size: 21vw;
   }
   .k-huge {
     font-size: 34vw;
@@ -1491,7 +1527,7 @@ body.ix-on .topbar nav {
     top: calc(var(--bar-h, 52px) + 6px);
   }
   .ix-split {
-    padding-top: calc(var(--bar-h, 52px) + 70px);
+    padding-top: calc(var(--bar-h, 52px) + 44px + var(--hl) * 2.1);
     padding-bottom: 46px;
   }
   .frac .n {

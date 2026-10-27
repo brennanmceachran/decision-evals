@@ -269,6 +269,11 @@
       },
       whoosh: (t, d = 0.3) => nz(t, d * 0.4, 0.34, 'bandpass', 500, 4200, 0.7, { a: d * 0.6, wet: 0.3 }),
       tick: (t) => osc(t, 'square', 2100, 0, 0, 0.001, 0.016, 0.05),
+      rewind: (t, d = 0.42) => {
+        osc(t, 'sawtooth', 900, 120, d, 0.01, d, 0.12, { lp: [3000, 600, d] });
+        for (let k = 0; k < 10; k++) nz(t + (k * d) / 10, 0.02, 0.18, 'bandpass', 2400 - k * 160, 0, 1.5);
+        nz(t, d, 0.2, 'highpass', 3000, 900, 0.6, { a: 0.02 });
+      },
       // a tram bell: two strikes, each a few inharmonic partials ringing down
       bell: (t) => {
         for (const [k, v] of [[0, 1], [0.17, 0.85]])
@@ -597,9 +602,10 @@
             .join('')}
           <p class="xq-src">${esc(M(omni).name)}, each question its own call: ${D.live[0][0]} of ${D.live[0][1]}, ${D.knew[0][1]} of ${D.knew[0][2]}, ${D.knew[0][0]} of ${D.knew[0][2]}${both(D.knew)}</p>
         </div>
+        <div class="ix-l ix-shade" aria-hidden="true"></div>
         <div class="ix-l ix-kin">
           <div class="kl k-low" data-k="you"></div>
-          <div class="kl k-top" data-k="ai1"><p class="k-big">${words([['Now the AI.']])}</p><p class="k-sub">The same frame, the same request, again and again.</p></div>
+          <div class="kl k-mid" data-k="ai1"><p class="k-huge2">${words([['Now'], ['the AI.', 'cyan']])}</p></div>
           <div class="kl k-side" data-k="ai2"><p class="k-count">${frac(0, D.two.of, 'red')}</p><p class="k-big">${words([[`${M(omni).vendor}’s AI sent it left.`], ['Every time.', 'red']])}</p><p class="k-src">${esc(M(omni).name)}, this exact frame${both([[D.two.n], [D.two.n]])}</p></div>
           <div class="kl k-low" data-k="knew"><p class="k-big">${words([['It knew.'], ['It went anyway.', 'red']])}</p></div>
           <div class="kl k-mid" data-k="scale"><p class="k-lab">${words([['That was one question.']])}</p><p class="k-mega"><b class="ct">0</b></p><p class="k-big2">${words([[`answers from ${D.models} AIs`]])}</p><div class="names">${D.makers.map((v) => `<span>${esc(v)}</span>`).join('')}</div></div>
@@ -610,6 +616,7 @@
           <div class="kl k-low" data-k="hits"><p class="k-big">${words([['They hit the workers'], [`${fmt(D.fault.on)} times, not ${fmt(D.fault.off)}.`, 'red']])}</p></div>
         </div>
       </div>
+      <div class="ix-l ix-rw" aria-hidden="true"><p>◀◀ ${esc(M(omni).name)}</p></div>
       <div class="ix-l ix-pulse" aria-hidden="true"></div>
       <div class="ix-l ix-flash" aria-hidden="true"></div>
       <div class="ix-l ix-black" aria-hidden="true"></div>
@@ -1016,35 +1023,51 @@
             : pick === 'left'
               ? `<p class="k-lab">${words([['You:']])}</p><p class="k-huge">${words([['Left.', 'red']])}</p><p class="k-sub">Into the workers.</p>`
               : `<p class="k-lab">${words([['Too slow.']])}</p><p class="k-huge">${words([['Left.', 'red']])}</p><p class="k-sub">The schedule chose for you: into the workers.</p>`;
-        life(you, s + 0.08, s + 1.75);
+        life(you, s + 0.08, s + 1.5, { exit: 'cut' });
         slam(you.querySelector('.k-lab'), s + 0.08);
         slam(you.querySelector('.k-huge'), s + 0.22, { from: 2.4, dur: 0.3 });
         op(you.querySelector('.k-sub'), s + 0.6, 0.25, 0, 1);
-        cue(s + 1.5, 'revcym', 0.5);
       });
 
       // ======== 2. The AI. The frame snaps into a grid of sixteen on a drumroll; impact on sixteen.
-      beat('The AI', 8 * B, (s) => {
-        const ai1 = kin('ai1');
-        life(ai1, s + 0.3, s + 1.0, { exit: 'fade', out: 0.2 });
-        slam(ai1.querySelector('.k-big'), s + 0.3);
-        op(ai1.querySelector('.k-sub'), s + 0.5, 0.25, 0, 1);
-        cue(s, 'impact', 0.7);
-        flash(s, 0.5);
-        tf(fr, s, 0.4, (p) => `scale(${lerp(1.42, 1, p)})`, E.io);
-        if (!atWorkers) {
-          draw(rR, s, 0.2, 1, 0);
-          op(nob, s, 0.2, 1, 0);
+      beat('The AI', 9 * B, (s) => {
+        // rewind: the route un-draws, the skulls lift, the camera pulls back, with tape lines and a pitch-down scrub
+        const rw = $('.ix-rw');
+        const RW = 0.42;
+        tl.add(rw, 'x', -1, 0.001, () => vis(rw, 0));
+        tl.add(rw, 'x', s - RW, RW, (p) => {
+          vis(rw, p > 0 && p < 1 ? 1 : 0);
+          rw.style.setProperty('--y', `${(p * 9) % 1}`);
+        }, E.lin);
+        cue(s - RW, 'rewind', RW);
+        tf(fr, s - RW, RW, (p) => `scale(${lerp(1.42, 1, p)}) translateX(${Math.sin(p * 40) * 3}px)`, E.in);
+        if (atWorkers) {
+          draw(rL, s - RW, RW, 1, 0, E.in);
+          sks.forEach((k) => drop(k, s - RW, RW * 0.6, false));
+        } else {
+          draw(rR, s - RW, RW, 1, 0, E.in);
+          op(nob, s - RW, RW * 0.5, 1, 0);
         }
-        tf(photo, s + 0.1, 0.4, toTile, E.io);
-        op(photo, s + 0.5, 0.05, 1, 0);
+        // "Your turn's over. Now the AI's": on the beat, the frame snaps down into the first of sixteen
+        const ai1 = kin('ai1');
+        life(ai1, s, s + B * 2 - 0.05, { exit: 'cut' });
+        slam(ai1.querySelector('.k-huge2'), s, { from: 2.2, stagger: 0.12 });
+        const shd = $('.ix-shade');
+        tl.add(shd, 'a', -1, 0.001, () => vis(shd, 0));
+        tl.add(shd, 'a', s, 0.06, (p) => vis(shd, 0.86 * p), E.lin);
+        tl.add(shd, 'a', s + B * 2 - 0.05, 0.001, () => vis(shd, 0));
+        cue(s, 'impact', 0.9);
+        flash(s, 0.6);
+        shake(s, 14);
+        tf(photo, s + B * 2 - 0.36, 0.32, toTile, E.quint);
+        op(photo, s + B * 2 - 0.03, 0.03, 1, 0);
         const grid = $('.ix-grid');
-        life(grid, s + 0.1, s + 3.9, { exit: 'whip' });
+        life(grid, s + B * 2 - 0.05, s + 4.4, { exit: 'whip' });
         const tiles = $$('.ix-grid .tile');
-        const t0 = s + B; // the roll: sixteen sixteenth notes
+        const t0 = s + B * 2; // the roll: sixteen sixteenth notes
         const step = B / 4;
         const ai2 = kin('ai2');
-        life(ai2, t0 - 0.05, s + 3.9);
+        life(ai2, t0 - 0.05, s + 4.4);
         const n = ai2.querySelector('.k-count .n');
         tl.add(n, 'c', -1, 0.001, () => (n.textContent = '0'));
         tiles.forEach((tile, i) => {
@@ -1079,7 +1102,7 @@
         tl.add(cnt, 'z', hit, 0.35, (p) => (cnt.style.transform = `scale(${1 + 0.35 * Math.sin(p * Math.PI)})`), E.out);
         slam(ai2.querySelector('.k-big'), hit + 0.05, { stagger: 0.05 });
         op(ai2.querySelector('.k-src'), hit + 0.5, 0.3, 0, 1);
-        cue(s + 3.5, 'whoosh', 0.35);
+        cue(s + 4.0, 'whoosh', 0.35);
       });
 
       // ======== 3. It knew. What the AI was shown, its three answers, the third one wrong.
