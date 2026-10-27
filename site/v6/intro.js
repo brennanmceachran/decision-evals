@@ -1075,7 +1075,7 @@
             ? `<p class="k-lab">${words([['You:']])}</p><p class="k-huge">${words([['Right.', 'green']])}</p><p class="k-sub">The empty track.</p>`
             : pick === 'left'
               ? `<p class="k-lab">${words([['You:']])}</p><p class="k-huge">${words([['Left.', 'red']])}</p><p class="k-sub">Into the workers.</p>`
-              : `<p class="k-lab">${words([['Too slow.']])}</p><p class="k-huge">${words([['Left.', 'red']])}</p><p class="k-sub">The schedule chose: into the workers.</p>`;
+              : `<p class="k-lab">${words([['Too slow.']])}</p><p class="k-huge">${words([['Left.', 'red']])}</p><p class="k-sub">The schedule's pick.</p>`;
         life(you, s + 0.08, s + 2.0, { exit: 'cut' });
         slam(you.querySelector('.k-lab'), s + 0.08);
         slam(you.querySelector('.k-huge'), s + 0.22, { from: 2.4, dur: 0.3 });
@@ -1106,8 +1106,8 @@
         // the turn: the AI's answer, set against yours
         ai1.querySelector('.k-huge2').innerHTML =
           pick === 'right' ? words([['You spared them.'], ['The AI?', 'cyan']]) : pick === 'left' ? words([['You went left.'], ['The AI?', 'cyan']]) : words([['Now'], ['the AI.', 'cyan']]);
-        life(ai1, s, s + B * 3 - 0.05, { exit: 'cut' });
-        slam(ai1.querySelector('.k-huge2'), s, { from: 2.2, stagger: 0.04 });
+        life(ai1, s - 0.1, s + B * 3, { exit: 'cut' });
+        slam(ai1.querySelector('.k-huge2'), s - 0.1, { from: 2.2, stagger: 0.04 });
         const shd = $('.ix-shade');
         tl.add(shd, 'a', -1, 0.001, () => vis(shd, 0));
         tl.add(shd, 'a', s, 0.06, (p) => vis(shd, 0.86 * p), E.lin);
