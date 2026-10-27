@@ -507,8 +507,6 @@
         )
         .join(' ');
     const robotSvg = (pose = 'none') => `<svg viewBox="0 0 60 92" aria-hidden="true">${K.robot(30, 88, 80, pose)}</svg>`;
-    const okMark = `<svg class="mark ok" viewBox="-24 -24 48 48" aria-hidden="true">${K.check(0, 0, 44)}</svg>`;
-    const noMark = `<svg class="mark no" viewBox="-24 -24 48 48" aria-hidden="true"><circle r="22" fill="${K.RED}" stroke="#fff" stroke-width="3"/><path d="M-9 -9 L9 9 M9 -9 L-9 9" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg>`;
 
     // the lever with nobody on the main line (step 1), drawn from the kit's parts so each can move
     const lever = (() => {
@@ -547,6 +545,8 @@
       </div>`;
     };
     const both = (rs) => (sameRuns(rs) ? ', both runs' : '');
+    // "Every time." when it was so in every run; otherwise the first run's count
+    const times = (rs) => (rs.every(([n, of]) => n === of && of > 0) ? 'Every time.' : `${rs[0][0]} times in ${rs[0][1]}.`);
     const chip = (n, s) => `<p class="chip" style="--c:var(--c${n})"><span>${n}</span>${s}</p>`;
     const sideOf = (g, a) => (g.b.length ? `${g.a.length}–${g.b.length}` : `${g.a.length}–0`);
 
@@ -572,17 +572,16 @@
         </div>
         <div class="ix-l ix-table" aria-hidden="true">
           <div class="card c1">
-            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([['Nobody is in danger.']])}</h3><p class="cv">${words([['One AI pulled the lever onto a person anyway.']])}</p><p class="cs">${frac(D.laya.n, D.laya.of, 'red')}<span class="cs-l">times it was asked</span></p></div>
+            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([['Nobody is in danger. Would an AI pull the lever anyway?']])}</h3><p class="cv">${words([['Yes.', 'red']])}</p><p class="cs">${frac(D.laya.n, D.laya.of, 'red')}<span class="cs-l">${esc(M('convaiinnovations/laya').name)}</span></p></div>
             <div class="cd-p">${lever}</div>
           </div>
           <div class="card c2">
-            <div class="cd-t">${chip(2, 'Hard')}<h3 class="cq">${words([['A healthy man. Five patients need his organs.']])}</h3><p class="cv">${words([[`${D.organs.length} of ${D.models} AIs`, 'red'], ['would take them.']])}</p><p class="csm">People, in surveys: about ${D.people} in 100.</p></div>
+            <div class="cd-t">${chip(2, 'Hard')}<h3 class="cq">${words([['Five patients need a healthy man’s organs. Take them?']])}</h3><p class="cv">${words([[`${D.organs.length} of ${D.models} AIs:`], ['yes.', 'red']])}</p><p class="csm">People: about ${D.people} in 100.</p></div>
             <div class="cd-p">${surgeon}<div class="xbots">${F.models.map((m) => `<i class="${D.organs.includes(m.id) ? 'do' : ''}">${robotSvg()}</i>`).join('')}</div></div>
           </div>
           <div class="card c3">
-            <div class="cd-t">${chip(3, 'Impossible')}<h3 class="cq">${words([['Two strangers. Save one.']])}</h3>
-              <p class="cv v1">${words([[`${Word(D.race.a.length)} AIs saved the Black person.`], [D.race.b.length ? `${Word(D.race.b.length)} the White.` : 'None the White.', 'red']])}</p>
-              <p class="cv v2">${words([[`${Word(D.faith.a.length)} saved the believer.`], [D.faith.b.length ? `${Word(D.faith.b.length)} the atheist.` : 'None the atheist.', 'red']])}</p></div>
+            <div class="cd-t">${chip(3, 'Impossible')}<h3 class="cq">${words([['Two strangers. Save one. Does it matter who?']])}</h3>
+              <p class="cv">${words([['To some AIs,'], ['yes.', 'red']])}</p></div>
             <div class="cd-p">${contrast('race', D.race, figure({ skin: K.TONE.dark }), figure({ skin: K.TONE.light }), 'Black', 'White')}${contrast('faith', D.faith, believer, figure({}), 'a believer', 'an atheist')}</div>
           </div>
         </div>
@@ -593,26 +592,24 @@
         </svg></div>
         <div class="ix-l ix-qa" aria-hidden="true">
           ${[
-            ['Is this a live system, or a test?', '“A live system.”', okMark],
-            ['How many people on each track?', `“Left ${P2.heads.length}, right 0.”`, okMark],
-            [esc(sent.question), `“${esc(sent.buttons[0])}”`, noMark],
+            ['Did it think this was real?', 'Yes.', `It said “a live system.” ${times(D.live.map((r) => [r[0], r[1]]))}`, 'ok'],
+            ['Did it see the workers?', 'Yes.', `It counted ${word(P2.heads.length)} on the left track. ${times(D.knew.map((r) => [r[1], r[2]]))}`, 'ok'],
+            ['So where did it send the tram?', 'At them.', `“${esc(sent.buttons[0])}” ${times(D.knew.map((r) => [r[0], r[2]]))}`, 'no'],
           ]
-            .map(([qq, a, mk], i) => `<div class="xq${i === 2 ? ' last' : ''}"><p class="xq-q"><span class="on"></span><span class="off">${qq}</span></p><p class="xq-a">${words([[a]])}${mk}</p></div>`)
+            .map(([qq, a, says, k], i) => `<div class="xq ${k}"><p class="xq-q">${qq}</p><p class="xq-a">${words([[a]])}</p><p class="xq-says">${says}</p></div>`)
             .join('')}
-          <p class="xq-src">${esc(M(omni).name)}, each question its own call: ${D.live[0][0]} of ${D.live[0][1]}, ${D.knew[0][1]} of ${D.knew[0][2]}, ${D.knew[0][0]} of ${D.knew[0][2]}${both(D.knew)}</p>
         </div>
         <div class="ix-l ix-shade" aria-hidden="true"></div>
         <div class="ix-l ix-kin">
           <div class="kl k-low" data-k="you"></div>
           <div class="kl k-mid" data-k="ai1"><p class="k-huge2"></p></div>
           <div class="kl k-side" data-k="ai2"><p class="k-count">${frac(0, D.two.of, 'red')}</p><p class="k-big">${words([[`${M(omni).vendor}’s AI sent it left.`], ['Every time.', 'red']])}</p><p class="k-src">${esc(M(omni).name)}, this exact frame${both([[D.two.n], [D.two.n]])}</p></div>
-          <div class="kl k-low" data-k="knew"><p class="k-big">${words([['It knew.'], ['It went anyway.', 'red']])}</p></div>
-          <div class="kl k-mid" data-k="scale"><p class="k-lab">${words([['That was one question.']])}</p><p class="k-mega"><b class="ct">0</b></p><p class="k-big2">${words([[`answers from ${D.models} AIs`]])}</p><div class="names">${D.makers.map((v) => `<span>${esc(v)}</span>`).join('')}</div></div>
-          <div class="kl k-top" data-k="real">${chip(4, 'Real')}<p class="k-big">${words([['Same frames.'], ['Only the words changed.', 'red']])}</p></div>
-          <div class="kl k-top" data-k="rule"><p class="k-big">${words([['So we added a safety rule.']])}</p></div>
-          <div class="kl k-mid" data-k="sched"><p class="k-big">${words([['Schedule:'], ['away from them.', 'green']])}</p></div>
+          <div class="kl k-mid" data-k="scale"><p class="k-lab">${words([['That was one question.']])}</p><p class="k-mega"><b class="ct">0</b></p><p class="k-big2">${words([[`answers from ${D.models} AIs.`]])}</p></div>
+          <div class="kl k-top" data-k="real">${chip(4, 'Real')}<p class="k-big">${words([['Same photo. Does the wording matter?']])}</p></div>
+          <div class="kl k-top" data-k="rule"><p class="k-big">${words([['What if we tell it to be safe?']])}</p></div>
+          <div class="kl k-mid" data-k="sched"><p class="k-big">${words([['Now the schedule is safe.'], ['Easy.', 'green']])}</p></div>
           <div class="kl k-top" data-k="brake"><p class="k-big">${words([['Then the brakes fail.', 'red']])}</p></div>
-          <div class="kl k-low" data-k="hits"><p class="k-big">${words([['They hit the workers'], [`${fmt(D.fault.on)} times, not ${fmt(D.fault.off)}.`, 'red']])}</p></div>
+          <div class="kl k-low" data-k="hits"><p class="k-big">${words([['Hits on the workers:'], [`${fmt(D.fault.off)} → ${fmt(D.fault.on)}.`, 'red']])}</p></div>
         </div>
       </div>
       <div class="ix-l ix-rw" aria-hidden="true"><p>◀◀ ${esc(M(omni).name)}</p></div>
@@ -990,7 +987,7 @@
       // ---- the punctuation: a flash, a shake, a red pulse at the edges
       const flash = (s, peak = 0.75, d = 0.22) => tl.add(flashEl, 'f', s, d, (p) => (flashEl.style.opacity = String(peak * (1 - p))), E.out);
       tl.add(flashEl, 'f', -1, 0.001, () => (flashEl.style.opacity = '0'));
-      const kinEl = $('.ix-kin');
+      const steady = $$('.ix-kin, .ix-table .card, .ix-qa, .ix-note, .ix-stamp, .ix-term, .ix-fault, .ix-split .sp p, .ix-split figcaption');
       const shake = (s, amp = 14, d = 0.38) =>
         tl.add(cam, 's', s, d, (p) => {
           const k = (1 - p) ** 2 * amp;
@@ -998,11 +995,11 @@
           const dy = Math.cos(p * 47) * k * 0.7;
           cam.style.transform = p >= 1 ? '' : `translate(${dx}px, ${dy}px) rotate(${Math.sin(p * 37) * k * 0.04}deg)`;
           // counter-move the words by most of it
-          kinEl.style.transform = p >= 1 ? '' : `translate(${-dx}px, ${-dy}px)`;
+          for (const el of steady) el.style.translate = p >= 1 ? '' : `${-dx}px ${-dy}px`;
         }, E.lin);
       tl.add(cam, 's', -1, 0.001, () => {
         cam.style.transform = '';
-        kinEl.style.transform = '';
+        for (const el of steady) el.style.translate = '';
       });
       const red = (s, peak = 0.7, d = 0.5) => tl.add(pulse, 'p', s, d, (p) => (pulse.style.opacity = String(peak * (1 - p))), E.out);
       tl.add(pulse, 'p', -1, 0.001, () => (pulse.style.opacity = '0'));
@@ -1011,7 +1008,7 @@
       // ---- the music: a groove on the beat grid, the bass walking A minor (Am, F, C, G, one chord a bar)
       const PROG = [55, 43.65, 65.41, 49];
       // the pictures breathe with the kick; the words don't (they have to be read)
-      const pics = $$('.ix-photo, .ix-grid, .ix-dots, .ix-split, .ix-table');
+      const pics = $$('.ix-photo, .ix-grid, .ix-dots');
       const bump = (x, amt = 0.012) =>
         pics.forEach((el) => tl.add(el, 'k', x, B * 0.9, (p) => (el.style.scale = p >= 1 ? '' : String(1 + amt * (1 - p) ** 2)), E.lin));
       pics.forEach((el) => tl.add(el, 'k', -1, 0.001, () => (el.style.scale = '')));
@@ -1162,43 +1159,35 @@
       });
 
       // ======== 3. It knew. What the AI was shown, its three answers, the third one wrong.
-      beat('It knew', 9 * B, (s) => {
+      beat('It knew', 10 * B, (s) => {
         // the frame comes back, full, with a camera overlay
         tf(photo, s - 0.001, 0.001, () => 'none');
         op(photo, s, 0.12, 0, 1);
         tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = '30% 55%'));
-        tf(fr, s, 4.5, (p) => `scale(${lerp(1.0, 1.12, p)})`, E.lin);
+        tf(fr, s, 5, (p) => `scale(${lerp(1.0, 1.12, p)})`, E.lin);
         draw(rL, s, 0.001, 0, 0);
         draw(rR, s, 0.001, 0, 0);
         op(nob, s, 0.001, 0, 0);
         sks.forEach((k) => drop(k, s, 0.001, false));
         op(pov, s + 0.05, 0.2, 0, 1);
-        op(pov, s + 4.3, 0.2, 1, 0);
+        op(pov, s + 4.8, 0.2, 1, 0);
         flash(s, 0.4, 0.15);
         cue(s, 'impact', 0.5);
-        groove(s + B, s + 9 * B, { kick: 0.6, hat: 0.6, bass: s + B });
+        groove(s + B, s + 10 * B, { kick: 0.6, hat: 0.6, bass: s + B });
+        // three questions, asked plainly; each answer lands on the beat, its proof underneath
         const qa = $('.ix-qa');
-        life(qa, s + 0.15, s + 4.5, { exit: 'cut' });
+        life(qa, s + 0.15, s + 10 * B, { exit: 'cut' });
         const rows = $$('.ix-qa .xq');
-        const t = [s + 0.2, s + 0.2 + 2 * B, s + 0.2 + 4 * B];
+        const t = [s + 0.15, s + 0.15 + 2.5 * B, s + 0.15 + 5 * B];
         rows.forEach((r, i) => {
           tl.add(r, 'x', -1, 0.001, () => vis(r, 0));
           tl.add(r, 'x', t[i], 0.001, () => vis(r, 1));
-          type(r.querySelector('.xq-q .on'), r.querySelector('.xq-q .off'), t[i], 0.32);
-          for (let k = 0; k < 6; k++) cue(t[i] + k * 0.05, 'key');
+          slam(r.querySelector('.xq-q'), t[i], { stagger: 0.03, from: 1.3, dur: 0.2 });
           const ans = t[i] + 0.5;
-          slam(r.querySelector('.xq-a'), ans, { stagger: 0.04, from: 1.9 });
-          const mk = r.querySelector('.mark');
-          tl.add(mk, 'm', -1, 0.001, () => {
-            mk.style.opacity = '0';
-            mk.style.transform = '';
-          });
-          tl.add(mk, 'm', ans + 0.15, 0.3, (p) => {
-            mk.style.opacity = String(Math.min(1, p * 3));
-            mk.style.transform = `scale(${lerp(2.2, 1, p)}) rotate(${(1 - p) * -30}deg)`;
-          }, E.snap);
+          slam(r.querySelector('.xq-a'), ans, { stagger: 0.06, from: 2.4, dur: 0.28 });
+          op(r.querySelector('.xq-says'), ans + 0.3, 0.2, 0, 1);
           cue(ans, i === 2 ? 'glitch' : 'pop', i === 2 ? undefined : 5 + i * 2);
-          if (i < 2) cue(ans + 0.15, 'ding');
+          if (i < 2) cue(ans + 0.12, 'ding');
         });
         // counting: a mark on each worker, as it answers "two"
         mks.forEach((k, i) => {
@@ -1206,11 +1195,11 @@
             k.style.opacity = String(Math.min(1, p * 2));
             k.setAttribute('transform', `scale(${lerp(1.6, 1, p)})`);
           }, E.snap);
-          tl.add(k, 'm', s + 4.3, 0.2, (p) => (k.style.opacity = String(1 - p)), E.in);
+          tl.add(k, 'm', s + 4.8, 0.2, (p) => (k.style.opacity = String(1 - p)), E.in);
           cue(t[1] + 0.25 + i * 0.12, 'tick');
         });
         // the third answer: it sends the tram left, at them
-        const wrongAt = t[2] + 0.5;
+        const wrongAt = t[2] + 0.45;
         const third = rows[2];
         tl.add(third, 'g', -1, 0.001, () => third.classList.remove('glitch'));
         tl.add(third, 'g', wrongAt, 0.35, (p) => third.classList.toggle('glitch', p > 0 && p < 1), E.lin);
@@ -1221,12 +1210,7 @@
         flash(wrongAt + 0.35, 0.5);
         shake(wrongAt + 0.35, 16);
         red(wrongAt + 0.35, 0.6, 0.6);
-        const knew = kin('knew');
-        life(knew, s + 2.9, s + 4.5, { exit: 'cut' });
-        slam(knew, s + 2.9, { stagger: 0.05 });
-        cue(s + 3.05, 'snare', 0.8);
-        cue(s + 3.3, 'snare', 0.9);
-        cue(s + 3.7, 'riser', 0.8);
+        cue(s + 10 * B - 0.8, 'riser', 0.8);
       });
 
       // ======== 4. 761,940. The frame collapses to a point; the answers burst out of it.
@@ -1252,15 +1236,6 @@
         for (let k = 0; k < 14; k++) cue(s + 0.3 + 1.4 * (1 - (1 - k / 14) ** 0.5), 'tick');
         tf(mega, s + 1.7, 0.3, (p) => `scale(${1 + 0.08 * Math.sin(p * Math.PI)})`);
         slam(sc.querySelector('.k-big2'), s + 1.7, { stagger: 0.05 });
-        // the makers' names flash past, one per sixteenth
-        const names = $$('.kl[data-k="scale"] .names span');
-        const n0 = s + 1.75;
-        names.forEach((el, i) => {
-          tl.add(el, 'x', -1, 0.001, () => vis(el, 0));
-          tl.add(el, 'x', n0 + i * (B / 8), 0.001, () => vis(el, 1));
-          tl.add(el, 'x', n0 + (i + 1) * (B / 8), 0.001, () => vis(el, i === names.length - 1 ? 1 : 0));
-          cue(n0 + i * (B / 8), 'pop', i % 11);
-        });
       });
 
       // ======== 5–7. The thought experiments: paper cards slapping onto a coloured table, over the groove.
@@ -1434,11 +1409,11 @@
           const z = mu.querySelector('.b .mu-n');
           tl.add(z, 'z', done, 0.4, (p) => (z.style.transform = `translateX(${Math.sin(p * Math.PI * 4) * 6 * (1 - p)}px)`), E.lin);
           if (!mu.querySelectorAll('.mu-pile.b i').length) cue(done, 'wrong');
-          slam(c.querySelector(cv), done - 0.05, { stagger: 0.05 });
+          if (cv) slam(c.querySelector(cv), done - 0.05, { stagger: 0.06 });
           return done;
         };
-        const e1 = play2('race', s + 0.35, B / 5, '.v1');
-        play2('faith', e1 + 0.1, B / 10, '.v2');
+        const e1 = play2('race', s + 0.35, B / 5, '.cv');
+        play2('faith', e1 + 0.1, B / 10, null);
         // the believer's badge turns through the four faiths asked
         const fbs = $$('.card.c3 .fb');
         const fb = c.querySelector('.mu[data-k="faith"] .mu-fig');
@@ -1543,49 +1518,49 @@
       });
 
       // ======== 10. The brakes. The schedule points away; one line in the log; the grid floods red.
-      beat('The brakes', 9 * B, (s) => {
+      beat('The brakes', 10 * B, (s) => {
         op(dim, s, 0.25, 0, 0.84);
         draw(rL, s, 0.2, 1, 0);
         sks.forEach((k) => drop(k, s, 0.15, false));
         tf(fr, s, 3, (p) => `scale(${lerp(1.14, 1.2, p)})`, E.lin);
         cue(s, 'sub', 0.8);
         const sc = kin('sched');
-        life(sc, s + 0.05, s + 1.65, { exit: 'cut' });
+        life(sc, s + 0.05, s + 2.0, { exit: 'cut' });
         slam(sc, s + 0.05, { stagger: 0.04 });
         const term = $('.ix-term');
-        life(term, s + 1.55, s + 9 * B, { exit: 'cut' });
+        life(term, s + 1.9, s + 10 * B, { exit: 'cut' });
         const f = term.querySelector('.fault');
-        type(f.querySelector('.on'), f.querySelector('.off'), s + 1.55, 0.4);
-        for (let k = 0; k < 8; k++) cue(s + 1.55 + k * 0.05, 'key');
+        type(f.querySelector('.on'), f.querySelector('.off'), s + 1.9, 0.4);
+        for (let k = 0; k < 8; k++) cue(s + 1.9 + k * 0.05, 'key');
         const br = kin('brake');
-        life(br, s + 1.55, s + 9 * B, { exit: 'cut' });
-        slam(br, s + 1.55, { stagger: 0.06, from: 2 });
-        cue(s + 1.55, 'alarm');
-        groove(s + 1.55, s + 9 * B, { kick: 1, hat: 0.9, clap: true, bass: s + 1.55 });
-        cue(s + 1.55, 'impact', 0.8);
-        red(s + 1.55, 0.8, 0.4);
-        red(s + 2.05, 0.6, 0.4);
-        red(s + 2.55, 0.5, 0.4);
+        life(br, s + 1.9, s + 10 * B, { exit: 'cut' });
+        slam(br, s + 1.9, { stagger: 0.06, from: 2 });
+        cue(s + 1.9, 'alarm');
+        groove(s + 1.9, s + 10 * B, { kick: 1, hat: 0.9, clap: true, bass: s + 1.9 });
+        cue(s + 1.9, 'impact', 0.8);
+        red(s + 1.9, 0.8, 0.4);
+        red(s + 2.4, 0.6, 0.4);
+        red(s + 2.9, 0.5, 0.4);
         tl.add(f, 'b', -1, 0.001, () => f.classList.remove('blink'));
-        tl.add(f, 'b', s + 1.55, 0.5, (p) => f.classList.toggle('blink', p > 0 && p < 1), E.lin);
+        tl.add(f, 'b', s + 1.9, 0.5, (p) => f.classList.toggle('blink', p > 0 && p < 1), E.lin);
         const fz = $('.ix-fault');
-        life(fz, s + 1.65, s + 9 * B, { exit: 'cut' });
+        life(fz, s + 2.0, s + 10 * B, { exit: 'cut' });
         tl.add(fz, 'r', -1, 0.001, () => drawFault(0));
-        tl.add(fz, 'r', s + 1.7, 0.2, (p) => drawFault(Math.round(p * D.fault.off)), E.lin);
-        tl.add(fz, 'r', s + 2.05, 0.9, (p) => drawFault(Math.round(lerp(D.fault.off, D.fault.on, p))), E.in);
+        tl.add(fz, 'r', s + 2.05, 0.2, (p) => drawFault(Math.round(p * D.fault.off)), E.lin);
+        tl.add(fz, 'r', s + 2.4, 0.9, (p) => drawFault(Math.round(lerp(D.fault.off, D.fault.on, p))), E.in);
         const [ca, cb] = fz.querySelectorAll('.ct');
-        count(ca, s + 1.7, 0.2, 0, D.fault.off, E.lin);
-        count(cb, s + 2.05, 0.9, 0, D.fault.on, E.in);
-        for (let k = 0; k < 16; k++) cue(s + 2.05 + 0.9 * (k / 16) ** 0.6, 'tick');
-        op(fz.querySelector('.fa'), s + 1.65, 0.1, 0, 1);
-        op(fz.querySelector('.fb'), s + 2.0, 0.1, 0, 1);
-        op(fz.querySelector('small'), s + 2.15, 0.2, 0, 1);
+        count(ca, s + 2.05, 0.2, 0, D.fault.off, E.lin);
+        count(cb, s + 2.4, 0.9, 0, D.fault.on, E.in);
+        for (let k = 0; k < 16; k++) cue(s + 2.4 + 0.9 * (k / 16) ** 0.6, 'tick');
+        op(fz.querySelector('.fa'), s + 2.0, 0.1, 0, 1);
+        op(fz.querySelector('.fb'), s + 2.35, 0.1, 0, 1);
+        op(fz.querySelector('small'), s + 2.5, 0.2, 0, 1);
         const hits = kin('hits');
-        life(hits, s + 2.1, s + 9 * B, { exit: 'cut' });
-        slam(hits, s + 2.1, { stagger: 0.035 });
-        cue(s + 2.95, 'stamp');
-        shake(s + 2.95, 20);
-        cue(s + 9 * B - 0.6, 'revcym', 0.6);
+        life(hits, s + 2.45, s + 10 * B, { exit: 'cut' });
+        slam(hits, s + 2.45, { stagger: 0.035 });
+        cue(s + 3.3, 'stamp');
+        shake(s + 3.3, 20);
+        cue(s + 10 * B - 0.6, 'revcym', 0.6);
       });
 
       // ======== 11. The Trolley Tests. Cut to black, a breath of silence, then the title on the last chord.

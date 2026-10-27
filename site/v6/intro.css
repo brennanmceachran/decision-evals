@@ -527,22 +527,19 @@ body.ix-on .topbar nav {
 }
 .cq {
   margin: 0;
-  font-size: clamp(24px, 2.4vw, 40px);
-  font-weight: 900;
-  line-height: 1.05;
-  letter-spacing: -0.015em;
+  font-size: clamp(20px, 1.9vw, 32px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
 }
 .cv {
-  margin: 0.4em 0 0;
-  font-size: clamp(26px, 2.9vw, 50px);
+  margin: 0.35em 0 0;
+  font-size: clamp(34px, 3.8vw, 66px);
   font-weight: 900;
   line-height: 1.02;
   letter-spacing: -0.02em;
 }
-.c3 .cv {
-  font-size: clamp(22px, 2.3vw, 38px);
-  margin-top: 0.3em;
-}
+
 .cs {
   margin: 0.25em 0 0;
   opacity: 0;
@@ -722,28 +719,30 @@ body.ix-on .topbar nav {
 }
 .xq-q {
   margin: 0;
-  font: 600 clamp(12px, 1vw, 15px) / 1.3 Menlo, 'SF Mono', Consolas, monospace;
-  color: #a9dff0;
+  font-size: clamp(16px, 1.45vw, 24px);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
 }
 .xq-a {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin: 4px 0 0;
-  font-size: clamp(28px, 3vw, 52px);
+  margin: 2px 0 0;
+  font-size: clamp(40px, 4.4vw, 76px);
   font-weight: 900;
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #7fe3ff;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6);
 }
-.xq .mark {
-  flex: none;
-  width: clamp(30px, 2.8vw, 46px);
-  height: auto;
-  opacity: 0;
-}
-.xq.last .xq-a {
+.xq.no .xq-a {
   color: #ff4d44;
+}
+.xq-says {
+  margin: 4px 0 0;
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 700;
+  color: #c9d0d5;
+  opacity: 0;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
 }
 .xq.glitch .xq-a {
   animation: ix-glitch 0.09s steps(2) infinite;
@@ -757,12 +756,6 @@ body.ix-on .topbar nav {
     transform: translate(-3px, 2px);
     text-shadow: 4px 0 #7fe3ff, -4px 0 #ff4d44;
   }
-}
-.xq-src {
-  margin: 4px 0 0;
-  font-size: 12px;
-  font-weight: 600;
-  color: #9aa6ad;
 }
 /* ---------- the big words */
 .ix-kin {
@@ -1406,13 +1399,10 @@ body.ix-on .topbar nav {
     gap: 10px;
   }
   .xq-a {
-    font-size: 7.4vw;
+    font-size: 11vw;
   }
   .xq-q {
-    font-size: 11px;
-  }
-  .xq-src {
-    display: none;
+    font-size: 15px;
   }
   .k-mega {
     font-size: 20vw;
@@ -1581,7 +1571,7 @@ body.ix-on .topbar nav {
     font-size: 15vh;
   }
   .sp p small,
-  .xq-src,
+  .xq-says,
   .csrc,
   .card .xgl,
   .k-src {
@@ -1631,7 +1621,10 @@ body.ix-on .topbar nav {
     gap: 4px;
   }
   .xq-a {
-    font-size: 6.6vh;
+    font-size: 8vh;
+  }
+  .xq-q {
+    font-size: 13px;
   }
   .card {
     top: calc(50% + 14px);
