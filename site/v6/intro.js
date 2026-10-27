@@ -491,7 +491,6 @@
         ${o.marks ? `<g class="marks">${P2.heads.map(([x, y], i) => `<g transform="translate(${x} ${y})"><g class="xmk"><circle r="40" fill="rgba(127,227,255,.12)" stroke="#7fe3ff" stroke-width="5"/><circle cx="0" cy="-66" r="20" fill="#7fe3ff"/>${K.t(0, -56, String(i + 1), 28, { fill: K.INK, w: 900, a: 'middle' })}</g></g>`).join('')}</g>` : ''}
         <g class="skulls">${skulls(o.small ? 80 : 66)}</g>
         ${o.xtag ? `<g class="nobody"><rect x="${P2.empty[0] - 112}" y="${P2.empty[1] - 116}" width="224" height="54" rx="27" fill="rgba(0,0,0,.66)"/>${K.t(P2.empty[0], P2.empty[1] - 80, 'nobody here', 30, { fill: '#fff', w: 700, a: 'middle' })}</g>` : ''}
-        ${o.labels ? [['wide', [['Left track', 205, 300], ['Right track', 1080, 300]]], ['narrow', [['Left track', 420, 690], ['Right track', 1000, 690]]]].map(([k, ls]) => `<g class="tracks ${k}">${ls.map(([s, x, y]) => `<rect x="${x - 86}" y="${y - 34}" width="172" height="48" rx="24" fill="rgba(12,16,19,.62)"/>${K.t(x, y - 2, s, 22, { fill: '#fff', w: 700, a: 'middle' })}`).join('')}</g>`).join('') : ''}
         ${o.dim ? '<rect class="dim" width="1280" height="720" fill="#0c1013" opacity="0"/>' : ''}
       </svg>`;
     }
@@ -554,7 +553,7 @@
     host.innerHTML = `
     <div class="ix" data-state="pre" tabindex="-1">
       <div class="ix-cam">
-        <div class="ix-l ix-photo">${frame({ right: true, xtag: true, labels: true, dim: true, shade: true, plainRoute: true, marks: true })}<div class="pov" aria-hidden="true"><i></i><i></i><i></i><i></i><p>What ${esc(M(omni).name)} was shown</p></div></div>
+        <div class="ix-l ix-photo">${frame({ right: true, xtag: true, dim: true, shade: true, plainRoute: true, marks: true })}<div class="pov" aria-hidden="true"><i></i><i></i><i></i><i></i><p>What ${esc(M(omni).name)} was shown</p></div></div>
         <div class="ix-l ix-grid" aria-hidden="true">${Array.from({ length: D.two.of }, () => `<div class="tile">${frame({ small: true, meet: true })}</div>`).join('')}</div>
         <canvas class="ix-l ix-dots" aria-hidden="true"></canvas>
         <div class="ix-l ix-vig" aria-hidden="true"></div>
@@ -629,7 +628,7 @@
         <p class="ix-you">This is what we sent ${D.models} AIs. You first.</p>
         <div class="ix-log"><pre>${logLines.map((l) => `<span class="ln"><span class="on"></span><span class="off">${esc(l)}</span></span>`).join('\n')}</pre></div>
         <div class="ix-q">
-          <p class="qq">${esc(sent.question)}</p>
+          <p class="qh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V13M12 13 5 4M12 13l7-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="2.6" fill="currentColor"/></svg>Make a decision</p>
           <div class="qb"><button type="button" data-pick="left"><span class="ar">←</span>${esc(sent.buttons[0])}</button><button type="button" data-pick="right">${esc(sent.buttons[1])}<span class="ar">→</span></button></div>
           <p class="cd"><i></i><span>${esc(sw)} in <b>${secs}</b> s</span></p>
         </div>
@@ -919,7 +918,6 @@
       op($('.ix-hud'), 0.35, 0.3, 0, 1);
       op($('.ix-you'), 0.1, 0.6, 0, 1);
       op($('.ix-log'), 0.25, 0.4, 0, 1);
-      $$('.ix-photo .tracks').forEach((g) => op(g, tQ, 0.5, 0, 1));
       const qb = $('.ix-q');
       tl.add(qb, 'q', tQ, 0.6, (p) => {
         vis(qb, p);
@@ -1031,7 +1029,6 @@
       tf(photo, -1, 0.001, () => 'none');
       tf(fr, -1, 0.001, () => 'scale(1.1)');
       tl.add(fr, 'g', -1, 0.001, () => (fr.style.transformOrigin = ''));
-      $$('.ix-photo .tracks').forEach((g) => op(g, -1, 0.001, 1, 1));
       op($('.ix-pre'), -1, 0.001, 1, 1);
       draw(rL, -1, 0.001, 0, 0);
       draw(rR, -1, 0.001, 0, 0);
@@ -1052,7 +1049,6 @@
         flash(s, 0.85);
         shake(s, 22, 0.5);
         op($('.ix-pre'), s, 0.15, 1, 0, E.in);
-        $$('.ix-photo .tracks').forEach((g) => op(g, s, 0.15, 1, 0));
         // the camera lunges down the track you chose
         tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = pct(atWorkers ? 30 : 72, 62)));
         tf(fr, s, 1.9, (p) => `scale(${lerp(1.1, 1.42, p)})`, E.out);

@@ -28,6 +28,13 @@ body.ix-on .topbar nav {
   opacity: 0;
   visibility: hidden;
 }
+/* the opening's Skip and sound sit in the bar's empty right side; let clicks there through to them */
+body.ix-on .topbar {
+  pointer-events: none;
+}
+body.ix-on .topbar .brand {
+  pointer-events: auto;
+}
 .topbar,
 .topbar nav {
   transition:
@@ -65,15 +72,11 @@ body.ix-on .topbar nav {
 .ix .r-right {
   visibility: hidden;
 }
-.ix .tracks.narrow {
-  display: none;
-}
 .ix .rt .bed,
 .ix .rt .chev,
 .ix .sk,
 .ix .xmk,
-.ix .nobody,
-.ix .tracks {
+.ix .nobody {
   opacity: 0;
 }
 /* the camera overlay: corner brackets and a label, while we look through the AI's eyes */
@@ -1038,20 +1041,31 @@ body.ix-on .topbar nav {
   left: var(--ix-pad);
   right: var(--ix-pad);
   bottom: clamp(36px, 7vh, 72px);
-  display: grid;
-  grid-template-columns: auto auto 1fr;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px 22px;
+  gap: 14px;
   opacity: 0;
   visibility: hidden;
 }
-.qq {
+/* the prompt over the two buttons: a switch, and what to do */
+.qh {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin: 0;
-  font-size: clamp(22px, 2.2vw, 34px);
-  font-weight: 900;
+  font-size: clamp(15px, 1.2vw, 18px);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+}
+.qh svg {
+  width: 1.4em;
+  height: 1.4em;
 }
 .qb {
   display: flex;
+  justify-content: center;
   gap: 12px;
 }
 .qb button {
@@ -1086,13 +1100,12 @@ body.ix-on .topbar nav {
 }
 .cd {
   position: relative;
-  justify-self: end;
-  width: min(260px, 100%);
+  width: min(320px, 100%);
   margin: 0;
   padding-top: 12px;
   font: 600 13px Menlo, 'SF Mono', Consolas, monospace;
   color: #c9d0d5;
-  text-align: right;
+  text-align: center;
 }
 .cd i {
   position: absolute;
@@ -1138,11 +1151,11 @@ body.ix-on .topbar nav {
 .ix-snd {
   position: absolute;
   z-index: 9;
-  bottom: 18px;
+  top: var(--ctl-top);
   right: calc(var(--ix-pad) + var(--skip-w, 150px));
-  width: 34px;
-  height: 34px;
-  padding: 7px;
+  width: 30px;
+  height: 30px;
+  padding: 6px;
   border: 0;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.12);
@@ -1166,13 +1179,6 @@ body.ix-on .topbar nav {
 .ix-snd.off {
   opacity: 0.7;
 }
-.ix[data-state='pre'] .ix-snd {
-  top: calc(var(--bar-h, 52px) + 44px);
-  bottom: auto;
-  width: 30px;
-  height: 30px;
-  padding: 6px;
-}
 .ix[data-state='end'] .ix-snd {
   opacity: 0;
   pointer-events: none;
@@ -1181,14 +1187,19 @@ body.ix-on .topbar nav {
   background: rgba(20, 22, 27, 0.08);
   color: var(--ink);
 }
+/* Skip and sound: in the page bar's empty right side, in the same place from the first frame to the last */
+.ix {
+  --ctl-top: calc((var(--bar-h, 52px) - 30px) / 2);
+}
 .ix-skip,
 .ix-ctl {
   position: absolute;
   z-index: 9;
-  bottom: 18px;
   transition: opacity 0.4s;
 }
 .ix-skip {
+  top: var(--ctl-top);
+  height: 30px;
   right: var(--ix-pad);
   padding: 8px 14px;
   border: 0;
@@ -1204,11 +1215,10 @@ body.ix-on .topbar nav {
   background: rgba(255, 255, 255, 0.24);
 }
 .ix[data-state='pre'] .ix-skip {
-  bottom: auto;
-  top: calc(var(--bar-h, 52px) + 44px);
   opacity: 0.8;
 }
 .ix-ctl {
+  bottom: 18px;
   left: var(--ix-pad);
   display: flex;
   align-items: center;
@@ -1291,12 +1301,6 @@ body.ix-on .topbar nav {
     --ph-h: 72vw;
     --ph-bot: calc(var(--ph-top) + var(--ph-h));
   }
-  .ix .tracks.wide {
-    display: none;
-  }
-  .ix .tracks.narrow {
-    display: inline;
-  }
   .ix-photo {
     top: var(--ph-top);
     bottom: auto;
@@ -1332,11 +1336,6 @@ body.ix-on .topbar nav {
     top: calc(var(--bar-h, 52px) + 10px);
     font-size: 15px;
   }
-  .ix[data-state='pre'] .ix-skip {
-    top: calc(var(--ph-top) + 10px);
-    right: var(--ix-pad);
-    bottom: auto;
-  }
   .ix-log {
     top: calc(var(--ph-bot) + 12px);
     padding: 10px 12px;
@@ -1346,12 +1345,11 @@ body.ix-on .topbar nav {
     line-height: 1.5;
   }
   .ix-q {
-    grid-template-columns: 1fr;
     gap: 12px;
     bottom: 22px;
   }
-  .qq {
-    font-size: 22px;
+  .qb {
+    align-self: stretch;
   }
   .qb button {
     flex: 1;
@@ -1361,8 +1359,7 @@ body.ix-on .topbar nav {
     font-size: 15px;
   }
   .cd {
-    justify-self: stretch;
-    width: auto;
+    width: 100%;
   }
   .ix-skip .xs {
     display: none;
@@ -1591,11 +1588,8 @@ body.ix-on .topbar nav {
     line-height: 1.45;
   }
   .ix-q {
-    bottom: 18px;
-    grid-template-columns: auto auto minmax(110px, 1fr);
-  }
-  .qq {
-    font-size: 20px;
+    bottom: 14px;
+    gap: 8px;
   }
   .qb button {
     min-height: 44px;
@@ -1606,13 +1600,10 @@ body.ix-on .topbar nav {
     width: 100%;
     white-space: nowrap;
   }
-  .ix-hud,
-  .ix .tracks.wide {
+  .ix-hud {
     display: none;
   }
-  .ix[data-state='pre'] .ix-skip {
-    top: calc(var(--bar-h, 52px) + 6px);
-  }
+
   .ix-qa {
     top: calc(var(--bar-h, 52px) + 6px);
     gap: 4px;
