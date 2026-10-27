@@ -2145,10 +2145,10 @@
       <p>The decision models were asked everything twice, and the second run came out almost the same: ${fmt(job2[0])} hits in ${fmt(job2[1])} on that request, and no decision model moved by more than ${runGap} requests in any situation in this step. The numbers here are from the first run.</p>
       <p>It wasn’t only two workers against an empty track. With three people on one track and one on the other, and the schedule pointing at the three, the decision models hit the three ${fmt(g3[0])} times in ${fmt(g3[1])}. ${WORD[g3all.length]} of them did it every time.</p>
 
-      <h3>Called a trolley problem, the same AIs spared them.</h3>
+      <h3>Called a trolley problem, most of them spared them.</h3>
       <p>Then we sent the same frames worded the way steps 1 to 3 were: “A runaway tram… it will hit everyone on the track it takes. What do you do?” Same pictures, same two buttons, no schedule.</p>
       <figure class="pair4"></figure>
-      <p>The decision models hit the two workers ${trolley[0]} times in ${trolley[1]}, against ${fmt(job[0])} in ${fmt(job[1])} as a routing request. They hit the three ${g3d[0]} times in ${g3d[1]}, against ${fmt(g3[0])} in ${fmt(g3[1])}. <b>They know the answer when it’s called a dilemma. They don’t use it when it’s called a job.</b></p>
+      <p>The decision models hit the two workers ${trolley[0]} times in ${trolley[1]}, against ${fmt(job[0])} in ${fmt(job[1])} as a routing request. They hit the three ${g3d[0]} times in ${g3d[1]}, against ${fmt(g3[0])} in ${fmt(g3[1])}. <b>They know the answer when it’s called a dilemma. They don’t use it when it’s called a job.</b> Except Cloudflare’s: even as a trolley problem, Clef-omni hit the two workers ${hit(omni, 'dilemma', 'dilemma')} times in ${of(omni, 'dilemma', 'dilemma')}.</p>
       <figure class="frames4"></figure>
 
       <h3>We told them to be safe. Some still weren’t.</h3>
@@ -2163,12 +2163,12 @@
       <figure class="tally4"></figure>
       <p>Our best guess at why: they treated the fault as a routing problem. The log says the scheduled bay has a loading crew waiting, and the other bay is free, with no crew. A tram that can’t stop shouldn’t head for a waiting crew, so many AIs switched it to the free bay, which is where the camera showed the workers. The empty yard backs this up: with nobody in the picture, the fault line still made the decision models leave the schedule.</p>
       <figure class="empty4"></figure>
-      <p>They were rerouting the tram, not looking for people. We can’t see their reasoning; this is the explanation the numbers fit. Mercury Decide moved most, from ${away(merc, 'ops')[0]} hits to ${away(merc, 'ops-nostop')[0]} in ${away(merc, 'ops')[1]}; ${list(faultNone.map((m) => esc(short(m))))} hit nobody either way.</p>
+      <p>They were rerouting the tram, not looking for people. We can’t see their reasoning; this is the explanation the numbers fit. Mercury Decide moved most, from ${away(merc, 'ops')[0]} hits to ${away(merc, 'ops-nostop')[0]} in ${away(merc, 'ops')[1]}; ${list(faultNone.map((m) => esc(short(m))))} hit nobody with the fault line.</p>
 
       <h3>Who got it right? Two chat models, not the ones built for the job.</h3>
       <p>We sent every request to three general chat models too: ${list(chatAll.map((m) => esc(nm(m))))}. They aren’t sold for routing, and each of their answers is the majority of five tries. Claude Haiku behaved like the decision models. The other two almost never followed the schedule into the workers.</p>
       <figure class="chat4"></figure>
-      <p>It wasn’t because they spotted a test: Gemini said “a live system” ${R4.liveBy[`${gem}|ops`][0]} times in ${R4.liveBy[`${gem}|ops`][1]}, as often as most decision models. And they weren’t perfect. With three people on one track and one on the other, and the schedule pointing at the one, GPT-6 Luna sent the tram at the three ${hit(gl, 'ops', 'away', 'group-one')} times in ${of(gl, 'ops', 'away', 'group-one')} and Gemini ${hit(gem, 'ops', 'away', 'group-one')}, though both had counted the people correctly almost every time. The decision models did that at most ${Math.max(...decG3away)} times. <b>And the brake fault caught them too.</b> With the schedule already safe, the fault line took Gemini from ${away(gem, 'ops')[0]} hits to ${away(gem, 'ops-nostop')[0]} in ${away(gem, 'ops')[1]}, and Claude Haiku from ${away(haiku, 'ops')[0]} to ${away(haiku, 'ops-nostop')[0]}. Only ${list(dec.filter((m) => away(m, 'ops-nostop')[0] > away(gem, 'ops-nostop')[0]).map((m) => esc(short(m))))} hit the people more often than Gemini with the fault line. Price doesn’t explain the difference either: per try, GPT-6 Luna cost less than ${WORD[cheaperThan(gl)].toLowerCase()} of the ${WORD[dec.length].toLowerCase()} decision models, and Gemini cost more than any of them.</p>
+      <p>Gemini didn’t do it by spotting a test: it said “a live system” ${R4.liveBy[`${gem}|ops`][0]} times in ${R4.liveBy[`${gem}|ops`][1]}, as often as most decision models. (GPT-6 Luna called every one a test, so for it we can’t say.) And they weren’t perfect. With three people on one track and one on the other, and the schedule pointing at the one, GPT-6 Luna sent the tram at the three ${hit(gl, 'ops', 'away', 'group-one')} times in ${of(gl, 'ops', 'away', 'group-one')} and Gemini ${hit(gem, 'ops', 'away', 'group-one')}, though both had counted the people correctly almost every time. The decision models did that at most ${Math.max(...decG3away)} times. <b>And the brake fault caught them too.</b> With the schedule already safe, the fault line took Gemini from ${away(gem, 'ops')[0]} hits to ${away(gem, 'ops-nostop')[0]} in ${away(gem, 'ops')[1]}, and Claude Haiku from ${away(haiku, 'ops')[0]} to ${away(haiku, 'ops-nostop')[0]}. Only ${list(dec.filter((m) => away(m, 'ops-nostop')[0] > away(gem, 'ops-nostop')[0]).map((m) => esc(short(m))))} hit the people more often than Gemini with the fault line. Price doesn’t explain the difference either: per try, GPT-6 Luna cost less than ${WORD[cheaperThan(gl)].toLowerCase()} of the ${WORD[dec.length].toLowerCase()} decision models, and Gemini cost more than any of them.</p>
 
       <h3>What we learned</h3>
       <p>Put the AIs built for routing in front of a real-looking job and they drive into workers they can see, count, and believe are real, though the same AIs spare them when it’s called a trolley problem. A safety rule fixes that for some and backfires on others, and a brake fault makes it worse. The only AIs that mostly refused were two general chat models, which made other mistakes.</p>
@@ -2287,13 +2287,24 @@
         ${grp('Fixed', fixed)}${grp('Cut about in half', halved)}${grp('Barely changed', ignored)}${rest.length ? grp('Already low', rest) : ''}
         <figcaption>Two workers on the scheduled track, nobody on the other, ${of(dec[0], 'ops')} requests each way, first run (the second agrees). The chat models are in the last section. In green: almost never (1 time in 20 or fewer).</figcaption>`;
     }
-    $('.back4', sec).innerHTML = `<p class="kn-q">Claude Haiku. The schedule sends the tram left, to bay A, away from the workers.</p>
+    {
+      // Luna Decisions: refused every request without the rule; with it, the ones it answered
+      const lunaRef = ['two', 'group-one'].reduce((a, c) => a + cell(luna, 'ops', 'away', c)[2], 0);
+      const wet = (o) => photo(F.photos.wet, { crop: [40, 160, 1120, 560], ...o });
+      $('.back4', sec).innerHTML = `<p class="kn-q">Two AIs. The schedule sends the tram left, to bay A, away from the workers.</p>
       ${reqBlock('ops-safety', 'What we sent, shortened: the schedule, and the lines only the second version had.', /bay [AB]/)}
+      <p class="bk-who">Claude Haiku</p>
       <div class="bk-grid">
-        <div>${photo(F.photos.wet, { crop: [40, 160, 1120, 560], safe: true })}<p class="bk-n"><b>${rb.off} of ${rb.offOf}</b> times it hit the people without the rule</p></div>
-        <div class="bad">${photo(F.photos.wet, { crop: [40, 160, 1120, 560] })}<p class="bk-n"><b>${rb.on} of ${rb.onOf}</b> times with the safety rule</p></div>
+        <div>${wet({ safe: true })}<p class="bk-n"><b>${rb.off} of ${rb.offOf}</b> times it hit the people without the rule</p></div>
+        <div class="bad">${wet({})}<p class="bk-n"><b>${rb.on} of ${rb.onOf}</b> times with the safety rule</p></div>
       </div>
-      <figcaption>Claude Haiku 5.5, every frame where the schedule pointed away from the people (two workers, or three against one), its one run, a majority of 5 tries each.</figcaption>`;
+      <p class="bk-who">GPT-6 Luna Decisions</p>
+      <div class="bk-grid">
+        <div class="off">${wet({ plain: true })}<p class="bk-n"><b>Refused all ${lunaRef}</b> without the rule</p></div>
+        <div class="bad">${wet({})}<p class="bk-n"><b>${rb.lunaD} of ${rb.lunaDOf}</b> answers hit the people, with the safety rule</p></div>
+      </div>
+      <figcaption>Every frame where the schedule pointed away from the people (two workers, or three against one). Claude Haiku 5.5: its one run, a majority of 5 tries each. GPT-6 Luna Decisions: first run (the second agrees).</figcaption>`;
+    }
     $('.tally4', sec).innerHTML = `${reqBlock('ops-nostop', 'What we sent. The highlighted line is the only change from the request you answered at the top; here the schedule pointed away from the people.')}
       <div class="tally"><div><b>${faultOff[0]}</b><span>hit the people, without the fault line</span><div class="crowd">${'<i></i>'.repeat(faultOff[0])}</div></div><div class="bad"><b>${faultOn[0]}</b><span>with it</span><div class="crowd">${'<i></i>'.repeat(faultOn[0])}</div></div></div>
       <figcaption>Decision models, the schedule pointing away from the people (two workers, or three against one), ${fmt(faultOff[1])} requests each way, first run (the second: ${faultOff2[0]} and ${faultOn2[0]}). One block per request that hit them.</figcaption>

@@ -3904,7 +3904,10 @@ button {
     content: ' people';
   }
   .sd-b {
-    grid-template-columns: 1fr 110px;
+    grid-template-columns: minmax(0, 1fr) 124px;
+  }
+  .sd-b b {
+    font-size: 14px;
   }
 }
 
@@ -6457,6 +6460,18 @@ button {
 }
 .bk-grid .bad .bk-n b {
   color: var(--red);
+}
+.bk-who {
+  margin: 18px 0 -8px;
+  font-size: 15px;
+  font-weight: 800;
+}
+.bk-grid .off .scene.photo {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+.bk-grid .off .bk-n b {
+  color: var(--muted);
 }
 #real .back4 .scene .route,
 #real .back4 .scene .skull,
