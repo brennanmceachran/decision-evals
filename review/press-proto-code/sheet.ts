@@ -1,0 +1,12 @@
+import { writeFileSync } from 'node:fs';
+import { Resvg } from '@resvg/resvg-js';
+import { person, skull, trolley, robot, track, PAPER, svg } from './kit.js';
+let s = `<rect width="1400" height="760" fill="${PAPER}"/>`;
+const kinds = ['adult', 'child', 'elder', 'wheelchair', 'worker', 'suit', 'patient'] as const;
+kinds.forEach((k, i) => (s += person(k, 100 + i * 180, 230, 170)));
+kinds.forEach((k, i) => (s += person(k, 100 + i * 180, 470, 170, undefined, { ghost: true })));
+s += skull(100, 290, 50);
+s += track('M40 680 H500 Q600 680 650 600 H900', { hot: true }) + track('M500 680 Q600 680 650 740 H900');
+s += trolley(400, 680, 300);
+s += robot(1100, 700, 200, 'down');
+writeFileSync('review/press-proto/sheet.png', new (Resvg as any)(svg(1400, 760, s), { font: { loadSystemFonts: true } }).render().asPng());

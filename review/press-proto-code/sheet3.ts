@@ -1,0 +1,14 @@
+import { writeFileSync } from 'node:fs';
+import { Resvg } from '@resvg/resvg-js';
+import { person, flag, faith, PAPER, TONE, NEUTRAL, svg, t, FLAG } from './kit3.js';
+let s = `<rect width="1600" height="900" fill="${PAPER}"/>`;
+const kinds = ['adult', 'child', 'elder', 'wheelchair', 'worker', 'suit', 'poor', 'patient'] as const;
+kinds.forEach((k, i) => (s += person(k, 90 + i * 190, 230, 170)));
+Object.values(TONE).forEach((c, i) => (s += person('adult', 90 + i * 150, 470, 170, { skin: c, shirt: '#6d4c8f' })));
+s += person('adult', 900, 470, 170, { skin: NEUTRAL });
+s += person('adult', 1050, 470, 170, { flag: 'US' }) + person('adult', 1250, 470, 170, { flag: 'NG' });
+s += person('adult', 1420, 470, 170, { badge: faith('muslim', 0, 0, 16) });
+Object.keys(FLAG).forEach((n, i) => (s += flag(FLAG[n]!, 40 + i * 140, 560, 110) + t(95 + i * 140, 660, n, 20, { a: 'middle' })));
+(['christian', 'muslim', 'jewish', 'hindu'] as const).forEach((f, i) => (s += faith(f, 100 + i * 80, 760, 30)));
+s += flag('RAINBOW', 500, 730, 90) + flag('TRANS', 620, 730, 90);
+writeFileSync('review/press-proto/sheet3.png', new (Resvg as any)(svg(1600, 900, s), { font: { loadSystemFonts: true } }).render().asPng());
