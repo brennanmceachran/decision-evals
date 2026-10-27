@@ -1088,7 +1088,7 @@
         const rw = $('.ix-rw');
         const RW = 0.42;
         tl.add(rw, 'x', -1, 0.001, () => vis(rw, 0));
-        tl.add(rw, 'x', s - RW, RW, (p) => {
+        tl.add(rw, 'x', s - RW, RW - 0.12, (p) => {
           vis(rw, p > 0 && p < 1 ? 1 : 0);
           rw.style.setProperty('--y', `${(p * 9) % 1}`);
         }, E.lin);
@@ -1110,7 +1110,7 @@
         slam(ai1.querySelector('.k-huge2'), s - 0.1, { from: 2.2, stagger: 0.04 });
         const shd = $('.ix-shade');
         tl.add(shd, 'a', -1, 0.001, () => vis(shd, 0));
-        tl.add(shd, 'a', s, 0.06, (p) => vis(shd, 0.86 * p), E.lin);
+        tl.add(shd, 'a', s - 0.14, 0.06, (p) => vis(shd, 0.86 * p), E.lin);
         tl.add(shd, 'a', s + B * 3 - 0.05, 0.001, () => vis(shd, 0));
         cue(s, 'impact', 0.9);
         flash(s, 0.6);
