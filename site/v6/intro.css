@@ -7,6 +7,20 @@
   padding: 0;
   background: var(--night);
 }
+/* While the opening plays, the page itself is night. Safari (iOS 26) tints its status bar from the page background
+   when the top bar is transparent, as it is here; light paper would show as a white band over a dark film. */
+html:has(body.ix-on),
+body.ix-on {
+  background: var(--ix-page, var(--night));
+}
+/* Phones: Safari's glass toolbar floats over whatever sits just below the opening. A band of night under it, fading
+   to paper, keeps the story's first headline from showing through. */
+@media (hover: none) and (pointer: coarse) {
+  .hero.hero-ix {
+    padding-bottom: 120px;
+    background: linear-gradient(var(--night) calc(100% - 120px), var(--night) calc(100% - 60px), var(--paper));
+  }
+}
 .ix {
   --ix-pad: clamp(20px, 4.4vw, 72px);
   --hl: clamp(34px, 5.1vw, 84px);

@@ -648,6 +648,9 @@
 
     // ------------------------------------------------------------------ tween helpers
     let tl;
+    // the page background follows the film's backdrop (night, or a card table's colour): Safari tints its status bar
+    // and toolbar from it. '' gives the page back its own colour.
+    const pageBg = (c) => (c ? document.documentElement.style.setProperty('--ix-page', c) : document.documentElement.style.removeProperty('--ix-page'));
     const vis = (el, v) => {
       el.style.opacity = v;
       el.style.visibility = v <= 0.001 ? 'hidden' : 'visible';
@@ -1233,7 +1236,11 @@
           cue(s + 0.22, 'slap');
           shake(s + 0.22, 8, 0.25);
         };
-        const tableBg = (s, c) => tl.add(table, 'c', s, 0.001, () => (table.style.background = c));
+        const tableBg = (s, c) =>
+          tl.add(table, 'c', s, 0.001, () => {
+            table.style.background = c;
+            if (vis.tableOn) pageBg(c);
+          });
         const fill = (s) => [0.25, 0.125, 0.0625].forEach((d, k) => cue(s - d, 'snare', 0.45 + k * 0.15));
         tl.add(table, 'c', -1, 0.001, () => (table.style.background = 'var(--c1)'));
 
@@ -1251,6 +1258,8 @@
             vis(wipeTram, p > 0 && p < 1 ? 1 : 0);
             wipeTram.style.transform = `translateX(${tramAt(glide(p)).x}px)`;
           }, E.lin);
+          tl.add(table, 'k', -1, 0.001, () => ((vis.tableOn = false), pageBg('')));
+          tl.add(table, 'k', T0 + TD * 0.5, 0.001, () => ((vis.tableOn = true), pageBg(table.style.background)));
           tl.add(table, 'x', T0, TD, (p) => {
             vis(table, p > 0 ? 1 : 0);
             table.style.clipPath = p >= 1 ? '' : `inset(0 ${Math.max(0, G.vw - tramAt(glide(p)).mid)}px 0 0)`;
@@ -1399,6 +1408,7 @@
             tl.add(cd, 'y', s + IB - 0.28 + (2 - i) * 0.03, 0.24, (p) => (cd.style.translate = `0 ${-p * 120}vh`), E.in);
           });
           tl.add(table, 'x', s + IB, 0.001, () => vis(table, 0));
+          tl.add(table, 'k', s + IB, 0.001, () => ((vis.tableOn = false), pageBg('')));
           cue(s + IB - 0.45, 'revcym', 0.45);
         });
 
@@ -1642,6 +1652,7 @@
     const setState = (st) => {
       root.dataset.state = st;
       document.body.classList.toggle('ix-on', st === 'pre' || st === 'film');
+      if (st !== 'film') pageBg('');
     };
     function renderFilm(force) {
       film.render(t, force);
@@ -1787,11 +1798,25 @@
       snd.unlock();
       playing ? pause() : play();
     });
+    // Watch again: back to the depot and the choice, so the viewer picks again
     $('.ix-end .again').addEventListener('click', () => {
       snd.unlock();
-      setState('film');
-      seek(0);
-      play();
+      audioStop();
+      playing = false;
+      pick = null;
+      root.classList.remove('picked', 'pick-left', 'pick-right', 'pick-none');
+      $('.ix-q .cd').classList.remove('late');
+      setState('pre');
+      preT = 0;
+      pre.render(0, true);
+      if (reduce) {
+        preT = tQ + 0.2;
+        pre.render(preT, true);
+      } else {
+        preRun = true;
+        kick();
+      }
+      root.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
     });
     addEventListener('keydown', (e) => {
       if (root.dataset.state !== 'film' || e.target.closest?.('input, select, textarea')) return;

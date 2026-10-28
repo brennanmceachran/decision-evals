@@ -27,6 +27,8 @@
   box-sizing: border-box;
 }
 html {
+  /* a solid page background: Safari's toolbar tint falls back to white on a transparent root */
+  background: var(--paper);
   scroll-behavior: smooth;
   scroll-padding-top: 64px;
 }
