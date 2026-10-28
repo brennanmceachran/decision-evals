@@ -651,6 +651,8 @@
     // the page background follows the film's backdrop (night, or a card table's colour): Safari tints its status bar
     // and toolbar from it. '' gives the page back its own colour.
     const pageBg = (c) => (c ? document.documentElement.style.setProperty('--ix-page', c) : document.documentElement.style.removeProperty('--ix-page'));
+    // the strip under Safari's bottom toolbar (see .ix-under): one per page
+    if (!document.querySelector('.ix-under')) document.body.insertAdjacentHTML('beforeend', '<div class="ix-under" aria-hidden="true"></div>');
     const vis = (el, v) => {
       el.style.opacity = v;
       el.style.visibility = v <= 0.001 ? 'hidden' : 'visible';
@@ -1832,6 +1834,8 @@
     new IntersectionObserver(
       (es) => {
         for (const e of es) {
+          // the strip under Safari's toolbar only while the opening fills most of the screen
+          document.body.classList.toggle('ix-away', e.intersectionRatio < 0.5);
           if (root.dataset.state === 'film' && playing && e.intersectionRatio < 0.5) pause();
           if (root.dataset.state === 'film' && e.intersectionRatio === 0) finish();
           if (root.dataset.state === 'pre' && e.intersectionRatio < 0.3) {

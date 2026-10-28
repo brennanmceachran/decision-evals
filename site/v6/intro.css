@@ -11,20 +11,46 @@
    when the top bar is transparent, as it is here; light paper would show as a white band over a dark film. */
 html:has(body.ix-on),
 body.ix-on {
-  background: var(--ix-page, var(--night));
+  background: var(--night);
 }
-/* Phones: Safari's glass toolbar floats over whatever sits just below the opening. A band of night under it, fading
-   to paper, keeps the story's first headline from showing through. */
+/* Under Safari's glass toolbar (bottom): a strip in the film's colour while the opening plays, so the bar reads as part
+   of the film, not the story underneath. Fixed and full-width at the bottom edge, which is what Safari samples to tint
+   its toolbar. Gone the moment the opening ends. */
+.ix-under {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  /* under the film (which sits above it, with its controls), over the story below it */
+  z-index: 1;
+  background: var(--ix-page, var(--night));
+  pointer-events: none;
+  display: none;
+}
+body.ix-on:not(.ix-away) .ix-under {
+  display: block;
+}
+/* Phones: the strip is tall enough to sit behind the whole toolbar, and below the opening a band in the film's colour
+   (no fade) fills what shows through the glass. When the opening ends the band takes the page's own colour, so
+   nothing moves and nothing tinted is left behind. */
 @media (hover: none) and (pointer: coarse) {
+  .ix-under {
+    height: max(84px, calc(env(safe-area-inset-bottom) + 64px));
+  }
   .hero.hero-ix {
-    padding-bottom: 120px;
-    background: linear-gradient(var(--night) calc(100% - 120px), var(--night) calc(100% - 60px), var(--paper));
+    padding-bottom: 96px;
+    background: var(--paper);
+  }
+  body.ix-on .hero.hero-ix {
+    background: var(--ix-page, var(--night));
   }
 }
 .ix {
   --ix-pad: clamp(20px, 4.4vw, 72px);
   --hl: clamp(34px, 5.1vw, 84px);
   position: relative;
+  z-index: 2;
   height: 100vh;
   height: 100dvh;
   min-height: 520px;
