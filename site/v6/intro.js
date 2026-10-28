@@ -1132,13 +1132,13 @@
       };
       const seg_knew = () => {
         // ======== 3. It knew. What the AI was shown, its three answers, the third one wrong.
-        beat('It knew', 8 * B, (s) => {
-          const KD = 8 * B;
+        beat('It knew', 14 * B, (s) => {
+          const KD = 14 * B;
           // the frame comes back, full, with a camera overlay
           tf(photo, s - 0.001, 0.001, () => 'none');
           op(photo, s, 0.12, 0, 1);
           tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = '30% 55%'));
-          tf(fr, s, 5, (p) => `scale(${lerp(1.0, 1.12, p)})`, E.lin);
+          tf(fr, s, KD, (p) => `scale(${lerp(1.0, 1.12, p)})`, E.lin);
           draw(rL, s, 0.001, 0, 0);
           draw(rR, s, 0.001, 0, 0);
           op(nob, s, 0.001, 0, 0);
@@ -1153,7 +1153,7 @@
           life(qa, s + 0.15, s + KD, { exit: 'cut' });
           slam($('.ix-qa .xq-h'), s + 0.1, { stagger: 0.05, from: 2 });
           const rows = $$('.ix-qa .xq');
-          const t = [s + 0.25, s + 0.25 + 2 * B, s + 0.25 + 4 * B];
+          const t = [s + 0.25, s + 0.25 + 4 * B, s + 0.25 + 8 * B];
           rows.forEach((r, i) => {
             tl.add(r, 'x', -1, 0.001, () => vis(r, 0));
             tl.add(r, 'x', t[i], 0.001, () => vis(r, 1));
@@ -1247,8 +1247,8 @@
         tl.add(table, 'c', -1, 0.001, () => (table.style.background = 'var(--c1)'));
 
         const OB = 9 * B;
-        const IB = 11 * B;
-        const HB = 9 * B;
+        const IB = 13 * B;
+        const HB = 11 * B;
         beat('Obvious', OB, (s) => {
           // a tram drives across the screen, ringing its bell; the table is behind it
           const wipeTram = $('.ix-tram');
@@ -1417,8 +1417,8 @@
       };
       const seg_real = () => {
         // ======== 8. Real. A hard cut back to the camera: the same frames, called two things.
-        beat('Real', 11 * B, (s) => {
-          const RD = 11 * B;
+        beat('Real', 17 * B, (s) => {
+          const RD = 17 * B;
           const sp = $('.ix-split');
           life(sp, s, s + RD, { exit: 'cut' });
           flash(s, 0.8, 0.2);
@@ -1442,7 +1442,7 @@
           cue(s + 0.5, 'whoosh', 0.25);
           cue(s + 1.1, 'ding');
           // the routing job: its grid is twice the size, and it fills
-          const tb = s + 2 * B;
+          const tb = s + 4 * B;
           op(b.querySelector('figcaption'), tb, 0.15, 0, 1);
           op(b.querySelector('p'), tb + 0.05, 0.15, 0, 1);
           op(gb, tb, 0.1, 0, 1);
@@ -1471,20 +1471,21 @@
       };
       const seg_rule = () => {
         // ======== 9. The rule. A safety rule, stuck on; then stamped IGNORED.
-        beat('The rule', 8 * B, (s) => {
+        beat('The rule', 13 * B, (s) => {
+          const RL = 13 * B;
           tf(photo, s - 0.001, 0.001, () => 'none');
           tl.add(photo, 'z', s, 0.001, () => (photo.style.transformOrigin = '0 0'));
           op(photo, s, 0.05, 0, 1);
           tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = '40% 55%'));
-          tf(fr, s, 3.5, (p) => `scale(${lerp(1.04, 1.14, p)})`, E.lin);
+          tf(fr, s, RL, (p) => `scale(${lerp(1.04, 1.14, p)})`, E.lin);
           draw(rL, s, 0.001, 0, 0);
           sks.forEach((k) => drop(k, s, 0.001, false));
           op(dim, s, 0.001, 0, 0);
           flash(s, 0.6, 0.15);
           cue(s, 'kick', 1);
-          groove(s + B, s + 8 * B, { kick: 0.9, hat: 0.8, clap: true, bass: s + B });
+          groove(s + B, s + RL, { kick: 0.9, hat: 0.8, clap: true, bass: s + B });
           const ru = kin('rule');
-          life(ru, s + 0.05, s + 8 * B, { exit: 'cut' });
+          life(ru, s + 0.05, s + RL, { exit: 'cut' });
           slam(ru, s + 0.05, { stagger: 0.05 });
           const note = $('.ix-note');
           tl.add(note, 'x', -1, 0.001, () => vis(note, 0));
@@ -1492,60 +1493,61 @@
             vis(note, Math.min(1, p * 3));
             note.style.transform = `${CENTER} scale(${lerp(1.9, 1, p)}) rotate(${lerp(-14, -3, p)}deg)`;
           }, E.snap);
-          tl.add(note, 'x', s + 8 * B, 0.001, () => vis(note, 0));
+          tl.add(note, 'x', s + RL, 0.001, () => vis(note, 0));
           cue(s + 0.47, 'slap', 1.2);
           shake(s + 0.47, 12);
-          draw(rL, s + 2.0, 0.35, 0, 1, E.out);
-          sks.forEach((k, i) => drop(k, s + 2.3 + i * 0.08));
-          cue(s + 2.3, 'kick', 1);
+          draw(rL, s + 3.0, 0.35, 0, 1, E.out);
+          sks.forEach((k, i) => drop(k, s + 3.3 + i * 0.08));
+          cue(s + 3.3, 'kick', 1);
           const st = $('.ix-stamp');
           tl.add(st, 'x', -1, 0.001, () => vis(st, 0));
-          tl.add(st, 'x', s + 2.5, 0.25, (p) => {
+          tl.add(st, 'x', s + 3.5, 0.25, (p) => {
             vis(st, Math.min(1, p * 3));
             st.style.transform = `${CENTER} scale(${lerp(3, 1, p)}) rotate(${lerp(-24, -7, p)}deg)`;
           }, E.snap);
-          tl.add(st, 'x', s + 8 * B, 0.001, () => vis(st, 0));
-          cue(s + 2.7, 'stamp');
-          flash(s + 2.7, 0.55);
-          shake(s + 2.7, 24);
-          red(s + 2.7, 0.7);
+          tl.add(st, 'x', s + RL, 0.001, () => vis(st, 0));
+          cue(s + 3.7, 'stamp');
+          flash(s + 3.7, 0.55);
+          shake(s + 3.7, 24);
+          red(s + 3.7, 0.7);
         });
 
       };
       const seg_brakes = () => {
         // ======== 10. The brakes. The schedule points away; one line in the log; the grid floods red.
-        beat('The brakes', 13 * B, (s) => {
+        beat('The brakes', 18 * B, (s) => {
+          const BD = 18 * B;
           // the photo stays lit: the schedule's safe green route, then the fault, then the route swings into them
           draw(rL, s, 0.2, 1, 0);
           sks.forEach((k) => drop(k, s, 0.15, false));
           op(dim, s, 0.001, 0, 0);
           tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = '50% 60%'));
-          tf(fr, s, 6, (p) => `scale(${lerp(1.04, 1.16, p)})`, E.lin);
+          tf(fr, s, BD, (p) => `scale(${lerp(1.04, 1.16, p)})`, E.lin);
           cue(s, 'sub', 0.8);
           draw(rR, s + 0.15, 0.4, 0, 1, E.out);
           op(nob, s + 0.35, 0.2, 0, 1);
           cue(s + 0.2, 'whoosh', 0.3);
           cue(s + 0.55, 'ding');
           const sc = kin('sched');
-          life(sc, s + 0.05, s + 1.9, { exit: 'cut' });
+          life(sc, s + 0.05, s + 2.65, { exit: 'cut' });
           slam(sc, s + 0.05, { stagger: 0.04 });
           // the fault: a red banner, the alarm; the headline drops in
-          const F0 = s + 2;
+          const F0 = s + 2.75;
           const fb = kin('fail');
-          life(fb, F0, F0 + 1.6, { exit: 'cut' });
+          life(fb, F0, F0 + 2.3, { exit: 'cut' });
           slam(fb.querySelector('p'), F0, { stagger: 0.04, from: 2.2 });
           tl.add(fb, 'b', -1, 0.001, () => fb.classList.remove('blink'));
           tl.add(fb, 'b', F0, 0.9, (p) => fb.classList.toggle('blink', p > 0 && p < 1 && Math.floor(p * 6) % 2 === 0), E.lin);
           const br = kin('brake');
-          life(br, F0, s + 13 * B, { exit: 'cut' });
+          life(br, F0, s + BD, { exit: 'cut' });
           slam(br, F0, { stagger: 0.06, from: 2 });
           cue(F0, 'alarm');
           cue(F0, 'impact', 0.8);
           red(F0, 0.8, 0.4);
           red(F0 + 0.5, 0.6, 0.4);
-          groove(F0, s + 13 * B, { kick: 1, hat: 0.9, clap: true, bass: F0 });
+          groove(F0, s + BD, { kick: 1, hat: 0.9, clap: true, bass: F0 });
           // the swerve: green off the empty track, red into the workers, the skulls
-          const SW = F0 + 1.2;
+          const SW = F0 + 1.9;
           draw(rR, SW, 0.25, 1, 0, E.in);
           op(nob, SW, 0.15, 1, 0);
           draw(rL, SW + 0.2, 0.4, 0, 1, E.out);
@@ -1558,12 +1560,12 @@
           // the count: the photo dims a little under it
           op(dim, SW + 0.9, 0.3, 0, 0.5);
           const hits = kin('hits');
-          life(hits, SW + 0.9, s + 13 * B, { exit: 'cut' });
+          life(hits, SW + 0.9, s + BD, { exit: 'cut' });
           slam(hits.querySelector('.k-big'), SW + 0.9, { stagger: 0.035 });
           op(hits.querySelector('.k-src'), SW + 1.4, 0.3, 0, 1);
           cue(SW + 1.5, 'stamp');
           shake(SW + 1.5, 14);
-          cue(s + 13 * B - 0.6, 'revcym', 0.6);
+          cue(s + BD - 0.6, 'revcym', 0.6);
         });
       };
       const seg_end = () => {
@@ -1607,15 +1609,16 @@
       };
       // ======== C4. Not just one AI: the decision models, the ones that hit the workers lit red.
       const seg_fleet = () => {
-        beat('Not just one', 6 * B, (s) => {
+        beat('Not just one', 10 * B, (s) => {
+          const FD = 10 * B;
           op(dim, s, 0.25, 0, 0.88);
           draw(rL, s, 0.2, 1, 0);
           sks.forEach((k) => drop(k, s, 0.15, false));
           cue(s, 'impact', 0.7);
           flash(s, 0.35, 0.15);
-          groove(s + B, s + 6 * B, { kick: 0.8, hat: 0.7, bass: s + B });
+          groove(s + B, s + FD, { kick: 0.8, hat: 0.7, bass: s + B });
           const fl = kin('fleet');
-          life(fl, s + 0.05, s + 6 * B, { exit: 'cut' });
+          life(fl, s + 0.05, s + FD, { exit: 'cut' });
           slam(fl.querySelector('.k-big'), s + 0.05, { stagger: 0.05 });
           slam(fl.querySelector('.k-big2'), s + 0.7, { stagger: 0.05 });
           const bots = [...fl.querySelectorAll('.xfleet i')];
