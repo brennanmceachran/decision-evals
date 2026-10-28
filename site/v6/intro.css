@@ -28,13 +28,14 @@ body.ix-on {
   pointer-events: none;
   display: none;
 }
-body.ix-on:not(.ix-away) .ix-under {
-  display: block;
-}
+
 /* Phones: the strip is tall enough to sit behind the whole toolbar, and below the opening a band in the film's colour
    (no fade) fills what shows through the glass. When the opening ends the band takes the page's own colour, so
    nothing moves and nothing tinted is left behind. */
 @media (hover: none) and (pointer: coarse) {
+  body.ix-on:not(.ix-away) .ix-under {
+    display: block;
+  }
   .ix-under {
     height: max(84px, calc(env(safe-area-inset-bottom) + 64px));
   }
