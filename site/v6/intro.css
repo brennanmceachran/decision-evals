@@ -11,8 +11,9 @@
   --ix-pad: clamp(20px, 4.4vw, 72px);
   --hl: clamp(34px, 5.1vw, 84px);
   position: relative;
-  height: 100svh;
-  min-height: 560px;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 520px;
   margin-top: calc(-1 * var(--bar-h, 52px));
   overflow: hidden;
   background: var(--night);
@@ -501,6 +502,9 @@ body.ix-on .topbar nav {
 }
 .ix .off {
   opacity: 0;
+}
+.ix-log .ln {
+  display: block;
 }
 /* ---------- the table: the thought experiments as cards slapped down on colour */
 .ix-table {
@@ -1329,7 +1333,8 @@ body.ix-on .topbar nav {
   .ix {
     --hl: clamp(28px, 8.4vw, 52px);
     --ph-top: calc(var(--bar-h, 52px) + 44px);
-    --ph-h: 72vw;
+    /* 72vw tall, but never so tall that the log and the choice can't fit under it */
+    --ph-h: min(72vw, max(150px, calc(100dvh - var(--ph-top) - 400px)));
     --ph-bot: calc(var(--ph-top) + var(--ph-h));
   }
   .ix-photo {
@@ -1369,7 +1374,10 @@ body.ix-on .topbar nav {
   }
   .ix-log {
     top: calc(var(--ph-bot) + 12px);
+    /* as tall as its lines, but never down into the choice */
+    max-height: calc(100dvh - var(--ph-bot) - 12px - 220px);
     padding: 10px 12px;
+    overflow: hidden;
   }
   .ix-log pre {
     font-size: 10px;
@@ -1504,6 +1512,32 @@ body.ix-on .topbar nav {
 @media (max-aspect-ratio: 1/1) and (max-height: 740px) {
   .ix-log .ln:first-child {
     display: none;
+  }
+  /* short phones (Safari with its toolbars): the cards fit between the bar and the controls */
+  .card {
+    top: calc(var(--bar-h, 52px) + (100dvh - var(--bar-h, 52px) - 64px) / 2);
+    max-height: calc(100dvh - var(--bar-h, 52px) - 84px);
+    gap: 10px;
+    padding: 16px 18px;
+    overflow: hidden;
+  }
+  .cq {
+    font-size: 19px;
+  }
+  .cv {
+    font-size: min(13vw, 7.5dvh);
+  }
+  .card .ix-scene {
+    max-height: 22dvh;
+  }
+  .mu {
+    gap: 4px;
+  }
+  .mu-pile i {
+    width: 14px;
+  }
+  .mu-n {
+    font-size: 22px;
   }
 }
 /* ---------- short, wide screens (a phone on its side, a small laptop window) */

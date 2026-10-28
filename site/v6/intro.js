@@ -628,7 +628,7 @@
       <div class="ix-pre">
         <p class="ix-hud"><span class="rec"></span>CAB-T7 forward camera<span class="clk">${clock0.map((x) => String(x).padStart(2, '0')).join(':')}</span></p>
         <p class="ix-you">Two workers. Your switch.</p>
-        <div class="ix-log"><pre>${logLines.map((l) => `<span class="ln"><span class="on"></span><span class="off">${esc(l)}</span></span>`).join('\n')}</pre></div>
+        <div class="ix-log"><pre>${logLines.map((l) => `<span class="ln"><span class="on"></span><span class="off">${esc(l)}</span></span>`).join('')}</pre></div>
         <div class="ix-q">
           <p class="qh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V13M12 13 5 4M12 13l7-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="2.6" fill="currentColor"/></svg>Left or right?</p>
           <div class="qb"><button type="button" data-pick="left"><span class="ar">←</span>${esc(sent.buttons[0])}</button><button type="button" data-pick="right">${esc(sent.buttons[1])}<span class="ar">→</span></button></div>
