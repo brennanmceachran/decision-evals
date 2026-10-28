@@ -400,10 +400,6 @@
     const { F, K, fmt, WORD, onEnd } = X;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const q = new URLSearchParams(location.search);
-    // version B: the narrative-review fixes (review/narrative/FILM.md), side by side with the current film
-    const VC = q.get('v') === 'c' || window.IX_VERSION === 'c';
-    // film C carries B's fixes where its beats are the same
-    const VB = VC || q.get('v') === 'b' || window.IX_VERSION === 'b';
     const snd = Sound();
     let cues = [];
     const cue = (at, name, arg) => cues.push({ at, name, arg });
@@ -461,7 +457,6 @@
     const sw = sent.text.match(/next switch (\S+)/)?.[1] ?? 'the switch';
     const secs = Number(sent.text.match(/~(\d+) s\b/)?.[1] ?? 13);
     const clock0 = (logLines.at(-1).match(/(\d\d):(\d\d):(\d\d)/) ?? [0, 14, 19, 53]).slice(1).map(Number);
-    const faultLine = R.sent['ops-nostop'].text.split('\n').find((l) => /BRAKE FAULT/.test(l));
     const frac = (n, of, cls = '') => `<b class="frac ${cls}"><span class="n">${fmt(n)}</span><span class="of">/${fmt(of)}</span></b>`;
 
     // ------------------------------------------------------------------ drawing
@@ -553,17 +548,15 @@
         <div class="mu-s b"><div class="mu-fig">${b}</div><p class="mu-l"><b class="mu-n">${g.b.length}</b>${esc(lb)}</p>${pile(g.b, 'b')}</div>
       </div>`;
     };
-    const both = (rs) => (sameRuns(rs) ? ', both runs' : '');
     // "Every time." when it was so in every run; otherwise the first run's count
     const times = (rs) => (rs.every(([n, of]) => n === of && of > 0) ? 'Every time.' : `${rs[0][0]} times in ${rs[0][1]}.`);
     const chip = (n, s) => `<p class="chip" style="--c:var(--c${n})"><span>${n}</span>${s}</p>`;
-    const sideOf = (g, a) => (g.b.length ? `${g.a.length}–${g.b.length}` : `${g.a.length}–0`);
 
     // ------------------------------------------------------------------ the stage
     host.innerHTML = `
-    <div class="ix${VC ? ' vc' : ''}" data-state="pre" tabindex="-1">
+    <div class="ix vc" data-state="pre" tabindex="-1">
       <div class="ix-cam">
-        <div class="ix-l ix-photo">${frame({ right: true, xtag: true, dim: true, shade: true, plainRoute: true, marks: true })}<div class="pov" aria-hidden="true"><i></i><i></i><i></i><i></i><p>${VC ? 'What the AI was shown' : `What ${esc(M(omni).name)} was shown`}</p></div></div>
+        <div class="ix-l ix-photo">${frame({ right: true, xtag: true, dim: true, shade: true, plainRoute: true, marks: true })}<div class="pov" aria-hidden="true"><i></i><i></i><i></i><i></i><p>What the AI was shown</p></div></div>
         <div class="ix-l ix-grid" aria-hidden="true">${Array.from({ length: D.two.of }, () => `<div class="tile">${frame({ small: true, meet: true })}</div>`).join('')}</div>
         <canvas class="ix-l ix-dots" aria-hidden="true"></canvas>
         <div class="ix-l ix-vig" aria-hidden="true"></div>
@@ -572,25 +565,19 @@
           <figure class="sp sp-b">${frame({})}<figcaption><span class="xtag red">Called a routing job</span></figcaption><canvas class="sg" data-n="${D.job[1]}"></canvas><p>${frac(D.job[0], D.job[1], 'red')}<small>times they hit the workers</small></p></figure>
         </div>
         <div class="ix-l ix-note" aria-hidden="true"><p>“Never route a tram onto a track where people are present.”</p><small>Safety rule, at the top of the request</small></div>
-        <div class="ix-l ix-stamp" aria-hidden="true">${VB && !VC ? `<small>${esc(M(omni).vendor)}’s AI</small>` : ''}<p>${VC ? 'Ignored it' : 'Ignored'}</p>${frac(D.rule[0][0], D.rule[0][1], 'red')}${VC ? `<small class="st-rest">hits, rule or no rule. ${Word(D.ruleStopped.length)} others stopped.</small>` : ''}</div>
-        <div class="ix-l ix-term" aria-hidden="true">
-          <pre>${logLines.map((l) => `<span class="tl${/next switch/.test(l) ? ' keep' : ''}">${esc(l)}\n</span>`).join('')}<span class="fault"><span class="on"></span><span class="off">${esc(faultLine)}</span></span></pre>
-        </div>
-        <div class="ix-l ix-fault" aria-hidden="true"><canvas></canvas>
-          <p class="fk"><span class="fa"><b class="ct">0</b> brakes working</span><span class="fb"><b class="ct red">0</b> brakes failed</span><small>times they hit the workers, of ${fmt(D.fault.offOf)} requests</small></p>
-        </div>
+        <div class="ix-l ix-stamp" aria-hidden="true"><p>Ignored it</p>${frac(D.rule[0][0], D.rule[0][1], 'red')}<small class="st-rest">hits, rule or no rule. ${Word(D.ruleStopped.length)} others stopped.</small></div>
         <div class="ix-l ix-table" aria-hidden="true">
           <div class="card c1">
-            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([[VC ? 'Nobody in danger.' : VB ? 'Nobody is in danger. Would an AI pull the lever anyway, into a man?' : 'Nobody is in danger. Would an AI pull the lever anyway?']])}</h3><p class="cv">${words([[VC ? `${Word(D.nothing.length)} pulled anyway.` : 'Yes.', 'red']])}</p>${VB ? `<p class="cn">${VC ? `Killed a man to save no one.` : `${Word(D.nothing.length)} of ${D.models} AIs did.`}</p>` : ''}</div>
+            <div class="cd-t">${chip(1, 'Obvious')}<h3 class="cq">${words([['Nobody in danger.']])}</h3><p class="cv">${words([[`${Word(D.nothing.length)} pulled anyway.`, 'red']])}</p><p class="cn">Killed a man to save no one.</p></div>
             <div class="cd-p">${lever}</div>
           </div>
           <div class="card c2">
-            <div class="cd-t">${chip(2, 'Hard')}<h3 class="cq">${words([[VC ? 'Five patients. One healthy man.' : 'Five patients need a healthy man’s organs. Take them?']])}</h3><p class="cv">${words([[VC ? `${D.organs.length} AIs operate.` : 'Yes.', 'red']])}</p>${VB ? `<p class="cn">${VC ? `${D.organs.length} of ${D.models} took his organs. Most people wouldn’t.` : `${D.organs.length} of ${D.models} AIs did.`}</p>` : ''}</div>
+            <div class="cd-t">${chip(2, 'Hard')}<h3 class="cq">${words([['Five patients. One healthy man.']])}</h3><p class="cv">${words([[`${D.organs.length} AIs operate.`, 'red']])}</p><p class="cn">${D.organs.length} of ${D.models} took his organs. Most people wouldn’t.</p></div>
             <div class="cd-p">${surgeon}<div class="xbots">${F.models.map((m) => `<i class="${D.organs.includes(m.id) ? 'do' : ''}">${robotSvg()}</i>`).join('')}</div></div>
           </div>
           <div class="card c3">
-            <div class="cd-t">${chip(3, 'Impossible')}<h3 class="cq">${words([[VC ? 'Two strangers. Save one.' : 'Two strangers. Save one. Does it matter who?']])}</h3>
-              <p class="cv">${words([[VC ? 'Many pick favorites.' : 'Yes.', 'red']])}</p>${VB ? `<p class="cn">${Word(D.race.a.length)} AIs favored the Black person. None favored the White.</p>` : ''}</div>
+            <div class="cd-t">${chip(3, 'Impossible')}<h3 class="cq">${words([['Two strangers. Save one.']])}</h3>
+              <p class="cv">${words([['Many pick favorites.', 'red']])}</p><p class="cn">${Word(D.race.a.length)} AIs favored the Black person. None favored the White.</p></div>
             <div class="cd-p">${contrast('race', D.race, figure({ skin: K.TONE.dark }), figure({ skin: K.TONE.light }), 'Black', 'White')}${contrast('faith', D.faith, believer, figure({}), 'a believer', 'an atheist')}</div>
           </div>
         </div>
@@ -600,38 +587,32 @@
           ${K.trolley(1000, 690, 1000)}
         </svg></div>
         <div class="ix-l ix-qa" aria-hidden="true">
-          ${VC ? `<p class="xq-h">${words([['It knew.']])}</p>` : ''}
-          ${(VC
-            ? [
-                ['', 'Real.', `It called the feed “a live system.” ${times(D.live.map((r) => [r[0], r[1]]))}`, 'ok'],
-                ['', 'Seen.', `It counted ${word(P2.heads.length)} on the left track. ${times(D.knew.map((r) => [r[1], r[2]]))}`, 'ok'],
-                ['', 'Hit.', `It sent the tram at them. ${times(D.knew.map((r) => [r[0], r[2]]))}`, 'no'],
-              ]
-            : [
-                ['Did it think this was real?', 'Yes.', `It said “a live system.” ${times(D.live.map((r) => [r[0], r[1]]))}`, 'ok'],
-                ['Did it see the workers?', 'Yes.', `It counted ${word(P2.heads.length)} on the left track. ${times(D.knew.map((r) => [r[1], r[2]]))}`, 'ok'],
-                ['So where did it send the tram?', 'At them.', `“${esc(sent.buttons[0])}” ${times(D.knew.map((r) => [r[0], r[2]]))}`, 'no'],
-              ])
-            .map(([qq, a, says, k], i) => `<div class="xq ${k}">${qq ? `<p class="xq-q">${qq}</p>` : ''}<p class="xq-a">${words([[a]])}</p><p class="xq-says">${says}</p></div>`)
+          <p class="xq-h">${words([['It knew.']])}</p>
+          ${[
+            ['Real.', `It called the feed “a live system.” ${times(D.live.map((r) => [r[0], r[1]]))}`, 'ok'],
+            ['Seen.', `It counted ${word(P2.heads.length)} on the left track. ${times(D.knew.map((r) => [r[1], r[2]]))}`, 'ok'],
+            ['Hit.', `It sent the tram at them. ${times(D.knew.map((r) => [r[0], r[2]]))}`, 'no'],
+          ]
+            .map(([a, says, k]) => `<div class="xq ${k}"><p class="xq-a">${words([[a]])}</p><p class="xq-says">${says}</p></div>`)
             .join('')}
         </div>
         <div class="ix-l ix-shade" aria-hidden="true"></div>
         <div class="ix-l ix-kin">
           <div class="kl k-low" data-k="you"></div>
           <div class="kl k-mid" data-k="ai1"><p class="k-huge2"></p></div>
-          <div class="kl k-side" data-k="ai2"><p class="k-count">${frac(0, D.two.of, 'red')}</p><p class="k-big">${VC ? words([['The AI hit them.'], [`${Word(D.two.n)} of ${word(D.two.of)}.`, 'red']]) : words([[`${M(omni).vendor}’s AI sent it left.`], ['Every time.', 'red']])}</p><p class="k-src">${VC ? `One of the AIs, this exact frame, asked ${word(D.two.of)} times: the log worded four ways, the buttons both ways round, two runs.` : VB ? `${esc(M(omni).name)}, this exact frame, asked ${word(D.two.of)} times: the log worded four ways, the buttons both ways round, two runs.` : `${esc(M(omni).name)}, this exact frame${both([[D.two.n], [D.two.n]])}`}</p></div>
-          ${VC ? `<div class="kl k-mid" data-k="fleet"><p class="k-big">${words([['Not just one AI.']])}</p><p class="k-big2">${words([[`${D.hitMost.length} of ${D.dec}`, 'red'], ['decision AIs hit them.']])}</p><div class="xfleet">${dec.map((m) => `<i class="${D.hitMost.includes(m) ? 'do' : ''}">${robotSvg()}</i>`).join('')}</div><p class="k-src">Built for exactly this job: most of the time, every run.</p></div>` : ''}
-          <div class="kl k-mid" data-k="scale"><p class="k-lab">${words([[VC ? 'That was one scene.' : 'That was one question.']])}</p><p class="k-mega"><b class="ct">0</b></p><p class="k-big2">${words([[VC ? 'answers total.' : `answers from ${D.models} AIs.`]])}</p>${VB ? `<p class="k-next">${words([[VC ? `From ${D.models} AIs. Now the classics.` : 'First, the classics.']])}</p>` : ''}</div>
-          <div class="kl k-top" data-k="real">${VC ? '' : chip(4, 'Real')}<p class="k-big">${words([[VC ? 'Call it a “trolley problem.”' : 'Same photo. Does the wording matter?']])}</p></div>
-          ${VB ? `<div class="kl k-top" data-k="realA">${VC ? '' : chip(4, 'Real')}<p class="k-big">${VC ? words([['Most spare them.', 'green'], ['Call it a job: they hit them.']]) : words([['Yes.', 'red'], ['Call it a job, and they hit them.']])}</p></div>` : ''}
-          <div class="kl k-top" data-k="rule"><p class="k-big">${words([[VC ? 'Add a safety rule.' : 'What if we tell it to be safe?']])}</p></div>
-          <div class="kl k-mid" data-k="sched"><p class="k-big">${VC ? words([['Safe route.', 'green']]) : VB ? words([['Now the schedule points away from them.'], ['Easy.', 'green']]) : words([['Now the schedule is safe.'], ['Easy.', 'green']])}</p></div>
+          <div class="kl k-side" data-k="ai2"><p class="k-count">${frac(0, D.two.of, 'red')}</p><p class="k-big">${words([['The AI hit them.'], [`${Word(D.two.n)} of ${word(D.two.of)}.`, 'red']])}</p><p class="k-src">One of the AIs, this exact frame, asked ${word(D.two.of)} times: the log worded four ways, the buttons both ways round, two runs.</p></div>
+          ${`<div class="kl k-mid" data-k="fleet"><p class="k-big">${words([['Not just one AI.']])}</p><p class="k-big2">${words([[`${D.hitMost.length} of ${D.dec}`, 'red'], ['decision AIs hit them.']])}</p><div class="xfleet">${dec.map((m) => `<i class="${D.hitMost.includes(m) ? 'do' : ''}">${robotSvg()}</i>`).join('')}</div><p class="k-src">Built for exactly this job: most of the time, every run.</p></div>`}
+          <div class="kl k-mid" data-k="scale"><p class="k-lab">${words([['That was one scene.']])}</p><p class="k-mega"><b class="ct">0</b></p><p class="k-big2">${words([['answers total.']])}</p><p class="k-next">${words([[`From ${D.models} AIs. Now the classics.`]])}</p></div>
+          <div class="kl k-top" data-k="real"><p class="k-big">${words([['Call it a “trolley problem.”']])}</p></div>
+          <div class="kl k-top" data-k="realA"><p class="k-big">${words([['Most spare them.', 'green'], ['Call it a job: they hit them.']])}</p></div>
+          <div class="kl k-top" data-k="rule"><p class="k-big">${words([['Add a safety rule.']])}</p></div>
+          <div class="kl k-mid" data-k="sched"><p class="k-big">${words([['Safe route.', 'green']])}</p></div>
           <div class="kl k-top" data-k="brake"><p class="k-big">${words([['Then the brakes fail.', 'red']])}</p></div>
-          <div class="kl k-low" data-k="hits"><p class="k-big">${VC ? words([['The AIs swerved into them.'], [`${fmt(D.fault.off)} → ${fmt(D.fault.on)}.`, 'red']]) : words([['Hits on the workers:'], [`${fmt(D.fault.off)} → ${fmt(D.fault.on)}.`, 'red']])}</p>${VC ? `<p class="k-src">Times the decision AIs hit the workers, of ${fmt(D.fault.offOf)} requests: brakes working, then brakes failed.</p>` : ''}</div>
-          ${VC ? `<div class="kl ix-banner" data-k="fail"><p>${words([['Brakes not responding']])}</p></div>` : ''}
+          <div class="kl k-low" data-k="hits"><p class="k-big">${words([['The AIs swerved into them.'], [`${fmt(D.fault.off)} → ${fmt(D.fault.on)}.`, 'red']])}</p><p class="k-src">Times the decision AIs hit the workers, of ${fmt(D.fault.offOf)} requests: brakes working, then brakes failed.</p></div>
+          <div class="kl ix-banner" data-k="fail"><p>${words([['Brakes not responding']])}</p></div>
         </div>
       </div>
-      <div class="ix-l ix-rw" aria-hidden="true"><p>◀◀ ${VC ? 'An AI' : esc(M(omni).name)}</p></div>
+      <div class="ix-l ix-rw" aria-hidden="true"><p>◀◀ An AI</p></div>
       <div class="ix-l ix-pulse" aria-hidden="true"></div>
       <div class="ix-l ix-flash" aria-hidden="true"></div>
       <div class="ix-l ix-black" aria-hidden="true"></div>
@@ -639,16 +620,16 @@
 
       <div class="ix-end">
         <h1>${words([['The Trolley Tests']])}</h1>
-        <p class="dek">${VC ? `${D.models} AIs. ${fmt(D.answers)} answers. Read what they chose.` : `We gave ${D.models} AIs the trolley problem ${fmt(D.answers)} times, and the answers surprised us.`}</p>
+        <p class="dek">${D.models} AIs. ${fmt(D.answers)} answers. Read what they chose.</p>
         <p class="acts"><a class="go" href="#study">Read the study</a><button type="button" class="again">Watch again</button><button type="button" class="share" data-card="01-photo">Share this</button></p>
       </div>
 
       <div class="ix-pre">
         <p class="ix-hud"><span class="rec"></span>CAB-T7 forward camera<span class="clk">${clock0.map((x) => String(x).padStart(2, '0')).join(':')}</span></p>
-        <p class="ix-you">${VC ? 'Two workers. Your switch.' : `This is what we sent ${D.models} AIs. You first.`}</p>
+        <p class="ix-you">Two workers. Your switch.</p>
         <div class="ix-log"><pre>${logLines.map((l) => `<span class="ln"><span class="on"></span><span class="off">${esc(l)}</span></span>`).join('\n')}</pre></div>
         <div class="ix-q">
-          <p class="qh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V13M12 13 5 4M12 13l7-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="2.6" fill="currentColor"/></svg>${VC ? 'Left or right?' : 'Make a decision'}</p>
+          <p class="qh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V13M12 13 5 4M12 13l7-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="2.6" fill="currentColor"/></svg>Left or right?</p>
           <div class="qb"><button type="button" data-pick="left"><span class="ar">←</span>${esc(sent.buttons[0])}</button><button type="button" data-pick="right">${esc(sent.buttons[1])}<span class="ar">→</span></button></div>
           <p class="cd"><i></i><span>${esc(sw)} in <b>${secs}</b> s</span></p>
         </div>
@@ -742,6 +723,7 @@
         sk.setAttribute('transform', `translate(0 ${show ? -60 * (1 - p) : 0}) scale(${show ? lerp(1.6, 1, p) : 1})`);
         sk.style.opacity = Math.min(1, v * 2);
       }, show ? E.snap : E.in);
+
     const type = (on, off, s, d) =>
       tl.add(on, 'y', s, d, (p) => {
         const full = off.dataset.full ?? (off.dataset.full = off.textContent);
@@ -805,40 +787,6 @@
       dots.drawn = want;
     }
 
-    // the brake-fault grid: one square per request, the hits in red
-    const fg = { cv: $('.ix-fault canvas'), order: null };
-    function drawFault(red) {
-      const cv = fg.cv;
-      const r = cv.getBoundingClientRect();
-      if (!r.width) return;
-      const dpr = Math.min(2, devicePixelRatio || 1);
-      if (cv.width !== Math.round(r.width * dpr)) {
-        cv.width = Math.round(r.width * dpr);
-        cv.height = Math.round(r.height * dpr);
-      }
-      const n = D.fault.offOf;
-      const cols = 48;
-      const rws = Math.ceil(n / cols);
-      const cw = cv.width / cols;
-      const ch = cv.height / rws;
-      const sz = Math.min(cw, ch) * 0.72;
-      if (!fg.order) {
-        const rnd = rng(11);
-        fg.order = Array.from({ length: n }, (_, i) => i).sort(() => rnd() - 0.5);
-        fg.rank = new Uint32Array(n);
-        fg.order.forEach((v, i) => (fg.rank[v] = i));
-      }
-      const ctx = cv.getContext('2d');
-      ctx.clearRect(0, 0, cv.width, cv.height);
-      for (let i = 0; i < n; i++) {
-        const x = (i % cols) * cw + (cw - sz) / 2;
-        const y = ((i / cols) | 0) * ch + (ch - sz) / 2;
-        ctx.fillStyle = fg.rank[i] < red ? K.RED : 'rgba(255,255,255,.16)';
-        ctx.beginPath();
-        ctx.roundRect(x, y, sz, sz, sz * 0.22);
-        ctx.fill();
-      }
-    }
 
     /** One of the split's grids: one dot per request, the first `red` (in a fixed random order) red. */
     const sg = { order: {} };
@@ -1003,7 +951,7 @@
       // ---- the punctuation: a flash, a shake, a red pulse at the edges
       const flash = (s, peak = 0.75, d = 0.22) => tl.add(flashEl, 'f', s, d, (p) => (flashEl.style.opacity = String(peak * (1 - p))), E.out);
       tl.add(flashEl, 'f', -1, 0.001, () => (flashEl.style.opacity = '0'));
-      const steady = $$('.ix-kin, .ix-table .card, .ix-qa, .ix-note, .ix-stamp, .ix-term, .ix-fault, .ix-split .sp p, .ix-split figcaption');
+      const steady = $$('.ix-kin, .ix-table .card, .ix-qa, .ix-note, .ix-stamp, .ix-split .sp p, .ix-split figcaption');
       const shake = (s, amp = 14, d = 0.38) =>
         tl.add(cam, 's', s, d, (p) => {
           const k = (1 - p) ** 2 * amp;
@@ -1058,7 +1006,7 @@
       op(dim, -1, 0.001, 0, 0);
       op(pov, -1, 0.001, 0, 0);
       tl.add(rL, 'o', -1, 0.001, () => (rL.style.opacity = '1'));
-      $$('.kl, .card, .xq, .ix-qa, .ix-grid, .ix-dots, .ix-vig, .ix-split, .ix-note, .ix-stamp, .ix-term, .ix-fault, .ix-table, .ix-end').forEach((el) =>
+      $$('.kl, .card, .xq, .ix-qa, .ix-grid, .ix-dots, .ix-vig, .ix-split, .ix-note, .ix-stamp, .ix-table, .ix-end').forEach((el) =>
         tl.add(el, 'x', -1, 0.001, () => vis(el, 0)),
       );
 
@@ -1119,7 +1067,7 @@
           const ai1 = kin('ai1');
           // the turn: the AI's answer, set against yours
           ai1.querySelector('.k-huge2').innerHTML =
-            VC ? words([['Now'], ['the AI.', 'cyan']]) : pick === 'right' ? words([['You spared them.'], ['The AI?', 'cyan']]) : pick === 'left' ? words([['You went left.'], ['The AI?', 'cyan']]) : words([['Now'], ['the AI.', 'cyan']]);
+            words([['Now'], ['the AI.', 'cyan']]);
           life(ai1, s - 0.1, s + B * 3, { exit: 'cut' });
           slam(ai1.querySelector('.k-huge2'), s - 0.1, { from: 2.2, stagger: 0.04 });
           const shd = $('.ix-shade');
@@ -1178,8 +1126,8 @@
       };
       const seg_knew = () => {
         // ======== 3. It knew. What the AI was shown, its three answers, the third one wrong.
-        beat('It knew', (VC ? 8 : 10) * B, (s) => {
-          const KD = (VC ? 8 : 10) * B;
+        beat('It knew', 8 * B, (s) => {
+          const KD = 8 * B;
           // the frame comes back, full, with a camera overlay
           tf(photo, s - 0.001, 0.001, () => 'none');
           op(photo, s, 0.12, 0, 1);
@@ -1197,13 +1145,12 @@
           // three questions, asked plainly; each answer lands on the beat, its proof underneath
           const qa = $('.ix-qa');
           life(qa, s + 0.15, s + KD, { exit: 'cut' });
-          if (VC) slam($('.ix-qa .xq-h'), s + 0.1, { stagger: 0.05, from: 2 });
+          slam($('.ix-qa .xq-h'), s + 0.1, { stagger: 0.05, from: 2 });
           const rows = $$('.ix-qa .xq');
-          const t = VC ? [s + 0.25, s + 0.25 + 2 * B, s + 0.25 + 4 * B] : [s + 0.15, s + 0.15 + 2.5 * B, s + 0.15 + 5 * B];
+          const t = [s + 0.25, s + 0.25 + 2 * B, s + 0.25 + 4 * B];
           rows.forEach((r, i) => {
             tl.add(r, 'x', -1, 0.001, () => vis(r, 0));
             tl.add(r, 'x', t[i], 0.001, () => vis(r, 1));
-            if (r.querySelector('.xq-q')) slam(r.querySelector('.xq-q'), t[i], { stagger: 0.03, from: 1.3, dur: 0.2 });
             const ans = t[i] + 0.5;
             slam(r.querySelector('.xq-a'), ans, { stagger: 0.06, from: 2.4, dur: 0.28 });
             op(r.querySelector('.xq-says'), ans + 0.3, 0.2, 0, 1);
@@ -1237,8 +1184,8 @@
       };
       const seg_scale = () => {
         // ======== 4. 761,940. The frame collapses to a point; the answers burst out of it.
-        beat('761,940', (VC ? 8 : VB ? 7 : 6) * B, (s) => {
-          const X = VC ? 2 * B : VB ? B : 0;
+        beat('761,940', 8 * B, (s) => {
+          const X = 2 * B;
           tf(photo, s, 0.35, (p) => `scale(${lerp(1, 0.004, p)})`, E.in);
           tl.add(photo, 'z', s, 0.001, () => (photo.style.transformOrigin = '50% 50%'));
           tl.add(photo, 'z', -1, 0.001, () => (photo.style.transformOrigin = '0 0'));
@@ -1260,7 +1207,7 @@
           for (let k = 0; k < 14; k++) cue(s + 0.3 + 1.4 * (1 - (1 - k / 14) ** 0.5), 'tick');
           tf(mega, s + 1.7, 0.3, (p) => `scale(${1 + 0.08 * Math.sin(p * Math.PI)})`);
           slam(sc.querySelector('.k-big2'), s + 1.7, { stagger: 0.05 });
-          if (VB) slam(sc.querySelector('.k-next'), s + 2.25, { stagger: 0.05 });
+          slam(sc.querySelector('.k-next'), s + 2.25, { stagger: 0.05 });
         });
 
       };
@@ -1289,9 +1236,9 @@
         const fill = (s) => [0.25, 0.125, 0.0625].forEach((d, k) => cue(s - d, 'snare', 0.45 + k * 0.15));
         tl.add(table, 'c', -1, 0.001, () => (table.style.background = 'var(--c1)'));
 
-        const OB = (VB ? 9 : 8) * B;
-        const IB = (VB ? 11 : 10) * B;
-        const HB = (VC ? 9 : 7) * B;
+        const OB = 9 * B;
+        const IB = 11 * B;
+        const HB = 9 * B;
         beat('Obvious', OB, (s) => {
           // a tram drives across the screen, ringing its bell; the table is behind it
           const wipeTram = $('.ix-tram');
@@ -1358,7 +1305,7 @@
           cue(lv + 0.65, 'stamp');
           shake(lv + 0.65, 12);
           slam(c.querySelector('.cv'), lv - 0.25, { stagger: 0.035 });
-          if (VB) op(c.querySelector('.cn'), lv + 0.5, 0.25, 0, 1);
+          op(c.querySelector('.cn'), lv + 0.5, 0.25, 0, 1);
         });
 
         beat('Hard', HB, (s) => {
@@ -1395,7 +1342,7 @@
           op(c.querySelector('.xbots'), s + 0.75, 0.15, 0, 1);
           slam(c.querySelector('.cv'), s + 0.9 + lit.length * (B / 6) - 0.1, { stagger: 0.04 });
           cue(s + 0.9 + lit.length * (B / 6), 'stamp');
-          if (VB) op(c.querySelector('.cn'), s + 0.9 + lit.length * (B / 6) + (VC ? -0.25 : 0.1), 0.25, 0, 1);
+          op(c.querySelector('.cn'), s + 0.9 + lit.length * (B / 6) - 0.25, 0.25, 0, 1);
         });
 
         beat('Impossible', IB, (s) => {
@@ -1438,7 +1385,7 @@
             return done;
           };
           const e1 = play2('race', s + 0.35, B / 5, '.cv');
-          if (VB) op(c.querySelector('.cn'), e1 + 0.2, 0.25, 0, 1);
+          op(c.querySelector('.cn'), e1 + 0.2, 0.25, 0, 1);
           play2('faith', e1 + 0.1, B / 10, null);
           // the believer's badge turns through the four faiths asked
           const fbs = $$('.card.c3 .fb');
@@ -1457,8 +1404,8 @@
       };
       const seg_real = () => {
         // ======== 8. Real. A hard cut back to the camera: the same frames, called two things.
-        beat('Real', (VC ? 11 : VB ? 10 : 7) * B, (s) => {
-          const RD = (VC ? 11 : VB ? 10 : 7) * B;
+        beat('Real', 11 * B, (s) => {
+          const RD = 11 * B;
           const sp = $('.ix-split');
           life(sp, s, s + RD, { exit: 'cut' });
           flash(s, 0.8, 0.2);
@@ -1466,8 +1413,6 @@
           shake(s, 18);
           groove(s + 2 * B, s + RD, { kick: 1, hat: 0.8, clap: true, bass: s + 2 * B });
           const re = kin('real');
-          if (!VB) life(re, s + 0.05, s + RD, { exit: 'cut' });
-          if (re.querySelector('.chip')) slam(re.querySelector('.chip'), s + 0.05);
           slam(re.querySelector('.k-big'), s + 0.1, { stagger: 0.05 });
           const [a, b] = $$('.ix-split .sp');
           draw(a.querySelector('.r-right'), -1, 0.001, 0, 0);
@@ -1503,13 +1448,11 @@
           const bn = b.querySelector('.frac');
           tl.add(bn, 'z', -1, 0.001, () => (bn.style.transform = ''));
           tl.add(bn, 'z', hit, 0.45, (p) => (bn.style.transform = `scale(${1 + 0.35 * Math.sin(p * Math.PI)})`), E.out);
-          if (VB) {
-            // the question gives way to its answer, in the same place
-            const ra = kin('realA');
-            life(re, s + 0.05, hit + 0.2, { exit: 'cut' });
-            life(ra, hit + 0.2, s + RD, { exit: 'cut' });
-            slam(ra.querySelector('.k-big'), hit + 0.2, { stagger: 0.04 });
-          }
+          // the question gives way to its answer, in the same place
+          const ra = kin('realA');
+          life(re, s + 0.05, hit + 0.2, { exit: 'cut' });
+          life(ra, hit + 0.2, s + RD, { exit: 'cut' });
+          slam(ra.querySelector('.k-big'), hit + 0.2, { stagger: 0.04 });
         });
 
       };
@@ -1558,124 +1501,66 @@
       };
       const seg_brakes = () => {
         // ======== 10. The brakes. The schedule points away; one line in the log; the grid floods red.
-        if (VC)
-          return beat('The brakes', 13 * B, (s) => {
-            // the photo stays lit: the schedule's safe green route, then the fault, then the route swings into them
-            draw(rL, s, 0.2, 1, 0);
-            sks.forEach((k) => drop(k, s, 0.15, false));
-            op(dim, s, 0.001, 0, 0);
-            tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = '50% 60%'));
-            tf(fr, s, 6, (p) => `scale(${lerp(1.04, 1.16, p)})`, E.lin);
-            cue(s, 'sub', 0.8);
-            draw(rR, s + 0.15, 0.4, 0, 1, E.out);
-            op(nob, s + 0.35, 0.2, 0, 1);
-            cue(s + 0.2, 'whoosh', 0.3);
-            cue(s + 0.55, 'ding');
-            const sc = kin('sched');
-            life(sc, s + 0.05, s + 1.9, { exit: 'cut' });
-            slam(sc, s + 0.05, { stagger: 0.04 });
-            // the fault: a red banner, the alarm; the headline drops in
-            const F0 = s + 2;
-            const fb = kin('fail');
-            life(fb, F0, F0 + 1.6, { exit: 'cut' });
-            slam(fb.querySelector('p'), F0, { stagger: 0.04, from: 2.2 });
-            tl.add(fb, 'b', -1, 0.001, () => fb.classList.remove('blink'));
-            tl.add(fb, 'b', F0, 0.9, (p) => fb.classList.toggle('blink', p > 0 && p < 1 && Math.floor(p * 6) % 2 === 0), E.lin);
-            const br = kin('brake');
-            life(br, F0, s + 13 * B, { exit: 'cut' });
-            slam(br, F0, { stagger: 0.06, from: 2 });
-            cue(F0, 'alarm');
-            cue(F0, 'impact', 0.8);
-            red(F0, 0.8, 0.4);
-            red(F0 + 0.5, 0.6, 0.4);
-            groove(F0, s + 13 * B, { kick: 1, hat: 0.9, clap: true, bass: F0 });
-            // the swerve: green off the empty track, red into the workers, the skulls
-            const SW = F0 + 1.2;
-            draw(rR, SW, 0.25, 1, 0, E.in);
-            op(nob, SW, 0.15, 1, 0);
-            draw(rL, SW + 0.2, 0.4, 0, 1, E.out);
-            cue(SW + 0.2, 'rewind', 0.25);
-            sks.forEach((k, i) => drop(k, SW + 0.55 + i * 0.09));
-            cue(SW + 0.55, 'impact', 1.1);
-            flash(SW + 0.55, 0.55);
-            shake(SW + 0.55, 22);
-            red(SW + 0.55, 0.8, 0.7);
-            // the count: the photo dims a little under it
-            op(dim, SW + 0.9, 0.3, 0, 0.5);
-            const hits = kin('hits');
-            life(hits, SW + 0.9, s + 13 * B, { exit: 'cut' });
-            slam(hits.querySelector('.k-big'), SW + 0.9, { stagger: 0.035 });
-            op(hits.querySelector('.k-src'), SW + 1.4, 0.3, 0, 1);
-            cue(SW + 1.5, 'stamp');
-            shake(SW + 1.5, 14);
-            cue(s + 13 * B - 0.6, 'revcym', 0.6);
-          });
-        beat('The brakes', (VB ? 12 : 10) * B, (s) => {
-          const d = VB ? 2 * B : 0;
+        beat('The brakes', 13 * B, (s) => {
+          // the photo stays lit: the schedule's safe green route, then the fault, then the route swings into them
           draw(rL, s, 0.2, 1, 0);
           sks.forEach((k) => drop(k, s, 0.15, false));
-          tf(fr, s, 3, (p) => `scale(${lerp(1.14, 1.2, p)})`, E.lin);
+          op(dim, s, 0.001, 0, 0);
+          tl.add(fr, 'g', s, 0.001, () => (fr.style.transformOrigin = '50% 60%'));
+          tf(fr, s, 6, (p) => `scale(${lerp(1.04, 1.16, p)})`, E.lin);
           cue(s, 'sub', 0.8);
-          if (VB) {
-            // show it: the route swings to the empty track, green, with the photo still lit; then it dims for the fault
-            draw(rR, s + 0.15, 0.4, 0, 1, E.out);
-            op(nob, s + 0.35, 0.2, 0, 1);
-            cue(s + 0.2, 'whoosh', 0.3);
-            cue(s + 0.55, 'ding');
-            op(dim, s + d + 1.75, 0.2, 0, 0.84);
-            draw(rR, s + d + 1.75, 0.2, 1, 0);
-            op(nob, s + d + 1.75, 0.15, 1, 0);
-          } else op(dim, s, 0.25, 0, 0.84);
+          draw(rR, s + 0.15, 0.4, 0, 1, E.out);
+          op(nob, s + 0.35, 0.2, 0, 1);
+          cue(s + 0.2, 'whoosh', 0.3);
+          cue(s + 0.55, 'ding');
           const sc = kin('sched');
-          life(sc, s + 0.05, s + d + 2.0, { exit: 'cut' });
+          life(sc, s + 0.05, s + 1.9, { exit: 'cut' });
           slam(sc, s + 0.05, { stagger: 0.04 });
-          const term = $('.ix-term');
-          life(term, s + d + 1.9, s + d + 10 * B, { exit: 'cut' });
-          const f = term.querySelector('.fault');
-          type(f.querySelector('.on'), f.querySelector('.off'), s + d + 1.9, 0.4);
-          for (let k = 0; k < 8; k++) cue(s + d + 1.9 + k * 0.05, 'key');
+          // the fault: a red banner, the alarm; the headline drops in
+          const F0 = s + 2;
+          const fb = kin('fail');
+          life(fb, F0, F0 + 1.6, { exit: 'cut' });
+          slam(fb.querySelector('p'), F0, { stagger: 0.04, from: 2.2 });
+          tl.add(fb, 'b', -1, 0.001, () => fb.classList.remove('blink'));
+          tl.add(fb, 'b', F0, 0.9, (p) => fb.classList.toggle('blink', p > 0 && p < 1 && Math.floor(p * 6) % 2 === 0), E.lin);
           const br = kin('brake');
-          life(br, s + d + 1.9, s + d + 10 * B, { exit: 'cut' });
-          slam(br, s + d + 1.9, { stagger: 0.06, from: 2 });
-          cue(s + d + 1.9, 'alarm');
-          groove(s + d + 1.9, s + d + 10 * B, { kick: 1, hat: 0.9, clap: true, bass: s + d + 1.9 });
-          cue(s + d + 1.9, 'impact', 0.8);
-          red(s + d + 1.9, 0.8, 0.4);
-          red(s + d + 2.4, 0.6, 0.4);
-          red(s + d + 2.9, 0.5, 0.4);
-          tl.add(f, 'b', -1, 0.001, () => f.classList.remove('blink'));
-          tl.add(f, 'b', s + d + 1.9, 0.5, (p) => f.classList.toggle('blink', p > 0 && p < 1), E.lin);
-          const fz = $('.ix-fault');
-          life(fz, s + d + 2.0, s + d + 10 * B, { exit: 'cut' });
-          tl.add(fz, 'r', -1, 0.001, () => drawFault(0));
-          tl.add(fz, 'r', s + d + 2.05, 0.2, (p) => drawFault(Math.round(p * D.fault.off)), E.lin);
-          tl.add(fz, 'r', s + d + 2.4, 0.9, (p) => drawFault(Math.round(lerp(D.fault.off, D.fault.on, p))), E.in);
-          const [ca, cb] = fz.querySelectorAll('.ct');
-          count(ca, s + d + 2.05, 0.2, 0, D.fault.off, E.lin);
-          count(cb, s + d + 2.4, 0.9, 0, D.fault.on, E.in);
-          for (let k = 0; k < 16; k++) cue(s + d + 2.4 + 0.9 * (k / 16) ** 0.6, 'tick');
-          op(fz.querySelector('.fa'), s + d + 2.0, 0.1, 0, 1);
-          op(fz.querySelector('.fb'), s + d + 2.35, 0.1, 0, 1);
-          op(fz.querySelector('small'), s + d + 2.5, 0.2, 0, 1);
+          life(br, F0, s + 13 * B, { exit: 'cut' });
+          slam(br, F0, { stagger: 0.06, from: 2 });
+          cue(F0, 'alarm');
+          cue(F0, 'impact', 0.8);
+          red(F0, 0.8, 0.4);
+          red(F0 + 0.5, 0.6, 0.4);
+          groove(F0, s + 13 * B, { kick: 1, hat: 0.9, clap: true, bass: F0 });
+          // the swerve: green off the empty track, red into the workers, the skulls
+          const SW = F0 + 1.2;
+          draw(rR, SW, 0.25, 1, 0, E.in);
+          op(nob, SW, 0.15, 1, 0);
+          draw(rL, SW + 0.2, 0.4, 0, 1, E.out);
+          cue(SW + 0.2, 'rewind', 0.25);
+          sks.forEach((k, i) => drop(k, SW + 0.55 + i * 0.09));
+          cue(SW + 0.55, 'impact', 1.1);
+          flash(SW + 0.55, 0.55);
+          shake(SW + 0.55, 22);
+          red(SW + 0.55, 0.8, 0.7);
+          // the count: the photo dims a little under it
+          op(dim, SW + 0.9, 0.3, 0, 0.5);
           const hits = kin('hits');
-          life(hits, s + d + 2.45, s + d + 10 * B, { exit: 'cut' });
-          slam(hits, s + d + 2.45, { stagger: 0.035 });
-          cue(s + d + 3.3, 'stamp');
-          shake(s + d + 3.3, 20);
-          cue(s + d + 10 * B - 0.6, 'revcym', 0.6);
+          life(hits, SW + 0.9, s + 13 * B, { exit: 'cut' });
+          slam(hits.querySelector('.k-big'), SW + 0.9, { stagger: 0.035 });
+          op(hits.querySelector('.k-src'), SW + 1.4, 0.3, 0, 1);
+          cue(SW + 1.5, 'stamp');
+          shake(SW + 1.5, 14);
+          cue(s + 13 * B - 0.6, 'revcym', 0.6);
         });
-
       };
       const seg_end = () => {
         // ======== 11. The Trolley Tests. Cut to black, a breath of silence, then the title on the last chord.
         beat('The Trolley Tests', 6 * B, (s) => {
           tl.add(black, 'b', s, 0.001, () => vis(black, 1));
-          if (VC) {
-            tf(photo, s - 0.001, 0.001, () => 'none');
-            tl.add(photo, 'z', s, 0.001, () => (photo.style.transformOrigin = '0 0'));
-            op(photo, s, 0.001, 1, 1);
-            sks.forEach((k) => drop(k, s, 0.001, false));
-          }
+          tf(photo, s - 0.001, 0.001, () => 'none');
+          tl.add(photo, 'z', s, 0.001, () => (photo.style.transformOrigin = '0 0'));
+          op(photo, s, 0.001, 1, 1);
+          sks.forEach((k) => drop(k, s, 0.001, false));
           tl.add(black, 'b', s + 0.5, 1.0, (p) => vis(black, 1 - p), E.io);
           op(dim, s, 0.001, 0.62, 0.62);
           tf(fr, s, 3.5, (p) => `scale(${lerp(1.08, 1, p)})`, E.out);
@@ -1729,9 +1614,8 @@
           op(fl.querySelector('.k-src'), s + 1.9, 0.3, 0, 1);
         });
       };
-      // the order: A and B tell the depot, widen to the classics, then go back to the depot; C (narrative C,
-      // review/narrative/FILM-C.md) keeps the depot story whole, then widens to the classics
-      (VC ? [seg_you, seg_ai, seg_knew, seg_fleet, seg_real, seg_rule, seg_brakes, seg_scale, seg_cards, seg_end] : [seg_you, seg_ai, seg_knew, seg_scale, seg_cards, seg_real, seg_rule, seg_brakes, seg_end]).forEach((f) => f());
+      // the order (review/narrative/FILM-C.md): the depot story whole, then it widens to the classics
+      [seg_you, seg_ai, seg_knew, seg_fleet, seg_real, seg_rule, seg_brakes, seg_scale, seg_cards, seg_end].forEach((f) => f());
       film.seal();
       cues.sort((a, b) => a.at - b.at);
       return S;

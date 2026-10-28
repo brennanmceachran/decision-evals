@@ -492,85 +492,14 @@ body.ix-on .topbar nav {
 .k-mid[data-k='fleet'] .k-src {
   margin-top: 16px;
 }
-/* ---------- the depot log and the fault */
-.ix-term {
-  inset: auto;
-  top: calc(var(--bar-h, 52px) + 56px + var(--hl) * 2);
-  left: var(--ix-pad);
-  width: min(820px, 54vw);
-  visibility: hidden;
-}
-.ix-term pre,
+/* ---------- the depot log (the cold open) */
 .ix-log pre {
   margin: 0;
   font: 500 clamp(11px, 0.95vw, 15px) / 1.6 Menlo, 'SF Mono', Consolas, monospace;
   white-space: pre-wrap;
   color: #9fb0bb;
 }
-.ix-term pre {
-  padding: 18px 20px;
-  border-radius: 12px;
-  background: rgba(12, 16, 19, 0.86);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
-}
 .ix .off {
-  opacity: 0;
-}
-.ix-term .fault {
-  color: #ff5a50;
-  font-weight: 700;
-}
-.ix-term .tl:not(.keep) {
-  display: none;
-}
-.ix-term pre {
-  font-size: clamp(14px, 1.35vw, 22px);
-}
-.ix-term .fault.blink {
-  animation: ix-blink 0.16s steps(2) 3;
-}
-@keyframes ix-blink {
-  50% {
-    opacity: 0.2;
-  }
-}
-.ix-fault {
-  inset: auto;
-  right: var(--ix-pad);
-  top: calc(var(--bar-h, 52px) + 56px + var(--hl) * 2);
-  width: min(520px, 34vw);
-  visibility: hidden;
-}
-.ix-fault canvas {
-  display: block;
-  width: 100%;
-  aspect-ratio: 48 / 24;
-}
-.fk {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 28px;
-  margin: 14px 0 0;
-  font-weight: 700;
-  font-size: 15px;
-  color: #c9d0d5;
-}
-.fk b {
-  display: block;
-  font-size: clamp(34px, 3.4vw, 56px);
-  font-weight: 900;
-  line-height: 1;
-  color: #fff;
-  font-variant-numeric: tabular-nums;
-}
-.fk small {
-  flex-basis: 100%;
-  font-size: 13px;
-  font-weight: 600;
-  color: #8d979e;
-}
-.fk span,
-.fk small {
   opacity: 0;
 }
 /* ---------- the table: the thought experiments as cards slapped down on colour */
@@ -815,13 +744,6 @@ body.ix-on .topbar nav {
 }
 .xq {
   visibility: hidden;
-}
-.xq-q {
-  margin: 0;
-  font-size: clamp(16px, 1.45vw, 24px);
-  font-weight: 800;
-  color: #fff;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
 }
 .xq-a {
   margin: 2px 0 0;
@@ -1491,9 +1413,6 @@ body.ix-on .topbar nav {
   .xq-a {
     font-size: 11vw;
   }
-  .xq-q {
-    font-size: 15px;
-  }
   .k-mega {
     font-size: 20vw;
   }
@@ -1565,23 +1484,6 @@ body.ix-on .topbar nav {
   .ix-stamp {
     top: calc(var(--ph-bot) + 120px);
   }
-  .ix-term {
-    top: calc(var(--bar-h, 52px) + 150px);
-    width: auto;
-    right: var(--ix-pad);
-  }
-  .ix-term .tl:not(.keep) {
-    display: none;
-  }
-  .ix-term pre {
-    padding: 12px 14px;
-  }
-  .ix-fault {
-    left: var(--ix-pad);
-    right: var(--ix-pad);
-    width: auto;
-    top: calc(var(--bar-h, 52px) + 280px);
-  }
 }
 @media (max-aspect-ratio: 1/1) and (max-height: 740px) {
   .ix-log .ln:first-child {
@@ -1625,27 +1527,6 @@ body.ix-on .topbar nav {
   }
   .ix-end .kick {
     margin-bottom: 6px;
-  }
-  .ix-term {
-    top: calc(var(--bar-h, 52px) + 70px);
-    width: min(440px, 48vw);
-  }
-  .ix-term .tl:not(.keep) {
-    display: none;
-  }
-  .ix-fault {
-    top: calc(var(--bar-h, 52px) + 70px);
-    width: min(360px, 40vw);
-  }
-  .fk {
-    margin-top: 8px;
-    font-size: 12px;
-  }
-  .fk b {
-    font-size: 24px;
-  }
-  .fk small {
-    display: none;
   }
   .k-top {
     top: calc(var(--bar-h, 52px) + 6px);
@@ -1703,9 +1584,6 @@ body.ix-on .topbar nav {
   }
   .xq-a {
     font-size: 8vh;
-  }
-  .xq-q {
-    font-size: 13px;
   }
   .card {
     top: calc(50% + 14px);
