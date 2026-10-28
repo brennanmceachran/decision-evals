@@ -621,6 +621,7 @@
       <div class="ix-end">
         <h1>${words([['The Trolley Tests']])}</h1>
         <p class="dek">${D.models} AIs. ${fmt(D.answers)} answers. Read what they chose.</p>
+        <p class="by">By <a href="https://brennanmceachran.com">Brennan McEachran</a> · <a href="https://www.mceachran.group">McEachran Group</a></p>
         <p class="acts"><a class="go" href="#study">Read the study</a><button type="button" class="again">Watch again</button><button type="button" class="share" data-card="01-photo">Share this</button></p>
       </div>
 
@@ -1588,6 +1589,7 @@
             h1.style.transform = p >= 1 ? '' : `translate(${g.dx * (1 - k)}px, ${g.dy * (1 - k)}px) scale(${sc})`;
           }, E.lin);
           op(en.querySelector('.dek'), T + 1.3, 0.4, 0, 1);
+          op(en.querySelector('.by'), T + 1.45, 0.4, 0, 1);
           op(en.querySelector('.acts'), T + 1.6, 0.4, 0, 1);
         });
       };

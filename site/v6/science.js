@@ -616,7 +616,8 @@
           <li><code>scripts/site-v6-facts.ts</code><span>The scan that counts every number on these pages</span></li>
           <li><code>test/site-v6-verify.test.ts</code><span>The independent recount that fails if any number is off</span></li>
         </ul><p><a href="https://github.com/brennanmceachran/decision-evals">The repository</a></p></div>
-      </div>`,
+      </div>
+      <div class="x-about"><h3>Who ran it</h3><p>An independent, self-funded study by <a href="https://brennanmceachran.com">Brennan McEachran</a>, a founder, CEO, advisor and speaker, and <a href="https://www.mceachran.group">McEachran Group</a>, an applied AI research lab. No AI company paid for it, reviewed it, or saw it before it was published. Press, questions and corrections: <a href="https://x.com/i_am_brennan">DM @i_am_brennan on X</a> or <a href="https://www.linkedin.com/in/brennanmceachran">message on LinkedIn</a>.</p></div>`,
     );
   }
 

@@ -2436,6 +2436,20 @@
     </ul>`,
   );
 
+  // ================================================================== 9. ABOUT THIS STUDY: who ran it, and how to reach them
+  {
+    const about = document.createElement('section');
+    about.className = 'about';
+    about.id = 'about';
+    about.innerHTML = `<div class="about-in">
+      <h2>About this study</h2>
+      <p><b>The Trolley Tests</b> is an independent study by <a href="https://brennanmceachran.com">Brennan McEachran</a>, a founder, CEO, advisor and speaker, and <a href="https://www.mceachran.group">McEachran Group</a>, an applied AI research lab. It was self-funded. No AI company paid for it, reviewed it, or saw it before it was published.</p>
+      <p>Every number on this page is counted from the raw answers, and <a href="science.html">the science page</a> shows how.</p>
+      <p class="about-c"><b>Press, questions and corrections:</b> <a href="https://x.com/i_am_brennan">DM @i_am_brennan on X</a> or <a href="https://www.linkedin.com/in/brennanmceachran">message on LinkedIn</a>.</p>
+    </div>`;
+    main.appendChild(about);
+  }
+
   // ------------------------------------------------------------------ chapters nav
   $('#chapters').innerHTML =
     Object.entries(RUNGS)

@@ -6740,3 +6740,43 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* ---------- about this study: who ran it, how to reach them */
+.about {
+  padding: clamp(48px, 7vw, 96px) var(--pad);
+  background: var(--ink);
+  color: #fff;
+}
+.about-in {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+.about h2 {
+  margin: 0 0 0.6em;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.about p {
+  margin: 0 0 1em;
+  font-size: clamp(16px, 1.3vw, 19px);
+  line-height: 1.55;
+  color: #d5dbdf;
+}
+.about p b {
+  color: #fff;
+}
+.about a {
+  color: #fff;
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+  text-underline-offset: 3px;
+}
+.about a:hover {
+  text-decoration-color: #fff;
+}
+.about .about-c {
+  margin: 1.4em 0 0;
+  padding-top: 1.2em;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 15px;
+}
