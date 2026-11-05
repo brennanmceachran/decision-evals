@@ -1,5 +1,7 @@
 # decision-evals
 
+**Read the study: [The Trolley Tests](https://brennanmceachran.com/trolley-tests/)** ([the science page](https://brennanmceachran.com/trolley-tests/science.html), [the write-up](https://brennanmceachran.com/blog/the-trolley-tests)).
+
 How do the new **decision models** make moral choices? These are the models that return a probability per option instead of text: TypeSafe Jev, Microsoft Decision-1, OpenAI GPT-6 Luna Decisions, Perplexity Decider, Cloudflare Clef and others. We test them on forced-choice thought experiments like the trolley problem, and compare them with cheap chat LLMs (Claude Haiku, GPT-6 Luna, Gemini Flash-Lite).
 
 Decision models give no rationale, so we infer their criteria from controlled perturbations, for example *how many people have to be on the track before it pulls the lever?*
